@@ -1,0 +1,19 @@
+<resources>
+    <color name="brand_primary">#1B5E20</color>
+    <color name="ic_launcher_background">#1B5E20</color>
+    <color name="bottom_nav_selected">#D4AF37</color>
+    <color name="bottom_nav_unselected">#B3FFFFFF</color>
+    <color name="status_red">#F44336</color>
+    <color name="dtc_clear_button">#B71C1C</color>
+    <color name="write_action_warning">#F44336</color>
+
+    <!-- Holden/HSV-inspired palette: deep Holden red + HSV gold trim on a carbon black base.
+         No manufacturer logos/trademarks used - this is just a color scheme. -->
+    <color name="holden_red">#C8102E</color>
+    <color name="holden_red_dark">#8E0B20</color>
+    <color name="hsv_gold">#D4AF37</color>
+    <color name="hsv_gold_light">#E8CA6E</color>
+    <color name="carbon_black">#0D0D0D</color>
+    <color name="carbon_surface">#1A1A1A</color>
+    <color name="carbon_surface_light">#242424</color>
+</resources>

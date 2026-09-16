@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Page tabs: tap a title to jump, or swipe the pager below. Titled by system
+         (Thermal, Engine, Fuel, TCM, ...) per the monitored-sensor pages. Connection status
+         and adapter settings live on the Home tab now, so this screen is PIDs only. -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/dashboard_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:tabMode="scrollable"
+        app:tabGravity="start" />
+
+    <!-- Swipeable dashboard: 4 sensors per page. Each page scrolls vertically on its own if
+         its cards don't fit. Tap a card to cycle Digital -> Graph -> Histogram. Long-press
+         anywhere for the quick settings menu. -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/dashboard_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/txt_no_readings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No sensors selected. Choose sensors in Settings."
+        android:textSize="13sp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:visibility="gone"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Compact control row: Start/Stop toggle + the two export buttons, side by side instead
+         of four stacked full-width buttons, so the PID pages above get the vertical space. -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_toggle_monitoring"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Start"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+            android:maxLines="1"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            app:icon="@drawable/ic_play"
+            app:iconGravity="textStart"
+            app:iconPadding="4dp"
+            app:iconSize="16dp"
+            android:layout_marginEnd="4dp"
+            app:cornerRadius="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_export_csv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="CSV"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+            android:maxLines="1"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:layout_marginHorizontal="4dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:cornerRadius="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_export_json"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="JSON"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+            android:maxLines="1"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:layout_marginStart="4dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:cornerRadius="8dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
