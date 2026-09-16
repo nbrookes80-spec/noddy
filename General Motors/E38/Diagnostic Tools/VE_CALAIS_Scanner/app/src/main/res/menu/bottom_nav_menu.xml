@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/nav_home" />
+    <item
+        android:id="@+id/nav_live_data"
+        android:icon="@drawable/ic_speed"
+        android:title="@string/nav_live_data" />
+    <item
+        android:id="@+id/nav_pid_scanner"
+        android:icon="@drawable/ic_scan"
+        android:title="@string/nav_pid_scanner" />
+    <item
+        android:id="@+id/nav_sniffer"
+        android:icon="@drawable/ic_sniffer"
+        android:title="@string/nav_sniffer" />
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/nav_settings" />
+</menu>

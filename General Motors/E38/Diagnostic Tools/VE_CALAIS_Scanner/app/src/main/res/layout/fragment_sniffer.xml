@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sniffer"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorPrimary"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Raw commands sent to and responses received from the OBD2 adapter, as they happen."
+        android:textSize="12sp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:layout_marginBottom="12dp" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_sniffer_enabled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sniffing Enabled"
+        android:layout_marginBottom="12dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#1A1A1A"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:id="@+id/txt_sniffer_log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textSize="11sp"
+            android:textColor="#00FF66"
+            android:padding="8dp"
+            android:text="Waiting for traffic..." />
+
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_clear_sniffer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Clear Log"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        app:cornerRadius="8dp" />
+
+</LinearLayout>

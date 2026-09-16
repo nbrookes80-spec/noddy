@@ -1,0 +1,46 @@
+PID,Name,Category,Unit,Min,Max,Description,Header,Formula
+0100,PID Support 00-20,System,Bitmap,0,4294967295,Supported PIDs bitmap 00-20,Auto,A
+0101,Monitor Status,Diagnostics,Status,0,255,DTC and test status,Auto,A
+0103,Fuel System Status,Engine,Status,0,255,Open/closed loop and fuel system status,Auto,A
+0104,Calculated Load,Engine,%,0,100,Calculated engine load,Auto,A*100/255
+0105,Coolant Temperature,Engine,°C,-40,215,Engine coolant temperature,Auto,A-40
+0106,Short Term Fuel Trim B1,Fuel,%,-100,100,Short term fuel trim bank 1,Auto,(A-128)*100/128
+0107,Long Term Fuel Trim B1,Fuel,%,-100,100,Long term fuel trim bank 1,Auto,(A-128)*100/128
+0108,Short Term Fuel Trim B2,Fuel,%,-100,100,Short term fuel trim bank 2,Auto,(A-128)*100/128
+0109,Long Term Fuel Trim B2,Fuel,%,-100,100,Long term fuel trim bank 2,Auto,(A-128)*100/128
+010A,Fuel Pressure,Fuel,kPa,0,765,Fuel rail pressure (gauge),Auto,A*3
+010B,MAP Sensor,Turbo,kPa,0,300,Manifold Absolute Pressure - scaled for 3-bar sensor,Auto,A
+010C,Engine RPM,Engine,RPM,0,16383.75,Current engine speed,Auto,((A*256)+B)/4
+010D,Vehicle Speed,Vehicle,km/h,0,255,Current vehicle speed,Auto,A
+010E,Ignition Timing Advance,Engine,°BTDC,-64,64,Spark timing advance,Auto,(A/2)-64
+010F,Intake Air Temperature,Engine,°C,-40,215,Intake manifold air temperature,Auto,A-40
+0110,Mass Air Flow,Engine,g/s,0,655.35,Mass air flow sensor reading,Auto,((A*256)+B)/100
+0111,Throttle Position,Engine,%,0,100,Absolute throttle position,Auto,A*100/255
+0113,O2 Sensor 1 (B1S1),Fuel,V,0,1.275,Upstream O2 sensor voltage bank 1,Auto,A/200
+0114,O2 Sensor 2 (B1S2),Fuel,V,0,1.275,Downstream O2 sensor voltage bank 1,Auto,A/200
+0115,O2 Sensor 3 (B2S1),Fuel,V,0,1.275,Upstream O2 sensor voltage bank 2,Auto,A/200
+0118,O2 Sensors Present,Fuel,Status,0,255,O2 sensor count and type,Auto,A
+011C,OBD Standards Compliance,System,Standard,0,255,OBD standards version,Auto,A
+011F,Runtime Since Engine Start,Engine,seconds,0,2147483,Seconds since engine started,Auto,((A*256)+B)
+0120,PID Support 21-40,System,Bitmap,0,4294967295,Supported PIDs bitmap 21-40,Auto,A
+0121,Distance with MIL On,Diagnostics,km,0,65535,Distance traveled with check engine on,Auto,((A*256)+B)
+012E,Commanded Evaporative Purge,Engine,%,0,100,Evaporative purge percentage,Auto,A*100/255
+012F,Fuel Tank Level,Fuel,%,0,100,Fuel tank level input,Auto,A*100/255
+0130,Number of Warm-ups,Engine,Count,0,255,Number of warm-up cycles,Auto,A
+0131,Distance Since DTC Clear,Diagnostics,km,0,65535,Distance since DTC cleared,Auto,((A*256)+B)
+0132,Evaporative System Vapor Pressure,Engine,Pa,-32768,32767,EVAP system vapor pressure,Auto,((A*256)+B)-32768
+0133,Barometric Pressure,Sensors,kPa,0,255,Atmospheric/Barometric pressure,Auto,A
+013C,Catalyst Temperature B1S1,Engine,°C,0,655,Catalyst temperature bank 1 sensor 1,Auto,((A*256)+B)/10-40
+013D,Catalyst Temperature B2S1,Engine,°C,0,655,Catalyst temperature bank 2 sensor 1,Auto,((A*256)+B)/10-40
+0140,PID Support 41-60,System,Bitmap,0,4294967295,Supported PIDs bitmap 41-60,Auto,A
+0141,Monitor Status This Drive,Diagnostics,Status,0,255,Monitor status for this drive cycle,Auto,A
+0142,Control Module Voltage,Electrical,V,0,65.535,ECU supply voltage,Auto,((A*256)+B)/1000
+0143,Absolute Load Value,Engine,%,0,100,Absolute engine load,Auto,((A*256)+B)*100/65536
+0144,Commanded Air-Fuel Ratio,Fuel,Ratio,0,32,Commanded air-fuel ratio,Auto,((A*256)+B)*0.03125
+0145,Relative Throttle Position,Engine,%,0,100,Relative throttle position,Auto,A*100/255
+0146,Ambient Air Temperature,Engine,°C,-40,215,Outside air temperature,Auto,A-40
+0147,Absolute Throttle Pos D,Engine,%,0,100,Absolute throttle position D,Auto,A*100/255
+0149,Accelerator Pedal D,Engine,%,0,100,Accelerator pedal position D,Auto,A*100/255
+014A,Accelerator Pedal E,Engine,%,0,100,Accelerator pedal position E,Auto,A*100/255
+014C,Commanded Throttle Pos,Engine,%,0,100,Commanded throttle position,Auto,A*100/255
+0152,Ethanol Fuel %,Fuel,%,0,100,Flex fuel ethanol content - critical for E85/98 tune,Auto,A*100/255

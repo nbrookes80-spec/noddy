@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:maxHeight="1900dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Quick Menu"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
+            android:layout_marginBottom="16dp" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_keep_screen_on"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Keep Screen On While Monitoring"
+            android:layout_marginBottom="12dp" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_auto_connect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Auto-Connect on Startup"
+            android:layout_marginBottom="12dp" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_sniffer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sniffer (log raw traffic)"
+            android:layout_marginBottom="12dp" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_demo_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Demo Mode (simulated data, no car needed)"
+            android:layout_marginBottom="20dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/colorOutline"
+            android:layout_marginBottom="12dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_connect_adapter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Connect to OBD2 Adapter"
+            android:layout_marginBottom="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_open_scanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PID Scanner"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_marginBottom="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_open_sniffer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sniffer Log"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_marginBottom="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_open_dtc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DTC Codes"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_marginBottom="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_reorder_pages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reorder Pages"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_marginBottom="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_open_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Full Settings"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_marginBottom="8dp" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
