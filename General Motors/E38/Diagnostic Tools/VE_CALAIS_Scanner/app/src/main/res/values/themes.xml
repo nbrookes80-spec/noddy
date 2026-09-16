@@ -1,0 +1,29 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Holden/HSV-inspired theme: always dark (carbon black base regardless of system light/
+         dark setting - a car gauge cluster shouldn't flip to a white theme), Holden red as the
+         primary action color, HSV gold as the trim/accent color on outlines and highlights. -->
+    <style name="Theme.VECalaisOBD2" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/holden_red</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">@color/holden_red_dark</item>
+        <item name="colorOnPrimaryContainer">#FFFFFF</item>
+
+        <item name="colorSecondary">@color/hsv_gold</item>
+        <item name="colorOnSecondary">@color/carbon_black</item>
+
+        <item name="android:colorBackground">@color/carbon_black</item>
+        <item name="colorOnBackground">#F5F5F5</item>
+
+        <item name="colorSurface">@color/carbon_surface</item>
+        <item name="colorOnSurface">#F5F5F5</item>
+        <item name="colorSurfaceVariant">@color/carbon_surface_light</item>
+        <item name="colorOnSurfaceVariant">#C9C9C9</item>
+
+        <!-- Gold outline/trim - used by card strokes, dividers, OutlinedButton borders -->
+        <item name="colorOutline">@color/hsv_gold</item>
+        <item name="colorOutlineVariant">#5A4A22</item>
+
+        <item name="android:statusBarColor">@color/carbon_black</item>
+        <item name="android:navigationBarColor">@color/carbon_black</item>
+    </style>
+</resources>

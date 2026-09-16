@@ -1,0 +1,38 @@
+PID,Name,Category,Unit,Min,Max,Description,Header,Formula
+221950,Trans Fluid Temp (Alt),Transmission,°C,-40,200,Alternative 6L80E fluid temperature address,7E2,A-40
+22194F,Trans Fluid Temp (Primary),Transmission,°C,-40,200,Primary 6L80E fluid temperature (from Car Scanner),7E2,A-40
+221941,Trans Input Speed,Transmission,RPM,0,8000,Turbine/input shaft speed,7E2,(A*256)+B
+221942,Trans Output Speed,Transmission,RPM,0,8000,Output shaft speed,7E2,(A*256)+B
+22001F,Trans Line Pressure,Transmission,kPa,0,3000,Transmission line/shift pressure,7E2,(A*256)+B
+221991,TCC Slip Speed,Transmission,RPM,0,10000,Torque converter clutch slip,7E2,(A*256)+B
+22199A,Current Gear,Transmission,Gear,0,6,Real GM Mode 22 current gear,Auto,A
+221192,Desired Idle Speed,Engine,RPM,0,2000,ECM-commanded idle target,Auto,A*12.5
+221470,Oil Pressure (Candidate A),Engine,psi,0,100,Engine oil pressure (primary address),Auto,A*0.578
+22115C,Oil Pressure (Candidate B),Engine,psi,0,100,Engine oil pressure (alternate address),Auto,(A*0.65)-17.5
+221141,Ignition 1 Voltage,Electrical,V,0,20,Switched ignition voltage,Auto,A/10
+221198,Injector PW Cyl 6 / Fuel Rail Pressure,Fuel,ms/kPa,0,20,AMBIGUOUS: May be fuel rail pressure instead of injector PW,Auto,A/65.535
+2212C3,Injector PWM Bank 1,Fuel,ms,0,100,Injector duty cycle bank 1,Auto,A/66.56
+2212C4,Injector PWM Bank 2,Fuel,ms,0,100,Injector duty cycle bank 2,Auto,A/66.56
+0152,Ethanol Fuel %,Fuel,%,0,100,Flex fuel ethanol content (Mode 01),Auto,A*100/255
+220178,Ethanol Content (GM),Fuel,%,0,100,GM Mode 22 ethanol content,7E0,A*100/255
+221205,Misfire Cyl 1 (Current),Engine,count,0,1000,Current-trip misfire count cylinder 1,Auto,A
+221206,Misfire Cyl 2 (Current),Engine,count,0,1000,Current-trip misfire count cylinder 2,Auto,A
+221207,Misfire Cyl 3 (Current),Engine,count,0,1000,Current-trip misfire count cylinder 3,Auto,A
+221208,Misfire Cyl 4 (Current),Engine,count,0,1000,Current-trip misfire count cylinder 4,Auto,A
+2211EA,Misfire Cyl 5 (Current),Engine,count,0,1000,Current-trip misfire count cylinder 5,Auto,A
+2211EB,Misfire Cyl 6 (Current),Engine,count,0,1000,Current-trip misfire count cylinder 6,Auto,A
+2211EC,Misfire Cyl 7 (Current),Engine,count,0,1000,Current-trip misfire count cylinder 7,Auto,A
+2211ED,Misfire Cyl 8 (Current),Engine,count,0,1000,Current-trip misfire count cylinder 8,Auto,A
+222211,Knock Retard (Total),Engine,°,−10,30,Total knock retard from the ECM,7E0,A-128
+2211AE,Spark Advance (GM),Engine,°,-60,80,Raw GM spark advance reading,Auto,(A+20)/0.35
+223D03,Trans Gear Commanded,Transmission,Gear,0,8,TCM-commanded gear,7E2,A
+221AE9,Torque Converter Efficiency,Transmission,%,0,100,TCC lockup efficiency percentage,Auto,A/2.55
+221992,Last Shift Time,Transmission,seconds,0,70,Duration of most recent shift,Auto,A/40
+221993,1-2 Shift Time (or TCC Slip),Transmission,seconds,0,70,AMBIGUOUS: May be TCC slip instead of shift time,Auto,A/40
+221997,1-2 Shift Error,Transmission,seconds,0,70,1-2 shift timing error vs. target,Auto,A/40
+221994,2-3 Shift Time,Transmission,seconds,0,70,2-3 shift duration,Auto,A/40
+221998,2-3 Shift Error,Transmission,seconds,0,70,2-3 shift timing error vs. target,Auto,A/40
+221995,3-4 Shift Time,Transmission,seconds,0,70,3-4 shift duration,Auto,A/40
+221999,3-4 Shift Error,Transmission,seconds,0,70,3-4 shift timing error vs. target,Auto,A/40
+22199E,PC Solenoid Actual Current,Transmission,Amps,0,40,Pressure control solenoid actual current,Auto,A*0.0195
+22199F,PC Solenoid Reference Current,Transmission,Amps,0,40,Pressure control solenoid commanded/reference current,Auto,A*0.0195

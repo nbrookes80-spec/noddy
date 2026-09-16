@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VE CALAIS</string>
+    <string name="app_version">2.1.0</string>
+    <string name="app_description">Live OBD2 Data Reader for 2011 Holden VE Calais L77</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_live_data">Live Data</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_logs">Data Logs</string>
+    <string name="nav_pid_scanner">Scanner</string>
+    <string name="nav_sniffer">Sniffer</string>
+    <string name="nav_dtc">DTC Codes</string>
+
+    <!-- Connection -->
+    <string name="connection_status_connected">Connected</string>
+    <string name="connection_status_disconnected">Disconnected</string>
+    <string name="connection_status_connecting">Connecting...</string>
+    <string name="connection_error">Connection Error</string>
+
+    <!-- Vehicle Info -->
+    <string name="vehicle_name">2011 Holden VE Calais Redline</string>
+    <string name="vehicle_engine">L77 6.0L V8</string>
+    <string name="vehicle_ecu">E38 ECU</string>
+    <string name="vehicle_fuel">E85/98 Flex Tune</string>
+    <string name="vehicle_owner">Nathan Brookes</string>
+
+    <!-- Units -->
+    <string name="unit_rpm">RPM</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_kpa">kPa</string>
+    <string name="unit_percent">%</string>
+    <string name="unit_volt">V</string>
+    <string name="unit_kmh">km/h</string>
+    <string name="unit_btdc">°BTDC</string>
+
+    <!-- Parameters -->
+    <string name="param_rpm">Engine RPM</string>
+    <string name="param_coolant_temp">Coolant Temperature</string>
+    <string name="param_intake_temp">Intake Air Temperature</string>
+    <string name="param_engine_load">Engine Load</string>
+    <string name="param_map_sensor">Boost Pressure (MAP)</string>
+    <string name="param_fuel_pressure">Fuel Pressure</string>
+    <string name="param_ignition_timing">Ignition Timing</string>
+    <string name="param_vehicle_speed">Vehicle Speed</string>
+    <string name="param_o2_sensor">O2 Sensor Voltage</string>
+    <string name="param_fuel_trim">Fuel Trim</string>
+    <string name="param_trans_temp">Transmission Temp</string>
+    <string name="param_trans_gear">Current Gear</string>
+    <string name="param_trans_pressure">Transmission Pressure</string>
+    <string name="param_tcc_slip">TCC Slip Speed</string>
+
+    <!-- Buttons -->
+    <string name="btn_start_monitoring">Start Monitoring</string>
+    <string name="btn_stop_monitoring">Stop Monitoring</string>
+    <string name="btn_export_csv">Export CSV</string>
+    <string name="btn_export_json">Export JSON</string>
+    <string name="btn_connect">Connect</string>
+    <string name="btn_disconnect">Disconnect</string>
+    <string name="btn_refresh">Refresh</string>
+    <string name="btn_clear_logs">Clear Logs</string>
+
+    <!-- Messages -->
+    <string name="msg_connected">Connected to OBD2 adapter</string>
+    <string name="msg_disconnected">Disconnected from OBD2 adapter</string>
+    <string name="msg_monitoring_started">Live data monitoring started</string>
+    <string name="msg_monitoring_stopped">Live data monitoring stopped</string>
+    <string name="msg_export_success">Session exported successfully</string>
+    <string name="msg_export_failed">Failed to export session</string>
+    <string name="msg_vehicle_verified">Vehicle verified successfully</string>
+    <string name="msg_vehicle_not_recognized">Vehicle not recognized. This app is locked to Nathan Brookes\' 2011 Holden VE Calais L77.</string>
+    <string name="msg_verification_failed">Vehicle verification failed</string>
+
+    <!-- Warnings -->
+    <string name="warning_no_bt_permission">Bluetooth permission required</string>
+    <string name="warning_no_bt_adapter">Bluetooth adapter not available</string>
+    <string name="warning_high_coolant_temp">Coolant temperature critical!</string>
+    <string name="warning_low_fuel_pressure">Fuel pressure low</string>
+    <string name="warning_high_trans_temp">Transmission temperature high</string>
+
+    <!-- Settings -->
+    <string name="settings_connection_tools">Connection &amp; Tools</string>
+    <string name="settings_layout_style">Layout Style</string>
+    <string name="settings_layout_list">List</string>
+    <string name="settings_layout_grid">Grid</string>
+    <string name="settings_monitored_sensors">Monitored Sensors</string>
+    <string name="settings_monitored_sensors_hint">Choose which sensors are read and shown on the Live Data screen. Sensors marked (Unverified) are not confirmed to work on this ECU.</string>
+    <string name="settings_scan_interval">Scan Interval (ms)</string>
+    <string name="settings_auto_connect">Auto-Connect on Startup</string>
+    <string name="settings_data_logging">Enable Data Logging</string>
+    <string name="settings_alerts_enabled">Enable Alerts</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_theme_auto">Auto</string>
+
+    <!-- About -->
+    <string name="about_title">About VE CALAIS</string>
+    <string name="about_description">VE CALAIS OBD2 Reader v2.1.0 - DTC Codes, Page Reorder + Holden/HSV Theme\n\nA specialized OBD2 live data reader for 2011 Holden VE Calais Redline L77 with Killaboost G42-1450 turbo kit.\n\nVehicle locked to E38 ECU verification.\n\n✓ 46 verified PIDs from your actual car scan\n✓ 3-bar MAP sensor scaling (0-300 kPa)\n✓ Complete TCM data (6L80E, T43 controller)\n✓ E85/98 flex fuel monitoring\n✓ Real-time boost, line pressure, TCC slip\n\nOwner: Nathan Brookes (FOX95S)\nVehicle: 2011 Holden VE Calais Redline\nEngine: L77 6.0L V8 (DOD Deleted)\nTransmission: 6L80E Auto\nTurbo: Killaboost G42-1450 with 3-bar MAP\n\nDyno: 340 rwkW</string>
+</resources>

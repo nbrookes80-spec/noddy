@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.brookes.ve_calais_obd2.ui.HomeFragment"
+        android:label="@string/nav_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_live_data"
+        android:name="com.brookes.ve_calais_obd2.ui.LiveDataFragment"
+        android:label="@string/nav_live_data"
+        tools:layout="@layout/fragment_live_data" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.brookes.ve_calais_obd2.ui.SettingsFragment"
+        android:label="@string/nav_settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/nav_pid_scanner"
+        android:name="com.brookes.ve_calais_obd2.ui.PidScannerFragment"
+        android:label="@string/nav_pid_scanner"
+        tools:layout="@layout/fragment_pid_scanner" />
+
+    <fragment
+        android:id="@+id/nav_sniffer"
+        android:name="com.brookes.ve_calais_obd2.ui.SnifferFragment"
+        android:label="@string/nav_sniffer"
+        tools:layout="@layout/fragment_sniffer" />
+
+    <fragment
+        android:id="@+id/nav_dtc"
+        android:name="com.brookes.ve_calais_obd2.ui.DtcFragment"
+        android:label="@string/nav_dtc"
+        tools:layout="@layout/fragment_dtc" />
+
+</navigation>
