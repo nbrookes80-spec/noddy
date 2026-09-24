@@ -1,0 +1,21 @@
+# Local work cover skills (personal use, not pushed to cloud)
+.claude/skills/cleaner-injury-support/
+.claude/skills/boilermaker-injury-support/
+
+# Node modules and build artifacts
+node_modules/
+dist/
+build/
+
+# Environment and secrets
+.env
+.env.local
+*.local
+
+# IDE and OS
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
