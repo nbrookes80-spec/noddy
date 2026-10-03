@@ -2,7 +2,7 @@
   "mcpServers": {
     "freecad": {
       "command": "uvx",
-      "args": ["freecad-mcp"]
+      "args": ["freecad-mcp", "--freecadcmd", "/opt/mamba/envs/freecad/bin/freecadcmd"]
     }
   }
 }
