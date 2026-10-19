@@ -74,7 +74,6 @@ then browse to `http://localhost:8000` (encryption needs https or localhost). It
 ## Limits to know about
 
 - **The PIN is the lock.** Two things depend on it: the online check on seller actions, and the lock on `keybundle.json`. The generated PIN is long enough that guessing is not practical. A short PIN you choose yourself is not, so avoid `PIN=` with something short. Keep `keybundle.json` and `NEW-PIN.txt` private.
-- Phone-width layout of the carousel has not been verified on a real phone.
 - If you lose `keybundle.json`, existing buyer details cannot be decrypted. Buyers' details are readable only to someone holding that file and the PIN.
 - Anyone can still claim parts (move them to `pending`), so a prankster can tie up the list. You clear it from Seller View.
 - The database URL is public, so enable Firebase App Check or delete the database when the car is sold.

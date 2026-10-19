@@ -116,7 +116,7 @@
             <div class="relative pr-8 sm:pr-16">
                 <div id="photo-stage" class="relative w-full aspect-[16/9] sm:aspect-[2/1] touch-pan-y"></div>
 
-                <div class="pointer-events-none absolute inset-y-0 left-0 right-8 sm:right-16 rounded-2xl bg-gradient-to-t from-gray-900/90 via-transparent to-transparent flex items-end p-4 sm:p-6" style="z-index:35">
+                <div class="pointer-events-none absolute inset-y-0 left-0 right-8 sm:right-16 rounded-2xl bg-gradient-to-t from-gray-900/90 via-transparent to-transparent hidden sm:flex items-end p-6" style="z-index:35">
                     <div>
                         <span class="bg-emerald-500 text-gray-950 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block">Active Wrecking</span>
                         <h2 class="text-xl sm:text-3xl font-extrabold text-white">Select Parts Below To Claim</h2>
@@ -130,6 +130,11 @@
                 <div id="photo-counter" class="absolute bottom-3 right-10 sm:right-20 text-xs font-semibold bg-black/60 text-white px-2.5 py-1 rounded-full" style="z-index:50">1 / 1</div>
             </div>
             <div id="photo-dots" class="flex justify-center flex-wrap gap-2 mt-4 pr-8 sm:pr-16"></div>
+            <div class="sm:hidden mt-5 text-center">
+                <span class="bg-emerald-500 text-gray-950 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider inline-block">Active Wrecking</span>
+                <h2 class="text-xl font-extrabold text-white mt-2">Select Parts Below To Claim</h2>
+                <p class="text-xs text-gray-400 mt-1">Base prices assume buyer self-removal. Optional seller removal available.</p>
+            </div>
         </section>
 
         <!-- Loading / connection status -->
@@ -261,7 +266,7 @@
             const grid = document.getElementById("inventory-grid");
             grid.innerHTML = "";
 
-            Object.values(inventoryData).forEach(part => {
+            Object.values(inventoryData).sort((a, b) => b.price - a.price).forEach(part => {
                 const isAvailable = part.status === "available";
                 const isPending = part.status === "pending";
                 const isSold = part.status === "sold";
@@ -418,8 +423,12 @@
             const errorEl = document.getElementById("pin-error");
             const ids = Object.keys(inventoryData);
             errorEl.classList.add("hidden");
-            if (!input || ids.length === 0 || !(window.crypto && crypto.subtle)) {
-                errorEl.innerText = ids.length === 0 ? "Parts are still loading. Try again in a moment." : "This page needs a secure (https) connection.";
+            const problem = !input ? "Enter your PIN."
+                : ids.length === 0 ? "Parts are still loading. Try again in a moment."
+                : !(window.crypto && crypto.subtle) ? "This page needs a secure (https) connection."
+                : null;
+            if (problem) {
+                errorEl.innerText = problem;
                 errorEl.classList.remove("hidden");
                 return;
             }
@@ -603,6 +612,10 @@
         addSwipe(photoStage);
         addSwipe(lightbox);
         buildCarousel();
+        // Off-screen cards never trigger lazy loading, so fetch them all once the page has loaded
+        window.addEventListener("load", () => {
+            photoStage.querySelectorAll("img").forEach(img => { img.loading = "eager"; });
+        });
 
         function showToast(title, message) {
             const toast = document.getElementById("toast");
