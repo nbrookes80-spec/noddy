@@ -1,0 +1,43 @@
+{
+  "rules": {
+    "config": {
+      ".read": false,
+      ".write": false
+    },
+    "adminProof": {
+      ".read": false,
+      ".write": true,
+      ".validate": "newData.hasChildren(['hash', 'ts']) && newData.child('hash').isString() && newData.child('hash').val().length <= 64 && newData.child('ts').val() === now",
+      "hash": { ".validate": true },
+      "ts": { ".validate": true },
+      "$other": { ".validate": false }
+    },
+    "parts": {
+      ".read": true,
+      "$id": {
+        ".write": "data.exists() && newData.exists() && newData.child('name').val() === data.child('name').val() && newData.child('price').val() === data.child('price').val() && newData.child('removalFee').val() === data.child('removalFee').val() && ((data.child('status').val() === 'available' && newData.child('status').val() === 'pending') || (root.child('config/adminVerifier').exists() && newData.parent().parent().child('adminProof/hash').val() === root.child('config/adminVerifier').val() && newData.parent().parent().child('adminProof/ts').val() === now))",
+        ".validate": "newData.hasChildren(['id', 'name', 'price', 'removalFee', 'status']) && newData.child('id').val() === $id && newData.child('name').isString() && newData.child('price').isNumber() && newData.child('removalFee').isNumber() && newData.child('status').val().matches(/^(available|pending|sold)$/)",
+        "id": { ".validate": true },
+        "name": { ".validate": true },
+        "price": { ".validate": true },
+        "removalFee": { ".validate": true },
+        "status": { ".validate": true },
+        "$other": { ".validate": false }
+      }
+    },
+    "claims": {
+      ".read": false,
+      "$claimId": {
+        ".write": "!data.exists() && newData.exists()",
+        ".validate": "newData.hasChildren(['partId', 'partName', 'k', 'iv', 'ct', 'createdAt']) && newData.child('partId').isString() && newData.child('partId').val().length <= 60 && newData.child('partName').isString() && newData.child('partName').val().length <= 120 && newData.child('k').isString() && newData.child('k').val().length <= 400 && newData.child('iv').isString() && newData.child('iv').val().length <= 24 && newData.child('ct').isString() && newData.child('ct').val().length <= 1200 && newData.child('createdAt').isNumber()",
+        "partId": { ".validate": true },
+        "partName": { ".validate": true },
+        "k": { ".validate": true },
+        "iv": { ".validate": true },
+        "ct": { ".validate": true },
+        "createdAt": { ".validate": true },
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}

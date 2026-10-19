@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2002 VY SS Commodore Wrecking Inventory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Firebase App & Database -->
+    <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-database-compat.js"></script>
+    <script src="site-config.js"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans antialiased min-h-screen pb-12">
+
+    <!-- Toast Notification Popup -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3 pointer-events-none">
+        <i class="fas fa-bell text-xl"></i>
+        <div>
+            <div id="toast-title" class="font-bold text-sm">Notification</div>
+            <div id="toast-message" class="text-xs">Message goes here</div>
+        </div>
+    </div>
+
+    <!-- Security PIN Modal -->
+    <div id="pin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden">
+        <div class="bg-gray-800 p-6 rounded-2xl border border-gray-700 shadow-2xl w-full max-w-sm text-center">
+            <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-lock text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-1">Seller Authentication</h3>
+            <p class="text-gray-400 text-xs mb-6">Enter your secret PIN to access administrative controls.</p>
+            <input type="password" id="seller-pin-input" placeholder="PIN Code" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-center text-2xl tracking-widest text-white focus:outline-none focus:border-emerald-500 mb-4">
+            <div id="pin-error" class="text-rose-500 text-xs mb-4 hidden">Incorrect PIN. Please try again.</div>
+            <div class="flex space-x-3">
+                <button onclick="closePinModal()" class="w-1/2 py-2.5 rounded-xl border border-gray-700 text-gray-400 hover:bg-gray-700 font-semibold text-sm transition">Cancel</button>
+                <button onclick="verifyPin()" class="w-1/2 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-gray-950 font-bold text-sm transition">Unlock</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Screen Photo Viewer -->
+    <div id="lightbox" class="fixed inset-0 z-[60] hidden bg-black flex items-center justify-center" role="dialog" aria-modal="true" aria-label="Photo viewer">
+        <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full object-contain select-none" draggable="false">
+        <button onclick="closeLightbox()" aria-label="Close full screen" class="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition"><i class="fas fa-times"></i></button>
+        <button onclick="prevPhoto()" aria-label="Previous photo" class="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition"><i class="fas fa-chevron-left"></i></button>
+        <button onclick="nextPhoto()" aria-label="Next photo" class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition"><i class="fas fa-chevron-right"></i></button>
+        <div id="lightbox-counter" class="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm font-semibold bg-white/15 text-white px-3 py-1 rounded-full">1 / 1</div>
+    </div>
+
+    <!-- Claim Contact Modal -->
+    <div id="claim-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
+        <div class="bg-gray-800 p-6 rounded-2xl border border-gray-700 shadow-2xl w-full max-w-sm">
+            <h3 class="text-xl font-bold text-white mb-1">Claim this part</h3>
+            <p id="claim-part-name" class="text-emerald-400 text-sm font-semibold mb-1"></p>
+            <p class="text-gray-400 text-xs mb-4">Leave your details so the seller can contact you to arrange payment and pickup. They are encrypted in your browser, so only the seller can read them.</p>
+            <input type="text" id="claim-name" maxlength="60" placeholder="Your name" autocomplete="name" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 mb-3">
+            <input type="tel" id="claim-phone" maxlength="30" placeholder="Phone number" autocomplete="tel" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 mb-3">
+            <div id="claim-error" class="text-rose-500 text-xs mb-3 hidden"></div>
+            <div class="flex space-x-3">
+                <button onclick="closeClaimModal()" class="w-1/2 py-2.5 rounded-xl border border-gray-700 text-gray-400 hover:bg-gray-700 font-semibold text-sm transition">Cancel</button>
+                <button id="claim-submit" onclick="submitClaim()" class="w-1/2 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-gray-950 font-bold text-sm transition">Claim Part</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Actions Panel (Seller Mode) -->
+    <div id="actions-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden">
+        <div class="bg-gray-800 p-6 rounded-2xl border border-gray-700 shadow-2xl w-full max-w-lg">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fas fa-clock text-amber-400"></i> Pending Part Claims
+                </h3>
+                <button onclick="closeActionsModal()" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="pending-list" class="space-y-3 max-h-96 overflow-y-auto pr-1">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Header -->
+    <header class="bg-gray-800 border-b border-gray-700 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <span class="bg-emerald-500/10 text-emerald-400 p-2.5 rounded-xl border border-emerald-500/20">
+                    <i class="fas fa-car text-xl"></i>
+                </span>
+                <div>
+                    <h1 class="text-xl font-bold text-white">2002 VY SS Commodore Wrecking</h1>
+                    <p class="text-xs text-gray-400">Hothouse Green | LS1 5.7L V8 | Automatic</p>
+                </div>
+            </div>
+
+            <!-- Header Controls -->
+            <div class="flex items-center space-x-3">
+                <!-- Notification Bell (Seller Mode) -->
+                <button id="notification-bell" onclick="openActionsModal()" class="relative hidden bg-gray-700 hover:bg-gray-600 p-2.5 rounded-xl text-amber-400 transition">
+                    <i class="fas fa-bell"></i>
+                    <span id="notification-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-gray-800">0</span>
+                </button>
+
+                <!-- Seller Toggle Button -->
+                <button id="mode-toggle-btn" onclick="toggleSellerMode()" class="bg-gray-700 hover:bg-gray-600 text-xs font-semibold px-4 py-2.5 rounded-xl text-gray-200 transition flex items-center gap-2">
+                    <i class="fas fa-user-shield"></i>
+                    <span id="mode-toggle-text">Switch to Seller View</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 mt-6">
+        <!-- Photo Carousel -->
+        <section aria-label="Photos of the car" class="mb-8 overflow-x-clip">
+            <div class="relative pr-8 sm:pr-16">
+                <div id="photo-stage" class="relative w-full aspect-[16/9] sm:aspect-[2/1] touch-pan-y"></div>
+
+                <div class="pointer-events-none absolute inset-y-0 left-0 right-8 sm:right-16 rounded-2xl bg-gradient-to-t from-gray-900/90 via-transparent to-transparent hidden sm:flex items-end p-6" style="z-index:35">
+                    <div>
+                        <span class="bg-emerald-500 text-gray-950 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block">Active Wrecking</span>
+                        <h2 class="text-xl sm:text-3xl font-extrabold text-white">Select Parts Below To Claim</h2>
+                        <p class="text-xs sm:text-sm text-gray-300">Base prices assume buyer self-removal. Optional seller removal available.</p>
+                    </div>
+                </div>
+
+                <button onclick="prevPhoto()" aria-label="Previous photo" class="absolute top-1/2 -translate-y-1/2 left-2 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition" style="z-index:50"><i class="fas fa-chevron-left"></i></button>
+                <button onclick="nextPhoto()" aria-label="Next photo" class="absolute top-1/2 -translate-y-1/2 right-10 sm:right-20 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition" style="z-index:50"><i class="fas fa-chevron-right"></i></button>
+                <button onclick="openLightbox()" aria-label="View photo full screen" class="absolute top-3 right-10 sm:right-20 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition" style="z-index:50"><i class="fas fa-expand"></i></button>
+                <div id="photo-counter" class="absolute bottom-3 right-10 sm:right-20 text-xs font-semibold bg-black/60 text-white px-2.5 py-1 rounded-full" style="z-index:50">1 / 1</div>
+            </div>
+            <div id="photo-dots" class="flex justify-center flex-wrap gap-2 mt-4 pr-8 sm:pr-16"></div>
+            <div class="sm:hidden mt-5 text-center">
+                <span class="bg-emerald-500 text-gray-950 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider inline-block">Active Wrecking</span>
+                <h2 class="text-xl font-extrabold text-white mt-2">Select Parts Below To Claim</h2>
+                <p class="text-xs text-gray-400 mt-1">Base prices assume buyer self-removal. Optional seller removal available.</p>
+            </div>
+        </section>
+
+        <!-- Loading / connection status -->
+        <div id="load-status" class="text-center text-sm py-10 text-gray-400">Loading parts list...</div>
+
+        <!-- Inventory Grid -->
+        <div id="inventory-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dynamic Part Cards populated by Firebase -->
+        </div>
+    </main>
+
+    <script>
+        // Default Config & Seed Data
+        let isSellerMode = false;
+        let adminHash = null;
+        let inventoryData = {};
+
+        // Crypto helpers (WebCrypto). Buyer details are encrypted with the seller's public key
+        // before they leave the browser; the seller PIN never leaves it, only a PBKDF2 proof of it.
+        const KDF_ITERATIONS = 600000;
+        const textEncoder = new TextEncoder();
+
+        function b64encode(bytes) {
+            let s = "";
+            bytes.forEach(b => { s += String.fromCharCode(b); });
+            return btoa(s);
+        }
+
+        function b64decode(str) {
+            return Uint8Array.from(atob(str), c => c.charCodeAt(0));
+        }
+
+        async function deriveAdminProof(pin) {
+            const base = await crypto.subtle.importKey("raw", textEncoder.encode(pin), "PBKDF2", false, ["deriveBits"]);
+            const bits = await crypto.subtle.deriveBits(
+                { name: "PBKDF2", salt: b64decode(SITE_CONFIG.adminSalt), iterations: KDF_ITERATIONS, hash: "SHA-256" }, base, 256);
+            return b64encode(new Uint8Array(bits));
+        }
+
+        async function encryptContact(contact) {
+            const publicKey = await crypto.subtle.importKey("jwk", SITE_CONFIG.publicKey, { name: "RSA-OAEP", hash: "SHA-256" }, false, ["encrypt"]);
+            const aesKey = await crypto.subtle.generateKey({ name: "AES-GCM", length: 256 }, true, ["encrypt"]);
+            const iv = crypto.getRandomValues(new Uint8Array(12));
+            const ct = await crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, aesKey, textEncoder.encode(JSON.stringify(contact)));
+            const k = await crypto.subtle.encrypt({ name: "RSA-OAEP" }, publicKey, await crypto.subtle.exportKey("raw", aesKey));
+            return { k: b64encode(new Uint8Array(k)), iv: b64encode(iv), ct: b64encode(new Uint8Array(ct)) };
+        }
+
+        // Firebase Initialization
+        const firebaseConfig = {
+            databaseURL: "https://vy-ss-wrecking-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+        let partsRef = null;
+        let partsLoaded = false;
+        if (typeof firebase === "undefined") {
+            showLoadStatus("Could not load Firebase. Check your internet connection and reload.", true);
+        } else {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            partsRef = firebase.database().ref("parts");
+        }
+
+        // Visible status message so a failed connection is never a silent blank page
+        function showLoadStatus(message, isError) {
+            const el = document.getElementById("load-status");
+            el.className = `text-center text-sm py-10 ${isError ? "text-rose-400" : "text-gray-400"}`;
+            el.innerText = message;
+        }
+
+        function hideLoadStatus() {
+            document.getElementById("load-status").classList.add("hidden");
+        }
+
+        function describeFirebaseError(error) {
+            if (error && error.code === "PERMISSION_DENIED") {
+                return "The database refused access (permission denied). In the Firebase console open Realtime Database > Rules and allow access to \"parts\".";
+            }
+            return "Could not reach the parts database" + (error && error.message ? ": " + error.message : ".");
+        }
+
+        // Seed Data with Updated Prices
+        const seedParts = [
+            { id: "ls1_engine", name: "LS1 5.7L V8 Engine (Running)", price: 2800, removalFee: 300, status: "available" },
+            { id: "trans_4l60e", name: "4L60E Automatic Transmission (V8)", price: 500, removalFee: 150, status: "available" },
+            { id: "extractors_pacemaker", name: "Pacemaker Extractors (LS1 5.7L)", price: 350, removalFee: 50, status: "available" },
+            { id: "lsd_diff", name: "M80 LSD Differential (3.07:1)", price: 400, removalFee: 100, status: "available" },
+            { id: "ecu_bcm_set", name: "LS1 ECU + BCM + Key Security Set", price: 300, removalFee: 40, status: "available" },
+            { id: "front_seats_ss", name: "SS Leather Front Seats (Pair)", price: 400, removalFee: 50, status: "available" },
+            { id: "rear_seats_ss", name: "SS Leather Rear Bench Seat", price: 200, removalFee: 30, status: "available" },
+            { id: "wheels_ss_18", name: "18\" SS Alloy Wheels (Set)", price: 200, removalFee: 0, status: "available" },
+            { id: "door_moulds", name: "Color-Coded Door Moulds (Set of 4)", price: 150, removalFee: 40, status: "available" },
+            { id: "dash_trim", name: "Dashboard & Centre Console Trims", price: 180, removalFee: 50, status: "available" },
+            { id: "door_rubbers", name: "Full Door Weather Rubber Seals (Set)", price: 80, removalFee: 30, status: "available" },
+            { id: "king_springs_rear", name: "King Springs (Rear Lowered)", price: 100, removalFee: 40, status: "available" },
+            { id: "fuel_pump", name: "In-Tank Fuel Pump Assembly", price: 90, removalFee: 40, status: "available" },
+            { id: "overflow_bottle", name: "Radiator Coolant Overflow Bottle", price: 35, removalFee: 10, status: "available" }
+        ];
+
+        // Sync & Render Database
+        if (partsRef) {
+            setTimeout(() => {
+                if (!partsLoaded) {
+                    showLoadStatus("Still waiting for the parts database. Check your internet connection and the Firebase rules, then reload.", true);
+                }
+            }, 10000);
+
+            partsRef.on("value", (snapshot) => {
+                const data = snapshot.val();
+                if (!data) {
+                    showLoadStatus("The parts list is empty. The seller needs to load the parts into the database.", true);
+                    return;
+                }
+                partsLoaded = true;
+                hideLoadStatus();
+                inventoryData = data;
+                renderInventory();
+                updateNotificationBadge();
+            }, (error) => {
+                showLoadStatus(describeFirebaseError(error), true);
+            });
+        }
+
+        function esc(value) {
+            return String(value).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+        }
+
+        function renderInventory() {
+            const grid = document.getElementById("inventory-grid");
+            grid.innerHTML = "";
+
+            Object.values(inventoryData).sort((a, b) => b.price - a.price).forEach(part => {
+                const isAvailable = part.status === "available";
+                const isPending = part.status === "pending";
+                const isSold = part.status === "sold";
+
+                let statusBadge = `<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-2.5 py-1 rounded-full font-bold">Available</span>`;
+                if (isPending) statusBadge = `<span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs px-2.5 py-1 rounded-full font-bold">Pending Sale</span>`;
+                if (isSold) statusBadge = `<span class="bg-rose-500/10 text-rose-400 border border-rose-500/20 text-xs px-2.5 py-1 rounded-full font-bold">Sold</span>`;
+
+                const card = document.createElement("div");
+                card.className = `bg-gray-800 border ${isPending ? 'border-amber-500/50' : isSold ? 'border-gray-800 opacity-60' : 'border-gray-700'} rounded-2xl p-5 flex flex-col justify-between shadow-lg transition duration-200`;
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start gap-2 mb-3">
+                            <h3 class="font-bold text-lg text-white">${esc(part.name)}</h3>
+                            ${statusBadge}
+                        </div>
+                        <div class="space-y-1 mb-6">
+                            <div class="text-2xl font-black text-emerald-400">$${part.price} <span class="text-xs font-normal text-gray-400">(Part Only)</span></div>
+                            <div class="text-xs text-gray-400">+ $${part.removalFee} optional seller removal fee</div>
+                        </div>
+                    </div>
+                    <div>
+                        ${getActionButton(part)}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function getActionButton(part) {
+            if (isSellerMode) {
+                if (part.status === "sold") {
+                    return `<button onclick="updatePartStatus('${part.id}', 'available')" class="w-full py-2.5 rounded-xl border border-gray-600 text-gray-400 hover:text-white hover:bg-gray-700 text-xs font-bold transition">Re-list Part</button>`;
+                }
+                return `
+                    <div class="flex space-x-2">
+                        <button onclick="updatePartStatus('${part.id}', 'sold')" class="w-1/2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold py-2.5 rounded-xl transition">Mark Sold</button>
+                        <button onclick="updatePartStatus('${part.id}', 'available')" class="w-1/2 bg-gray-700 hover:bg-gray-600 text-gray-300 text-xs font-bold py-2.5 rounded-xl transition">Reset</button>
+                    </div>
+                `;
+            } else {
+                if (part.status === "available") {
+                    return `<button onclick="claimPart('${part.id}')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-gray-950 font-bold text-sm py-2.5 rounded-xl transition shadow-lg shadow-emerald-500/10">Claim Part</button>`;
+                } else if (part.status === "pending") {
+                    return `<button disabled class="w-full bg-amber-500/20 text-amber-400 font-bold text-sm py-2.5 rounded-xl border border-amber-500/30 cursor-not-allowed">Claimed (Pending Payment)</button>`;
+                } else {
+                    return `<button disabled class="w-full bg-gray-700 text-gray-500 font-bold text-sm py-2.5 rounded-xl cursor-not-allowed">Item Sold</button>`;
+                }
+            }
+        }
+
+        let claimingId = null;
+
+        function claimPart(id) {
+            claimingId = id;
+            document.getElementById("claim-part-name").innerText = inventoryData[id] ? inventoryData[id].name : "";
+            document.getElementById("claim-error").classList.add("hidden");
+            document.getElementById("claim-modal").classList.remove("hidden");
+            document.getElementById("claim-name").focus();
+        }
+
+        function closeClaimModal() {
+            document.getElementById("claim-modal").classList.add("hidden");
+            document.getElementById("claim-name").value = "";
+            document.getElementById("claim-phone").value = "";
+            claimingId = null;
+        }
+
+        function showClaimError(message) {
+            const el = document.getElementById("claim-error");
+            el.innerText = message;
+            el.classList.remove("hidden");
+        }
+
+        function submitClaim() {
+            const name = document.getElementById("claim-name").value.trim();
+            const phone = document.getElementById("claim-phone").value.trim();
+            if (!name) return showClaimError("Please enter your name.");
+            if (phone.replace(/\D/g, "").length < 6) return showClaimError("Please enter a valid phone number.");
+
+            if (!(window.crypto && crypto.subtle) || !window.SITE_CONFIG) {
+                return showClaimError("This page needs a secure (https) connection to protect your details.");
+            }
+
+            const id = claimingId;
+            const part = inventoryData[id];
+            const button = document.getElementById("claim-submit");
+            button.disabled = true;
+
+            // Only claim if still available, so two buyers can't both win the same part
+            partsRef.child(id).child("status").transaction(current => current === "available" ? "pending" : undefined)
+                .then(result => {
+                    if (!result.committed) {
+                        closeClaimModal();
+                        showToast("Too slow!", "Someone else just claimed that part.");
+                        return;
+                    }
+                    return encryptContact({ name: name, phone: phone }).then(sealed =>
+                        firebase.database().ref("claims").push({
+                            partId: id,
+                            partName: part ? part.name : id,
+                            k: sealed.k,
+                            iv: sealed.iv,
+                            ct: sealed.ct,
+                            createdAt: Date.now()
+                        })
+                    ).then(() => {
+                        closeClaimModal();
+                        showToast("Part Claimed!", "The seller has your details and will contact you to confirm payment.");
+                    });
+                })
+                .catch(error => showClaimError("Your claim may not have been saved. Please contact the seller. " + describeFirebaseError(error)))
+                .finally(() => { button.disabled = false; });
+        }
+
+        // Seller writes carry the PIN proof in the same atomic update; the database rules check it
+        function adminSetStatus(id, status) {
+            return firebase.database().ref().update({
+                ["parts/" + id + "/status"]: status,
+                "adminProof/hash": adminHash,
+                "adminProof/ts": firebase.database.ServerValue.TIMESTAMP
+            });
+        }
+
+        function updatePartStatus(id, status) {
+            closeActionsModal();
+            adminSetStatus(id, status).catch(error => {
+                showToast("Not allowed", "The database refused the change. Exit and re-enter Seller View.");
+            });
+        }
+
+        // Authentication & View Controls
+        function toggleSellerMode() {
+            if (!isSellerMode) {
+                document.getElementById("pin-modal").classList.remove("hidden");
+            } else {
+                isSellerMode = false;
+                adminHash = null;
+                document.getElementById("mode-toggle-text").innerText = "Switch to Seller View";
+                document.getElementById("notification-bell").classList.add("hidden");
+                renderInventory();
+            }
+        }
+
+        function closePinModal() {
+            document.getElementById("pin-modal").classList.add("hidden");
+            document.getElementById("pin-error").classList.add("hidden");
+            document.getElementById("seller-pin-input").value = "";
+        }
+
+        async function verifyPin() {
+            const input = document.getElementById("seller-pin-input").value;
+            const errorEl = document.getElementById("pin-error");
+            const ids = Object.keys(inventoryData);
+            errorEl.classList.add("hidden");
+            const problem = !input ? "Enter your PIN."
+                : ids.length === 0 ? "Parts are still loading. Try again in a moment."
+                : !(window.crypto && crypto.subtle) ? "This page needs a secure (https) connection."
+                : null;
+            if (problem) {
+                errorEl.innerText = problem;
+                errorEl.classList.remove("hidden");
+                return;
+            }
+            try {
+                // The database is the only judge of the PIN: a no-op write succeeds only with the right proof
+                adminHash = await deriveAdminProof(input);
+                await adminSetStatus(ids[0], inventoryData[ids[0]].status);
+            } catch (e) {
+                adminHash = null;
+                errorEl.innerText = "Incorrect PIN. Please try again.";
+                errorEl.classList.remove("hidden");
+                return;
+            }
+            isSellerMode = true;
+            closePinModal();
+            document.getElementById("mode-toggle-text").innerText = "Exit Seller Mode";
+            document.getElementById("notification-bell").classList.remove("hidden");
+            renderInventory();
+            showToast("Unlocked", "Seller administrative controls enabled.");
+        }
+
+        // Action Center Modal
+        function openActionsModal() {
+            const list = document.getElementById("pending-list");
+            list.innerHTML = "";
+            const pendingParts = Object.values(inventoryData).filter(p => p.status === "pending");
+
+            if (pendingParts.length === 0) {
+                list.innerHTML = `<div class="text-center py-8 text-gray-400 text-sm">No pending claims right now.</div>`;
+            } else {
+                pendingParts.forEach(p => {
+                    const item = document.createElement("div");
+                    item.className = "bg-gray-900 border border-gray-700 p-4 rounded-xl flex justify-between items-center";
+                    item.innerHTML = `
+                        <div>
+                            <div class="font-bold text-white text-sm">${esc(p.name)}</div>
+                            <div class="text-xs text-emerald-400">$${p.price} (+ $${p.removalFee} removal)</div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="updatePartStatus('${p.id}', 'sold')" class="bg-emerald-500 hover:bg-emerald-600 text-gray-950 font-bold px-3 py-1.5 rounded-lg text-xs">Confirm Paid</button>
+                            <button onclick="updatePartStatus('${p.id}', 'available')" class="bg-gray-700 hover:bg-gray-600 text-gray-300 font-bold px-3 py-1.5 rounded-lg text-xs">Cancel Claim</button>
+                        </div>
+                    `;
+                    list.appendChild(item);
+                });
+            }
+            document.getElementById("actions-modal").classList.remove("hidden");
+        }
+
+        function closeActionsModal() {
+            document.getElementById("actions-modal").classList.add("hidden");
+        }
+
+        function updateNotificationBadge() {
+            const pendingCount = Object.values(inventoryData).filter(p => p.status === "pending").length;
+            const badge = document.getElementById("notification-badge");
+            badge.innerText = pendingCount;
+            if (pendingCount > 0) {
+                badge.classList.remove("hidden");
+            } else {
+                badge.classList.add("hidden");
+            }
+        }
+
+        // Photo carousel: cards stacked on top of each other, arrows / swipe / keys, full screen viewer
+        const PHOTOS = [
+            { src: "photos/01.jpg", alt: "Engine bay with the LS1 V8, bonnet open" },
+            { src: "photos/02.jpg", alt: "Engine bay, second view" },
+            { src: "photos/03.jpg", alt: "Front three-quarter view of the Hothouse Green VY SS with bonnet open" },
+            { src: "photos/04.jpg", alt: "Side view showing the alloy wheel and front-end damage" },
+            { src: "photos/05.jpg", alt: "Front interior: dashboard, door trim and leather seat" },
+            { src: "photos/06.jpg", alt: "Front leather seats and centre console" },
+            { src: "photos/07.jpg", alt: "Front seats and dashboard from the open door" },
+            { src: "photos/08.jpg", alt: "Rear leather bench seat" },
+            { src: "photos/09.jpg", alt: "Rear leather bench seat, closer view" },
+            { src: "photos/10.jpg", alt: "Steering wheel, dash and automatic gear selector" },
+            { src: "photos/11.jpg", alt: "Pioneer touchscreen head unit" }
+        ];
+        let photoIndex = 0;
+        const photoStage = document.getElementById("photo-stage");
+        const lightbox = document.getElementById("lightbox");
+
+        function buildCarousel() {
+            PHOTOS.forEach((photo, i) => {
+                const img = document.createElement("img");
+                img.src = photo.src;
+                img.alt = photo.alt;
+                img.loading = i < 3 ? "eager" : "lazy";
+                img.decoding = "async";
+                img.draggable = false;
+                img.className = "absolute inset-0 w-full h-full object-cover rounded-2xl border border-gray-600 shadow-2xl cursor-zoom-in select-none";
+                img.style.transition = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "none" : "transform .5s cubic-bezier(.2,.8,.2,1), opacity .5s";
+                img.addEventListener("click", () => (i === photoIndex ? openLightbox() : showPhoto(i)));
+                photoStage.appendChild(img);
+
+                const dot = document.createElement("button");
+                dot.setAttribute("aria-label", "Show photo " + (i + 1));
+                dot.className = "w-2.5 h-2.5 rounded-full transition";
+                dot.addEventListener("click", () => showPhoto(i));
+                document.getElementById("photo-dots").appendChild(dot);
+            });
+            layoutPhotos();
+        }
+
+        function layoutPhotos() {
+            const n = PHOTOS.length;
+            Array.from(photoStage.children).forEach((img, i) => {
+                const offset = (i - photoIndex + n) % n;
+                let transform = "translateX(56px) scale(.85) rotate(4deg)", opacity = 0, z = 0;
+                if (offset === 0) { transform = "none"; opacity = 1; z = 30; }
+                else if (offset === 1) { transform = "translateX(28px) scale(.95) rotate(2deg)"; opacity = 1; z = 20; }
+                else if (offset === 2) { transform = "translateX(56px) scale(.9) rotate(4deg)"; opacity = 0.8; z = 10; }
+                else if (offset === n - 1) { transform = "translateX(-115%) scale(.95) rotate(-8deg)"; z = 40; }
+                img.style.transform = transform;
+                img.style.opacity = opacity;
+                img.style.zIndex = z;
+                img.style.pointerEvents = offset <= 2 ? "auto" : "none";
+                img.setAttribute("aria-hidden", offset === 0 ? "false" : "true");
+            });
+            Array.from(document.getElementById("photo-dots").children).forEach((dot, i) => {
+                dot.className = "w-2.5 h-2.5 rounded-full transition " + (i === photoIndex ? "bg-emerald-400 scale-125" : "bg-gray-600 hover:bg-gray-500");
+            });
+            document.getElementById("photo-counter").innerText = (photoIndex + 1) + " / " + n;
+            if (!lightbox.classList.contains("hidden")) updateLightbox();
+        }
+
+        function showPhoto(i) {
+            photoIndex = (i + PHOTOS.length) % PHOTOS.length;
+            layoutPhotos();
+        }
+        function nextPhoto() { showPhoto(photoIndex + 1); }
+        function prevPhoto() { showPhoto(photoIndex - 1); }
+
+        function updateLightbox() {
+            const img = document.getElementById("lightbox-img");
+            img.src = PHOTOS[photoIndex].src;
+            img.alt = PHOTOS[photoIndex].alt;
+            document.getElementById("lightbox-counter").innerText = (photoIndex + 1) + " / " + PHOTOS.length;
+        }
+
+        function openLightbox() {
+            updateLightbox();
+            lightbox.classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+            // Real full screen where the browser allows it; iPhone Safari falls back to the overlay alone
+            const request = lightbox.requestFullscreen || lightbox.webkitRequestFullscreen;
+            if (request) {
+                try { Promise.resolve(request.call(lightbox)).catch(() => {}); } catch (e) {}
+            }
+        }
+
+        function closeLightbox() {
+            lightbox.classList.add("hidden");
+            document.body.style.overflow = "";
+            if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {});
+        }
+
+        document.addEventListener("fullscreenchange", () => {
+            if (!document.fullscreenElement && !lightbox.classList.contains("hidden")) closeLightbox();
+        });
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && !lightbox.classList.contains("hidden")) return closeLightbox();
+            if (/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) return;
+            const modalOpen = ["pin-modal", "claim-modal", "actions-modal"].some(id => !document.getElementById(id).classList.contains("hidden"));
+            if (modalOpen) return;
+            if (e.key === "ArrowRight") nextPhoto();
+            if (e.key === "ArrowLeft") prevPhoto();
+        });
+
+        function addSwipe(el) {
+            let startX = null;
+            el.addEventListener("touchstart", (e) => { startX = e.touches[0].clientX; }, { passive: true });
+            el.addEventListener("touchend", (e) => {
+                if (startX === null) return;
+                const dx = e.changedTouches[0].clientX - startX;
+                startX = null;
+                if (Math.abs(dx) > 40) (dx < 0 ? nextPhoto : prevPhoto)();
+            }, { passive: true });
+        }
+        addSwipe(photoStage);
+        addSwipe(lightbox);
+        buildCarousel();
+        // Off-screen cards never trigger lazy loading, so fetch them all once the page has loaded
+        window.addEventListener("load", () => {
+            photoStage.querySelectorAll("img").forEach(img => { img.loading = "eager"; });
+        });
+
+        function showToast(title, message) {
+            const toast = document.getElementById("toast");
+            document.getElementById("toast-title").innerText = title;
+            document.getElementById("toast-message").innerText = message;
+            toast.classList.remove("opacity-0", "translate-y-20", "pointer-events-none");
+            setTimeout(() => {
+                toast.classList.add("opacity-0", "translate-y-20", "pointer-events-none");
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
