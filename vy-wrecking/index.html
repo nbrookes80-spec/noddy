@@ -97,6 +97,9 @@
             </div>
         </div>
 
+        <!-- Loading / connection status -->
+        <div id="load-status" class="text-center text-sm py-10 text-gray-400">Loading parts list...</div>
+
         <!-- Inventory Grid -->
         <div id="inventory-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Dynamic Part Cards populated by Firebase -->
@@ -113,11 +116,34 @@
         const firebaseConfig = {
             databaseURL: "https://vyss-wrecking-default-rtdb.firebaseio.com"
         };
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+        let partsRef = null;
+        let partsLoaded = false;
+        if (typeof firebase === "undefined") {
+            showLoadStatus("Could not load Firebase. Check your internet connection and reload.", true);
+        } else {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            partsRef = firebase.database().ref("parts");
         }
-        const db = firebase.database();
-        const partsRef = db.ref("parts");
+
+        // Visible status message so a failed connection is never a silent blank page
+        function showLoadStatus(message, isError) {
+            const el = document.getElementById("load-status");
+            el.className = `text-center text-sm py-10 ${isError ? "text-rose-400" : "text-gray-400"}`;
+            el.innerText = message;
+        }
+
+        function hideLoadStatus() {
+            document.getElementById("load-status").classList.add("hidden");
+        }
+
+        function describeFirebaseError(error) {
+            if (error && error.code === "PERMISSION_DENIED") {
+                return "The database refused access (permission denied). In the Firebase console open Realtime Database > Rules and allow access to \"parts\".";
+            }
+            return "Could not reach the parts database" + (error && error.message ? ": " + error.message : ".");
+        }
 
         // Seed Data with Updated Prices
         const seedParts = [
@@ -138,17 +164,31 @@
         ];
 
         // Sync & Render Database
-        partsRef.on("value", (snapshot) => {
-            const data = snapshot.val();
-            if (!data) {
-                // Seed if empty
-                seedParts.forEach(part => partsRef.child(part.id).set(part));
-                return;
-            }
-            inventoryData = data;
-            renderInventory();
-            updateNotificationBadge();
-        });
+        if (partsRef) {
+            setTimeout(() => {
+                if (!partsLoaded) {
+                    showLoadStatus("Still waiting for the parts database. Check your internet connection and the Firebase rules, then reload.", true);
+                }
+            }, 10000);
+
+            partsRef.on("value", (snapshot) => {
+                const data = snapshot.val();
+                if (!data) {
+                    // Seed if empty
+                    seedParts.forEach(part => {
+                        partsRef.child(part.id).set(part).catch(error => showLoadStatus(describeFirebaseError(error), true));
+                    });
+                    return;
+                }
+                partsLoaded = true;
+                hideLoadStatus();
+                inventoryData = data;
+                renderInventory();
+                updateNotificationBadge();
+            }, (error) => {
+                showLoadStatus(describeFirebaseError(error), true);
+            });
+        }
 
         function renderInventory() {
             const grid = document.getElementById("inventory-grid");
