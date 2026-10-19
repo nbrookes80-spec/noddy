@@ -9,6 +9,7 @@
     <!-- Firebase App & Database -->
     <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-database-compat.js"></script>
+    <script src="site-config.js"></script>
 </head>
 <body class="bg-gray-900 text-gray-100 font-sans antialiased min-h-screen pb-12">
 
@@ -34,6 +35,22 @@
             <div class="flex space-x-3">
                 <button onclick="closePinModal()" class="w-1/2 py-2.5 rounded-xl border border-gray-700 text-gray-400 hover:bg-gray-700 font-semibold text-sm transition">Cancel</button>
                 <button onclick="verifyPin()" class="w-1/2 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-gray-950 font-bold text-sm transition">Unlock</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Claim Contact Modal -->
+    <div id="claim-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
+        <div class="bg-gray-800 p-6 rounded-2xl border border-gray-700 shadow-2xl w-full max-w-sm">
+            <h3 class="text-xl font-bold text-white mb-1">Claim this part</h3>
+            <p id="claim-part-name" class="text-emerald-400 text-sm font-semibold mb-1"></p>
+            <p class="text-gray-400 text-xs mb-4">Leave your details so the seller can contact you to arrange payment and pickup. They are encrypted in your browser, so only the seller can read them.</p>
+            <input type="text" id="claim-name" maxlength="60" placeholder="Your name" autocomplete="name" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 mb-3">
+            <input type="tel" id="claim-phone" maxlength="30" placeholder="Phone number" autocomplete="tel" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 mb-3">
+            <div id="claim-error" class="text-rose-500 text-xs mb-3 hidden"></div>
+            <div class="flex space-x-3">
+                <button onclick="closeClaimModal()" class="w-1/2 py-2.5 rounded-xl border border-gray-700 text-gray-400 hover:bg-gray-700 font-semibold text-sm transition">Cancel</button>
+                <button id="claim-submit" onclick="submitClaim()" class="w-1/2 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-gray-950 font-bold text-sm transition">Claim Part</button>
             </div>
         </div>
     </div>
@@ -108,13 +125,44 @@
 
     <script>
         // Default Config & Seed Data
-        const SECRET_PIN = "5700";
         let isSellerMode = false;
+        let adminHash = null;
         let inventoryData = {};
+
+        // Crypto helpers (WebCrypto). Buyer details are encrypted with the seller's public key
+        // before they leave the browser; the seller PIN never leaves it, only a PBKDF2 proof of it.
+        const KDF_ITERATIONS = 600000;
+        const textEncoder = new TextEncoder();
+
+        function b64encode(bytes) {
+            let s = "";
+            bytes.forEach(b => { s += String.fromCharCode(b); });
+            return btoa(s);
+        }
+
+        function b64decode(str) {
+            return Uint8Array.from(atob(str), c => c.charCodeAt(0));
+        }
+
+        async function deriveAdminProof(pin) {
+            const base = await crypto.subtle.importKey("raw", textEncoder.encode(pin), "PBKDF2", false, ["deriveBits"]);
+            const bits = await crypto.subtle.deriveBits(
+                { name: "PBKDF2", salt: b64decode(SITE_CONFIG.adminSalt), iterations: KDF_ITERATIONS, hash: "SHA-256" }, base, 256);
+            return b64encode(new Uint8Array(bits));
+        }
+
+        async function encryptContact(contact) {
+            const publicKey = await crypto.subtle.importKey("jwk", SITE_CONFIG.publicKey, { name: "RSA-OAEP", hash: "SHA-256" }, false, ["encrypt"]);
+            const aesKey = await crypto.subtle.generateKey({ name: "AES-GCM", length: 256 }, true, ["encrypt"]);
+            const iv = crypto.getRandomValues(new Uint8Array(12));
+            const ct = await crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, aesKey, textEncoder.encode(JSON.stringify(contact)));
+            const k = await crypto.subtle.encrypt({ name: "RSA-OAEP" }, publicKey, await crypto.subtle.exportKey("raw", aesKey));
+            return { k: b64encode(new Uint8Array(k)), iv: b64encode(iv), ct: b64encode(new Uint8Array(ct)) };
+        }
 
         // Firebase Initialization
         const firebaseConfig = {
-            databaseURL: "https://vyss-wrecking-default-rtdb.firebaseio.com"
+            databaseURL: "https://vy-ss-wrecking-default-rtdb.asia-southeast1.firebasedatabase.app"
         };
         let partsRef = null;
         let partsLoaded = false;
@@ -174,10 +222,7 @@
             partsRef.on("value", (snapshot) => {
                 const data = snapshot.val();
                 if (!data) {
-                    // Seed if empty
-                    seedParts.forEach(part => {
-                        partsRef.child(part.id).set(part).catch(error => showLoadStatus(describeFirebaseError(error), true));
-                    });
+                    showLoadStatus("The parts list is empty. The seller needs to load the parts into the database.", true);
                     return;
                 }
                 partsLoaded = true;
@@ -188,6 +233,10 @@
             }, (error) => {
                 showLoadStatus(describeFirebaseError(error), true);
             });
+        }
+
+        function esc(value) {
+            return String(value).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
         }
 
         function renderInventory() {
@@ -209,7 +258,7 @@
                 card.innerHTML = `
                     <div>
                         <div class="flex justify-between items-start gap-2 mb-3">
-                            <h3 class="font-bold text-lg text-white">${part.name}</h3>
+                            <h3 class="font-bold text-lg text-white">${esc(part.name)}</h3>
                             ${statusBadge}
                         </div>
                         <div class="space-y-1 mb-6">
@@ -247,14 +296,84 @@
             }
         }
 
+        let claimingId = null;
+
         function claimPart(id) {
-            partsRef.child(id).update({ status: "pending" });
-            showToast("Part Claimed!", "The seller has been notified. Contact seller to confirm payment.");
+            claimingId = id;
+            document.getElementById("claim-part-name").innerText = inventoryData[id] ? inventoryData[id].name : "";
+            document.getElementById("claim-error").classList.add("hidden");
+            document.getElementById("claim-modal").classList.remove("hidden");
+            document.getElementById("claim-name").focus();
+        }
+
+        function closeClaimModal() {
+            document.getElementById("claim-modal").classList.add("hidden");
+            document.getElementById("claim-name").value = "";
+            document.getElementById("claim-phone").value = "";
+            claimingId = null;
+        }
+
+        function showClaimError(message) {
+            const el = document.getElementById("claim-error");
+            el.innerText = message;
+            el.classList.remove("hidden");
+        }
+
+        function submitClaim() {
+            const name = document.getElementById("claim-name").value.trim();
+            const phone = document.getElementById("claim-phone").value.trim();
+            if (!name) return showClaimError("Please enter your name.");
+            if (phone.replace(/\D/g, "").length < 6) return showClaimError("Please enter a valid phone number.");
+
+            if (!(window.crypto && crypto.subtle) || !window.SITE_CONFIG) {
+                return showClaimError("This page needs a secure (https) connection to protect your details.");
+            }
+
+            const id = claimingId;
+            const part = inventoryData[id];
+            const button = document.getElementById("claim-submit");
+            button.disabled = true;
+
+            // Only claim if still available, so two buyers can't both win the same part
+            partsRef.child(id).child("status").transaction(current => current === "available" ? "pending" : undefined)
+                .then(result => {
+                    if (!result.committed) {
+                        closeClaimModal();
+                        showToast("Too slow!", "Someone else just claimed that part.");
+                        return;
+                    }
+                    return encryptContact({ name: name, phone: phone }).then(sealed =>
+                        firebase.database().ref("claims").push({
+                            partId: id,
+                            partName: part ? part.name : id,
+                            k: sealed.k,
+                            iv: sealed.iv,
+                            ct: sealed.ct,
+                            createdAt: Date.now()
+                        })
+                    ).then(() => {
+                        closeClaimModal();
+                        showToast("Part Claimed!", "The seller has your details and will contact you to confirm payment.");
+                    });
+                })
+                .catch(error => showClaimError("Your claim may not have been saved. Please contact the seller. " + describeFirebaseError(error)))
+                .finally(() => { button.disabled = false; });
+        }
+
+        // Seller writes carry the PIN proof in the same atomic update; the database rules check it
+        function adminSetStatus(id, status) {
+            return firebase.database().ref().update({
+                ["parts/" + id + "/status"]: status,
+                "adminProof/hash": adminHash,
+                "adminProof/ts": firebase.database.ServerValue.TIMESTAMP
+            });
         }
 
         function updatePartStatus(id, status) {
-            partsRef.child(id).update({ status: status });
             closeActionsModal();
+            adminSetStatus(id, status).catch(error => {
+                showToast("Not allowed", "The database refused the change. Exit and re-enter Seller View.");
+            });
         }
 
         // Authentication & View Controls
@@ -263,6 +382,7 @@
                 document.getElementById("pin-modal").classList.remove("hidden");
             } else {
                 isSellerMode = false;
+                adminHash = null;
                 document.getElementById("mode-toggle-text").innerText = "Switch to Seller View";
                 document.getElementById("notification-bell").classList.add("hidden");
                 renderInventory();
@@ -275,18 +395,32 @@
             document.getElementById("seller-pin-input").value = "";
         }
 
-        function verifyPin() {
+        async function verifyPin() {
             const input = document.getElementById("seller-pin-input").value;
-            if (input === SECRET_PIN) {
-                isSellerMode = true;
-                closePinModal();
-                document.getElementById("mode-toggle-text").innerText = "Exit Seller Mode";
-                document.getElementById("notification-bell").classList.remove("hidden");
-                renderInventory();
-                showToast("Unlocked", "Seller administrative controls enabled.");
-            } else {
-                document.getElementById("pin-error").classList.remove("hidden");
+            const errorEl = document.getElementById("pin-error");
+            const ids = Object.keys(inventoryData);
+            errorEl.classList.add("hidden");
+            if (!input || ids.length === 0 || !(window.crypto && crypto.subtle)) {
+                errorEl.innerText = ids.length === 0 ? "Parts are still loading. Try again in a moment." : "This page needs a secure (https) connection.";
+                errorEl.classList.remove("hidden");
+                return;
             }
+            try {
+                // The database is the only judge of the PIN: a no-op write succeeds only with the right proof
+                adminHash = await deriveAdminProof(input);
+                await adminSetStatus(ids[0], inventoryData[ids[0]].status);
+            } catch (e) {
+                adminHash = null;
+                errorEl.innerText = "Incorrect PIN. Please try again.";
+                errorEl.classList.remove("hidden");
+                return;
+            }
+            isSellerMode = true;
+            closePinModal();
+            document.getElementById("mode-toggle-text").innerText = "Exit Seller Mode";
+            document.getElementById("notification-bell").classList.remove("hidden");
+            renderInventory();
+            showToast("Unlocked", "Seller administrative controls enabled.");
         }
 
         // Action Center Modal
@@ -303,7 +437,7 @@
                     item.className = "bg-gray-900 border border-gray-700 p-4 rounded-xl flex justify-between items-center";
                     item.innerHTML = `
                         <div>
-                            <div class="font-bold text-white text-sm">${p.name}</div>
+                            <div class="font-bold text-white text-sm">${esc(p.name)}</div>
                             <div class="text-xs text-emerald-400">$${p.price} (+ $${p.removalFee} removal)</div>
                         </div>
                         <div class="flex space-x-2">
