@@ -12,7 +12,8 @@ A single-page parts list for the wrecked VY SS. Buyers claim parts and leave the
 - `tools/` – `set-pin.js` (set or change the seller PIN) and `decrypt-claims.js` (read buyer details).
 - `keybundle.json` – **private, not committed, not published.** Your encryption private key, locked with the PIN. Back it up somewhere private.
 - `firebase.json`, `.firebaserc` – Firebase CLI config (project `vy-ss-wrecking`). Hosting publishes only the page, `site-config.js` and the photo.
-- `20261018_091055.jpg` – hero photo.
+- `NEW-PIN.txt` – **private, not committed, not published.** Written by `set-pin.js`; holds the current seller PIN.
+- `photos/01.jpg` … `11.jpg` – web-sized copies (1800px, metadata stripped) shown in the carousel. The original camera files (`2026*.jpg`) are ignored by git and not hosted.
 
 ## How the protection works
 
@@ -29,13 +30,17 @@ node tools/decrypt-claims.js
 
 It prompts for the PIN, fetches `claims` with the Firebase CLI and decrypts locally. The Seller View bell still shows which parts are pending.
 
-### Changing the PIN
+### Rotating the PIN
 
 ```bash
-OLD_PIN=<current> PIN=<new> node tools/set-pin.js
+OLD_PIN=<current> node tools/set-pin.js
 ```
 
-This re-locks `keybundle.json` and updates the PIN verifier in the database. Nothing needs redeploying. Do this with a long passphrase before the listing is busy; see the limits below.
+This generates a new random PIN (16 characters from an unambiguous alphabet, ~80 bits), re-locks `keybundle.json`, updates the verifier in the database and writes the new PIN to `NEW-PIN.txt` (overwriting the old one). The terminal shows only the file path. Nothing needs redeploying. Save the PIN in a password manager, then delete `NEW-PIN.txt`. To pick your own instead, add `PIN=<new>`.
+
+### Photos
+
+The carousel reads the `PHOTOS` list near the end of the script in `index.html`. To change photos, resize new ones into `photos/`, update that list and redeploy hosting. Arrows, swipe, the dots, and the left/right keys move between photos; the expand button (or clicking the front photo) opens a full-screen viewer, closed with Esc or the × button.
 
 ## Deploying
 
@@ -68,7 +73,8 @@ then browse to `http://localhost:8000` (encryption needs https or localhost). It
 
 ## Limits to know about
 
-- **A short PIN is weak.** Two things depend on it: the online check on seller actions, and the lock on `keybundle.json`. A 4-digit PIN can be guessed by a determined attacker (10,000 tries against the database, or offline against a stolen `keybundle.json`). Switch to a long passphrase with `set-pin.js` when you can. Keeping `keybundle.json` private matters for the same reason.
+- **The PIN is the lock.** Two things depend on it: the online check on seller actions, and the lock on `keybundle.json`. The generated PIN is long enough that guessing is not practical. A short PIN you choose yourself is not, so avoid `PIN=` with something short. Keep `keybundle.json` and `NEW-PIN.txt` private.
+- Phone-width layout of the carousel has not been verified on a real phone.
 - If you lose `keybundle.json`, existing buyer details cannot be decrypted. Buyers' details are readable only to someone holding that file and the PIN.
 - Anyone can still claim parts (move them to `pending`), so a prankster can tie up the list. You clear it from Seller View.
 - The database URL is public, so enable Firebase App Check or delete the database when the car is sold.

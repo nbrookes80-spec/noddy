@@ -39,6 +39,15 @@
         </div>
     </div>
 
+    <!-- Full Screen Photo Viewer -->
+    <div id="lightbox" class="fixed inset-0 z-[60] hidden bg-black flex items-center justify-center" role="dialog" aria-modal="true" aria-label="Photo viewer">
+        <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full object-contain select-none" draggable="false">
+        <button onclick="closeLightbox()" aria-label="Close full screen" class="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition"><i class="fas fa-times"></i></button>
+        <button onclick="prevPhoto()" aria-label="Previous photo" class="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition"><i class="fas fa-chevron-left"></i></button>
+        <button onclick="nextPhoto()" aria-label="Next photo" class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition"><i class="fas fa-chevron-right"></i></button>
+        <div id="lightbox-counter" class="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm font-semibold bg-white/15 text-white px-3 py-1 rounded-full">1 / 1</div>
+    </div>
+
     <!-- Claim Contact Modal -->
     <div id="claim-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
         <div class="bg-gray-800 p-6 rounded-2xl border border-gray-700 shadow-2xl w-full max-w-sm">
@@ -102,17 +111,26 @@
 
     <!-- Main Content Container -->
     <main class="max-w-7xl mx-auto px-4 mt-6">
-        <!-- Hero Banner Image -->
-        <div class="relative w-full h-64 sm:h-80 rounded-2xl overflow-hidden mb-8 border border-gray-700 shadow-2xl">
-            <img src="20261018_091055.jpg" alt="2002 VY SS Commodore Wrecking" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/30 to-transparent flex items-end p-6">
-                <div>
-                    <span class="bg-emerald-500 text-gray-950 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block">Active Wrecking</span>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Select Parts Below To Claim</h2>
-                    <p class="text-sm text-gray-300">Base prices assume buyer self-removal. Optional seller removal available.</p>
+        <!-- Photo Carousel -->
+        <section aria-label="Photos of the car" class="mb-8 overflow-x-clip">
+            <div class="relative pr-8 sm:pr-16">
+                <div id="photo-stage" class="relative w-full aspect-[16/9] sm:aspect-[2/1] touch-pan-y"></div>
+
+                <div class="pointer-events-none absolute inset-y-0 left-0 right-8 sm:right-16 rounded-2xl bg-gradient-to-t from-gray-900/90 via-transparent to-transparent flex items-end p-4 sm:p-6" style="z-index:35">
+                    <div>
+                        <span class="bg-emerald-500 text-gray-950 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block">Active Wrecking</span>
+                        <h2 class="text-xl sm:text-3xl font-extrabold text-white">Select Parts Below To Claim</h2>
+                        <p class="text-xs sm:text-sm text-gray-300">Base prices assume buyer self-removal. Optional seller removal available.</p>
+                    </div>
                 </div>
+
+                <button onclick="prevPhoto()" aria-label="Previous photo" class="absolute top-1/2 -translate-y-1/2 left-2 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition" style="z-index:50"><i class="fas fa-chevron-left"></i></button>
+                <button onclick="nextPhoto()" aria-label="Next photo" class="absolute top-1/2 -translate-y-1/2 right-10 sm:right-20 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition" style="z-index:50"><i class="fas fa-chevron-right"></i></button>
+                <button onclick="openLightbox()" aria-label="View photo full screen" class="absolute top-3 right-10 sm:right-20 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition" style="z-index:50"><i class="fas fa-expand"></i></button>
+                <div id="photo-counter" class="absolute bottom-3 right-10 sm:right-20 text-xs font-semibold bg-black/60 text-white px-2.5 py-1 rounded-full" style="z-index:50">1 / 1</div>
             </div>
-        </div>
+            <div id="photo-dots" class="flex justify-center flex-wrap gap-2 mt-4 pr-8 sm:pr-16"></div>
+        </section>
 
         <!-- Loading / connection status -->
         <div id="load-status" class="text-center text-sm py-10 text-gray-400">Loading parts list...</div>
@@ -465,6 +483,126 @@
                 badge.classList.add("hidden");
             }
         }
+
+        // Photo carousel: cards stacked on top of each other, arrows / swipe / keys, full screen viewer
+        const PHOTOS = [
+            { src: "photos/01.jpg", alt: "Engine bay with the LS1 V8, bonnet open" },
+            { src: "photos/02.jpg", alt: "Engine bay, second view" },
+            { src: "photos/03.jpg", alt: "Front three-quarter view of the Hothouse Green VY SS with bonnet open" },
+            { src: "photos/04.jpg", alt: "Side view showing the alloy wheel and front-end damage" },
+            { src: "photos/05.jpg", alt: "Front interior: dashboard, door trim and leather seat" },
+            { src: "photos/06.jpg", alt: "Front leather seats and centre console" },
+            { src: "photos/07.jpg", alt: "Front seats and dashboard from the open door" },
+            { src: "photos/08.jpg", alt: "Rear leather bench seat" },
+            { src: "photos/09.jpg", alt: "Rear leather bench seat, closer view" },
+            { src: "photos/10.jpg", alt: "Steering wheel, dash and automatic gear selector" },
+            { src: "photos/11.jpg", alt: "Pioneer touchscreen head unit" }
+        ];
+        let photoIndex = 0;
+        const photoStage = document.getElementById("photo-stage");
+        const lightbox = document.getElementById("lightbox");
+
+        function buildCarousel() {
+            PHOTOS.forEach((photo, i) => {
+                const img = document.createElement("img");
+                img.src = photo.src;
+                img.alt = photo.alt;
+                img.loading = i < 3 ? "eager" : "lazy";
+                img.decoding = "async";
+                img.draggable = false;
+                img.className = "absolute inset-0 w-full h-full object-cover rounded-2xl border border-gray-600 shadow-2xl cursor-zoom-in select-none";
+                img.style.transition = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "none" : "transform .5s cubic-bezier(.2,.8,.2,1), opacity .5s";
+                img.addEventListener("click", () => (i === photoIndex ? openLightbox() : showPhoto(i)));
+                photoStage.appendChild(img);
+
+                const dot = document.createElement("button");
+                dot.setAttribute("aria-label", "Show photo " + (i + 1));
+                dot.className = "w-2.5 h-2.5 rounded-full transition";
+                dot.addEventListener("click", () => showPhoto(i));
+                document.getElementById("photo-dots").appendChild(dot);
+            });
+            layoutPhotos();
+        }
+
+        function layoutPhotos() {
+            const n = PHOTOS.length;
+            Array.from(photoStage.children).forEach((img, i) => {
+                const offset = (i - photoIndex + n) % n;
+                let transform = "translateX(56px) scale(.85) rotate(4deg)", opacity = 0, z = 0;
+                if (offset === 0) { transform = "none"; opacity = 1; z = 30; }
+                else if (offset === 1) { transform = "translateX(28px) scale(.95) rotate(2deg)"; opacity = 1; z = 20; }
+                else if (offset === 2) { transform = "translateX(56px) scale(.9) rotate(4deg)"; opacity = 0.8; z = 10; }
+                else if (offset === n - 1) { transform = "translateX(-115%) scale(.95) rotate(-8deg)"; z = 40; }
+                img.style.transform = transform;
+                img.style.opacity = opacity;
+                img.style.zIndex = z;
+                img.style.pointerEvents = offset <= 2 ? "auto" : "none";
+                img.setAttribute("aria-hidden", offset === 0 ? "false" : "true");
+            });
+            Array.from(document.getElementById("photo-dots").children).forEach((dot, i) => {
+                dot.className = "w-2.5 h-2.5 rounded-full transition " + (i === photoIndex ? "bg-emerald-400 scale-125" : "bg-gray-600 hover:bg-gray-500");
+            });
+            document.getElementById("photo-counter").innerText = (photoIndex + 1) + " / " + n;
+            if (!lightbox.classList.contains("hidden")) updateLightbox();
+        }
+
+        function showPhoto(i) {
+            photoIndex = (i + PHOTOS.length) % PHOTOS.length;
+            layoutPhotos();
+        }
+        function nextPhoto() { showPhoto(photoIndex + 1); }
+        function prevPhoto() { showPhoto(photoIndex - 1); }
+
+        function updateLightbox() {
+            const img = document.getElementById("lightbox-img");
+            img.src = PHOTOS[photoIndex].src;
+            img.alt = PHOTOS[photoIndex].alt;
+            document.getElementById("lightbox-counter").innerText = (photoIndex + 1) + " / " + PHOTOS.length;
+        }
+
+        function openLightbox() {
+            updateLightbox();
+            lightbox.classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+            // Real full screen where the browser allows it; iPhone Safari falls back to the overlay alone
+            const request = lightbox.requestFullscreen || lightbox.webkitRequestFullscreen;
+            if (request) {
+                try { Promise.resolve(request.call(lightbox)).catch(() => {}); } catch (e) {}
+            }
+        }
+
+        function closeLightbox() {
+            lightbox.classList.add("hidden");
+            document.body.style.overflow = "";
+            if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {});
+        }
+
+        document.addEventListener("fullscreenchange", () => {
+            if (!document.fullscreenElement && !lightbox.classList.contains("hidden")) closeLightbox();
+        });
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && !lightbox.classList.contains("hidden")) return closeLightbox();
+            if (/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) return;
+            const modalOpen = ["pin-modal", "claim-modal", "actions-modal"].some(id => !document.getElementById(id).classList.contains("hidden"));
+            if (modalOpen) return;
+            if (e.key === "ArrowRight") nextPhoto();
+            if (e.key === "ArrowLeft") prevPhoto();
+        });
+
+        function addSwipe(el) {
+            let startX = null;
+            el.addEventListener("touchstart", (e) => { startX = e.touches[0].clientX; }, { passive: true });
+            el.addEventListener("touchend", (e) => {
+                if (startX === null) return;
+                const dx = e.changedTouches[0].clientX - startX;
+                startX = null;
+                if (Math.abs(dx) > 40) (dx < 0 ? nextPhoto : prevPhoto)();
+            }, { passive: true });
+        }
+        addSwipe(photoStage);
+        addSwipe(lightbox);
+        buildCarousel();
 
         function showToast(title, message) {
             const toast = document.getElementById("toast");
