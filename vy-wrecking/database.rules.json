@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "parts": {
+      ".read": true,
+      "$id": {
+        ".write": "newData.exists() && (!data.exists() || (newData.child('name').val() === data.child('name').val() && newData.child('price').val() === data.child('price').val() && newData.child('removalFee').val() === data.child('removalFee').val()))",
+        ".validate": "newData.hasChildren(['id', 'name', 'price', 'removalFee', 'status']) && newData.child('id').val() === $id && newData.child('name').isString() && newData.child('price').isNumber() && newData.child('removalFee').isNumber() && newData.child('status').val().matches(/^(available|pending|sold)$/)",
+        "id": { ".validate": true },
+        "name": { ".validate": true },
+        "price": { ".validate": true },
+        "removalFee": { ".validate": true },
+        "status": { ".validate": true },
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}
