@@ -1,0 +1,189 @@
+VERSION ""
+
+NS_ :
+
+BS_:
+
+BU_: BCM EBCM ECM TCM
+
+BO_ 201 ECM_EngineStatus: 8 ECM
+ SG_ EngineRPM : 15|16@0+ (0.25,0) [0|16383.75] "rpm" Vector__XXX
+
+BO_ 241 Brake_Fast: 6 Vector__XXX
+ SG_ BrakePressed : 1|1@0+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 249 TCM_RatioOutputSpeed: 8 TCM
+ SG_ ActualGearRatio : 7|16@0+ (0.00390625,0) [0|255.996] "" Vector__XXX
+ SG_ OutputShaftSpeed : 31|16@0+ (0.25,0) [0|16383.75] "rpm" Vector__XXX
+
+BO_ 288 VehicleOdometer: 5 Vector__XXX
+ SG_ Odometer : 7|32@0+ (0.015625,0) [0|67108863.98] "km" Vector__XXX
+
+BO_ 309 ShifterParkStatus: 8 Vector__XXX
+ SG_ ShifterOutOfPark : 0|1@0+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 393 TCM_TorqueLimitRequest1: 7 TCM
+ SG_ RollingCounter : 7|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ LimitActive : 5|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ TorqueLimit : 3|12@0+ (0.5,-848) [-848|1199.5] "Nm" Vector__XXX
+ SG_ Word23 : 23|16@0+ (1,0) [0|65535] "" Vector__XXX
+ SG_ CheckWord : 39|16@0+ (1,0) [0|65535] "" Vector__XXX
+
+BO_ 409 TCM_TorqueLimitRequest2: 8 TCM
+ SG_ RollingCounter : 7|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ LimitActive : 5|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ TorqueLimit : 3|12@0+ (0.5,-848) [-848|1199.5] "Nm" Vector__XXX
+ SG_ Word23 : 23|16@0+ (1,0) [0|65535] "" Vector__XXX
+ SG_ CheckWord : 39|16@0+ (1,0) [0|65535] "" Vector__XXX
+
+BO_ 401 ECM_EngineTorque: 8 ECM
+ SG_ EngineTorqueActual : 3|12@0+ (0.5,-848) [-848|1199.5] "Nm" Vector__XXX
+
+BO_ 413 TCM_TurbineSpeed: 8 TCM
+ SG_ RollingCounter : 7|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ RangeChangePulse : 32|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ TurbineSpeed : 47|16@0+ (0.25,0) [0|16383.75] "rpm" Vector__XXX
+
+BO_ 451 ECM_TorqueAndPedal: 8 ECM
+ SG_ EngineTorqueActual : 3|12@0+ (0.5,-848) [-848|1199.5] "Nm" Vector__XXX
+ SG_ DriverDemandTorque : 19|12@0+ (0.5,-848) [-848|1199.5] "Nm" Vector__XXX
+ SG_ AcceleratorPedal : 55|8@0+ (0.393700787,0) [0|100] "%" Vector__XXX
+
+BO_ 455 Chassis_EngineTorqueRequest: 7 EBCM
+ SG_ InterventionType : 5|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ TorqueRequest : 3|12@0+ (0.5,-848) [-848|1199.5] "Nm" Vector__XXX
+
+BO_ 481 CruiseControlSwitches: 7 BCM
+ SG_ CruiseCancel : 7|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ CruiseOn : 6|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ CruiseResume : 5|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ CruiseSet : 4|1@0+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 485 SteeringWheelAngle: 8 Vector__XXX
+ SG_ SteeringAngle : 15|16@0- (0.0625,0) [-2048|2047.94] "deg" Vector__XXX
+
+BO_ 489 Chassis_GeneralStatus1: 8 EBCM
+ SG_ BrakeApplied : 6|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ LateralAccel : 3|12@0- (0.015625,0) [-32|31.98] "m/s2" Vector__XXX
+
+BO_ 491 FuelSystemStatus: 2 Vector__XXX
+ SG_ FuelPressureDelivered : 1|10@0+ (1,0) [0|1023] "kPa" Vector__XXX
+
+BO_ 493 ECM_FuelSystemRequest: 8 ECM
+ SG_ FuelPumpEnable : 6|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ FuelPressureRequested : 1|10@0+ (1,0) [0|1023] "kPa" Vector__XXX
+ SG_ CommandedAFR : 55|16@0+ (0.00048828125,0) [0|32] "" Vector__XXX
+
+BO_ 495 ECM_FuelSystemRequest2: 4 ECM
+ SG_ MassAirflow : 23|16@0+ (0.01,0) [0|655.35] "g/s" Vector__XXX
+
+BO_ 499 TransmissionRequests: 3 Vector__XXX
+ SG_ TapEnable : 13|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ TapRequest : 11|2@0+ (1,0) [0|3] "" Vector__XXX
+
+BO_ 501 TCM_GearAndRange: 8 TCM
+ SG_ CurrentGear : 3|4@0+ (1,0) [0|15] "" Vector__XXX
+ SG_ ShifterRange : 27|4@0+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 707 ECM_ManifoldPressure: 8 ECM
+ SG_ MAP : 55|8@0+ (0.5,0) [0|127.5] "kPa" Vector__XXX
+
+BO_ 840 WheelSpeeds12: 5 EBCM
+ SG_ WheelSpeed1 : 7|16@0+ (1,0) [0|65535] "counts" Vector__XXX
+ SG_ WheelSpeed2 : 23|16@0+ (1,0) [0|65535] "counts" Vector__XXX
+
+BO_ 977 ECM_Throttle: 8 ECM
+ SG_ ThrottlePosition : 15|8@0+ (0.392156863,0) [0|100] "%" Vector__XXX
+
+BO_ 1017 ECM_GeneralStatus3: 8 ECM
+ SG_ OilLife : 55|8@0+ (0.392156863,0) [0|100] "%" Vector__XXX
+
+BO_ 1019 ECM_FuelStatus: 2 ECM
+ SG_ FuelControlState : 1|2@0+ (1,0) [0|3] "" Vector__XXX
+ SG_ EthanolContent : 15|8@0+ (0.392156863,0) [0|100] "%" Vector__XXX
+
+BO_ 1217 ECM_TempsBaro: 8 ECM
+ SG_ BarometricPressure : 15|8@0+ (0.5,0) [0|127.5] "kPa" Vector__XXX
+ SG_ CoolantTemp : 23|8@0+ (1,-40) [-40|215] "degC" Vector__XXX
+
+BO_ 1225 TCM_FluidTemp: 7 TCM
+ SG_ TransFluidTemp : 15|8@0+ (1,-40) [-40|215] "degC" Vector__XXX
+
+BO_ 1233 ECM_GeneralStatus5: 7 ECM
+ SG_ OilTemp : 15|8@0+ (1,-40) [-40|215] "degC" Vector__XXX
+ SG_ OilPressure : 23|8@0+ (4,0) [0|1020] "kPa" Vector__XXX
+ SG_ FuelLevel : 47|8@0+ (0.392156863,0) [0|100] "%" Vector__XXX
+
+BO_ 1265 ECM_PowertrainConfig: 8 ECM
+ SG_ WheelCircDriven : 1|10@0+ (3,800) [800|3869] "mm" Vector__XXX
+ SG_ FinalDriveRatio : 32|9@0+ (0.01,2) [2|7.11] "" Vector__XXX
+
+BO_ 1906 ECM_TroubleCodeInfo: 7 ECM
+ SG_ DTCTriggered : 0|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ DTCNumber : 23|16@0+ (1,0) [0|65535] "" Vector__XXX
+
+BO_ 1919 TCM_TroubleCodeInfo: 7 TCM
+ SG_ DTCTriggered : 0|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ DTCNumber : 23|16@0+ (1,0) [0|65535] "" Vector__XXX
+
+CM_ SG_ 201 EngineRPM "Verified against HP Tuners and the tach";
+CM_ SG_ 241 BrakePressed "About 95 Hz; matches 140 and 0C9 brake bits";
+CM_ SG_ 249 ActualGearRatio "Ratio x256; 4.03/2.36/1.53/1.15/0.85/0.67 in gears 1-6; 0 in P/N";
+CM_ SG_ 249 OutputShaftSpeed "Turbine speed / this = gear ratio in every gear";
+CM_ SG_ 288 Odometer "GMW8762; matches the dash";
+CM_ SG_ 309 ShifterOutOfPark "Set from leaving P until back in P";
+CM_ SG_ 393 LimitActive "1 = torque limit active (shift torque management)";
+CM_ SG_ 393 TorqueLimit "0xFFF raw = no limit. Verified: the ECM obeys it with spark retard, limit reached in about 5-105 ms";
+CM_ SG_ 393 Word23 "0x0FFF engine running, 0x1976 key on engine off";
+CM_ SG_ 393 CheckWord "(0x4000 - Word23 - RollingCounter) mod 0x10000";
+CM_ SG_ 409 LimitActive "Same value as 189 in every logged torque cut";
+CM_ SG_ 409 TorqueLimit "Same value as 189 in every logged torque cut";
+CM_ SG_ 409 Word23 "0x0E70 engine running, 0x4976 key on engine off";
+CM_ SG_ 409 CheckWord "(0x10000 - Word23 - RollingCounter) mod 0x10000";
+CM_ SG_ 401 EngineTorqueActual "Same value as 1C3 bytes 0-1";
+CM_ SG_ 413 RangeChangePulse "Briefly 1 during a shifter range change";
+CM_ SG_ 413 TurbineSpeed "About 0.97 x engine RPM in Park/Neutral";
+CM_ SG_ 451 EngineTorqueActual "Verified: equals HP Tuners Delivered Engine Torque";
+CM_ SG_ 451 DriverDemandTorque "Likely";
+CM_ SG_ 451 AcceleratorPedal "Verified against HP Tuners; 0x00-0xFE";
+CM_ SG_ 455 InterventionType "GMW8762: 1 reduce, 2 increase; all zero in normal driving";
+CM_ SG_ 455 TorqueRequest "GMW8762";
+CM_ SG_ 481 CruiseCancel "GMW8762";
+CM_ SG_ 481 CruiseOn "GMW8762; matches the cruise switch test";
+CM_ SG_ 481 CruiseResume "GMW8762";
+CM_ SG_ 481 CruiseSet "GMW8762";
+CM_ SG_ 485 SteeringAngle "GMW8762; about +-485 deg lock to lock";
+CM_ SG_ 489 BrakeApplied "GMW8762";
+CM_ SG_ 489 LateralAccel "GMW8762";
+CM_ SG_ 491 FuelPressureDelivered "GMW8762";
+CM_ SG_ 493 FuelPumpEnable "GMW8762";
+CM_ SG_ 493 FuelPressureRequested "GMW8762";
+CM_ SG_ 493 CommandedAFR "GMW8762; about 10.8 on E68";
+CM_ SG_ 495 MassAirflow "GMW8762";
+CM_ SG_ 499 TapEnable "1 in L (manual)";
+CM_ SG_ 499 TapRequest "Verified: 1 = + paddle, 2 = - paddle, about 150 ms pulse";
+CM_ SG_ 501 CurrentGear "1-6 forward, 13 N, 14 R, 15 P";
+CM_ SG_ 501 ShifterRange "1 P, 2 R, 3 N, 4 D, 5 L (manual)";
+CM_ SG_ 707 MAP "Verified against HP Tuners";
+CM_ SG_ 840 WheelSpeed1 "About 49.4 counts per mph (matches ECM vehicle speed)";
+CM_ SG_ 977 ThrottlePosition "Relative throttle; SAE TPS = 0.713 x this + 12.7 %";
+CM_ SG_ 1017 OilLife "GMW8762";
+CM_ SG_ 1019 FuelControlState "GMW8762: 0 open loop, 2 closed loop";
+CM_ SG_ 1019 EthanolContent "Verified against the fill";
+CM_ SG_ 1217 BarometricPressure "Likely";
+CM_ SG_ 1217 CoolantTemp "Verified against HP Tuners";
+CM_ SG_ 1225 TransFluidTemp "Verified against HP Tuners";
+CM_ SG_ 1233 OilTemp "Verified against HP Tuners";
+CM_ SG_ 1233 OilPressure "Verified against HP Tuners";
+CM_ SG_ 1233 FuelLevel "Verified";
+CM_ SG_ 1265 WheelCircDriven "GMW8762";
+CM_ SG_ 1265 FinalDriveRatio "Verified (3.45 axle reads 3.44)";
+CM_ SG_ 1906 DTCTriggered "GMW8762";
+CM_ SG_ 1906 DTCNumber "Top 2 bits: 0 P, 1 C, 2 B, 3 U";
+CM_ SG_ 1919 DTCTriggered "GMW8762";
+CM_ SG_ 1919 DTCNumber "Top 2 bits: 0 P, 1 C, 2 B, 3 U";
+
+VAL_ 499 TapRequest 0 "none" 1 "up" 2 "down" ;
+VAL_ 501 CurrentGear 13 "N" 14 "R" 15 "P" ;
+VAL_ 501 ShifterRange 1 "P" 2 "R" 3 "N" 4 "D" 5 "L" ;
+VAL_ 1019 FuelControlState 0 "open loop" 2 "closed loop" ;

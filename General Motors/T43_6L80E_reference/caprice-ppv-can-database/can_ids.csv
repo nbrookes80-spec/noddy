@@ -1,0 +1,77 @@
+id,dlc,rate_hz,name,subsystem,signals,confidence,notes
+0BE,6,69,Brake pedal position or pressure (unconfirmed),,"b1 = 48-5B while brake held, 00 otherwise (pedal position or pressure?).",likely,A/B/A confirmed: 00 -> 48-5B -> 00.
+0C1,8,90,Driven wheel rotational status (ABS),,"b1-b3 and b5-b7 are 24-bit counters whose rate follows vehicle speed (r=1.00): wheel rotation/distance accumulators; b0 and b4 high bits = rolling co[...]
+0C5,8,89,Non-driven wheel rotational status (ABS),,b1-b3 and b5-b7 are 24-bit counters whose rate follows vehicle speed (r=1.00): wheel rotation/distance accumulators; b0 and b4 high bits = rolling[...]
+0C7,4,62,Transmission output rotational status (TCM),transmission,"b1-b3 is a 24-bit counter whose rate follows vehicle speed (r=1.00); b0 counter; B0 b7-6 direction 1 fwd 2 rev; b3 reset, b2 valid[...]
+0C9,8,65,Engine RPM and status (ECM),,"b1-b2 (big-endian) /4 = engine RPM; b4 (00-FE) = accelerator pedal?; b5 bit0 = brake; b5 bit 0 = brake pressed (40 -> 41), matches 140.",verified,"RPM 782-383[...]
+0F1,6,85,Brake pedal (fast),chassis,b0 bit 1 (0x02) = brake pressed; b1 = brake pedal travel or pressure (00 when released); other b0 bits are a rolling counter.,likely,About 95 Hz. b0 bit 1 agrees[...]
+0F9,8,68,Transmission ratio and output speed (TCM),transmission,"b3-b4 (big-endian) tracks vehicle speed at ~77 Hz (r=1.00), unit unverified; b5 counter; b0-b1 change with shifter range (7A43 in R,[...]
+120,5,0.2,Vehicle odometer,,"B0-3 32-bit, km = N/64; B4 b0 valid.",verified,"rare; slow/state b2; constant b0,1,4 Source GMW8762 (GM PPEI spec 2011); matches the dash odometer (2026-10-15). 2026-10[...]
+12A,8,10,Body door/belt switch status (BCM),,b6 bit7 clear with accelerator pressed.,guess,"90 at rest and brake, 10 with accelerator opendbc BCMDoorBeltStatus; GMW8762 change log."
+130,1,0.8,unknown,,,none,
+135,8,9,Shifter out-of-Park and wiper status,,b0 bit 0 = shifter out of Park (set from N until back in P); b0 bit 6 = wipers on.,likely,"constant b1,2,3,4,5,6,7."
+137,8,7,unknown,,,none,"all zero key-on; constant b0,1,2,3,5,6,7 2026-10-21 HPT check: b4 = 00 stopped, 10 rolling off, 20 moving (3 values on the drive): likely a vehicle-motion state."
+139,8,9,unknown,,,none,all zero key-on.
+140,3,0.6,Brake switch (slow),,b0 bit6 = brake pedal pressed.,likely,"matched the brake events in the drive log; A/B/A confirmed Only about 1 Hz with gaps up to 4 s: fine for logging, too slow for[...]
+148,1,0.9,Power steering module frame,,,guess,
+160,5,10,Immobilizer data (BCM),,32 bits from B0.,guess,
+17D,6,4,ABS/traction control status (EBCM),,B0 b4 3-bit TC mode (0 off 1 normal 2 off-road); B6 b2 3-bit stability mode (0 off 1 normal 2 competitive).,guess,
+182,3,4.5,unknown,,,none,
+185,2,37,unknown,,,none,"b1 00-01; b1 dips (about 0x2F to 0x21) and then rises (to about 0x60) during a shift window (seen once, unverified) 2026-10-21 HPT check: b0-b1 signed value around 0x1800 [...]
+189,7,34,Engine torque limit request 1 (TCM to ECM),transmission,"Torque-limit request (7 bytes, about 40 Hz): b0 bits7-6 = 2-bit alive counter, bits5-4 = request flag (1 = active), b0 low nibble [...]
+191,8,63,Engine torque (ECM),engine,"b0-b1 low 12 bits = actual engine torque, Nm = raw x 0.5 - 848; b6 = accelerator pedal position (copy).",verified,"Actual torque lands within 2 Nm of the 189 l[...]
+197,2,31,unknown,transmission,,none,"Sender: TCM (T43 send list, pcmhacking.net t=8534)."
+199,8,32,Engine torque limit request 2 (TCM to ECM),transmission,"Same torque-limit request as 189 (8 bytes, about 40 Hz): identical b0-b1; b2-b3 = 0E70 constant; b4-b5 = 0xF190 minus the counter;[...]
+19D,8,13,unknown,transmission,b4 pulses 00->01 for about 1 s on each shifter range change (guess: range change in progress).,guess,"b0 top bits cycle; b2 and b4 vary; checksum-like b6; slow/state [...]
+1A1,8,30,Accelerator pedal copy and A/C clutch,,b6 = accelerator pedal position (copy); b1 bit5 (0x20) = A/C clutch engaged: 10 -> 30 about 9 s after the log started.,likely,"pedal copy seen in th[...]
+1C3,8,25,Engine torque and pedal (ECM),engine,"b0-b1 low 12 bits = actual engine torque (matches 191 within 2 Nm in over 99.9% of frames); b2-b3 low 12 bits = driver-demand torque (guess), same sc[...]
+1C4,8,28,Accelerator pedal copy,,b5 = accelerator pedal position (copy).,verified,"swept 00-FE in the pedal test; correlates with RPM on the drive 2026-10-21 HPT check: b5 x 100/255 = Accelerator [...]
+1C7,7,16,Chassis engine torque request 1 (EBCM to ECM),,B0 b5-4 type 1 reduce 2 increase; 12-bit request Nm = N*0.5-848 from B0 b3; B2 b7-6 counter; 14-bit protection from B2 b5.,likely,b2 b3 vary[...]
+1C8,8,75,Launch control request (to ECM),,,guess,"b0 top 2 bits cycle 03/43/83/C3: counter; b7 05-08 (checksum?); constant b1,2,3,6 Source GMW8762 (GM PPEI spec 2011) (name only); E38 receives it.[...]
+1E1,7,31,Cruise control switch status (BCM),,"b0 = 40 with cruise switch off, 00 with cruise switch on; B0 b7 cancel b6 on b5 resume b4 set b3 accel b2 decel; B1 protection; B2 b1-0 counter.",likely,[...]
+1E5,8,80,Steering wheel angle,,"multiplexed: b3 cycles 3F/50/70/10 (4 phases), b4 and b7 carry per-phase data/check; B1-2 signed deg = N/16; 12-bit rate from B3 b3 deg/s; B3 b6-5 counter.",likely,[...]
+1E9,8,26,Chassis general status 1 (EBCM),,B0 b6 brake pressed; 12-bit lateral accel m/s2 = N/64 from B0 b3; B3 ABS/TC/stability active flags; 12-bit yaw from B4 b3 deg/s = N/16.,likely,"b0 widened[...]
+1EB,2,64,Fuel system status (fuel module),,10-bit delivered fuel pressure kPa from B0 b1.,likely,16-bit b0b1 slowly drifting: 01CE->01AC between captures; slow/state b0 Source GMW8762 (GM PPEI spe[...]
+1ED,8,56,Fuel system request (ECM),,b2-b3 track throttle (r=0.93): engine load/torque candidate; B0 b6 pump enable; 10-bit requested pressure kPa from B0 b1; B2-3 fuel flow g/s = N/1024; B6-7 comm[...]
+1EF,4,59,Fuel system request 2 (ECM),,b1-b2 track throttle (r=0.94): engine load/torque candidate; b2 also predicts converter lock; B0 b7 MAF valid; B2-3 MAF g/s = N*0.01.,verified,all zero key-on[...]
+1F1,8,8,A/C request,,b1 bit3 (0x08) = A/C request: 0A -> 12 about 5 s after the log started; b6 slowly varying; same layout as a forum Suburban log (AE 0E off / AE 16 on); b4 18 -> 08 when the par[...]
+1F3,3,32,Platform transmission requests (to TCM): tap up/down,,"B0 b7-6 counter, b5-2 shift pattern switches, b0 overdrive disable; B1 b5-4 tap enable, b3-2 tap 1 up 2 down.",verified,"b0 00-C0, b[...]
+1F5,8,34,Transmission gear and shifter range (TCM),transmission,"b3 = shifter PRNDL: 01 P, 02 R, 03 N, 04 D, 05 L (manual: holds the gear until a paddle or a forced shift); b0 low nibble = current[...]
+1FC,8,11,unknown,,,none,"many bytes vary; constant b4,5 2026-10-21 HPT check: two signed 16-bit values (b0-b1, b2-b3) and a 12-bit value with 2-bit counter in b6-b7; changes every frame; chassis-r[...]
+214,6,11,Brake-related (unconfirmed),,b1 (06-32) and b3 (CE-F7) change while brake held.,likely,A/B/A confirmed.
+232,8,39,Friction brake status (EBCM),,B5 b6 friction brake unavailable.,guess,all zero key-on.
+233,5,0.2,unknown,,,none,rare.
+234,4,3.6,unknown,,,none,
+2C3,8,13,Manifold pressure (ECM),engine,"b6 x 0.5 = manifold absolute pressure, kPa; b3 falls from 100 toward 60 as RPM rises (unknown).",verified,"99 kPa engine off and unchanged when the pedal i[...]
+2D3,2,8.5,unknown,,,none,"net t=8534). 2026-10-21 HPT check: constant for the whole 9-minute drive (idle, shifts, up to 89 mph): static status frame."
+2F1,5,4.6,unknown,,,none,meaning unknown.
+2F9,7,11,Brake-related (unconfirmed),,b5 (03-18) changes while brake held.,likely,A/B/A confirmed.
+32A,8,9.6,OnStar GPS position,,"B0-3 lat, B4-7 lon, milliarcsec, offset -2^31.",guess,all zero key-on; LS1tech.
+348,5,10.5,Wheel speeds 1-2,,b0-b1 and b2-b3 (big-endian) = two wheel speeds; b0-b1 / 47.4 = mph (about +-5%).,likely,"calibrated from RPM x 6L80 ratio x 3.45 axle x 27.70 in tire; 4th and 5th gea[...]
+34A,5,15.8,Wheel speeds 3-4,,b0-b1 and b2-b3 (big-endian) = two wheel speeds; b0-b1 / 50.2 = mph; may be 1/32 km/h per count.,likely,same calibration as 348; 34A reads ~6% higher than 348 (axle pa[...]
+3C1,8,9.8,Powertrain immobilizer data (ECM),,64-bit.,guess,"constant b0,1 Source GMW8762 (GM PPEI spec 2011)."
+3C9,8,9.8,Platform immobilizer data (BCM),,64-bit.,guess,"constant b0,1,2 Source GMW8762 (GM PPEI spec 2011)."
+3D1,8,9.7,Gear and throttle position,engine/transmission,"b4 = gear, descending: 20=5th, 21=4th, 22=3rd, 23=2nd, 24=1st?; b1 / 255 = throttle blade position % (likely; scaling approximate).",likely,"source legend suggests throttle engaged; b4 values track trans gear."
+3D3,7,8.6,unknown,,,none,all zero key-on; only r=0.80 with speed; an outside AI's alternator-load idea is unconfirmed.
+3E9,8,9.7,Vehicle speed related (unconfirmed),,"b0-b1 and b4-b5 track vehicle speed (r=1.00, ~10 Hz): more wheel speeds? unit unverified.",verified,all zero key-on 2026-10-21 HPT check: b0-b1 /64 [...]
+3F1,8,3.9,Platform engine control request (BCM),,B0 fan adjust; B1 generator setpoint; B2 top-speed limit km/h = N*2; B3 b5 A/C run request; B7 outside air C = N*0.5-40.,guess,"constant b0,2,4,5,6[...]
+3F9,8,4,Engine general status 3 (ECM),,B1-2 fuel used L = N/32768; B3 generator duty; B4 top-speed limit; B5 fan %; B6 oil life %; B7 A/C high-side kPa = N*14.,likely,"b4 FE, b7 2B vary slightly; [...]
+3FB,2,3.8,Engine fuel status (ECM): ethanol %,,B0 b1-0 fuel control 0 open 2 closed loop; B1 alcohol % = N*100/255.,verified,"constant b1 Source GMW8762 (GM PPEI spec 2011); reads 68 % ethanol, ma[...]
+451,6,36,Gateway low-speed general information,,B3 crash bits; B4 front blower = N*100/255.,guess,"constant b0,1,2,3,5 Source GMW8762 (GM PPEI spec 2011)."
+4C1,8,2,Engine temperatures,engine,"b1 x 0.5 = barometric pressure, kPa (likely); b2 - 40 = coolant temp deg C (likely); b3 - 40 = another temperature, possibly intake air (guess).",verified,"b2: [...]
+4C5,5,1.6,unknown,,,none,
+4C9,7,1.9,Trans fluid temperature,transmission,b1 - 40 = trans fluid temp deg C.,verified,"25 C engine off; 29->38 C over a 2 min cold-start drive; 69->83 C on the long drive; in the range HP Tune[...]
+4D1,7,1.6,"Engine general status 5 (ECM): oil temp/pressure, fuel level",engine,"b1 - 40 = temperature deg C, possibly engine oil (guess); b5 slowly falls F6->F4 over a drive; B0 lamp flags; B1 oi[...]
+4D9,3,1.3,Fuel system general status (fuel module),,B0 b7 emissions fault; B1-2 trouble code.,guess,
+4E1,8,0.9,VIN digits 10-17,,8 ASCII bytes.,verified,"ASCII text - may identify car/module, do not publish raw; decodes to this car (2014, plant L)."
+4E9,6,0.9,Platform configuration data,,b4 slowly rises B2-B4 over the drive; B0 ABS/TC/stability present flags; B2-4 elapsed minutes; B5 engine power kW = N*2.,guess,slow drift Source GMW8762 (GM [...]
+4F1,8,1,"Powertrain configuration (ECM): tire size, axle",,10-bit driven wheel circumference mm = N*3+800 from B0 b1; non-driven from B2 b1; 9-bit final drive = N*0.01+2 from B4 b0.,verified,"cons[...]
+500,4,0.5,unknown,,,none,
+514,8,1,VIN digits 2-9,,8 ASCII bytes.,verified,"ASCII text - may identify car/module, do not publish raw."
+52A,6,1,unknown,,,none,"ASCII text - may identify car/module, do not publish raw; constant b0,1,3,4 2026-10-21 HPT check: b0-b1 0A 48 and b4 constant; b2/b3/b5 step slowly over a drive (possibly t[...]
+530,4,1,unknown,,,none,
+770,7,0.9,unknown,,,none,
+772,7,1,"Trouble code information extended (ECM), 1 s",,B0 b0 triggered; B1 source; B2-3 DTC (top 2 bits P/C/B/U); B4 failure type; B5 status; B6 fault type.,likely,all zero in a normal drive. Rea[...]
+773,7,0.8,unknown,,,none,
+778,7,1,Power steering frame (probably DTC info like 772),,,guess,inference.
+77F,7,0.7,"Trouble code information extended (TCM), 1 s",transmission,same layout as 772.,likely,Source GMW8762 (GM PPEI spec 2011); the key-on log had 00 18 C1 40 00 59 03 = U0140 reported by the[...]
