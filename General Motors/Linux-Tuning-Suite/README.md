@@ -17,7 +17,7 @@ Merged product name: **6L80e TunerToolPro**. Version 0.1.0.
 | Reconstruct the calculation engines | Done (see table below). All verified against the original |
 | BC Trans data formats (`.BTC`, presets, speed math) | Done. All 33 shipped tunes round-trip byte-for-byte |
 | BC Trans `Calc_Shifts` port | Ported to `app/tunertoolpro/bct/calc_shifts.py`. Matches the decompiled original on 433 cases (33 tunes + 400 random variants) within 5e-05. Not compared with BC Trans itself, which cannot be run here. Notes in `recovered/bct-csharp/CALC_SHIFTS_NOTES.md` |
-| Merged PyQt6 application | Done — `app/`. Six tabs. Tests pass headless (58 tests) |
+| Merged PyQt6 application | Done — `app/`. Six tabs. Tests pass headless (111 tests) |
 | GUI installer | Done — `installer/`. Tested in CLI mode |
 | User guide | Done — `docs/USER_GUIDE.md` |
 | Differential tests against the original | Done for all reconstructed engines and readers: 34,685 checks, 0 failures (see below) |
@@ -37,7 +37,7 @@ app/                         the application (install copies this folder)
     consistency.py           checks that the inputs agree with each other and with the ECU limits
     ai_tools.py              tools the AI may use: read settings, propose a change, ask the user
     gui/                     PyQt6 tabs: shift_tab, vehicle_tab, pressure_tab, dyno_tab, log_tab, xdf_tab, bct_tab, ai_tab; theme.py (palette, icons)
-  tests/                     unittest suite (93 tests; one skipped if the XDF reference is absent)
+  tests/                     unittest suite (111 tests; one skipped if the XDF reference is absent)
 installer/tests/             install and uninstall tests (9), run with HOME set to a scratch folder
 installer/
   install_tunertoolpro.py    Windows-style Setup wizard (Tkinter); also the uninstaller
@@ -121,3 +121,10 @@ The first attempt was `pycdc` (zrax/pycdc). Building it meant fetching and compi
 ## Attribution
 
 Reference material under `General Motors/T43_6L80E_reference/` is third-party and carries its own licences (see that folder's README).
+
+## Guides
+
+- `docs/USER_GUIDE.md` — how to use each tab, the Vehicle tab, the AI proposals, and the limits.
+- `docs/COMMANDS.md` — install, start, test and remove commands, and where settings are kept.
+- `docs/ECU_TOOLS.md` — working with EFILive and HP Tuners, and why the AI does not write to a car.
+- `docs/DESIGN_TEMPLATE.md` — the colour palette and components.

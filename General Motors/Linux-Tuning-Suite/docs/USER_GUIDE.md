@@ -227,6 +227,43 @@ use.
 The tune file is written byte-for-byte the way Bluecat wrote it, apart from the keys you
 changed. Keep a copy of the original.
 
+## Vehicle
+
+Use this tab to describe the car. The values feed the consistency check and the AI.
+
+- **Car, engine, transmission.** Pick the transmission from the list. Stock 6L80, a modified
+  6L80 (Sonnax zip kit, TransGo shift kit, billet flex plate, Circle D triple-plate converter),
+  ZF 8HP, and the two Powerglide ratios are in the library. The ratios shown under the list
+  come from the library and cite their source. Check them against your own transmission.
+- **Final drive, tire, weight.** Save copies these three into the Shift Points tab, which is
+  where the calculation uses them.
+- **Power and torque.** Engine power and torque, as measured or as rated.
+- **ECU limits.** The ECU torque limit and the redline, typed in from your calibration or scan
+  tool. TunerToolPro does not read ECU files for these.
+- **Check consistency.** Lists findings with a level. *Error* means two inputs contradict each
+  other, for example a shift point above the redline. *Check* means a value is likely wrong or
+  risky, for example a stall speed near idle. *Note* means a value is missing or a point to
+  remember. Read each one before you change a setting.
+- **Import EFILive export.** Choose a calibration or comparison CSV from EFILive. The tab shows
+  how many values and tables were read. The summary goes to the AI when you ask a question.
+  The export is kept only in memory for this session.
+
+## AI Assistant: proposals and questions
+
+When the AI assistant is on, it can read your Shift Points and Vehicle values, and it can
+suggest changes.
+
+- **Proposed changes** appear in a table with the setting, its current value, the proposed
+  value and the reason. Press **Apply** to make the change, or **Reject** to drop it. Nothing
+  changes until you press Apply.
+- Apply only accepts values inside each setting's allowed range. A value outside the range is
+  refused, and the AI is told why.
+- **Questions** appear under the answer when the AI needs a value it cannot find, such as the
+  number of gears. Type the answer in the question box and press Ask.
+- After you apply a change, check the Vehicle tab findings. A change can create a new finding.
+- The AI does not write to your car. To use a suggestion, make the change yourself in
+  EFILive or HP Tuners. See `docs/ECU_TOOLS.md`.
+
 ## Files and data
 
 | File | Source | Used by |
@@ -236,8 +273,15 @@ changed. Keep a copy of the original.
 | Datalog `.csv` | Your scan tool | Datalog |
 | Dyno `.csv` (rpm, hp, tq) | Your dyno | Dyno & Drag |
 | `.xdf` and `.bin` | Your own calibration files | XDF / BIN |
+| EFILive calibration or comparison `.csv` export | EFILive Tune, Export | Vehicle tab (Import EFILive export) |
+| `vehicle.json` | Written by the Vehicle tab | Vehicle |
 
 ## Troubleshooting
+
+- **"not an EFILive export"** when importing: the file must start with "EFILive Calibration
+  Export" or "EFILive Comparison Export". Export it again as CSV from EFILive Tune.
+- **"Not readable: check the gear ratios"** in the AI context: fix the ratios on the Shift Points
+  tab first, so the AI sees your inputs.
 
 - **"PyQt6 not installed"** or a blank window: run the installer again, or start the app
   from the launcher so it uses its own environment.
@@ -250,6 +294,14 @@ changed. Keep a copy of the original.
   in the torque column, or fill in every cell.
 
 ## Known limits (this release)
+
+- ECU limits and redline are typed in. TunerToolPro does not read ECU files for them.
+- EFILive datalogs (`.log`) are not read yet. Their format is not confirmed.
+- HP Tuners `.hpt`, `.hpl` and `.HPTdb` files are encrypted and are not read. Use an HP Tuners
+  text or CSV export instead, once that reader exists.
+- The `.ctz` and `.calz` EFILive files are not read. Use the CSV export.
+- The AI cannot search the web. It asks you for missing values.
+- TunerToolPro never writes to a controller. Make each change in EFILive or HP Tuners yourself.
 
 - Without a loaded tune, per-gear delays are the original's fallback values.
 - With the CalcEngine path, a loaded tune only sets the Shift Points inputs. Its per-cell
