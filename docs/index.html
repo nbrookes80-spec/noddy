@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TunerToolPro - Install</title>
+<style>
+  :root { color-scheme: light dark; --bg:#f7f8fb; --fg:#1b1f2a; --muted:#5a6275; --accent:#c2185b; --card:#ffffff; --code:#eef0f6; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#0d0f24; --fg:#f5f7ff; --muted:#aab1e0; --accent:#ff5c9a; --card:#171a38; --code:#222650; } }
+  :root[data-theme="dark"] { --bg:#0d0f24; --fg:#f5f7ff; --muted:#aab1e0; --accent:#ff5c9a; --card:#171a38; --code:#222650; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  main { max-width:820px; margin:0 auto; padding:24px 16px 48px; }
+  h1 { font-size:2rem; margin:.2em 0 .1em; }
+  h2 { margin-top:2em; border-bottom:1px solid var(--code); padding-bottom:.25em; }
+  .lead { color:var(--muted); margin-top:0; }
+  .warn { background:var(--card); border-left:4px solid var(--accent); padding:12px 16px; border-radius:6px; }
+  pre { background:var(--code); padding:12px 14px; border-radius:6px; overflow-x:auto; }
+  code { font-family: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+  a { color:var(--accent); }
+  ol li, ul li { margin:.35em 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>TunerToolPro</h1>
+  <p class="lead">A Linux desktop tool for GM 4L60E and 6L80E transmission calibration work. It calculates; it never writes to a vehicle.</p>
+
+  <p class="warn"><strong>Read before use.</strong> Check every value against your vehicle, converter, cooler and a road test before it goes into a controller. You use this tool at your own risk.</p>
+
+  <h2>Requirements</h2>
+  <ul>
+    <li>Linux with a desktop. Tested on Zorin OS 18.1 (Ubuntu 24.04 base).</li>
+    <li>Python 3.10 or newer, with Tkinter and venv for the installer:
+      <pre><code>sudo apt install python3-tk python3-venv git</code></pre>
+    </li>
+    <li>An internet connection for the first install (PyQt6 and pandas are downloaded).</li>
+  </ul>
+
+  <h2>Install</h2>
+  <ol>
+    <li>Download the code:
+      <pre><code>git clone -b claude/keen-hawking-ite6nw https://github.com/nbrookes80-spec/noddy.git
+cd noddy/"General Motors/Linux-Tuning-Suite"</code></pre>
+    </li>
+    <li>Run the Setup wizard:
+      <pre><code>python3 installer/install_tunertoolpro.py</code></pre>
+    </li>
+    <li>Follow the pages (Welcome, Terms, Install folder, Options, Ready, Installing, Completed). Enabling the AI Assistant is optional and needs an Anthropic API key.</li>
+    <li>Start it from the applications menu, or type <code>tunertoolpro</code> in a terminal.</li>
+  </ol>
+
+  <h2>Uninstall</h2>
+  <p>Choose <strong>Uninstall TunerToolPro</strong> from the applications menu. Your settings are kept unless you tick the box to delete them.</p>
+
+  <h2>What it does</h2>
+  <ul>
+    <li><strong>Shift Points</strong>: upshift, downshift and TCC speeds; TPS x Gear export for VCM Editor or TunerPro; Bluecat .BTC tunes.</li>
+    <li><strong>Vehicle</strong>: vehicle profile, consistency checks, and import of EFILive calibration or comparison CSV exports.</li>
+    <li><strong>Pressure &amp; Timing</strong>, <strong>Dyno &amp; Drag</strong>, <strong>Datalog</strong>, <strong>XDF / BIN</strong>, <strong>BCT Tunes</strong>.</li>
+    <li><strong>AI Assistant</strong> (optional): proposes changes; a change applies only when you press Apply.</li>
+  </ul>
+  <p>It does not connect to a vehicle, does not read HP Tuners encrypted files, and does not read EFILive .calz, .ctz or .log files yet.</p>
+
+  <h2>Guides</h2>
+  <ul>
+    <li><a href="https://github.com/nbrookes80-spec/noddy/blob/claude/keen-hawking-ite6nw/General%20Motors/Linux-Tuning-Suite/README.md">README</a></li>
+    <li><a href="https://github.com/nbrookes80-spec/noddy/blob/claude/keen-hawking-ite6nw/General%20Motors/Linux-Tuning-Suite/docs/INSTALL.md">Full installation guide</a></li>
+    <li><a href="https://github.com/nbrookes80-spec/noddy/blob/claude/keen-hawking-ite6nw/General%20Motors/Linux-Tuning-Suite/docs/USER_GUIDE.md">User guide</a></li>
+    <li><a href="https://github.com/nbrookes80-spec/noddy/blob/claude/keen-hawking-ite6nw/General%20Motors/Linux-Tuning-Suite/docs/COMMANDS.md">Commands</a></li>
+  </ul>
+
+  <h2>Licence</h2>
+  <p>TunerToolPro is free software under the <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License v3.0</a>. See the LICENSE file in the Linux-Tuning-Suite folder.</p>
+</main>
+</body>
+</html>

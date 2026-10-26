@@ -173,8 +173,9 @@ To run it from the source folder without installing, see
 
 ## Licence and attribution
 
-**Licence: to be chosen.** This repository does not yet include a licence file, so no
-one may assume they can reuse or redistribute the code until one is added.
+TunerToolPro is free software: you can redistribute it and/or modify it under the terms of
+the **GNU General Public License v3.0**. See [LICENSE](LICENSE). It is distributed without
+any warranty.
 
 Some of the material used to rebuild the calculations came from third-party sources. It is
 not included in this folder, and its own licences apply to it.
