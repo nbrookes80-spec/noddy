@@ -1,0 +1,101 @@
+9471           0 RESUME                   0
+
+9474           2 LOAD_GLOBAL              0 (INTENT_PRESETS)
+              12 LOAD_ATTR                3 (NULL|self + items)
+              32 CALL                     0
+              40 GET_ITER
+              42 LOAD_FAST_AND_CLEAR      1 (k)
+              44 LOAD_FAST_AND_CLEAR      2 (v)
+              46 SWAP                     3
+              48 BUILD_MAP                0
+              50 SWAP                     2
+         >>   52 FOR_ITER                18 (to 92)
+              56 UNPACK_SEQUENCE          2
+              60 STORE_FAST               1 (k)
+              62 STORE_FAST               2 (v)
+
+9475          64 LOAD_FAST                1 (k)
+              66 LOAD_GLOBAL              4 (BUILTIN_INTENT_NAMES)
+              76 CONTAINS_OP              1
+              78 POP_JUMP_IF_FALSE        5 (to 90)
+              80 LOAD_FAST                2 (v)
+              82 POP_JUMP_IF_NONE         3 (to 90)
+
+9474          84 LOAD_FAST                1 (k)
+              86 LOAD_FAST                2 (v)
+              88 MAP_ADD                  2
+         >>   90 JUMP_BACKWARD           20 (to 52)
+         >>   92 END_FOR
+              94 STORE_FAST               3 (user_only)
+              96 STORE_FAST               1 (k)
+              98 STORE_FAST               2 (v)
+
+9476         100 NOP
+
+9477         102 LOAD_GLOBAL              7 (NULL + open)
+             112 LOAD_FAST                0 (self)
+             114 LOAD_ATTR                8 (_custom_intents_path)
+             134 LOAD_CONST               2 ('w')
+             136 CALL                     2
+             144 BEFORE_WITH
+             146 STORE_FAST               4 (f)
+
+9478         148 LOAD_GLOBAL             11 (NULL + json)
+             158 LOAD_ATTR               12 (dump)
+             178 LOAD_FAST                3 (user_only)
+             180 LOAD_FAST                4 (f)
+             182 LOAD_CONST               3 (2)
+             184 KW_NAMES                 4 (('indent',))
+             186 CALL                     3
+             194 POP_TOP
+
+9477         196 LOAD_CONST               1 (None)
+             198 LOAD_CONST               1 (None)
+             200 LOAD_CONST               1 (None)
+             202 CALL                     2
+             210 POP_TOP
+             212 RETURN_CONST             1 (None)
+         >>  214 SWAP                     2
+             216 POP_TOP
+
+9474         218 SWAP                     3
+             220 STORE_FAST               2 (v)
+             222 STORE_FAST               1 (k)
+             224 RERAISE                  0
+
+9477     >>  226 PUSH_EXC_INFO
+             228 WITH_EXCEPT_START
+             230 POP_JUMP_IF_TRUE         1 (to 234)
+             232 RERAISE                  2
+         >>  234 POP_TOP
+             236 POP_EXCEPT
+             238 POP_TOP
+             240 POP_TOP
+             242 RETURN_CONST             1 (None)
+         >>  244 COPY                     3
+             246 POP_EXCEPT
+             248 RERAISE                  1
+         >>  250 PUSH_EXC_INFO
+
+9479         252 LOAD_GLOBAL             14 (Exception)
+             262 CHECK_EXC_MATCH
+             264 POP_JUMP_IF_FALSE        3 (to 272)
+             266 POP_TOP
+
+9480         268 POP_EXCEPT
+             270 RETURN_CONST             1 (None)
+
+9479     >>  272 RERAISE                  0
+         >>  274 COPY                     3
+             276 POP_EXCEPT
+             278 RERAISE                  1
+ExceptionTable:
+  48 to 92 -> 214 [3]
+  102 to 144 -> 250 [0]
+  146 to 194 -> 226 [1] lasti
+  196 to 210 -> 250 [0]
+  226 to 234 -> 244 [3] lasti
+  236 to 240 -> 250 [0]
+  244 to 248 -> 250 [0]
+  250 to 266 -> 274 [1] lasti
+  272 to 272 -> 274 [1] lasti

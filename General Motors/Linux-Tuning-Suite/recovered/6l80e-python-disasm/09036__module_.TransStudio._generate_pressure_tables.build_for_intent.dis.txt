@@ -1,0 +1,35 @@
+               0 COPY_FREE_VARS           2
+
+9036           2 RESUME                   0
+
+9038           4 LOAD_DEREF               3 (shifts)
+
+9037           6 GET_ITER
+               8 LOAD_FAST_AND_CLEAR      1 (sh)
+              10 SWAP                     2
+              12 BUILD_MAP                0
+              14 SWAP                     2
+         >>   16 FOR_ITER                26 (to 72)
+
+9038          20 STORE_FAST               1 (sh)
+
+9037          22 LOAD_FAST                1 (sh)
+              24 LOAD_GLOBAL              0 (PressureEngine)
+              34 LOAD_ATTR                3 (NULL|self + base_shift_pressure)
+              54 LOAD_FAST                0 (intent_name)
+              56 LOAD_DEREF               2 (max_tq)
+              58 LOAD_FAST                1 (sh)
+              60 CALL                     3
+              68 MAP_ADD                  2
+              70 JUMP_BACKWARD           28 (to 16)
+         >>   72 END_FOR
+              74 SWAP                     2
+              76 STORE_FAST               1 (sh)
+              78 RETURN_VALUE
+         >>   80 SWAP                     2
+              82 POP_TOP
+              84 SWAP                     2
+              86 STORE_FAST               1 (sh)
+              88 RERAISE                  0
+ExceptionTable:
+  12 to 72 -> 80 [2]

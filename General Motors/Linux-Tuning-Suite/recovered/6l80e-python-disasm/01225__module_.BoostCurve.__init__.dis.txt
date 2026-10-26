@@ -1,0 +1,37 @@
+1225           0 RESUME                   0
+
+1227           2 LOAD_GLOBAL              1 (NULL + float)
+              12 LOAD_FAST                1 (spool_rpm)
+              14 CALL                     1
+              22 LOAD_FAST                0 (self)
+              24 STORE_ATTR               1 (spool_rpm)
+
+1228          34 LOAD_GLOBAL              1 (NULL + float)
+              44 LOAD_FAST                2 (peak_psi)
+              46 CALL                     1
+              54 LOAD_FAST                0 (self)
+              56 STORE_ATTR               2 (peak_psi)
+
+1229          66 LOAD_GLOBAL              1 (NULL + float)
+              76 LOAD_FAST                3 (peak_rpm)
+              78 CALL                     1
+              86 LOAD_FAST                0 (self)
+              88 STORE_ATTR               3 (peak_rpm)
+
+1231          98 LOAD_FAST                4 (redline_psi)
+             100 POP_JUMP_IF_NONE        11 (to 124)
+             102 LOAD_GLOBAL              1 (NULL + float)
+             112 LOAD_FAST                4 (redline_psi)
+             114 CALL                     1
+             122 JUMP_FORWARD            11 (to 146)
+         >>  124 LOAD_FAST                0 (self)
+             126 LOAD_ATTR                4 (peak_psi)
+         >>  146 LOAD_FAST                0 (self)
+             148 STORE_ATTR               4 (redline_psi)
+
+1232         158 LOAD_GLOBAL              1 (NULL + float)
+             168 LOAD_FAST                5 (torque_per_psi_pct)
+             170 CALL                     1
+             178 LOAD_FAST                0 (self)
+             180 STORE_ATTR               5 (torque_per_psi_pct)
+             190 RETURN_CONST             0 (None)

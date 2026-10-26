@@ -1,0 +1,51 @@
+1056           0 RESUME                   0
+
+1058           2 LOAD_FAST                0 (s)
+               4 POP_JUMP_IF_TRUE         1 (to 8)
+
+1059           6 RETURN_CONST             1 (0)
+
+1060     >>    8 LOAD_FAST                0 (s)
+              10 LOAD_ATTR                1 (NULL|self + strip)
+              30 CALL                     0
+              38 STORE_FAST               0 (s)
+
+1061          40 NOP
+
+1062          42 LOAD_FAST                0 (s)
+              44 LOAD_ATTR                3 (NULL|self + lower)
+              64 CALL                     0
+              72 LOAD_ATTR                5 (NULL|self + startswith)
+              92 LOAD_CONST               2 ('0x')
+              94 CALL                     1
+             102 POP_JUMP_IF_FALSE       12 (to 128)
+
+1063         104 LOAD_GLOBAL              7 (NULL + int)
+             114 LOAD_FAST                0 (s)
+             116 LOAD_CONST               3 (16)
+             118 CALL                     2
+             126 RETURN_VALUE
+
+1064     >>  128 LOAD_GLOBAL              7 (NULL + int)
+             138 LOAD_FAST                0 (s)
+             140 CALL                     1
+             148 RETURN_VALUE
+         >>  150 PUSH_EXC_INFO
+
+1065         152 LOAD_GLOBAL              8 (ValueError)
+             162 CHECK_EXC_MATCH
+             164 POP_JUMP_IF_FALSE        3 (to 172)
+             166 POP_TOP
+
+1066         168 POP_EXCEPT
+             170 RETURN_CONST             1 (0)
+
+1065     >>  172 RERAISE                  0
+         >>  174 COPY                     3
+             176 POP_EXCEPT
+             178 RERAISE                  1
+ExceptionTable:
+  42 to 124 -> 150 [0]
+  128 to 146 -> 150 [0]
+  150 to 166 -> 174 [1] lasti
+  172 to 172 -> 174 [1] lasti

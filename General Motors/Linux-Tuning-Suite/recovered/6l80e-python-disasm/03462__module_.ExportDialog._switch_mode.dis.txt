@@ -1,0 +1,35 @@
+3462           0 RESUME                   0
+
+3464           2 LOAD_FAST                1 (mode_name)
+               4 LOAD_FAST                0 (self)
+               6 LOAD_ATTR                0 (mode_tables)
+              26 CONTAINS_OP              1
+              28 POP_JUMP_IF_FALSE        1 (to 32)
+
+3465          30 RETURN_CONST             1 (None)
+
+3466     >>   32 LOAD_FAST                1 (mode_name)
+              34 LOAD_FAST                0 (self)
+              36 STORE_ATTR               1 (current_mode)
+
+3467          46 LOAD_FAST                0 (self)
+              48 LOAD_ATTR                0 (mode_tables)
+              68 LOAD_FAST                1 (mode_name)
+              70 BINARY_SUBSCR
+              74 LOAD_FAST                0 (self)
+              76 STORE_ATTR               2 (raw)
+
+3468          86 LOAD_FAST                0 (self)
+              88 LOAD_ATTR                0 (mode_tables)
+             108 LOAD_FAST                1 (mode_name)
+             110 BINARY_SUBSCR
+             114 LOAD_CONST               2 ('result')
+             116 BINARY_SUBSCR
+             120 LOAD_FAST                0 (self)
+             122 STORE_ATTR               3 (calc)
+
+3469         132 LOAD_FAST                0 (self)
+             134 LOAD_ATTR                9 (NULL|self + _refresh_shift_table)
+             154 CALL                     0
+             162 POP_TOP
+             164 RETURN_CONST             1 (None)

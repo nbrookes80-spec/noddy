@@ -1,0 +1,7 @@
+1234           0 RESUME                   0
+
+1236           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (peak_psi)
+              24 LOAD_CONST               1 (0.0)
+              26 COMPARE_OP              26 (<=)
+              30 RETURN_VALUE

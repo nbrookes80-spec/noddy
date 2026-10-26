@@ -1,0 +1,38 @@
+964           0 RESUME                   0
+
+965           2 LOAD_CONST               1 ('scalar')
+              4 LOAD_FAST                0 (self)
+              6 STORE_ATTR               0 (kind)
+
+966          16 LOAD_CONST               2 ('')
+             18 LOAD_FAST                0 (self)
+             20 STORE_ATTR               1 (uid)
+
+967          30 LOAD_CONST               2 ('')
+             32 LOAD_FAST                0 (self)
+             34 STORE_ATTR               2 (title)
+
+968          44 LOAD_CONST               2 ('')
+             46 LOAD_FAST                0 (self)
+             48 STORE_ATTR               3 (category)
+
+969          58 LOAD_CONST               2 ('')
+             60 LOAD_FAST                0 (self)
+             62 STORE_ATTR               4 (units)
+
+970          72 LOAD_CONST               2 ('')
+             74 LOAD_FAST                0 (self)
+             76 STORE_ATTR               5 (description)
+
+971          86 LOAD_CONST               0 (None)
+             88 LOAD_FAST                0 (self)
+             90 STORE_ATTR               6 (x_axis)
+
+972         100 LOAD_CONST               0 (None)
+            102 LOAD_FAST                0 (self)
+            104 STORE_ATTR               7 (y_axis)
+
+973         114 LOAD_CONST               0 (None)
+            116 LOAD_FAST                0 (self)
+            118 STORE_ATTR               8 (z_axis)
+            128 RETURN_CONST             0 (None)

@@ -1,0 +1,88 @@
+1364           0 RESUME                   0
+
+1366           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (is_empty)
+              24 POP_JUMP_IF_FALSE        1 (to 28)
+
+1367          26 RETURN_CONST             1 (0)
+
+1368     >>   28 LOAD_FAST                0 (self)
+              30 LOAD_ATTR                2 (boost_curve)
+              50 POP_JUMP_IF_NONE        22 (to 96)
+              52 LOAD_FAST                0 (self)
+              54 LOAD_ATTR                2 (boost_curve)
+              74 LOAD_ATTR                0 (is_empty)
+              94 POP_JUMP_IF_FALSE       27 (to 150)
+
+1369     >>   96 LOAD_GLOBAL              5 (NULL + max)
+             106 LOAD_FAST                0 (self)
+             108 LOAD_ATTR                6 (points)
+             128 LOAD_CONST               2 (<code object <lambda> at 0x73ab02bfd480, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1369>)
+             130 MAKE_FUNCTION            0
+             132 KW_NAMES                 3 (('key',))
+             134 CALL                     2
+             142 LOAD_CONST               1 (0)
+             144 BINARY_SUBSCR
+             148 RETURN_VALUE
+
+1370     >>  150 LOAD_FAST                0 (self)
+             152 LOAD_ATTR                6 (points)
+             172 LOAD_CONST               1 (0)
+             174 BINARY_SUBSCR
+             178 LOAD_CONST               1 (0)
+             180 BINARY_SUBSCR
+             184 LOAD_FAST                0 (self)
+             186 LOAD_ATTR                6 (points)
+             206 LOAD_CONST               4 (-1)
+             208 BINARY_SUBSCR
+             212 LOAD_CONST               1 (0)
+             214 BINARY_SUBSCR
+             218 STORE_FAST               2 (rmax)
+             220 STORE_FAST               1 (rmin)
+
+1371         222 LOAD_CONST               5 ((0, 0.0))
+             224 UNPACK_SEQUENCE          2
+             228 STORE_FAST               3 (peak_rpm)
+             230 STORE_FAST               4 (peak_v)
+
+1372         232 LOAD_GLOBAL              9 (NULL + range)
+             242 LOAD_CONST               6 (101)
+             244 CALL                     1
+             252 GET_ITER
+         >>  254 FOR_ITER                43 (to 344)
+             258 STORE_FAST               5 (i)
+
+1373         260 LOAD_FAST                1 (rmin)
+             262 LOAD_FAST                2 (rmax)
+             264 LOAD_FAST                1 (rmin)
+             266 BINARY_OP               10 (-)
+             270 LOAD_FAST                5 (i)
+             272 BINARY_OP                5 (*)
+             276 LOAD_CONST               7 (100)
+             278 BINARY_OP               11 (/)
+             282 BINARY_OP                0 (+)
+             286 STORE_FAST               6 (r)
+
+1374         288 LOAD_FAST                0 (self)
+             290 LOAD_ATTR               11 (NULL|self + tq_at)
+             310 LOAD_FAST                6 (r)
+             312 CALL                     1
+             320 STORE_FAST               7 (v)
+
+1375         322 LOAD_FAST                7 (v)
+             324 LOAD_FAST                4 (peak_v)
+             326 COMPARE_OP              68 (>)
+             330 POP_JUMP_IF_TRUE         1 (to 334)
+             332 JUMP_BACKWARD           40 (to 254)
+
+1376     >>  334 LOAD_FAST                7 (v)
+             336 STORE_FAST               4 (peak_v)
+
+1377         338 LOAD_FAST                6 (r)
+             340 STORE_FAST               3 (peak_rpm)
+             342 JUMP_BACKWARD           45 (to 254)
+
+1372     >>  344 END_FOR
+
+1378         346 LOAD_FAST                3 (peak_rpm)
+             348 RETURN_VALUE

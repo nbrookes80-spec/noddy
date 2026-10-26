@@ -1,0 +1,41 @@
+1717           0 RESUME                   0
+
+1718           2 LOAD_GLOBAL              1 (NULL + enumerate)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_ATTR                2 (headers)
+              34 CALL                     1
+              42 GET_ITER
+         >>   44 FOR_ITER                38 (to 124)
+              48 UNPACK_SEQUENCE          2
+              52 STORE_FAST               2 (h_idx)
+              54 STORE_FAST               3 (h)
+
+1719          56 LOAD_FAST                3 (h)
+              58 LOAD_ATTR                5 (NULL|self + lower)
+              78 CALL                     0
+              86 STORE_FAST               4 (h_lc)
+
+1720          88 LOAD_FAST                1 (aliases)
+              90 GET_ITER
+         >>   92 FOR_ITER                12 (to 120)
+              96 STORE_FAST               5 (a)
+
+1721          98 LOAD_FAST                5 (a)
+             100 LOAD_FAST                4 (h_lc)
+             102 CONTAINS_OP              0
+             104 POP_JUMP_IF_TRUE         1 (to 108)
+             106 JUMP_BACKWARD            8 (to 92)
+
+1722     >>  108 LOAD_FAST                2 (h_idx)
+             110 SWAP                     2
+             112 POP_TOP
+             114 SWAP                     2
+             116 POP_TOP
+             118 RETURN_VALUE
+
+1720     >>  120 END_FOR
+             122 JUMP_BACKWARD           40 (to 44)
+
+1718     >>  124 END_FOR
+
+1723         126 RETURN_CONST             0 (None)

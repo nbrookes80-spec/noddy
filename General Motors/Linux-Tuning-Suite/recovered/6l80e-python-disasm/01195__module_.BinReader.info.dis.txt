@@ -1,0 +1,87 @@
+1195           0 RESUME                   0
+
+1196           2 LOAD_CONST               1 ('BIN size: ')
+               4 LOAD_FAST                0 (self)
+               6 LOAD_ATTR                0 (size)
+              26 FORMAT_VALUE             0
+              28 LOAD_CONST               2 (' bytes (')
+              30 LOAD_FAST                0 (self)
+              32 LOAD_ATTR                0 (size)
+              52 LOAD_CONST               3 (1024)
+              54 BINARY_OP                2 (//)
+              58 FORMAT_VALUE             0
+              60 LOAD_CONST               4 (' KB)')
+              62 BUILD_STRING             5
+              64 STORE_FAST               1 (s)
+
+1197          66 LOAD_FAST                0 (self)
+              68 LOAD_ATTR                2 (xdf)
+              88 POP_JUMP_IF_NONE       154 (to 398)
+
+1198          90 LOAD_FAST                1 (s)
+              92 LOAD_CONST               5 ('\nXDF: ')
+              94 LOAD_FAST                0 (self)
+              96 LOAD_ATTR                2 (xdf)
+             116 LOAD_ATTR                4 (title)
+             136 FORMAT_VALUE             0
+             138 BUILD_STRING             2
+             140 BINARY_OP               13 (+=)
+             144 STORE_FAST               1 (s)
+
+1199         146 LOAD_FAST                1 (s)
+             148 LOAD_CONST               6 ('\nParameters: ')
+             150 LOAD_GLOBAL              7 (NULL + len)
+             160 LOAD_FAST                0 (self)
+             162 LOAD_ATTR                2 (xdf)
+             182 LOAD_ATTR                8 (parameters)
+             202 CALL                     1
+             210 FORMAT_VALUE             0
+             212 BUILD_STRING             2
+             214 BINARY_OP               13 (+=)
+             218 STORE_FAST               1 (s)
+
+1200         220 LOAD_FAST                0 (self)
+             222 LOAD_ATTR                2 (xdf)
+             242 LOAD_ATTR               11 (NULL|self + categories)
+             262 CALL                     0
+             270 STORE_FAST               2 (cats)
+
+1201         272 LOAD_FAST                2 (cats)
+             274 POP_JUMP_IF_FALSE       61 (to 398)
+
+1202         276 LOAD_FAST                1 (s)
+             278 LOAD_CONST               7 ('\nCategories: ')
+             280 LOAD_CONST               8 (', ')
+             282 LOAD_ATTR               13 (NULL|self + join)
+             302 LOAD_FAST                2 (cats)
+             304 LOAD_CONST               0 (None)
+             306 LOAD_CONST               9 (6)
+             308 BINARY_SLICE
+             310 CALL                     1
+             318 FORMAT_VALUE             0
+             320 BUILD_STRING             2
+
+1203         322 LOAD_GLOBAL              7 (NULL + len)
+             332 LOAD_FAST                2 (cats)
+             334 CALL                     1
+             342 LOAD_CONST               9 (6)
+             344 COMPARE_OP              68 (>)
+             348 POP_JUMP_IF_FALSE       18 (to 386)
+             350 LOAD_CONST              10 (' (+')
+             352 LOAD_GLOBAL              7 (NULL + len)
+             362 LOAD_FAST                2 (cats)
+             364 CALL                     1
+             372 LOAD_CONST               9 (6)
+             374 BINARY_OP               10 (-)
+             378 FORMAT_VALUE             0
+             380 LOAD_CONST              11 (' more)')
+             382 BUILD_STRING             3
+             384 JUMP_FORWARD             1 (to 388)
+         >>  386 LOAD_CONST              12 ('')
+
+1202     >>  388 BINARY_OP                0 (+)
+             392 BINARY_OP               13 (+=)
+             396 STORE_FAST               1 (s)
+
+1204     >>  398 LOAD_FAST                1 (s)
+             400 RETURN_VALUE

@@ -1,0 +1,25 @@
+3836           0 RESUME                   0
+
+3838           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (stall_lock)
+              24 LOAD_ATTR                3 (NULL|self + isChecked)
+              44 CALL                     0
+
+3839          52 LOAD_FAST                0 (self)
+              54 LOAD_ATTR                4 (init_lock)
+              74 LOAD_ATTR                3 (NULL|self + isChecked)
+              94 CALL                     0
+
+3840         102 LOAD_FAST                0 (self)
+             104 LOAD_ATTR                6 (wot_4th_4l60)
+             124 LOAD_ATTR                3 (NULL|self + isChecked)
+             144 CALL                     0
+
+3841         152 LOAD_FAST                0 (self)
+             154 LOAD_ATTR                8 (no_2ct_6l)
+             174 LOAD_ATTR                3 (NULL|self + isChecked)
+             194 CALL                     0
+
+3837         202 LOAD_CONST               1 (('stall_lock', 'init_lock', 'wot_4th_4l60', 'no_2ct_6l'))
+             204 BUILD_CONST_KEY_MAP      4
+             206 RETURN_VALUE

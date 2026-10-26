@@ -1,0 +1,21 @@
+1931           0 RESUME                   0
+
+1934           2 LOAD_FAST                1 (gear_idx)
+               4 LOAD_GLOBAL              1 (NULL + len)
+              14 LOAD_FAST                0 (self)
+              16 LOAD_ATTR                2 (GEAR_SLIP_PCT)
+              36 CALL                     1
+              44 COMPARE_OP              92 (>=)
+              48 POP_JUMP_IF_FALSE       15 (to 80)
+
+1935          50 LOAD_FAST                0 (self)
+              52 LOAD_ATTR                2 (GEAR_SLIP_PCT)
+              72 LOAD_CONST               1 (-1)
+              74 BINARY_SUBSCR
+              78 RETURN_VALUE
+
+1936     >>   80 LOAD_FAST                0 (self)
+              82 LOAD_ATTR                2 (GEAR_SLIP_PCT)
+             102 LOAD_FAST                1 (gear_idx)
+             104 BINARY_SUBSCR
+             108 RETURN_VALUE

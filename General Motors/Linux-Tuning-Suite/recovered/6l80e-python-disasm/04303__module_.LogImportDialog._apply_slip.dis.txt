@@ -1,0 +1,103 @@
+4303           0 RESUME                   0
+
+4306           2 LOAD_GLOBAL              1 (NULL + hasattr)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_CONST               1 ('_measured_slip')
+              16 CALL                     2
+              24 POP_JUMP_IF_FALSE       12 (to 50)
+              26 LOAD_FAST                0 (self)
+              28 LOAD_ATTR                2 (_measured_slip)
+              48 POP_JUMP_IF_NOT_NONE     1 (to 52)
+
+4307     >>   50 RETURN_CONST             2 (None)
+
+4309     >>   52 LOAD_CONST               3 (1000.0)
+              54 LOAD_FAST                0 (self)
+              56 LOAD_ATTR                2 (_measured_slip)
+              76 LOAD_CONST               4 (0.5882352941176471)
+              78 BINARY_OP                8 (**)
+              82 BINARY_OP                5 (*)
+              86 STORE_FAST               1 (new_stall)
+
+4310          88 LOAD_GLOBAL              5 (NULL + max)
+              98 LOAD_CONST               5 (1200)
+             100 LOAD_GLOBAL              7 (NULL + min)
+             110 LOAD_CONST               6 (5500)
+             112 LOAD_FAST                1 (new_stall)
+             114 CALL                     2
+             122 CALL                     2
+             130 STORE_FAST               1 (new_stall)
+
+4311         132 LOAD_FAST                0 (self)
+             134 LOAD_ATTR                9 (NULL|self + parent)
+             154 CALL                     0
+             162 STORE_FAST               2 (parent)
+
+4312         164 LOAD_GLOBAL              1 (NULL + hasattr)
+             174 LOAD_FAST                2 (parent)
+             176 LOAD_CONST               7 ('stall')
+             178 CALL                     2
+             186 POP_JUMP_IF_FALSE      179 (to 546)
+
+4313         188 LOAD_FAST                2 (parent)
+             190 LOAD_ATTR               10 (stall)
+             210 LOAD_ATTR               13 (NULL|self + setValue)
+             230 LOAD_GLOBAL             15 (NULL + int)
+             240 LOAD_GLOBAL             17 (NULL + round)
+             250 LOAD_FAST                1 (new_stall)
+             252 LOAD_CONST               8 (50)
+             254 BINARY_OP               11 (/)
+             258 CALL                     1
+             266 LOAD_CONST               8 (50)
+             268 BINARY_OP                5 (*)
+             272 CALL                     1
+             280 CALL                     1
+             288 POP_TOP
+
+4314         290 LOAD_FAST                2 (parent)
+             292 LOAD_ATTR               19 (NULL|self + statusBar)
+             312 CALL                     0
+             320 LOAD_ATTR               21 (NULL|self + showMessage)
+
+4315         340 LOAD_CONST               9 ('Stall RPM updated to ')
+             342 LOAD_FAST                2 (parent)
+             344 LOAD_ATTR               10 (stall)
+             364 LOAD_ATTR               23 (NULL|self + value)
+             384 CALL                     0
+             392 LOAD_CONST              10 ('.0f')
+             394 FORMAT_VALUE             4 (with format)
+             396 LOAD_CONST              11 (' to match measured WOT slip of ')
+
+4316         398 LOAD_FAST                0 (self)
+             400 LOAD_ATTR                2 (_measured_slip)
+             420 LOAD_CONST              12 ('.1f')
+             422 FORMAT_VALUE             4 (with format)
+             424 LOAD_CONST              13 ('%')
+
+4315         426 BUILD_STRING             5
+
+4316         428 LOAD_CONST              14 (6000)
+
+4314         430 CALL                     2
+             438 POP_TOP
+
+4318         440 LOAD_GLOBAL             25 (NULL + QMessageBox)
+             450 LOAD_ATTR               26 (information)
+             470 LOAD_FAST                0 (self)
+             472 LOAD_CONST              15 ('Applied')
+
+4319         474 LOAD_CONST              16 ('Stall RPM set to ')
+             476 LOAD_FAST                2 (parent)
+             478 LOAD_ATTR               10 (stall)
+             498 LOAD_ATTR               23 (NULL|self + value)
+             518 CALL                     0
+             526 LOAD_CONST              10 ('.0f')
+             528 FORMAT_VALUE             4 (with format)
+             530 LOAD_CONST              17 ('.\nRe-run Calculate (F5) to update tables with new stall value.')
+             532 BUILD_STRING             3
+
+4318         534 CALL                     3
+             542 POP_TOP
+             544 RETURN_CONST             2 (None)
+
+4312     >>  546 RETURN_CONST             2 (None)

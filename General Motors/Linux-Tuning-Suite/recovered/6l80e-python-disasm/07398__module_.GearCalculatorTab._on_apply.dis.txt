@@ -1,0 +1,21 @@
+7398           0 RESUME                   0
+
+7399           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (selected_axle)
+              24 POP_JUMP_IF_NOT_NONE     1 (to 28)
+
+7400          26 RETURN_CONST             0 (None)
+
+7401     >>   28 LOAD_FAST                0 (self)
+              30 LOAD_ATTR                2 (apply_axle_callback)
+              50 POP_JUMP_IF_FALSE       28 (to 108)
+
+7402          52 LOAD_FAST                0 (self)
+              54 LOAD_ATTR                3 (NULL|self + apply_axle_callback)
+              74 LOAD_FAST                0 (self)
+              76 LOAD_ATTR                0 (selected_axle)
+              96 CALL                     1
+             104 POP_TOP
+             106 RETURN_CONST             0 (None)
+
+7401     >>  108 RETURN_CONST             0 (None)

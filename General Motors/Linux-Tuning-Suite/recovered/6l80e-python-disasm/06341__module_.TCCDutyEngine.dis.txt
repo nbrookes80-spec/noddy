@@ -1,0 +1,18 @@
+6341           0 RESUME                   0
+               2 LOAD_NAME                0 (__name__)
+               4 STORE_NAME               1 (__module__)
+               6 LOAD_CONST               0 ('TCCDutyEngine')
+               8 STORE_NAME               2 (__qualname__)
+
+6342          10 LOAD_CONST               1 ('Generate TCC DC Maximum table.\n    Output: 2D list [5 temp rows][17 line PSI cols] -> % duty cycle.')
+              12 STORE_NAME               3 (__doc__)
+
+6345          14 LOAD_NAME                4 (staticmethod)
+
+6346          16 LOAD_CONST               2 (<code object max_duty_cycle at 0x30c482d0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6345>)
+              18 MAKE_FUNCTION            0
+
+6345          20 CALL                     0
+
+6346          28 STORE_NAME               5 (max_duty_cycle)
+              30 RETURN_CONST             3 (None)

@@ -1,0 +1,57 @@
+7388           0 RESUME                   0
+
+7389           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (table)
+              24 LOAD_ATTR                3 (NULL|self + selectionModel)
+              44 CALL                     0
+              52 LOAD_ATTR                5 (NULL|self + selectedRows)
+              72 CALL                     0
+              80 STORE_FAST               1 (rows)
+
+7390          82 LOAD_FAST                1 (rows)
+              84 POP_JUMP_IF_TRUE         1 (to 88)
+
+7391          86 RETURN_CONST             0 (None)
+
+7392     >>   88 LOAD_FAST                1 (rows)
+              90 LOAD_CONST               1 (0)
+              92 BINARY_SUBSCR
+              96 LOAD_ATTR                7 (NULL|self + row)
+             116 CALL                     0
+             124 STORE_FAST               2 (idx)
+
+7393         126 LOAD_CONST               1 (0)
+             128 LOAD_FAST                2 (idx)
+             130 SWAP                     2
+             132 COPY                     2
+             134 COMPARE_OP              26 (<=)
+             138 POP_JUMP_IF_FALSE       18 (to 176)
+             140 LOAD_GLOBAL              9 (NULL + len)
+             150 LOAD_GLOBAL             10 (COMMON_AXLE_RATIOS)
+             160 CALL                     1
+             168 COMPARE_OP               2 (<)
+             172 POP_JUMP_IF_FALSE       71 (to 316)
+             174 JUMP_FORWARD             2 (to 180)
+         >>  176 POP_TOP
+             178 RETURN_CONST             0 (None)
+
+7394     >>  180 LOAD_GLOBAL             10 (COMMON_AXLE_RATIOS)
+             190 LOAD_FAST                2 (idx)
+             192 BINARY_SUBSCR
+             196 LOAD_FAST                0 (self)
+             198 STORE_ATTR               6 (selected_axle)
+
+7395         208 LOAD_FAST                0 (self)
+             210 LOAD_ATTR               12 (selected_axle)
+             230 LOAD_FAST                0 (self)
+             232 LOAD_ATTR               14 (plot)
+             252 STORE_ATTR               8 (axle)
+
+7396         262 LOAD_FAST                0 (self)
+             264 LOAD_ATTR               14 (plot)
+             284 LOAD_ATTR               19 (NULL|self + update)
+             304 CALL                     0
+             312 POP_TOP
+             314 RETURN_CONST             0 (None)
+
+7393     >>  316 RETURN_CONST             0 (None)

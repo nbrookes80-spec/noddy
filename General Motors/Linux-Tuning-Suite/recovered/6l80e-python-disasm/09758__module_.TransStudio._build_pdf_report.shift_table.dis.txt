@@ -1,0 +1,203 @@
+               0 COPY_FREE_VARS           7
+
+9758           2 RESUME                   0
+
+9759           4 LOAD_DEREF              18 (story)
+               6 LOAD_ATTR                1 (NULL|self + append)
+              26 PUSH_NULL
+              28 LOAD_DEREF              13 (PageBreak)
+              30 CALL                     0
+              38 CALL                     1
+              46 POP_TOP
+
+9760          48 LOAD_DEREF              18 (story)
+              50 LOAD_ATTR                1 (NULL|self + append)
+              70 PUSH_NULL
+              72 LOAD_DEREF              14 (Paragraph)
+              74 LOAD_FAST                0 (title)
+              76 LOAD_DEREF              19 (styles)
+              78 LOAD_CONST               1 ('H2')
+              80 BINARY_SUBSCR
+              84 CALL                     2
+              92 CALL                     1
+             100 POP_TOP
+
+9761         102 LOAD_CONST               2 ('')
+             104 BUILD_LIST               1
+             106 LOAD_GLOBAL              3 (NULL + range)
+             116 LOAD_GLOBAL              4 (TPS_COLS)
+             126 CALL                     1
+             134 GET_ITER
+             136 LOAD_FAST_AND_CLEAR      4 (c)
+             138 SWAP                     2
+             140 BUILD_LIST               0
+             142 SWAP                     2
+         >>  144 FOR_ITER                13 (to 174)
+             148 STORE_FAST               4 (c)
+             150 LOAD_FAST                4 (c)
+             152 LOAD_GLOBAL              6 (TPS_STEP)
+             162 BINARY_OP                5 (*)
+             166 LOAD_CONST               3 ('.1f')
+             168 FORMAT_VALUE             4 (with format)
+             170 LIST_APPEND              2
+             172 JUMP_BACKWARD           15 (to 144)
+         >>  174 END_FOR
+             176 SWAP                     2
+             178 STORE_FAST               4 (c)
+             180 BINARY_OP                0 (+)
+             184 STORE_FAST               5 (tps_hdr)
+
+9762         186 LOAD_FAST                5 (tps_hdr)
+             188 BUILD_LIST               1
+             190 STORE_FAST               6 (tbl_data)
+
+9763         192 LOAD_GLOBAL              9 (NULL + enumerate)
+             202 LOAD_FAST                1 (data)
+             204 CALL                     1
+             212 GET_ITER
+         >>  214 FOR_ITER                77 (to 372)
+             218 UNPACK_SEQUENCE          2
+             222 STORE_FAST               7 (r)
+             224 STORE_FAST               8 (row)
+
+9764         226 LOAD_FAST                2 (row_labels)
+             228 LOAD_FAST                7 (r)
+             230 BINARY_SUBSCR
+             234 BUILD_LIST               1
+             236 STORE_FAST               9 (cells)
+
+9765         238 LOAD_FAST                8 (row)
+             240 GET_ITER
+         >>  242 FOR_ITER                44 (to 334)
+             246 STORE_FAST              10 (v)
+
+9766         248 LOAD_FAST               10 (v)
+             250 LOAD_CONST               4 (254.0)
+             252 COMPARE_OP              92 (>=)
+             256 POP_JUMP_IF_FALSE       18 (to 294)
+
+9767         258 LOAD_FAST                9 (cells)
+             260 LOAD_ATTR                1 (NULL|self + append)
+             280 LOAD_CONST               5 ('—')
+             282 CALL                     1
+             290 POP_TOP
+             292 JUMP_BACKWARD           26 (to 242)
+
+9769     >>  294 LOAD_FAST                9 (cells)
+             296 LOAD_ATTR                1 (NULL|self + append)
+             316 LOAD_FAST               10 (v)
+             318 LOAD_CONST               3 ('.1f')
+             320 FORMAT_VALUE             4 (with format)
+             322 CALL                     1
+             330 POP_TOP
+             332 JUMP_BACKWARD           46 (to 242)
+
+9765     >>  334 END_FOR
+
+9770         336 LOAD_FAST                6 (tbl_data)
+             338 LOAD_ATTR                1 (NULL|self + append)
+             358 LOAD_FAST                9 (cells)
+             360 CALL                     1
+             368 POP_TOP
+             370 JUMP_BACKWARD           79 (to 214)
+
+9763     >>  372 END_FOR
+
+9771         374 PUSH_NULL
+             376 LOAD_DEREF              15 (Table)
+             378 LOAD_FAST                6 (tbl_data)
+             380 LOAD_CONST               6 (1)
+             382 KW_NAMES                 7 (('repeatRows',))
+             384 CALL                     2
+             392 STORE_FAST              11 (t)
+
+9773         394 LOAD_CONST               8 (('FONTSIZE', (0, 0), (-1, -1), 7))
+
+9774         396 LOAD_CONST               9 (('FONT', (0, 0), (-1, 0), 'Helvetica-Bold'))
+
+9775         398 LOAD_CONST              10 (('FONT', (0, 0), (0, -1), 'Helvetica-Bold'))
+
+9776         400 LOAD_CONST              11 ('BACKGROUND')
+             402 LOAD_CONST              12 ((0, 0))
+             404 LOAD_CONST              13 ((-1, 0))
+             406 LOAD_DEREF              17 (rl)
+             408 LOAD_ATTR               11 (NULL|self + HexColor)
+             428 LOAD_CONST              14 ('#404060')
+             430 CALL                     1
+             438 BUILD_TUPLE              4
+
+9777         440 LOAD_CONST              11 ('BACKGROUND')
+             442 LOAD_CONST              12 ((0, 0))
+             444 LOAD_CONST              15 ((0, -1))
+             446 LOAD_DEREF              17 (rl)
+             448 LOAD_ATTR               11 (NULL|self + HexColor)
+             468 LOAD_CONST              14 ('#404060')
+             470 CALL                     1
+             478 BUILD_TUPLE              4
+
+9778         480 LOAD_CONST              16 ('TEXTCOLOR')
+             482 LOAD_CONST              12 ((0, 0))
+             484 LOAD_CONST              13 ((-1, 0))
+             486 LOAD_DEREF              17 (rl)
+             488 LOAD_ATTR               12 (white)
+             508 BUILD_TUPLE              4
+
+9779         510 LOAD_CONST              16 ('TEXTCOLOR')
+             512 LOAD_CONST              12 ((0, 0))
+             514 LOAD_CONST              15 ((0, -1))
+             516 LOAD_DEREF              17 (rl)
+             518 LOAD_ATTR               12 (white)
+             538 BUILD_TUPLE              4
+
+9780         540 LOAD_CONST              17 (('ALIGN', (1, 1), (-1, -1), 'CENTER'))
+
+9781         542 LOAD_CONST              18 (('ALIGN', (0, 0), (-1, 0), 'CENTER'))
+
+9782         544 LOAD_CONST              19 (('VALIGN', (0, 0), (-1, -1), 'MIDDLE'))
+
+9783         546 LOAD_CONST              20 ('INNERGRID')
+             548 LOAD_CONST              12 ((0, 0))
+             550 LOAD_CONST              21 ((-1, -1))
+             552 LOAD_CONST              22 (0.25)
+             554 LOAD_DEREF              17 (rl)
+             556 LOAD_ATTR               14 (grey)
+             576 BUILD_TUPLE              5
+
+9784         578 LOAD_CONST              23 ('BOX')
+             580 LOAD_CONST              12 ((0, 0))
+             582 LOAD_CONST              21 ((-1, -1))
+             584 LOAD_CONST              24 (0.5)
+             586 LOAD_DEREF              17 (rl)
+             588 LOAD_ATTR               14 (grey)
+             608 BUILD_TUPLE              5
+
+9785         610 LOAD_CONST              25 (('TOPPADDING', (0, 0), (-1, -1), 2))
+
+9786         612 LOAD_CONST              26 (('BOTTOMPADDING', (0, 0), (-1, -1), 2))
+
+9772         614 BUILD_LIST              14
+             616 STORE_FAST              12 (style)
+
+9788         618 LOAD_FAST               11 (t)
+             620 LOAD_ATTR               17 (NULL|self + setStyle)
+             640 PUSH_NULL
+             642 LOAD_DEREF              16 (TableStyle)
+             644 LOAD_FAST               12 (style)
+             646 CALL                     1
+             654 CALL                     1
+             662 POP_TOP
+
+9789         664 LOAD_DEREF              18 (story)
+             666 LOAD_ATTR                1 (NULL|self + append)
+             686 LOAD_FAST               11 (t)
+             688 CALL                     1
+             696 POP_TOP
+             698 RETURN_CONST             0 (None)
+         >>  700 SWAP                     2
+             702 POP_TOP
+
+9761         704 SWAP                     2
+             706 STORE_FAST               4 (c)
+             708 RERAISE                  0
+ExceptionTable:
+  140 to 174 -> 700 [3]

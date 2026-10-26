@@ -1,0 +1,58 @@
+8826           0 RESUME                   0
+
+8827           2 LOAD_FAST                1 (checked)
+               4 POP_JUMP_IF_TRUE         1 (to 8)
+
+8828           6 RETURN_CONST             0 (None)
+
+8829     >>    8 LOAD_FAST                0 (self)
+              10 LOAD_ATTR                0 (shudder_off_rb)
+              30 LOAD_ATTR                3 (NULL|self + isChecked)
+              50 CALL                     0
+              58 POP_JUMP_IF_FALSE        8 (to 76)
+
+8830          60 LOAD_CONST               1 ('Off')
+              62 LOAD_FAST                0 (self)
+              64 STORE_ATTR               2 (_shudder_fix_level)
+              74 JUMP_FORWARD           103 (to 282)
+
+8831     >>   76 LOAD_FAST                0 (self)
+              78 LOAD_ATTR                6 (shudder_mild_rb)
+              98 LOAD_ATTR                3 (NULL|self + isChecked)
+             118 CALL                     0
+             126 POP_JUMP_IF_FALSE        8 (to 144)
+
+8832         128 LOAD_CONST               2 ('Mild')
+             130 LOAD_FAST                0 (self)
+             132 STORE_ATTR               2 (_shudder_fix_level)
+             142 JUMP_FORWARD            69 (to 282)
+
+8833     >>  144 LOAD_FAST                0 (self)
+             146 LOAD_ATTR                8 (shudder_moderate_rb)
+             166 LOAD_ATTR                3 (NULL|self + isChecked)
+             186 CALL                     0
+             194 POP_JUMP_IF_FALSE        8 (to 212)
+
+8834         196 LOAD_CONST               3 ('Moderate')
+             198 LOAD_FAST                0 (self)
+             200 STORE_ATTR               2 (_shudder_fix_level)
+             210 JUMP_FORWARD            35 (to 282)
+
+8835     >>  212 LOAD_FAST                0 (self)
+             214 LOAD_ATTR               10 (shudder_aggressive_rb)
+             234 LOAD_ATTR                3 (NULL|self + isChecked)
+             254 CALL                     0
+             262 POP_JUMP_IF_FALSE        8 (to 280)
+
+8836         264 LOAD_CONST               4 ('Aggressive')
+             266 LOAD_FAST                0 (self)
+             268 STORE_ATTR               2 (_shudder_fix_level)
+             278 JUMP_FORWARD             1 (to 282)
+
+8838     >>  280 RETURN_CONST             0 (None)
+
+8839     >>  282 LOAD_FAST                0 (self)
+             284 LOAD_ATTR               13 (NULL|self + _apply_shudder_fix)
+             304 CALL                     0
+             312 POP_TOP
+             314 RETURN_CONST             0 (None)

@@ -1,0 +1,6 @@
+6691           0 RESUME                   0
+
+6693           2 LOAD_FAST                1 (cb)
+               4 LOAD_FAST                0 (self)
+               6 STORE_ATTR               0 (_intent_override_cb)
+              16 RETURN_CONST             1 (None)

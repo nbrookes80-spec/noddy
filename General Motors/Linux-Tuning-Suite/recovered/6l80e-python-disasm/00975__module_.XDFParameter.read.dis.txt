@@ -1,0 +1,164 @@
+975           0 RESUME                   0
+
+977           2 LOAD_FAST                0 (self)
+              4 LOAD_ATTR                0 (kind)
+             24 LOAD_CONST               1 ('scalar')
+             26 COMPARE_OP              40 (==)
+             30 POP_JUMP_IF_FALSE       62 (to 156)
+
+979          32 LOAD_FAST                0 (self)
+             34 LOAD_ATTR                2 (z_axis)
+             54 POP_JUMP_IF_FALSE       48 (to 152)
+
+978          56 LOAD_FAST                0 (self)
+             58 LOAD_ATTR                2 (z_axis)
+             78 LOAD_ATTR                5 (NULL|self + _read_one)
+             98 LOAD_FAST                1 (bin_data)
+            100 LOAD_FAST                0 (self)
+            102 LOAD_ATTR                2 (z_axis)
+            122 LOAD_ATTR                6 (address)
+            142 CALL                     2
+            150 RETURN_VALUE
+
+979     >>  152 LOAD_CONST               2 (0.0)
+
+978         154 RETURN_VALUE
+
+980     >>  156 BUILD_MAP                0
+            158 STORE_FAST               2 (result)
+
+981         160 LOAD_FAST                0 (self)
+            162 LOAD_ATTR                8 (x_axis)
+            182 POP_JUMP_IF_FALSE       76 (to 336)
+
+982         184 LOAD_FAST                0 (self)
+            186 LOAD_ATTR                8 (x_axis)
+            206 LOAD_ATTR               11 (NULL|self + read_table)
+            226 LOAD_FAST                1 (bin_data)
+            228 CALL                     1
+            236 STORE_FAST               3 (xt)
+
+983         238 LOAD_FAST                3 (xt)
+            240 POP_JUMP_IF_FALSE       19 (to 280)
+            242 LOAD_GLOBAL             13 (NULL + len)
+            252 LOAD_FAST                3 (xt)
+            254 CALL                     1
+            262 LOAD_CONST               3 (1)
+            264 COMPARE_OP              40 (==)
+            268 POP_JUMP_IF_FALSE        5 (to 280)
+            270 LOAD_FAST                3 (xt)
+            272 LOAD_CONST               4 (0)
+            274 BINARY_SUBSCR
+            278 JUMP_FORWARD            24 (to 328)
+
+984     >>  280 LOAD_FAST                3 (xt)
+            282 GET_ITER
+            284 LOAD_FAST_AND_CLEAR      4 (row)
+            286 LOAD_FAST_AND_CLEAR      5 (v)
+            288 SWAP                     3
+            290 BUILD_LIST               0
+            292 SWAP                     2
+        >>  294 FOR_ITER                11 (to 320)
+            298 STORE_FAST               4 (row)
+            300 LOAD_FAST                4 (row)
+            302 GET_ITER
+        >>  304 FOR_ITER                 4 (to 316)
+            308 STORE_FAST               5 (v)
+            310 LOAD_FAST                5 (v)
+            312 LIST_APPEND              3
+            314 JUMP_BACKWARD            6 (to 304)
+        >>  316 END_FOR
+            318 JUMP_BACKWARD           13 (to 294)
+        >>  320 END_FOR
+            322 SWAP                     3
+            324 STORE_FAST               5 (v)
+            326 STORE_FAST               4 (row)
+
+983     >>  328 LOAD_FAST                2 (result)
+            330 LOAD_CONST               5 ('x_breakpoints')
+            332 STORE_SUBSCR
+
+985     >>  336 LOAD_FAST                0 (self)
+            338 LOAD_ATTR               14 (y_axis)
+            358 POP_JUMP_IF_FALSE       76 (to 512)
+
+986         360 LOAD_FAST                0 (self)
+            362 LOAD_ATTR               14 (y_axis)
+            382 LOAD_ATTR               11 (NULL|self + read_table)
+            402 LOAD_FAST                1 (bin_data)
+            404 CALL                     1
+            412 STORE_FAST               6 (yt)
+
+987         414 LOAD_FAST                6 (yt)
+            416 POP_JUMP_IF_FALSE       19 (to 456)
+            418 LOAD_GLOBAL             13 (NULL + len)
+            428 LOAD_FAST                6 (yt)
+            430 CALL                     1
+            438 LOAD_CONST               3 (1)
+            440 COMPARE_OP              40 (==)
+            444 POP_JUMP_IF_FALSE        5 (to 456)
+            446 LOAD_FAST                6 (yt)
+            448 LOAD_CONST               4 (0)
+            450 BINARY_SUBSCR
+            454 JUMP_FORWARD            24 (to 504)
+
+988     >>  456 LOAD_FAST                6 (yt)
+            458 GET_ITER
+            460 LOAD_FAST_AND_CLEAR      4 (row)
+            462 LOAD_FAST_AND_CLEAR      5 (v)
+            464 SWAP                     3
+            466 BUILD_LIST               0
+            468 SWAP                     2
+        >>  470 FOR_ITER                11 (to 496)
+            474 STORE_FAST               4 (row)
+            476 LOAD_FAST                4 (row)
+            478 GET_ITER
+        >>  480 FOR_ITER                 4 (to 492)
+            484 STORE_FAST               5 (v)
+            486 LOAD_FAST                5 (v)
+            488 LIST_APPEND              3
+            490 JUMP_BACKWARD            6 (to 480)
+        >>  492 END_FOR
+            494 JUMP_BACKWARD           13 (to 470)
+        >>  496 END_FOR
+            498 SWAP                     3
+            500 STORE_FAST               5 (v)
+            502 STORE_FAST               4 (row)
+
+987     >>  504 LOAD_FAST                2 (result)
+            506 LOAD_CONST               6 ('y_breakpoints')
+            508 STORE_SUBSCR
+
+989     >>  512 LOAD_FAST                0 (self)
+            514 LOAD_ATTR                2 (z_axis)
+            534 POP_JUMP_IF_FALSE       27 (to 590)
+            536 LOAD_FAST                0 (self)
+            538 LOAD_ATTR                2 (z_axis)
+            558 LOAD_ATTR               11 (NULL|self + read_table)
+            578 LOAD_FAST                1 (bin_data)
+            580 CALL                     1
+            588 JUMP_FORWARD             1 (to 592)
+        >>  590 BUILD_LIST               0
+        >>  592 LOAD_FAST                2 (result)
+            594 LOAD_CONST               7 ('z')
+            596 STORE_SUBSCR
+
+990         600 LOAD_FAST                2 (result)
+            602 RETURN_VALUE
+        >>  604 SWAP                     2
+            606 POP_TOP
+
+984         608 SWAP                     3
+            610 STORE_FAST               5 (v)
+            612 STORE_FAST               4 (row)
+            614 RERAISE                  0
+        >>  616 SWAP                     2
+            618 POP_TOP
+
+988         620 SWAP                     3
+            622 STORE_FAST               5 (v)
+            624 STORE_FAST               4 (row)
+            626 RERAISE                  0
+ExceptionTable:
+  290 to 320 -> 604 [3]
+  466 to 496 -> 616 [3]

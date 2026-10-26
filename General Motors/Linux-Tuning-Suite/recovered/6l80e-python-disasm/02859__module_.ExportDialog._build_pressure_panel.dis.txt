@@ -1,0 +1,522 @@
+2859           0 RESUME                   0
+
+2860           2 LOAD_GLOBAL              1 (NULL + QVBoxLayout)
+              12 CALL                     0
+              20 STORE_FAST               1 (v)
+
+2861          22 LOAD_GLOBAL              3 (NULL + QGroupBox)
+              32 LOAD_CONST               1 ('TCM Pressure Tables')
+              34 CALL                     1
+              42 STORE_FAST               2 (gb)
+
+2862          44 LOAD_GLOBAL              1 (NULL + QVBoxLayout)
+              54 CALL                     0
+              62 STORE_FAST               3 (inner)
+
+2867          64 LOAD_GLOBAL              5 (NULL + QHBoxLayout)
+              74 CALL                     0
+              82 STORE_FAST               4 (top_controls)
+
+2868          84 LOAD_FAST                4 (top_controls)
+              86 LOAD_ATTR                7 (NULL|self + addWidget)
+             106 LOAD_GLOBAL              9 (NULL + QLabel)
+             116 LOAD_CONST               2 ('Table:')
+             118 CALL                     1
+             126 CALL                     1
+             134 POP_TOP
+
+2869         136 LOAD_GLOBAL             11 (NULL + QComboBox)
+             146 CALL                     0
+             154 LOAD_FAST                0 (self)
+             156 STORE_ATTR               6 (pres_table_combo)
+
+2870         166 LOAD_FAST                0 (self)
+             168 LOAD_ATTR               12 (pres_table_combo)
+             188 LOAD_ATTR               15 (NULL|self + setMinimumWidth)
+             208 LOAD_CONST               3 (160)
+             210 CALL                     1
+             218 POP_TOP
+
+2871         220 LOAD_FAST                0 (self)
+             222 LOAD_ATTR               16 (is_4spd)
+             242 POP_JUMP_IF_FALSE       30 (to 304)
+
+2872         244 LOAD_FAST                0 (self)
+             246 LOAD_ATTR               12 (pres_table_combo)
+             266 LOAD_ATTR               19 (NULL|self + addItems)
+             286 BUILD_LIST               0
+             288 LOAD_CONST               4 (('Base Shift Pressure', 'Desired Shift Time', 'TCC DC Maximum'))
+             290 LIST_EXTEND              1
+             292 CALL                     1
+             300 POP_TOP
+             302 JUMP_FORWARD            29 (to 362)
+
+2876     >>  304 LOAD_FAST                0 (self)
+             306 LOAD_ATTR               12 (pres_table_combo)
+             326 LOAD_ATTR               19 (NULL|self + addItems)
+
+2877         346 LOAD_CONST               5 ('Base Shift')
+             348 LOAD_CONST               6 ('TCC Apply')
+
+2876         350 BUILD_LIST               2
+             352 CALL                     1
+             360 POP_TOP
+
+2879     >>  362 LOAD_FAST                0 (self)
+             364 LOAD_ATTR               12 (pres_table_combo)
+             384 LOAD_ATTR               20 (currentTextChanged)
+             404 LOAD_ATTR               23 (NULL|self + connect)
+
+2880         424 LOAD_FAST                0 (self)
+             426 LOAD_ATTR               24 (_on_pres_table_type_changed)
+
+2879         446 CALL                     1
+             454 POP_TOP
+
+2881         456 LOAD_FAST                4 (top_controls)
+             458 LOAD_ATTR                7 (NULL|self + addWidget)
+             478 LOAD_FAST                0 (self)
+             480 LOAD_ATTR               12 (pres_table_combo)
+             500 CALL                     1
+             508 POP_TOP
+
+2883         510 LOAD_FAST                4 (top_controls)
+             512 LOAD_ATTR                7 (NULL|self + addWidget)
+             532 LOAD_GLOBAL              9 (NULL + QLabel)
+             542 LOAD_CONST               7 ('  Mode:')
+             544 CALL                     1
+             552 CALL                     1
+             560 POP_TOP
+
+2884         562 LOAD_GLOBAL             11 (NULL + QComboBox)
+             572 CALL                     0
+             580 LOAD_FAST                0 (self)
+             582 STORE_ATTR              13 (pres_mode_combo)
+
+2885         592 LOAD_FAST                0 (self)
+             594 LOAD_ATTR               26 (pres_mode_combo)
+             614 LOAD_ATTR               15 (NULL|self + setMinimumWidth)
+             634 LOAD_CONST               8 (140)
+             636 CALL                     1
+             644 POP_TOP
+
+2887         646 LOAD_FAST                0 (self)
+             648 LOAD_ATTR               16 (is_4spd)
+             668 POP_JUMP_IF_FALSE       42 (to 754)
+
+2888         670 LOAD_GLOBAL             29 (NULL + list)
+             680 LOAD_FAST                0 (self)
+             682 LOAD_ATTR               30 (pressure_4spd)
+             702 LOAD_ATTR               33 (NULL|self + keys)
+             722 CALL                     0
+             730 CALL                     1
+             738 COPY                     1
+             740 POP_JUMP_IF_TRUE         4 (to 750)
+             742 POP_TOP
+             744 LOAD_CONST               9 ('Normal')
+             746 LOAD_CONST              10 ('Performance')
+             748 BUILD_LIST               2
+         >>  750 STORE_FAST               5 (modes)
+             752 JUMP_FORWARD            40 (to 834)
+
+2890     >>  754 LOAD_GLOBAL             29 (NULL + list)
+             764 LOAD_FAST                0 (self)
+             766 LOAD_ATTR               34 (pressure_per_shift)
+             786 LOAD_ATTR               33 (NULL|self + keys)
+             806 CALL                     0
+             814 CALL                     1
+             822 COPY                     1
+             824 POP_JUMP_IF_TRUE         3 (to 832)
+             826 POP_TOP
+             828 LOAD_CONST               9 ('Normal')
+             830 BUILD_LIST               1
+         >>  832 STORE_FAST               5 (modes)
+
+2891     >>  834 LOAD_FAST                0 (self)
+             836 LOAD_ATTR               26 (pres_mode_combo)
+             856 LOAD_ATTR               19 (NULL|self + addItems)
+             876 LOAD_FAST                5 (modes)
+             878 CALL                     1
+             886 POP_TOP
+
+2892         888 LOAD_FAST                0 (self)
+             890 LOAD_ATTR               26 (pres_mode_combo)
+             910 LOAD_ATTR               20 (currentTextChanged)
+             930 LOAD_ATTR               23 (NULL|self + connect)
+             950 LOAD_FAST                0 (self)
+             952 LOAD_ATTR               36 (_on_pres_mode_changed)
+             972 CALL                     1
+             980 POP_TOP
+
+2893         982 LOAD_FAST                4 (top_controls)
+             984 LOAD_ATTR                7 (NULL|self + addWidget)
+            1004 LOAD_FAST                0 (self)
+            1006 LOAD_ATTR               26 (pres_mode_combo)
+            1026 CALL                     1
+            1034 POP_TOP
+
+2895        1036 LOAD_FAST                4 (top_controls)
+            1038 LOAD_ATTR                7 (NULL|self + addWidget)
+            1058 LOAD_GLOBAL              9 (NULL + QLabel)
+            1068 LOAD_CONST              11 ('  Pressure Intent:')
+            1070 CALL                     1
+            1078 CALL                     1
+            1086 POP_TOP
+
+2896        1088 LOAD_GLOBAL             11 (NULL + QComboBox)
+            1098 CALL                     0
+            1106 LOAD_FAST                0 (self)
+            1108 STORE_ATTR              19 (pres_intent_combo)
+
+2897        1118 LOAD_FAST                0 (self)
+            1120 LOAD_ATTR               38 (pres_intent_combo)
+            1140 LOAD_ATTR               15 (NULL|self + setMinimumWidth)
+            1160 LOAD_CONST              12 (180)
+            1162 CALL                     1
+            1170 POP_TOP
+
+2898        1172 LOAD_FAST                0 (self)
+            1174 LOAD_ATTR               38 (pres_intent_combo)
+            1194 LOAD_ATTR               41 (NULL|self + setToolTip)
+
+2899        1214 LOAD_CONST              13 ('Override the pressure intent for the selected mode.\nLive-regenerates the table — exported values reflect this choice.')
+
+2898        1216 CALL                     1
+            1224 POP_TOP
+
+2902        1226 LOAD_FAST                0 (self)
+            1228 LOAD_ATTR               38 (pres_intent_combo)
+            1248 LOAD_ATTR               20 (currentTextChanged)
+            1268 LOAD_ATTR               23 (NULL|self + connect)
+
+2903        1288 LOAD_FAST                0 (self)
+            1290 LOAD_ATTR               42 (_on_pres_intent_changed)
+
+2902        1310 CALL                     1
+            1318 POP_TOP
+
+2904        1320 LOAD_FAST                4 (top_controls)
+            1322 LOAD_ATTR                7 (NULL|self + addWidget)
+            1342 LOAD_FAST                0 (self)
+            1344 LOAD_ATTR               38 (pres_intent_combo)
+            1364 CALL                     1
+            1372 POP_TOP
+
+2908        1374 LOAD_GLOBAL              9 (NULL + QLabel)
+            1384 LOAD_CONST              14 ('  Era:')
+            1386 CALL                     1
+            1394 LOAD_FAST                0 (self)
+            1396 STORE_ATTR              22 (tcc_era_label)
+
+2909        1406 LOAD_FAST                4 (top_controls)
+            1408 LOAD_ATTR                7 (NULL|self + addWidget)
+            1428 LOAD_FAST                0 (self)
+            1430 LOAD_ATTR               44 (tcc_era_label)
+            1450 CALL                     1
+            1458 POP_TOP
+
+2910        1460 LOAD_GLOBAL             11 (NULL + QComboBox)
+            1470 CALL                     0
+            1478 LOAD_FAST                0 (self)
+            1480 STORE_ATTR              23 (tcc_era_combo)
+
+2911        1490 LOAD_FAST                0 (self)
+            1492 LOAD_ATTR               46 (tcc_era_combo)
+            1512 LOAD_ATTR               19 (NULL|self + addItems)
+            1532 BUILD_LIST               0
+            1534 LOAD_CONST              15 (('2007-2010', '2011-2014', '2015+'))
+            1536 LIST_EXTEND              1
+            1538 CALL                     1
+            1546 POP_TOP
+
+2912        1548 LOAD_FAST                0 (self)
+            1550 LOAD_ATTR               46 (tcc_era_combo)
+            1570 LOAD_ATTR               49 (NULL|self + setCurrentText)
+            1590 LOAD_CONST              16 ('2015+')
+            1592 CALL                     1
+            1600 POP_TOP
+
+2913        1602 LOAD_FAST                0 (self)
+            1604 LOAD_ATTR               46 (tcc_era_combo)
+            1624 LOAD_ATTR               41 (NULL|self + setToolTip)
+
+2914        1644 LOAD_CONST              17 ('TCC Apply Pressure Ramp table layout (TCM 15235):\n  2007-2010: 17 torque rows × 17 slip cols\n  2011-2014: 17 torque rows × 17 slip cols (different breakpoints)\n  2015+:     9 engine RPM rows × 17 slip cols')
+
+2913        1646 CALL                     1
+            1654 POP_TOP
+
+2919        1656 LOAD_FAST                0 (self)
+            1658 LOAD_ATTR               46 (tcc_era_combo)
+            1678 LOAD_ATTR               20 (currentTextChanged)
+            1698 LOAD_ATTR               23 (NULL|self + connect)
+            1718 LOAD_FAST                0 (self)
+            1720 LOAD_ATTR               50 (_refresh_pressure_table)
+            1740 CALL                     1
+            1748 POP_TOP
+
+2920        1750 LOAD_FAST                4 (top_controls)
+            1752 LOAD_ATTR                7 (NULL|self + addWidget)
+            1772 LOAD_FAST                0 (self)
+            1774 LOAD_ATTR               46 (tcc_era_combo)
+            1794 CALL                     1
+            1802 POP_TOP
+
+2922        1804 LOAD_FAST                0 (self)
+            1806 LOAD_ATTR               44 (tcc_era_label)
+            1826 LOAD_ATTR               53 (NULL|self + setVisible)
+            1846 LOAD_CONST              18 (False)
+            1848 CALL                     1
+            1856 POP_TOP
+
+2923        1858 LOAD_FAST                0 (self)
+            1860 LOAD_ATTR               46 (tcc_era_combo)
+            1880 LOAD_ATTR               53 (NULL|self + setVisible)
+            1900 LOAD_CONST              18 (False)
+            1902 CALL                     1
+            1910 POP_TOP
+
+2925        1912 LOAD_FAST                4 (top_controls)
+            1914 LOAD_ATTR                7 (NULL|self + addWidget)
+            1934 LOAD_GLOBAL              9 (NULL + QLabel)
+            1944 LOAD_CONST              19 ('  Unit:')
+            1946 CALL                     1
+            1954 CALL                     1
+            1962 POP_TOP
+
+2926        1964 LOAD_GLOBAL             11 (NULL + QComboBox)
+            1974 CALL                     0
+            1982 LOAD_FAST                0 (self)
+            1984 STORE_ATTR              27 (pressure_unit_combo)
+
+2927        1994 LOAD_FAST                0 (self)
+            1996 LOAD_ATTR               54 (pressure_unit_combo)
+            2016 LOAD_ATTR               19 (NULL|self + addItems)
+            2036 LOAD_CONST              20 ('PSI')
+            2038 LOAD_CONST              21 ('kPa')
+            2040 BUILD_LIST               2
+            2042 CALL                     1
+            2050 POP_TOP
+
+2928        2052 LOAD_FAST                0 (self)
+            2054 LOAD_ATTR               54 (pressure_unit_combo)
+            2074 LOAD_ATTR               20 (currentTextChanged)
+            2094 LOAD_ATTR               23 (NULL|self + connect)
+            2114 LOAD_FAST                0 (self)
+            2116 LOAD_ATTR               50 (_refresh_pressure_table)
+            2136 CALL                     1
+            2144 POP_TOP
+
+2929        2146 LOAD_FAST                4 (top_controls)
+            2148 LOAD_ATTR                7 (NULL|self + addWidget)
+            2168 LOAD_FAST                0 (self)
+            2170 LOAD_ATTR               54 (pressure_unit_combo)
+            2190 CALL                     1
+            2198 POP_TOP
+
+2930        2200 LOAD_GLOBAL             57 (NULL + QPushButton)
+            2210 LOAD_CONST              22 ('Copy Table')
+            2212 CALL                     1
+            2220 STORE_FAST               6 (copy_p_btn)
+
+2931        2222 LOAD_FAST                6 (copy_p_btn)
+            2224 LOAD_ATTR               58 (clicked)
+            2244 LOAD_ATTR               23 (NULL|self + connect)
+            2264 LOAD_FAST                0 (self)
+            2266 LOAD_ATTR               60 (_copy_pressure_table)
+            2286 CALL                     1
+            2294 POP_TOP
+
+2932        2296 LOAD_FAST                4 (top_controls)
+            2298 LOAD_ATTR                7 (NULL|self + addWidget)
+            2318 LOAD_FAST                6 (copy_p_btn)
+            2320 CALL                     1
+            2328 POP_TOP
+
+2933        2330 LOAD_FAST                4 (top_controls)
+            2332 LOAD_ATTR               63 (NULL|self + addStretch)
+            2352 CALL                     0
+            2360 POP_TOP
+
+2934        2362 LOAD_FAST                3 (inner)
+            2364 LOAD_ATTR               65 (NULL|self + addLayout)
+            2384 LOAD_FAST                4 (top_controls)
+            2386 CALL                     1
+            2394 POP_TOP
+
+2937        2396 LOAD_CONST              18 (False)
+            2398 LOAD_FAST                0 (self)
+            2400 STORE_ATTR              33 (_suppress_pres_combo_signals)
+
+2939        2410 LOAD_FAST                0 (self)
+            2412 LOAD_ATTR               69 (NULL|self + _populate_pres_intent_combo)
+            2432 CALL                     0
+            2440 POP_TOP
+
+2942        2442 LOAD_GLOBAL              9 (NULL + QLabel)
+            2452 LOAD_CONST              23 ('')
+            2454 CALL                     1
+            2462 LOAD_FAST                0 (self)
+            2464 STORE_ATTR              35 (pressure_title)
+
+2943        2474 LOAD_FAST                0 (self)
+            2476 LOAD_ATTR               70 (pressure_title)
+            2496 LOAD_ATTR               73 (NULL|self + setStyleSheet)
+            2516 LOAD_CONST              24 ('font-weight: bold; padding: 4px;')
+            2518 CALL                     1
+            2526 POP_TOP
+
+2944        2528 LOAD_FAST                3 (inner)
+            2530 LOAD_ATTR                7 (NULL|self + addWidget)
+            2550 LOAD_FAST                0 (self)
+            2552 LOAD_ATTR               70 (pressure_title)
+            2572 CALL                     1
+            2580 POP_TOP
+
+2946        2582 LOAD_GLOBAL             75 (NULL + QTableWidget)
+            2592 CALL                     0
+            2600 LOAD_FAST                0 (self)
+            2602 STORE_ATTR              38 (pressure_grid)
+
+2947        2612 LOAD_FAST                0 (self)
+            2614 LOAD_ATTR               76 (pressure_grid)
+            2634 LOAD_ATTR               79 (NULL|self + setEditTriggers)
+            2654 LOAD_GLOBAL             74 (QTableWidget)
+            2664 LOAD_ATTR               80 (EditTrigger)
+            2684 LOAD_ATTR               82 (NoEditTriggers)
+            2704 CALL                     1
+            2712 POP_TOP
+
+2948        2714 LOAD_FAST                0 (self)
+            2716 LOAD_ATTR               76 (pressure_grid)
+            2736 LOAD_ATTR               73 (NULL|self + setStyleSheet)
+
+2949        2756 LOAD_CONST              25 ('QTableWidget { background: #1e1e1e; color: #fff; gridline-color: #444; }QHeaderView::section { background: #303030; color: #fff; padding: 2px 6px; border: 1px solid #555; font-weight: bold; }QTableCornerButton::section { background: #303030; border: 1px solid #555; }')
+
+2948        2758 CALL                     1
+            2766 POP_TOP
+
+2955        2768 LOAD_FAST                0 (self)
+            2770 LOAD_ATTR               76 (pressure_grid)
+            2790 LOAD_ATTR               85 (NULL|self + setFont)
+            2810 LOAD_GLOBAL             87 (NULL + QFont)
+            2820 LOAD_CONST              26 ('Consolas')
+            2822 LOAD_CONST              27 (9)
+            2824 CALL                     2
+            2832 CALL                     1
+            2840 POP_TOP
+
+2959        2842 LOAD_FAST                0 (self)
+            2844 LOAD_ATTR               76 (pressure_grid)
+            2864 LOAD_ATTR               89 (NULL|self + setSizePolicy)
+
+2960        2884 LOAD_GLOBAL             90 (QSizePolicy)
+            2894 LOAD_ATTR               92 (Policy)
+            2914 LOAD_ATTR               94 (Expanding)
+            2934 LOAD_GLOBAL             90 (QSizePolicy)
+            2944 LOAD_ATTR               92 (Policy)
+            2964 LOAD_ATTR               94 (Expanding)
+
+2959        2984 CALL                     2
+            2992 POP_TOP
+
+2961        2994 LOAD_FAST                0 (self)
+            2996 LOAD_ATTR               76 (pressure_grid)
+            3016 LOAD_ATTR               97 (NULL|self + setMinimumHeight)
+            3036 LOAD_CONST              28 (450)
+            3038 CALL                     1
+            3046 POP_TOP
+
+2963        3048 LOAD_FAST                0 (self)
+            3050 LOAD_ATTR               76 (pressure_grid)
+            3070 LOAD_ATTR               99 (NULL|self + setHorizontalScrollBarPolicy)
+
+2964        3090 LOAD_GLOBAL            100 (Qt)
+            3100 LOAD_ATTR              102 (ScrollBarPolicy)
+            3120 LOAD_ATTR              104 (ScrollBarAsNeeded)
+
+2963        3140 CALL                     1
+            3148 POP_TOP
+
+2965        3150 LOAD_FAST                0 (self)
+            3152 LOAD_ATTR               76 (pressure_grid)
+            3172 LOAD_ATTR              107 (NULL|self + setVerticalScrollBarPolicy)
+
+2966        3192 LOAD_GLOBAL            100 (Qt)
+            3202 LOAD_ATTR              102 (ScrollBarPolicy)
+            3222 LOAD_ATTR              104 (ScrollBarAsNeeded)
+
+2965        3242 CALL                     1
+            3250 POP_TOP
+
+2969        3252 LOAD_FAST                3 (inner)
+            3254 LOAD_ATTR                7 (NULL|self + addWidget)
+            3274 LOAD_FAST                0 (self)
+            3276 LOAD_ATTR               76 (pressure_grid)
+            3296 LOAD_CONST              29 (1)
+            3298 CALL                     2
+            3306 POP_TOP
+
+2972        3308 LOAD_GLOBAL              9 (NULL + QLabel)
+
+2973        3318 LOAD_CONST              30 ('Run Calculate (F5) in the main window first to generate tables.')
+
+2972        3320 CALL                     1
+            3328 LOAD_FAST                0 (self)
+            3330 STORE_ATTR              54 (pressure_placeholder)
+
+2975        3340 LOAD_FAST                0 (self)
+            3342 LOAD_ATTR              108 (pressure_placeholder)
+            3362 LOAD_ATTR               73 (NULL|self + setStyleSheet)
+            3382 LOAD_CONST              31 ('color: #888; padding: 20px;')
+            3384 CALL                     1
+            3392 POP_TOP
+
+2976        3394 LOAD_FAST                0 (self)
+            3396 LOAD_ATTR              108 (pressure_placeholder)
+            3416 LOAD_ATTR              111 (NULL|self + setAlignment)
+            3436 LOAD_GLOBAL            100 (Qt)
+            3446 LOAD_ATTR              112 (AlignmentFlag)
+            3466 LOAD_ATTR              114 (AlignCenter)
+            3486 CALL                     1
+            3494 POP_TOP
+
+2977        3496 LOAD_FAST                0 (self)
+            3498 LOAD_ATTR              108 (pressure_placeholder)
+            3518 LOAD_ATTR               53 (NULL|self + setVisible)
+            3538 LOAD_CONST              18 (False)
+            3540 CALL                     1
+            3548 POP_TOP
+
+2978        3550 LOAD_FAST                3 (inner)
+            3552 LOAD_ATTR                7 (NULL|self + addWidget)
+            3572 LOAD_FAST                0 (self)
+            3574 LOAD_ATTR              108 (pressure_placeholder)
+            3594 CALL                     1
+            3602 POP_TOP
+
+2980        3604 LOAD_FAST                2 (gb)
+            3606 LOAD_ATTR              117 (NULL|self + setLayout)
+            3626 LOAD_FAST                3 (inner)
+            3628 CALL                     1
+            3636 POP_TOP
+
+2981        3638 LOAD_FAST                2 (gb)
+            3640 LOAD_ATTR               89 (NULL|self + setSizePolicy)
+            3660 LOAD_GLOBAL             90 (QSizePolicy)
+            3670 LOAD_ATTR               92 (Policy)
+            3690 LOAD_ATTR               94 (Expanding)
+            3710 LOAD_GLOBAL             90 (QSizePolicy)
+            3720 LOAD_ATTR               92 (Policy)
+            3740 LOAD_ATTR               94 (Expanding)
+            3760 CALL                     2
+            3768 POP_TOP
+
+2982        3770 LOAD_FAST                1 (v)
+            3772 LOAD_ATTR                7 (NULL|self + addWidget)
+            3792 LOAD_FAST                2 (gb)
+            3794 LOAD_CONST              29 (1)
+            3796 CALL                     2
+            3804 POP_TOP
+
+2983        3806 LOAD_FAST                1 (v)
+            3808 RETURN_VALUE

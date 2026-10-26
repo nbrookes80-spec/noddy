@@ -1,0 +1,331 @@
+8841           0 RESUME                   0
+
+8846           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (_shudder_fix_level)
+              24 STORE_FAST               1 (level)
+
+8849          26 LOAD_FAST                0 (self)
+              28 LOAD_ATTR                2 (_shudder_baseline)
+              48 POP_JUMP_IF_NOT_NONE   114 (to 278)
+              50 LOAD_FAST                1 (level)
+              52 LOAD_CONST               2 ('Off')
+              54 COMPARE_OP              55 (!=)
+              58 POP_JUMP_IF_FALSE      109 (to 278)
+
+8851          60 LOAD_FAST                0 (self)
+              62 LOAD_ATTR                4 (min_tcc_rpm)
+              82 LOAD_ATTR                7 (NULL|self + value)
+             102 CALL                     0
+
+8852         110 LOAD_FAST                0 (self)
+             112 LOAD_ATTR                8 (accel_lock_gear)
+             132 LOAD_ATTR                7 (NULL|self + value)
+             152 CALL                     0
+
+8853         160 LOAD_FAST                0 (self)
+             162 LOAD_ATTR               10 (wot_lock_gear)
+             182 LOAD_ATTR                7 (NULL|self + value)
+             202 CALL                     0
+
+8855         210 LOAD_FAST                0 (self)
+             212 LOAD_ATTR               12 (pressure_intent_overrides)
+             232 LOAD_ATTR               15 (NULL|self + get)
+             252 LOAD_CONST               3 ('Normal')
+             254 CALL                     1
+
+8850         262 LOAD_CONST               4 (('min_tcc_rpm', 'accel_lock_gear', 'wot_lock_gear', 'pressure_intent_overrides_Normal'))
+             264 BUILD_CONST_KEY_MAP      4
+             266 LOAD_FAST                0 (self)
+             268 STORE_ATTR               1 (_shudder_baseline)
+
+8858     >>  278 LOAD_GLOBAL             17 (NULL + hasattr)
+             288 LOAD_FAST                0 (self)
+             290 LOAD_CONST               5 ('pressure_intent_overrides')
+             292 CALL                     2
+             300 POP_JUMP_IF_TRUE         7 (to 316)
+
+8859         302 BUILD_MAP                0
+             304 LOAD_FAST                0 (self)
+             306 STORE_ATTR               6 (pressure_intent_overrides)
+
+8861     >>  316 LOAD_FAST                1 (level)
+             318 LOAD_CONST               2 ('Off')
+             320 COMPARE_OP              40 (==)
+             324 POP_JUMP_IF_FALSE      229 (to 784)
+
+8863         326 LOAD_FAST                0 (self)
+             328 LOAD_ATTR                2 (_shudder_baseline)
+             348 POP_JUMP_IF_FALSE      188 (to 726)
+
+8864         350 LOAD_FAST                0 (self)
+             352 LOAD_ATTR                4 (min_tcc_rpm)
+             372 LOAD_ATTR               19 (NULL|self + setValue)
+             392 LOAD_FAST                0 (self)
+             394 LOAD_ATTR                2 (_shudder_baseline)
+             414 LOAD_CONST               6 ('min_tcc_rpm')
+             416 BINARY_SUBSCR
+             420 CALL                     1
+             428 POP_TOP
+
+8865         430 LOAD_FAST                0 (self)
+             432 LOAD_ATTR                8 (accel_lock_gear)
+             452 LOAD_ATTR               19 (NULL|self + setValue)
+             472 LOAD_FAST                0 (self)
+             474 LOAD_ATTR                2 (_shudder_baseline)
+             494 LOAD_CONST               7 ('accel_lock_gear')
+             496 BINARY_SUBSCR
+             500 CALL                     1
+             508 POP_TOP
+
+8866         510 LOAD_FAST                0 (self)
+             512 LOAD_ATTR               10 (wot_lock_gear)
+             532 LOAD_ATTR               19 (NULL|self + setValue)
+             552 LOAD_FAST                0 (self)
+             554 LOAD_ATTR                2 (_shudder_baseline)
+             574 LOAD_CONST               8 ('wot_lock_gear')
+             576 BINARY_SUBSCR
+             580 CALL                     1
+             588 POP_TOP
+
+8867         590 LOAD_FAST                0 (self)
+             592 LOAD_ATTR                2 (_shudder_baseline)
+             612 LOAD_CONST               9 ('pressure_intent_overrides_Normal')
+             614 BINARY_SUBSCR
+             618 STORE_FAST               2 (old_intent)
+
+8868         620 LOAD_FAST                2 (old_intent)
+             622 POP_JUMP_IF_NOT_NONE    29 (to 682)
+
+8869         624 LOAD_FAST                0 (self)
+             626 LOAD_ATTR               12 (pressure_intent_overrides)
+             646 LOAD_ATTR               21 (NULL|self + pop)
+             666 LOAD_CONST               3 ('Normal')
+             668 LOAD_CONST               1 (None)
+             670 CALL                     2
+             678 POP_TOP
+             680 JUMP_FORWARD            15 (to 712)
+
+8871     >>  682 LOAD_FAST                2 (old_intent)
+             684 LOAD_FAST                0 (self)
+             686 LOAD_ATTR               12 (pressure_intent_overrides)
+             706 LOAD_CONST               3 ('Normal')
+             708 STORE_SUBSCR
+
+8872     >>  712 LOAD_CONST               1 (None)
+             714 LOAD_FAST                0 (self)
+             716 STORE_ATTR               1 (_shudder_baseline)
+
+8873     >>  726 LOAD_FAST                0 (self)
+             728 LOAD_ATTR               22 (shudder_status_lbl)
+             748 LOAD_ATTR               25 (NULL|self + setText)
+             768 LOAD_CONST              10 ('Shudder fix Off — baselines restored.')
+             770 CALL                     1
+             778 POP_TOP
+             780 EXTENDED_ARG             2
+             782 JUMP_FORWARD           562 (to 1908)
+
+8874     >>  784 LOAD_FAST                1 (level)
+             786 LOAD_CONST              11 ('Mild')
+             788 COMPARE_OP              40 (==)
+             792 POP_JUMP_IF_FALSE      159 (to 1112)
+
+8876         794 LOAD_CONST              12 ('Shudder Fix')
+             796 LOAD_FAST                0 (self)
+             798 LOAD_ATTR               12 (pressure_intent_overrides)
+             818 LOAD_CONST               3 ('Normal')
+             820 STORE_SUBSCR
+
+8877         824 LOAD_FAST                0 (self)
+             826 LOAD_ATTR                2 (_shudder_baseline)
+             846 STORE_FAST               3 (base)
+
+8878         848 LOAD_FAST                0 (self)
+             850 LOAD_ATTR                4 (min_tcc_rpm)
+             870 LOAD_ATTR               19 (NULL|self + setValue)
+             890 LOAD_GLOBAL             27 (NULL + min)
+             900 LOAD_CONST              13 (2200)
+             902 LOAD_FAST                3 (base)
+             904 LOAD_CONST               6 ('min_tcc_rpm')
+             906 BINARY_SUBSCR
+             910 LOAD_CONST              14 (200)
+             912 BINARY_OP                0 (+)
+             916 CALL                     2
+             924 CALL                     1
+             932 POP_TOP
+
+8879         934 LOAD_FAST                0 (self)
+             936 LOAD_ATTR                8 (accel_lock_gear)
+             956 LOAD_ATTR               19 (NULL|self + setValue)
+             976 LOAD_FAST                3 (base)
+             978 LOAD_CONST               7 ('accel_lock_gear')
+             980 BINARY_SUBSCR
+             984 CALL                     1
+             992 POP_TOP
+
+8880         994 LOAD_FAST                0 (self)
+             996 LOAD_ATTR               10 (wot_lock_gear)
+            1016 LOAD_ATTR               19 (NULL|self + setValue)
+            1036 LOAD_FAST                3 (base)
+            1038 LOAD_CONST               8 ('wot_lock_gear')
+            1040 BINARY_SUBSCR
+            1044 CALL                     1
+            1052 POP_TOP
+
+8881        1054 LOAD_FAST                0 (self)
+            1056 LOAD_ATTR               22 (shudder_status_lbl)
+            1076 LOAD_ATTR               25 (NULL|self + setText)
+
+8882        1096 LOAD_CONST              15 ('Mild: TCC plateau 65 PSI, min TCC +200 RPM.\nBest starting point — light shudder, daily driving.')
+
+8881        1098 CALL                     1
+            1106 POP_TOP
+            1108 EXTENDED_ARG             1
+            1110 JUMP_FORWARD           398 (to 1908)
+
+8884     >> 1112 LOAD_FAST                1 (level)
+            1114 LOAD_CONST              16 ('Moderate')
+            1116 COMPARE_OP              40 (==)
+            1120 POP_JUMP_IF_FALSE      197 (to 1516)
+
+8886        1122 LOAD_CONST              17 (175)
+            1124 LOAD_GLOBAL             28 (TCC_APPLY_INTENTS)
+            1134 LOAD_CONST              12 ('Shudder Fix')
+            1136 BINARY_SUBSCR
+            1140 LOAD_CONST              18 ('max_psi')
+            1142 STORE_SUBSCR
+
+8887        1146 LOAD_CONST              12 ('Shudder Fix')
+            1148 LOAD_FAST                0 (self)
+            1150 LOAD_ATTR               12 (pressure_intent_overrides)
+            1170 LOAD_CONST               3 ('Normal')
+            1172 STORE_SUBSCR
+
+8888        1176 LOAD_FAST                0 (self)
+            1178 LOAD_ATTR                2 (_shudder_baseline)
+            1198 STORE_FAST               3 (base)
+
+8889        1200 LOAD_FAST                0 (self)
+            1202 LOAD_ATTR                4 (min_tcc_rpm)
+            1222 LOAD_ATTR               19 (NULL|self + setValue)
+            1242 LOAD_GLOBAL             27 (NULL + min)
+            1252 LOAD_CONST              19 (2400)
+            1254 LOAD_FAST                3 (base)
+            1256 LOAD_CONST               6 ('min_tcc_rpm')
+            1258 BINARY_SUBSCR
+            1262 LOAD_CONST              20 (400)
+            1264 BINARY_OP                0 (+)
+            1268 CALL                     2
+            1276 CALL                     1
+            1284 POP_TOP
+
+8890        1286 LOAD_FAST                0 (self)
+            1288 LOAD_ATTR                8 (accel_lock_gear)
+            1308 LOAD_ATTR               19 (NULL|self + setValue)
+            1328 LOAD_GLOBAL             27 (NULL + min)
+            1338 LOAD_FAST                0 (self)
+            1340 LOAD_ATTR               31 (NULL|self + _max_gear)
+            1360 CALL                     0
+
+8891        1368 LOAD_FAST                3 (base)
+            1370 LOAD_CONST               7 ('accel_lock_gear')
+            1372 BINARY_SUBSCR
+            1376 LOAD_CONST              21 (1)
+            1378 BINARY_OP                0 (+)
+
+8890        1382 CALL                     2
+            1390 CALL                     1
+            1398 POP_TOP
+
+8892        1400 LOAD_FAST                0 (self)
+            1402 LOAD_ATTR               10 (wot_lock_gear)
+            1422 LOAD_ATTR               19 (NULL|self + setValue)
+            1442 LOAD_FAST                3 (base)
+            1444 LOAD_CONST               8 ('wot_lock_gear')
+            1446 BINARY_SUBSCR
+            1450 CALL                     1
+            1458 POP_TOP
+
+8893        1460 LOAD_FAST                0 (self)
+            1462 LOAD_ATTR               22 (shudder_status_lbl)
+            1482 LOAD_ATTR               25 (NULL|self + setText)
+
+8894        1502 LOAD_CONST              22 ('Moderate: 90 PSI plateau, min TCC +400 RPM, lock +1 gear.\nMid-grade fix — noticeable shudder under part throttle.')
+
+8893        1504 CALL                     1
+            1512 POP_TOP
+            1514 JUMP_FORWARD           196 (to 1908)
+
+8896     >> 1516 LOAD_FAST                1 (level)
+            1518 LOAD_CONST              23 ('Aggressive')
+            1520 COMPARE_OP              40 (==)
+            1524 POP_JUMP_IF_FALSE      191 (to 1908)
+
+8898        1526 LOAD_CONST              24 (195)
+            1528 LOAD_GLOBAL             28 (TCC_APPLY_INTENTS)
+            1538 LOAD_CONST              12 ('Shudder Fix')
+            1540 BINARY_SUBSCR
+            1544 LOAD_CONST              18 ('max_psi')
+            1546 STORE_SUBSCR
+
+8899        1550 LOAD_CONST              12 ('Shudder Fix')
+            1552 LOAD_FAST                0 (self)
+            1554 LOAD_ATTR               12 (pressure_intent_overrides)
+            1574 LOAD_CONST               3 ('Normal')
+            1576 STORE_SUBSCR
+
+8900        1580 LOAD_FAST                0 (self)
+            1582 LOAD_ATTR                2 (_shudder_baseline)
+            1602 STORE_FAST               3 (base)
+
+8901        1604 LOAD_FAST                0 (self)
+            1606 LOAD_ATTR                4 (min_tcc_rpm)
+            1626 LOAD_ATTR               19 (NULL|self + setValue)
+            1646 LOAD_GLOBAL             27 (NULL + min)
+            1656 LOAD_CONST              25 (2600)
+            1658 LOAD_FAST                3 (base)
+            1660 LOAD_CONST               6 ('min_tcc_rpm')
+            1662 BINARY_SUBSCR
+            1666 LOAD_CONST              26 (600)
+            1668 BINARY_OP                0 (+)
+            1672 CALL                     2
+            1680 CALL                     1
+            1688 POP_TOP
+
+8902        1690 LOAD_FAST                0 (self)
+            1692 LOAD_ATTR                8 (accel_lock_gear)
+            1712 LOAD_ATTR               19 (NULL|self + setValue)
+            1732 LOAD_FAST                0 (self)
+            1734 LOAD_ATTR               31 (NULL|self + _max_gear)
+            1754 CALL                     0
+            1762 CALL                     1
+            1770 POP_TOP
+
+8903        1772 LOAD_FAST                0 (self)
+            1774 LOAD_ATTR               10 (wot_lock_gear)
+            1794 LOAD_ATTR               19 (NULL|self + setValue)
+            1814 LOAD_FAST                0 (self)
+            1816 LOAD_ATTR               31 (NULL|self + _max_gear)
+            1836 CALL                     0
+            1844 CALL                     1
+            1852 POP_TOP
+
+8904        1854 LOAD_FAST                0 (self)
+            1856 LOAD_ATTR               22 (shudder_status_lbl)
+            1876 LOAD_ATTR               25 (NULL|self + setText)
+
+8905        1896 LOAD_CONST              27 ('Aggressive: 110 PSI plateau, lock only top gear + WOT.\nMaximum fix — sacrifices fuel economy. For severe shudder\n(worn clutch material, bad fluid history).')
+
+8904        1898 CALL                     1
+            1906 POP_TOP
+
+8910     >> 1908 LOAD_FAST                0 (self)
+            1910 LOAD_ATTR               32 (_last_result)
+            1930 POP_JUMP_IF_NONE        17 (to 1966)
+
+8911        1932 LOAD_FAST                0 (self)
+            1934 LOAD_ATTR               35 (NULL|self + calculate)
+            1954 CALL                     0
+            1962 POP_TOP
+            1964 RETURN_CONST             1 (None)
+
+8910     >> 1966 RETURN_CONST             1 (None)

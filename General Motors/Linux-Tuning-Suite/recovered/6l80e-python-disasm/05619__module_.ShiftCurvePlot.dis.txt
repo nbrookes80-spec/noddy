@@ -1,0 +1,82 @@
+               0 MAKE_CELL                0 (__class__)
+
+5619           2 RESUME                   0
+               4 LOAD_NAME                0 (__name__)
+               6 STORE_NAME               1 (__module__)
+               8 LOAD_CONST               0 ('ShiftCurvePlot')
+              10 STORE_NAME               2 (__qualname__)
+
+5620          12 LOAD_CONST               1 ('Overlay plot of all upshift curves (TPS × MPH per gear). Pure QPainter,\n    no chart-lib deps. Updated by main window after each calc.\n\n    Multi-mode overlay: when set_mode_overlays() is called with results for\n    enabled modes, each non-Normal mode is drawn with a distinct pen style\n    so user can compare shift patterns across modes in one view.')
+              14 STORE_NAME               3 (__doc__)
+
+5628          16 LOAD_CONST               2 ('Normal')
+              18 LOAD_NAME                4 (Qt)
+              20 LOAD_ATTR               10 (PenStyle)
+              40 LOAD_ATTR               12 (SolidLine)
+              60 LOAD_CONST               3 (255)
+              62 BUILD_TUPLE              3
+
+5629          64 LOAD_CONST               4 ('Pattern A')
+              66 LOAD_NAME                4 (Qt)
+              68 LOAD_ATTR               10 (PenStyle)
+              88 LOAD_ATTR               14 (DashLine)
+             108 LOAD_CONST               5 (200)
+             110 BUILD_TUPLE              3
+
+5630         112 LOAD_CONST               6 ('Performance')
+             114 LOAD_NAME                4 (Qt)
+             116 LOAD_ATTR               10 (PenStyle)
+             136 LOAD_ATTR               14 (DashLine)
+             156 LOAD_CONST               5 (200)
+             158 BUILD_TUPLE              3
+
+5631         160 LOAD_CONST               7 ('Pattern B')
+             162 LOAD_NAME                4 (Qt)
+             164 LOAD_ATTR               10 (PenStyle)
+             184 LOAD_ATTR               16 (DotLine)
+             204 LOAD_CONST               5 (200)
+             206 BUILD_TUPLE              3
+
+5632         208 LOAD_CONST               8 ('Cruise')
+             210 LOAD_NAME                4 (Qt)
+             212 LOAD_ATTR               10 (PenStyle)
+             232 LOAD_ATTR               16 (DotLine)
+             252 LOAD_CONST               5 (200)
+             254 BUILD_TUPLE              3
+
+5633         256 LOAD_CONST               9 ('Hot Trans')
+             258 LOAD_NAME                4 (Qt)
+             260 LOAD_ATTR               10 (PenStyle)
+             280 LOAD_ATTR               18 (DashDotLine)
+             300 LOAD_CONST               5 (200)
+             302 BUILD_TUPLE              3
+
+5627         304 BUILD_LIST               6
+             306 STORE_NAME              10 (_MODE_PEN_STYLES)
+
+5636         308 LOAD_CLOSURE             0 (__class__)
+             310 BUILD_TUPLE              1
+             312 LOAD_CONST              10 (<code object __init__ at 0x73ab034a7ab0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5636>)
+             314 MAKE_FUNCTION            8 (closure)
+             316 STORE_NAME              11 (__init__)
+
+5651         318 NOP
+
+5652         320 NOP
+
+5651         322 LOAD_CONST              14 (('MPH', 1.0, None))
+             324 LOAD_CONST              11 (<code object set_data at 0x73ab02a351b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5651>)
+             326 MAKE_FUNCTION            1 (defaults)
+             328 STORE_NAME              12 (set_data)
+
+5661         330 LOAD_CONST              12 (<code object set_mode_overlays at 0x73ab02bd9a70, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5661>)
+             332 MAKE_FUNCTION            0
+             334 STORE_NAME              13 (set_mode_overlays)
+
+5667         336 LOAD_CONST              13 (<code object paintEvent at 0x30c40960, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5667>)
+             338 MAKE_FUNCTION            0
+             340 STORE_NAME              14 (paintEvent)
+             342 LOAD_CLOSURE             0 (__class__)
+             344 COPY                     1
+             346 STORE_NAME              15 (__classcell__)
+             348 RETURN_VALUE

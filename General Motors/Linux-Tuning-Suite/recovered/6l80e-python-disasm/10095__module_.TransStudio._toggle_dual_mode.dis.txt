@@ -1,0 +1,41 @@
+10095           0 RESUME                   0
+
+10096           2 LOAD_FAST                1 (enabled)
+                4 LOAD_FAST                0 (self)
+                6 STORE_ATTR               0 (multi_mode_enabled)
+
+10097          16 LOAD_FAST                1 (enabled)
+               18 POP_JUMP_IF_FALSE       65 (to 150)
+               20 LOAD_GLOBAL              3 (NULL + any)
+               30 LOAD_CONST               1 (<code object <genexpr> at 0x73ab02a65f30, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 10097>)
+               32 MAKE_FUNCTION            0
+               34 LOAD_FAST                0 (self)
+               36 LOAD_ATTR                4 (mode_overrides)
+               56 LOAD_ATTR                7 (NULL|self + values)
+               76 CALL                     0
+               84 GET_ITER
+               86 CALL                     0
+               94 CALL                     1
+              102 POP_JUMP_IF_TRUE        23 (to 150)
+
+10098         104 LOAD_GLOBAL              9 (NULL + QMessageBox)
+              114 LOAD_ATTR               10 (information)
+              134 LOAD_FAST                0 (self)
+              136 LOAD_CONST               2 ('Multi-Mode')
+
+10099         138 LOAD_CONST               3 ('Multi-mode enabled but no extra modes configured. Open Tools > Multi-Mode Tables Setup… to configure.')
+
+10098         140 CALL                     3
+              148 POP_TOP
+
+10101     >>  150 LOAD_FAST                0 (self)
+              152 LOAD_ATTR               12 (_last_result)
+              172 POP_JUMP_IF_FALSE       17 (to 208)
+
+10102         174 LOAD_FAST                0 (self)
+              176 LOAD_ATTR               15 (NULL|self + calculate)
+              196 CALL                     0
+              204 POP_TOP
+              206 RETURN_CONST             0 (None)
+
+10101     >>  208 RETURN_CONST             0 (None)

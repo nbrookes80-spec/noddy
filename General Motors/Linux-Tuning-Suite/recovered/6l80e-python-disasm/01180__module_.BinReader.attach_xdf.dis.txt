@@ -1,0 +1,6 @@
+1180           0 RESUME                   0
+
+1181           2 LOAD_FAST                1 (xdf)
+               4 LOAD_FAST                0 (self)
+               6 STORE_ATTR               0 (xdf)
+              16 RETURN_CONST             0 (None)

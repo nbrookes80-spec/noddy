@@ -1,0 +1,1976 @@
+                0 MAKE_CELL                0 (self)
+
+7765            2 RESUME                   0
+
+7773            4 LOAD_GLOBAL              1 (NULL + QWidget)
+               14 CALL                     0
+               22 STORE_FAST               2 (container)
+
+7774           24 LOAD_FAST                2 (container)
+               26 LOAD_ATTR                3 (NULL|self + setFixedWidth)
+               46 LOAD_CONST               1 (400)
+               48 CALL                     1
+               56 POP_TOP
+
+7775           58 LOAD_GLOBAL              5 (NULL + QVBoxLayout)
+               68 LOAD_FAST                2 (container)
+               70 CALL                     1
+               78 STORE_FAST               3 (v)
+
+7776           80 LOAD_FAST                3 (v)
+               82 LOAD_ATTR                7 (NULL|self + setContentsMargins)
+              102 LOAD_CONST               2 (4)
+              104 LOAD_CONST               2 (4)
+              106 LOAD_CONST               2 (4)
+              108 LOAD_CONST               2 (4)
+              110 CALL                     4
+              118 POP_TOP
+
+7777          120 LOAD_FAST                3 (v)
+              122 LOAD_ATTR                9 (NULL|self + setSpacing)
+              142 LOAD_CONST               2 (4)
+              144 CALL                     1
+              152 POP_TOP
+
+7779          154 LOAD_GLOBAL             11 (NULL + QTabWidget)
+              164 CALL                     0
+              172 LOAD_DEREF               0 (self)
+              174 STORE_ATTR               6 (settings_tabs)
+
+7780          184 LOAD_FAST                3 (v)
+              186 LOAD_ATTR               15 (NULL|self + addWidget)
+              206 LOAD_DEREF               0 (self)
+              208 LOAD_ATTR               12 (settings_tabs)
+              228 LOAD_CONST               3 (1)
+              230 CALL                     2
+              238 POP_TOP
+
+7783          240 LOAD_GLOBAL              1 (NULL + QWidget)
+              250 CALL                     0
+              258 STORE_FAST               4 (t1)
+
+7784          260 LOAD_GLOBAL              5 (NULL + QVBoxLayout)
+              270 LOAD_FAST                4 (t1)
+              272 CALL                     1
+              280 STORE_FAST               5 (tv1)
+
+7785          282 LOAD_FAST                5 (tv1)
+              284 LOAD_ATTR                7 (NULL|self + setContentsMargins)
+              304 LOAD_CONST               2 (4)
+              306 LOAD_CONST               2 (4)
+              308 LOAD_CONST               2 (4)
+              310 LOAD_CONST               2 (4)
+              312 CALL                     4
+              320 POP_TOP
+
+7787          322 LOAD_GLOBAL             17 (NULL + QGroupBox)
+              332 LOAD_CONST               4 ('Transmission')
+              334 CALL                     1
+              342 STORE_FAST               6 (g1)
+
+7788          344 LOAD_GLOBAL             19 (NULL + QFormLayout)
+              354 CALL                     0
+              362 STORE_FAST               7 (f1)
+
+7789          364 LOAD_GLOBAL             21 (NULL + QComboBox)
+              374 CALL                     0
+              382 LOAD_DEREF               0 (self)
+              384 STORE_ATTR              11 (trans)
+
+7790          394 LOAD_DEREF               0 (self)
+              396 LOAD_ATTR               22 (trans)
+              416 LOAD_ATTR               25 (NULL|self + addItems)
+              436 LOAD_GLOBAL             26 (TRANS_DB)
+              446 LOAD_ATTR               29 (NULL|self + keys)
+              466 CALL                     0
+              474 CALL                     1
+              482 POP_TOP
+
+7791          484 LOAD_DEREF               0 (self)
+              486 LOAD_ATTR               22 (trans)
+              506 LOAD_ATTR               30 (currentIndexChanged)
+              526 LOAD_ATTR               33 (NULL|self + connect)
+              546 LOAD_DEREF               0 (self)
+              548 LOAD_ATTR               34 (on_trans_change)
+              568 CALL                     1
+              576 POP_TOP
+
+7792          578 LOAD_DEREF               0 (self)
+              580 LOAD_ATTR               22 (trans)
+              600 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7793          620 LOAD_CONST               5 ('GM transmission family (1996-current). Selecting a model loads its forward gear ratios and sets RWD/FWD-appropriate defaults.')
+
+7792          622 CALL                     1
+              630 POP_TOP
+
+7796          632 LOAD_GLOBAL             39 (NULL + QLabel)
+              642 LOAD_CONST               6 ('')
+              644 CALL                     1
+              652 LOAD_DEREF               0 (self)
+              654 STORE_ATTR              20 (trans_info)
+
+7797          664 LOAD_DEREF               0 (self)
+              666 LOAD_ATTR               40 (trans_info)
+              686 LOAD_ATTR               43 (NULL|self + setStyleSheet)
+              706 LOAD_CONST               7 ('color: #888;')
+              708 CALL                     1
+              716 POP_TOP
+
+7798          718 LOAD_DEREF               0 (self)
+              720 LOAD_ATTR               40 (trans_info)
+              740 LOAD_ATTR               45 (NULL|self + setWordWrap)
+              760 LOAD_CONST               8 (True)
+              762 CALL                     1
+              770 POP_TOP
+
+7799          772 LOAD_FAST                7 (f1)
+              774 LOAD_ATTR               47 (NULL|self + addRow)
+              794 LOAD_CONST               9 ('Model:')
+              796 LOAD_DEREF               0 (self)
+              798 LOAD_ATTR               22 (trans)
+              818 CALL                     2
+              826 POP_TOP
+
+7800          828 LOAD_FAST                7 (f1)
+              830 LOAD_ATTR               47 (NULL|self + addRow)
+              850 LOAD_CONST               6 ('')
+              852 LOAD_DEREF               0 (self)
+              854 LOAD_ATTR               40 (trans_info)
+              874 CALL                     2
+              882 POP_TOP
+
+7801          884 LOAD_FAST                6 (g1)
+              886 LOAD_ATTR               49 (NULL|self + setLayout)
+              906 LOAD_FAST                7 (f1)
+              908 CALL                     1
+              916 POP_TOP
+
+7802          918 LOAD_FAST                5 (tv1)
+              920 LOAD_ATTR               15 (NULL|self + addWidget)
+              940 LOAD_FAST                6 (g1)
+              942 CALL                     1
+              950 POP_TOP
+
+7804          952 LOAD_GLOBAL             17 (NULL + QGroupBox)
+              962 LOAD_CONST              10 ('Drivetrain')
+              964 CALL                     1
+              972 STORE_FAST               8 (g2)
+
+7805          974 LOAD_GLOBAL             19 (NULL + QFormLayout)
+              984 CALL                     0
+              992 STORE_FAST               9 (f2)
+
+7806          994 LOAD_GLOBAL             21 (NULL + QComboBox)
+             1004 CALL                     0
+             1012 LOAD_DEREF               0 (self)
+             1014 STORE_ATTR              25 (tire_preset)
+
+7807         1024 LOAD_DEREF               0 (self)
+             1026 LOAD_ATTR               50 (tire_preset)
+             1046 LOAD_ATTR               25 (NULL|self + addItems)
+             1066 LOAD_GLOBAL             53 (NULL + list)
+             1076 LOAD_GLOBAL             54 (TIRE_PRESETS)
+             1086 LOAD_ATTR               29 (NULL|self + keys)
+             1106 CALL                     0
+             1114 CALL                     1
+             1122 CALL                     1
+             1130 POP_TOP
+
+7808         1132 LOAD_DEREF               0 (self)
+             1134 LOAD_ATTR               50 (tire_preset)
+             1154 LOAD_ATTR               56 (currentTextChanged)
+             1174 LOAD_ATTR               33 (NULL|self + connect)
+             1194 LOAD_DEREF               0 (self)
+             1196 LOAD_ATTR               58 (_apply_tire_preset)
+             1216 CALL                     1
+             1224 POP_TOP
+
+7809         1226 LOAD_DEREF               0 (self)
+             1228 LOAD_ATTR               50 (tire_preset)
+             1248 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7810         1268 LOAD_CONST              11 ("Quick-select common drag/street/truck tire sizes. Selecting one auto-fills the Tire Dia (in) field. Pick '(Custom)' to enter manually.")
+
+7809         1270 CALL                     1
+             1278 POP_TOP
+
+7813         1280 LOAD_DEREF               0 (self)
+             1282 LOAD_ATTR               61 (NULL|self + _dsb)
+             1302 LOAD_CONST              12 (28.0)
+             1304 LOAD_CONST              13 (15.0)
+             1306 LOAD_CONST              14 (45.0)
+             1308 LOAD_CONST              15 (0.1)
+             1310 CALL                     4
+             1318 LOAD_DEREF               0 (self)
+             1320 STORE_ATTR              31 (tire)
+
+7814         1330 LOAD_DEREF               0 (self)
+             1332 LOAD_ATTR               62 (tire)
+             1352 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7815         1372 LOAD_CONST              16 ('Loaded tire diameter in inches (NOT sidewall spec — measure or use tire-size calculator). Affects every speed calculation. 275/55R20 ≈ 31.9″, 33×12.5R17 ≈ 33.0″, 26×11×14 slick ≈ 26.0″.\n\nHPT table: General → Speedometer → Tire Revolutions / Mile (Gen III/IV)\n          General → Speedometer → Tire Size (Gen V LT)')
+
+7814         1374 CALL                     1
+             1382 POP_TOP
+
+7821         1384 LOAD_DEREF               0 (self)
+             1386 LOAD_ATTR               61 (NULL|self + _dsb)
+             1406 LOAD_CONST              17 (3.42)
+             1408 LOAD_CONST              18 (1.5)
+             1410 LOAD_CONST              19 (6.5)
+             1412 LOAD_CONST              20 (0.01)
+             1414 CALL                     4
+             1422 LOAD_DEREF               0 (self)
+             1424 STORE_ATTR              32 (axle)
+
+7822         1434 LOAD_DEREF               0 (self)
+             1436 LOAD_ATTR               64 (axle)
+             1456 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7823         1476 LOAD_CONST              21 ("Rear axle (or front, for FWD) final drive ratio. Tag on the housing or check VIN. Common GM: 3.08, 3.23, 3.42, 3.73, 4.10.\n\nHPT table: General → Speedometer → Final Drive Ratio (all gens)\nAlso flows into TCM's gear-ratio detection (P0730 windows)")
+
+7822         1478 CALL                     1
+             1486 POP_TOP
+
+7828         1488 LOAD_DEREF               0 (self)
+             1490 LOAD_ATTR               61 (NULL|self + _dsb)
+             1510 LOAD_CONST              22 (1.0)
+             1512 LOAD_CONST              23 (0.5)
+             1514 LOAD_CONST              24 (3.0)
+             1516 LOAD_CONST              20 (0.01)
+             1518 CALL                     4
+             1526 LOAD_DEREF               0 (self)
+             1528 STORE_ATTR              33 (chain)
+
+7829         1538 LOAD_DEREF               0 (self)
+             1540 LOAD_ATTR               66 (chain)
+             1560 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7830         1580 LOAD_CONST              25 ('Transfer case / chain reduction. 1.00 for 2WD or 4x4 in HI range. Use the LO-range ratio for off-road tunes (e.g. NP246 LO = 2.72).')
+
+7829         1582 CALL                     1
+             1590 POP_TOP
+
+7833         1592 LOAD_DEREF               0 (self)
+             1594 LOAD_ATTR               61 (NULL|self + _dsb)
+             1614 LOAD_CONST              26 (4200.0)
+             1616 LOAD_CONST              27 (1500.0)
+             1618 LOAD_CONST              28 (12000.0)
+             1620 LOAD_CONST              29 (50.0)
+             1622 CALL                     4
+             1630 LOAD_DEREF               0 (self)
+             1632 STORE_ATTR              34 (weight)
+
+7834         1642 LOAD_DEREF               0 (self)
+             1644 LOAD_ATTR               68 (weight)
+             1664 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7835         1684 LOAD_CONST              30 ("Vehicle curb weight in lb. Used only in Time-mode WOT lead to compute acceleration rate per gear. Doesn't matter in RPM mode.")
+
+7834         1686 CALL                     1
+             1694 POP_TOP
+
+7838         1696 LOAD_DEREF               0 (self)
+             1698 LOAD_ATTR               61 (NULL|self + _dsb)
+             1718 LOAD_CONST              31 (400.0)
+             1720 LOAD_CONST              32 (100.0)
+             1722 LOAD_CONST              33 (2000.0)
+             1724 LOAD_CONST              34 (10.0)
+             1726 CALL                     4
+             1734 LOAD_DEREF               0 (self)
+             1736 STORE_ATTR              35 (rwhp)
+
+7839         1746 LOAD_DEREF               0 (self)
+             1748 LOAD_ATTR               70 (rwhp)
+             1768 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7840         1788 LOAD_CONST              35 ('Estimated rear-wheel HP (dyno or dyno-jet calculator). Used only in Time-mode lead. Crank HP * 0.85 is a reasonable estimate if no dyno.')
+
+7839         1790 CALL                     1
+             1798 POP_TOP
+
+7843         1800 LOAD_DEREF               0 (self)
+             1802 LOAD_ATTR               61 (NULL|self + _dsb)
+             1822 LOAD_CONST              36 (40.0)
+             1824 LOAD_CONST              22 (1.0)
+             1826 LOAD_CONST              37 (200.0)
+             1828 LOAD_CONST              22 (1.0)
+             1830 CALL                     4
+             1838 LOAD_DEREF               0 (self)
+             1840 STORE_ATTR              36 (vss_count)
+
+7844         1850 LOAD_DEREF               0 (self)
+             1852 LOAD_ATTR               72 (vss_count)
+             1872 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7845         1892 LOAD_CONST              38 ('VSS pulses per output-shaft revolution as configured in the PCM. Used to compute speedometer calibration in the Export dialog. Typical GM: 40 (most RWD), 16 (some FWD).\n\nHPT table: General → Speedometer → VSS Count (Gen III/IV)\n           General → Speedometer → Pulses Per Mile (computed)')
+
+7844         1894 CALL                     1
+             1902 POP_TOP
+
+7851         1904 LOAD_FAST                9 (f2)
+             1906 LOAD_ATTR               47 (NULL|self + addRow)
+             1926 LOAD_CONST              39 ('Tire Preset:')
+             1928 LOAD_DEREF               0 (self)
+             1930 LOAD_ATTR               50 (tire_preset)
+             1950 CALL                     2
+             1958 POP_TOP
+
+7852         1960 LOAD_FAST                9 (f2)
+             1962 LOAD_ATTR               47 (NULL|self + addRow)
+             1982 LOAD_CONST              40 ('Tire Dia (in):')
+             1984 LOAD_DEREF               0 (self)
+             1986 LOAD_ATTR               62 (tire)
+             2006 CALL                     2
+             2014 POP_TOP
+
+7853         2016 LOAD_FAST                9 (f2)
+             2018 LOAD_ATTR               47 (NULL|self + addRow)
+             2038 LOAD_CONST              41 ('Axle Ratio:')
+             2040 LOAD_DEREF               0 (self)
+             2042 LOAD_ATTR               64 (axle)
+             2062 CALL                     2
+             2070 POP_TOP
+
+7854         2072 LOAD_FAST                9 (f2)
+             2074 LOAD_ATTR               47 (NULL|self + addRow)
+             2094 LOAD_CONST              42 ('T-Case/Chain:')
+             2096 LOAD_DEREF               0 (self)
+             2098 LOAD_ATTR               66 (chain)
+             2118 CALL                     2
+             2126 POP_TOP
+
+7855         2128 LOAD_FAST                9 (f2)
+             2130 LOAD_ATTR               47 (NULL|self + addRow)
+             2150 LOAD_CONST              43 ('Vehicle Weight (lb):')
+             2152 LOAD_DEREF               0 (self)
+             2154 LOAD_ATTR               68 (weight)
+             2174 CALL                     2
+             2182 POP_TOP
+
+7856         2184 LOAD_FAST                9 (f2)
+             2186 LOAD_ATTR               47 (NULL|self + addRow)
+             2206 LOAD_CONST              44 ('RWHP (estimated):')
+             2208 LOAD_DEREF               0 (self)
+             2210 LOAD_ATTR               70 (rwhp)
+             2230 CALL                     2
+             2238 POP_TOP
+
+7857         2240 LOAD_FAST                9 (f2)
+             2242 LOAD_ATTR               47 (NULL|self + addRow)
+             2262 LOAD_CONST              45 ('VSS Count (pulses/rev):')
+             2264 LOAD_DEREF               0 (self)
+             2266 LOAD_ATTR               72 (vss_count)
+             2286 CALL                     2
+             2294 POP_TOP
+
+7858         2296 LOAD_FAST                8 (g2)
+             2298 LOAD_ATTR               49 (NULL|self + setLayout)
+             2318 LOAD_FAST                9 (f2)
+             2320 CALL                     1
+             2328 POP_TOP
+
+7859         2330 LOAD_FAST                5 (tv1)
+             2332 LOAD_ATTR               15 (NULL|self + addWidget)
+             2352 LOAD_FAST                8 (g2)
+             2354 CALL                     1
+             2362 POP_TOP
+
+7862         2364 LOAD_GLOBAL             75 (NULL + QPushButton)
+             2374 LOAD_CONST              46 ('Multi-Mode Tables Setup…')
+             2376 CALL                     1
+             2384 STORE_FAST              10 (mm_btn)
+
+7863         2386 LOAD_FAST               10 (mm_btn)
+             2388 LOAD_ATTR               77 (NULL|self + setMinimumHeight)
+             2408 LOAD_CONST              47 (32)
+             2410 CALL                     1
+             2418 POP_TOP
+
+7864         2420 LOAD_FAST               10 (mm_btn)
+             2422 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7865         2442 LOAD_CONST              48 ('Configure extra shift table modes (Performance/Hot/Cruise for 4-spd, Pattern A/B/Hot for 6+ spd). Pick a Racing/Towing/Eco intent or override fields manually. Also accessible from Tools menu.')
+
+7864         2444 CALL                     1
+             2452 POP_TOP
+
+7869         2454 LOAD_FAST               10 (mm_btn)
+             2456 LOAD_ATTR               78 (clicked)
+             2476 LOAD_ATTR               33 (NULL|self + connect)
+             2496 LOAD_DEREF               0 (self)
+             2498 LOAD_ATTR               80 (edit_mode_overrides)
+             2518 CALL                     1
+             2526 POP_TOP
+
+7870         2528 LOAD_FAST                5 (tv1)
+             2530 LOAD_ATTR               15 (NULL|self + addWidget)
+             2550 LOAD_FAST               10 (mm_btn)
+             2552 CALL                     1
+             2560 POP_TOP
+
+7880         2562 LOAD_GLOBAL             17 (NULL + QGroupBox)
+             2572 LOAD_CONST              49 ('TCC Shudder Fix')
+             2574 CALL                     1
+             2582 STORE_FAST              11 (sf_gb)
+
+7881         2584 LOAD_FAST               11 (sf_gb)
+             2586 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7882         2606 LOAD_CONST              50 ("Shudder originates in the partial-lockup zone (30-60 MPH, light\nthrottle, ~1200-2000 RPM) where TCC engages with too little\npressure — clutch material slip-sticks producing harmonic\nvibration. Each level raises minimum apply pressure and\nrestricts lockup to conditions where partial slip can't develop.")
+
+7881         2608 CALL                     1
+             2616 POP_TOP
+
+7888         2618 LOAD_GLOBAL              5 (NULL + QVBoxLayout)
+             2628 CALL                     0
+             2636 STORE_FAST              12 (sf_layout)
+
+7890         2638 LOAD_GLOBAL             39 (NULL + QLabel)
+
+7891         2648 LOAD_CONST              51 ('Eliminates 6L80 TCC harmonic shudder by restricting partial\nlockup. Applies to the TCC Apply Pressure Ramp + min TCC RPM\n+ accel lock gear on next Calculate (F5).')
+
+7890         2650 CALL                     1
+             2658 STORE_FAST              13 (sf_desc)
+
+7895         2660 LOAD_FAST               13 (sf_desc)
+             2662 LOAD_ATTR               43 (NULL|self + setStyleSheet)
+             2682 LOAD_CONST              52 ('color: #aaa; font-size: 10px;')
+             2684 CALL                     1
+             2692 POP_TOP
+
+7896         2694 LOAD_FAST               13 (sf_desc)
+             2696 LOAD_ATTR               45 (NULL|self + setWordWrap)
+             2716 LOAD_CONST               8 (True)
+             2718 CALL                     1
+             2726 POP_TOP
+
+7897         2728 LOAD_FAST               12 (sf_layout)
+             2730 LOAD_ATTR               15 (NULL|self + addWidget)
+             2750 LOAD_FAST               13 (sf_desc)
+             2752 CALL                     1
+             2760 POP_TOP
+
+7899         2762 LOAD_GLOBAL             83 (NULL + QRadioButton)
+             2772 LOAD_CONST              53 ('Off  —  no shudder fix applied')
+             2774 CALL                     1
+             2782 LOAD_DEREF               0 (self)
+             2784 STORE_ATTR              42 (shudder_off_rb)
+
+7900         2794 LOAD_GLOBAL             83 (NULL + QRadioButton)
+
+7901         2804 LOAD_CONST              54 ('Mild  —  65 PSI plateau, +200 RPM min TCC')
+
+7900         2806 CALL                     1
+             2814 LOAD_DEREF               0 (self)
+             2816 STORE_ATTR              43 (shudder_mild_rb)
+
+7902         2826 LOAD_GLOBAL             83 (NULL + QRadioButton)
+
+7903         2836 LOAD_CONST              55 ('Moderate  —  90 PSI plateau, +400 RPM min TCC, +1 lock gear')
+
+7902         2838 CALL                     1
+             2846 LOAD_DEREF               0 (self)
+             2848 STORE_ATTR              44 (shudder_moderate_rb)
+
+7904         2858 LOAD_GLOBAL             83 (NULL + QRadioButton)
+
+7905         2868 LOAD_CONST              56 ('Aggressive  —  full lock (110 PSI), restrict to cruise+WOT only')
+
+7904         2870 CALL                     1
+             2878 LOAD_DEREF               0 (self)
+             2880 STORE_ATTR              45 (shudder_aggressive_rb)
+
+7906         2890 LOAD_DEREF               0 (self)
+             2892 LOAD_ATTR               84 (shudder_off_rb)
+             2912 LOAD_ATTR               93 (NULL|self + setChecked)
+             2932 LOAD_CONST               8 (True)
+             2934 CALL                     1
+             2942 POP_TOP
+
+7907         2944 LOAD_DEREF               0 (self)
+             2946 LOAD_ATTR               84 (shudder_off_rb)
+             2966 LOAD_DEREF               0 (self)
+             2968 LOAD_ATTR               86 (shudder_mild_rb)
+
+7908         2988 LOAD_DEREF               0 (self)
+             2990 LOAD_ATTR               88 (shudder_moderate_rb)
+             3010 LOAD_DEREF               0 (self)
+             3012 LOAD_ATTR               90 (shudder_aggressive_rb)
+
+7907         3032 BUILD_TUPLE              4
+             3034 GET_ITER
+         >>  3036 FOR_ITER                56 (to 3152)
+             3040 STORE_FAST              14 (rb)
+
+7909         3042 LOAD_FAST               14 (rb)
+             3044 LOAD_ATTR               94 (toggled)
+             3064 LOAD_ATTR               33 (NULL|self + connect)
+             3084 LOAD_DEREF               0 (self)
+             3086 LOAD_ATTR               96 (_on_shudder_level_changed)
+             3106 CALL                     1
+             3114 POP_TOP
+
+7910         3116 LOAD_FAST               12 (sf_layout)
+             3118 LOAD_ATTR               15 (NULL|self + addWidget)
+             3138 LOAD_FAST               14 (rb)
+             3140 CALL                     1
+             3148 POP_TOP
+             3150 JUMP_BACKWARD           58 (to 3036)
+
+7907     >>  3152 END_FOR
+
+7912         3154 LOAD_GLOBAL             39 (NULL + QLabel)
+             3164 LOAD_CONST               6 ('')
+             3166 CALL                     1
+             3174 LOAD_DEREF               0 (self)
+             3176 STORE_ATTR              49 (shudder_status_lbl)
+
+7913         3186 LOAD_DEREF               0 (self)
+             3188 LOAD_ATTR               98 (shudder_status_lbl)
+             3208 LOAD_ATTR               43 (NULL|self + setStyleSheet)
+
+7914         3228 LOAD_CONST              57 ('color: #6cc; font-size: 10px; padding: 4px;')
+
+7913         3230 CALL                     1
+             3238 POP_TOP
+
+7915         3240 LOAD_DEREF               0 (self)
+             3242 LOAD_ATTR               98 (shudder_status_lbl)
+             3262 LOAD_ATTR               45 (NULL|self + setWordWrap)
+             3282 LOAD_CONST               8 (True)
+             3284 CALL                     1
+             3292 POP_TOP
+
+7916         3294 LOAD_FAST               12 (sf_layout)
+             3296 LOAD_ATTR               15 (NULL|self + addWidget)
+             3316 LOAD_DEREF               0 (self)
+             3318 LOAD_ATTR               98 (shudder_status_lbl)
+             3338 CALL                     1
+             3346 POP_TOP
+
+7917         3348 LOAD_FAST               11 (sf_gb)
+             3350 LOAD_ATTR               49 (NULL|self + setLayout)
+             3370 LOAD_FAST               12 (sf_layout)
+             3372 CALL                     1
+             3380 POP_TOP
+
+7918         3382 LOAD_FAST                5 (tv1)
+             3384 LOAD_ATTR               15 (NULL|self + addWidget)
+             3404 LOAD_FAST               11 (sf_gb)
+             3406 CALL                     1
+             3414 POP_TOP
+
+7921         3416 LOAD_CONST              58 ('Off')
+             3418 LOAD_DEREF               0 (self)
+             3420 STORE_ATTR              50 (_shudder_fix_level)
+
+7923         3430 LOAD_CONST              59 (None)
+             3432 LOAD_DEREF               0 (self)
+             3434 STORE_ATTR              51 (_shudder_baseline)
+
+7925         3444 LOAD_FAST                5 (tv1)
+             3446 LOAD_ATTR              105 (NULL|self + addStretch)
+             3466 CALL                     0
+             3474 POP_TOP
+
+7926         3476 LOAD_DEREF               0 (self)
+             3478 LOAD_ATTR               12 (settings_tabs)
+             3498 LOAD_ATTR              107 (NULL|self + addTab)
+             3518 LOAD_FAST                4 (t1)
+             3520 LOAD_CONST              60 ('Basics')
+             3522 CALL                     2
+             3530 POP_TOP
+
+7929         3532 LOAD_GLOBAL              1 (NULL + QWidget)
+             3542 CALL                     0
+             3550 STORE_FAST              15 (t2)
+
+7930         3552 LOAD_GLOBAL              5 (NULL + QVBoxLayout)
+             3562 LOAD_FAST               15 (t2)
+             3564 CALL                     1
+             3572 STORE_FAST              16 (tv2)
+
+7931         3574 LOAD_FAST               16 (tv2)
+             3576 LOAD_ATTR                7 (NULL|self + setContentsMargins)
+             3596 LOAD_CONST               2 (4)
+             3598 LOAD_CONST               2 (4)
+             3600 LOAD_CONST               2 (4)
+             3602 LOAD_CONST               2 (4)
+             3604 CALL                     4
+             3612 POP_TOP
+
+7933         3614 LOAD_GLOBAL             17 (NULL + QGroupBox)
+             3624 LOAD_CONST              61 ('Engine RPM')
+             3626 CALL                     1
+             3634 STORE_FAST              17 (g3)
+
+7934         3636 LOAD_GLOBAL             19 (NULL + QFormLayout)
+             3646 CALL                     0
+             3654 STORE_FAST              18 (f3)
+
+7935         3656 LOAD_DEREF               0 (self)
+             3658 LOAD_ATTR               61 (NULL|self + _dsb)
+             3678 LOAD_CONST              62 (650)
+             3680 LOAD_CONST               1 (400)
+             3682 LOAD_CONST              63 (1500)
+             3684 LOAD_CONST              64 (25)
+             3686 CALL                     4
+             3694 LOAD_DEREF               0 (self)
+             3696 STORE_ATTR              54 (idle)
+
+7936         3706 LOAD_DEREF               0 (self)
+             3708 LOAD_ATTR              108 (idle)
+             3728 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7937         3748 LOAD_CONST              65 ('Hot-engine idle RPM. Used to compute min-speed-per-gear (MinSpeed = idle + 400 RPM). Default 650 fits most LS/LT engines.')
+
+7936         3750 CALL                     1
+             3758 POP_TOP
+
+7940         3760 LOAD_DEREF               0 (self)
+             3762 LOAD_ATTR               61 (NULL|self + _dsb)
+             3782 LOAD_CONST              66 (6200)
+             3784 LOAD_CONST              67 (3000)
+             3786 LOAD_CONST              68 (9000)
+             3788 LOAD_CONST              69 (50)
+             3790 CALL                     4
+             3798 LOAD_DEREF               0 (self)
+             3800 STORE_ATTR              55 (shift_rpm)
+
+7941         3810 LOAD_DEREF               0 (self)
+             3812 LOAD_ATTR              110 (shift_rpm)
+             3832 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7942         3852 LOAD_CONST              70 ('Target engine RPM at the 100% TPS upshift point. Set below redline to leave headroom for shift inertia. LS1=6200, LS3=6600, LT1=6500, ZR1/ZL1=6500, stock truck=5800, diesel=3200.\n\nHPT table: Transmission → Auto Shift Properties → WOT RPM (per shift)\n           Or: Transmission → General → Maximum Engine Speed')
+
+7941         3854 CALL                     1
+             3862 POP_TOP
+
+7948         3864 LOAD_DEREF               0 (self)
+             3866 LOAD_ATTR               61 (NULL|self + _dsb)
+             3886 LOAD_CONST              71 (4500)
+             3888 LOAD_CONST              72 (2000)
+             3890 LOAD_CONST              73 (7500)
+             3892 LOAD_CONST              69 (50)
+             3894 CALL                     4
+             3902 LOAD_DEREF               0 (self)
+             3904 STORE_ATTR              56 (drpm)
+
+7949         3914 LOAD_DEREF               0 (self)
+             3916 LOAD_ATTR              112 (drpm)
+             3936 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7950         3956 LOAD_CONST              74 ("Maximum allowable engine RPM at any WOT downshift. Caps the downshift speed so a 3-2 kickdown doesn't overrev. Set 1500-2000 below shift_rpm so post-downshift RPM stays under redline.\n\nHPT table: Transmission → Auto Shift Properties → Max Downshift RPM")
+
+7949         3958 CALL                     1
+             3966 POP_TOP
+
+7955         3968 LOAD_DEREF               0 (self)
+             3970 LOAD_ATTR               61 (NULL|self + _dsb)
+             3990 LOAD_CONST              75 (1400)
+             3992 LOAD_CONST              76 (800)
+             3994 LOAD_CONST              77 (2500)
+             3996 LOAD_CONST              64 (25)
+             3998 CALL                     4
+             4006 LOAD_DEREF               0 (self)
+             4008 STORE_ATTR              57 (min_tcc_rpm)
+
+7956         4018 LOAD_DEREF               0 (self)
+             4020 LOAD_ATTR              114 (min_tcc_rpm)
+             4040 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7957         4060 LOAD_CONST              78 ('Minimum engine RPM at which TCC is allowed to lock per gear. Becomes a per-gear MPH floor in the TCC tables. Stock GM ~1100-1200, performance ~1400, towing ~1600 (more slip for torque multiplication).\n\nHPT table: Transmission → Torque Converter → Minimum Lock RPM\n           Indirectly: TCC Lock vs TPS (per gear)')
+
+7956         4062 CALL                     1
+             4070 POP_TOP
+
+7963         4072 LOAD_FAST               18 (f3)
+             4074 LOAD_ATTR               47 (NULL|self + addRow)
+             4094 LOAD_CONST              79 ('Idle RPM:')
+             4096 LOAD_DEREF               0 (self)
+             4098 LOAD_ATTR              108 (idle)
+             4118 CALL                     2
+             4126 POP_TOP
+
+7964         4128 LOAD_FAST               18 (f3)
+             4130 LOAD_ATTR               47 (NULL|self + addRow)
+             4150 LOAD_CONST              80 ('WOT Shift RPM:')
+             4152 LOAD_DEREF               0 (self)
+             4154 LOAD_ATTR              110 (shift_rpm)
+             4174 CALL                     2
+             4182 POP_TOP
+
+7965         4184 LOAD_FAST               18 (f3)
+             4186 LOAD_ATTR               47 (NULL|self + addRow)
+             4206 LOAD_CONST              81 ('Max Downshift RPM:')
+             4208 LOAD_DEREF               0 (self)
+             4210 LOAD_ATTR              112 (drpm)
+             4230 CALL                     2
+             4238 POP_TOP
+
+7966         4240 LOAD_FAST               18 (f3)
+             4242 LOAD_ATTR               47 (NULL|self + addRow)
+             4262 LOAD_CONST              82 ('Min TCC Lock RPM:')
+             4264 LOAD_DEREF               0 (self)
+             4266 LOAD_ATTR              114 (min_tcc_rpm)
+             4286 CALL                     2
+             4294 POP_TOP
+
+7967         4296 LOAD_FAST               17 (g3)
+             4298 LOAD_ATTR               49 (NULL|self + setLayout)
+             4318 LOAD_FAST               18 (f3)
+             4320 CALL                     1
+             4328 POP_TOP
+
+7968         4330 LOAD_FAST               16 (tv2)
+             4332 LOAD_ATTR               15 (NULL|self + addWidget)
+             4352 LOAD_FAST               17 (g3)
+             4354 CALL                     1
+             4362 POP_TOP
+
+7970         4364 LOAD_GLOBAL             17 (NULL + QGroupBox)
+             4374 LOAD_CONST              83 ('Torque Converter')
+             4376 CALL                     1
+             4384 STORE_FAST              19 (g_tc)
+
+7971         4386 LOAD_GLOBAL             19 (NULL + QFormLayout)
+             4396 CALL                     0
+             4404 STORE_FAST              20 (f_tc)
+
+7972         4406 LOAD_DEREF               0 (self)
+             4408 LOAD_ATTR               61 (NULL|self + _dsb)
+             4428 LOAD_CONST              72 (2000)
+             4430 LOAD_CONST              84 (1200)
+             4432 LOAD_CONST              85 (5500)
+             4434 LOAD_CONST              69 (50)
+             4436 CALL                     4
+             4444 LOAD_DEREF               0 (self)
+             4446 STORE_ATTR              58 (stall)
+
+7973         4456 LOAD_DEREF               0 (self)
+             4458 LOAD_ATTR              116 (stall)
+             4478 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7974         4498 LOAD_CONST              86 ('Torque converter stall speed (foot-braked, WOT). Drives the slip model: slip% = (stall/1000)^1.7. Stock LS1=1800-2000, mild performance=2400-2800, race=3200+.\n\nHPT informational only — no PCM table directly stores stall RPM.\nAffects: TCC Apply Pressure schedules + WOT shift point lead math.')
+
+7973         4500 CALL                     1
+             4508 POP_TOP
+
+7980         4510 LOAD_DEREF               0 (self)
+             4512 LOAD_ATTR               61 (NULL|self + _dsb)
+             4532 LOAD_CONST              87 (0.0)
+             4534 LOAD_CONST              87 (0.0)
+             4536 LOAD_CONST              88 (30.0)
+             4538 LOAD_CONST              15 (0.1)
+             4540 CALL                     4
+             4548 LOAD_DEREF               0 (self)
+             4550 STORE_ATTR              59 (meas_slip)
+
+7981         4560 LOAD_DEREF               0 (self)
+             4562 LOAD_ATTR              118 (meas_slip)
+             4582 LOAD_ATTR              121 (NULL|self + setDecimals)
+             4602 LOAD_CONST               3 (1)
+             4604 CALL                     1
+             4612 POP_TOP
+
+7982         4614 LOAD_DEREF               0 (self)
+             4616 LOAD_ATTR              118 (meas_slip)
+             4636 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7983         4656 LOAD_CONST              89 ('OPTIONAL: dyno-measured WOT slip % at the stall RPM (engine RPM minus driveshaft RPM, divided by engine RPM × 100). Leave at 0.0 to skip. When set, the validation banner will compare your measured slip vs the formula prediction and warn if stall RPM looks wrong.')
+
+7982         4658 CALL                     1
+             4666 POP_TOP
+
+7988         4668 LOAD_DEREF               0 (self)
+             4670 LOAD_ATTR              123 (NULL|self + _spin)
+             4690 LOAD_CONST              90 (2)
+             4692 LOAD_CONST               3 (1)
+             4694 LOAD_CONST              91 (10)
+             4696 CALL                     3
+             4704 LOAD_DEREF               0 (self)
+             4706 STORE_ATTR              62 (min_tcc_gear)
+
+7989         4716 LOAD_DEREF               0 (self)
+             4718 LOAD_ATTR              124 (min_tcc_gear)
+             4738 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7990         4758 LOAD_CONST              92 ('Lowest gear that TCC is allowed to lock in. Gears BELOW this are forced to 255 MPH (disabled sentinel). Setting higher than the top gear disables lockup completely. Default 2 (gear 1 unlocked). Raising this will auto-raise Accel and WOT Gear to match.')
+
+7989         4760 CALL                     1
+             4768 POP_TOP
+
+7995         4770 LOAD_DEREF               0 (self)
+             4772 LOAD_ATTR              124 (min_tcc_gear)
+             4792 LOAD_ATTR              126 (valueChanged)
+             4812 LOAD_ATTR               33 (NULL|self + connect)
+             4832 LOAD_DEREF               0 (self)
+             4834 LOAD_ATTR              128 (_enforce_tcc_gear_hierarchy)
+             4854 CALL                     1
+             4862 POP_TOP
+
+7996         4864 LOAD_DEREF               0 (self)
+             4866 LOAD_ATTR              123 (NULL|self + _spin)
+             4886 LOAD_CONST              93 (3)
+             4888 LOAD_CONST               3 (1)
+             4890 LOAD_CONST              91 (10)
+             4892 CALL                     3
+             4900 LOAD_DEREF               0 (self)
+             4902 STORE_ATTR              65 (accel_lock_gear)
+
+7997         4912 LOAD_DEREF               0 (self)
+             4914 LOAD_ATTR              130 (accel_lock_gear)
+             4934 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+7998         4954 LOAD_CONST              94 ('Lowest gear where TCC engages aggressively under acceleration. At/above this gear, lock is pulled close to the upshift speed. Performance tune: 2-3. Tow tune: 4+ (lets converter multiply torque). Cannot be lower than Min Gear (auto-enforced).')
+
+7997         4956 CALL                     1
+             4964 POP_TOP
+
+8003         4966 LOAD_DEREF               0 (self)
+             4968 LOAD_ATTR              123 (NULL|self + _spin)
+             4988 LOAD_CONST              95 (5)
+             4990 LOAD_CONST               3 (1)
+             4992 LOAD_CONST              91 (10)
+             4994 CALL                     3
+             5002 LOAD_DEREF               0 (self)
+             5004 STORE_ATTR              66 (wot_lock_gear)
+
+8004         5014 LOAD_DEREF               0 (self)
+             5016 LOAD_ATTR              132 (wot_lock_gear)
+             5036 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8005         5056 LOAD_CONST              96 ('Lowest gear that locks TCC through a WOT shift. The 100% TPS cell of lock is pulled up to upshift_OUT - spread. Top gear uses upshift_INTO + spread (locks right after the shift). Typical: 6L80=5, 8L90=7, 10L80=8. Cannot be lower than Min Gear (auto-enforced).')
+
+8004         5058 CALL                     1
+             5066 POP_TOP
+
+8011         5068 LOAD_GLOBAL             75 (NULL + QPushButton)
+             5078 LOAD_CONST              97 ('Lockup Config…')
+             5080 CALL                     1
+             5088 STORE_FAST              21 (lockup_btn)
+
+8012         5090 LOAD_FAST               21 (lockup_btn)
+             5092 LOAD_ATTR               78 (clicked)
+             5112 LOAD_ATTR               33 (NULL|self + connect)
+             5132 LOAD_DEREF               0 (self)
+             5134 LOAD_ATTR              134 (edit_lockup_config)
+             5154 CALL                     1
+             5162 POP_TOP
+
+8013         5164 LOAD_FAST               21 (lockup_btn)
+             5166 LOAD_ATTR               37 (NULL|self + setToolTip)
+             5186 LOAD_CONST              98 ('Open advanced TCC behavior flags (stall lock logic, init lock, etc.)')
+             5188 CALL                     1
+             5196 POP_TOP
+
+8014         5198 LOAD_FAST               20 (f_tc)
+             5200 LOAD_ATTR               47 (NULL|self + addRow)
+             5220 LOAD_CONST              99 ('Stall RPM:')
+             5222 LOAD_DEREF               0 (self)
+             5224 LOAD_ATTR              116 (stall)
+             5244 CALL                     2
+             5252 POP_TOP
+
+8015         5254 LOAD_FAST               20 (f_tc)
+             5256 LOAD_ATTR               47 (NULL|self + addRow)
+             5276 LOAD_CONST             100 ('Measured Slip %:')
+             5278 LOAD_DEREF               0 (self)
+             5280 LOAD_ATTR              118 (meas_slip)
+             5300 CALL                     2
+             5308 POP_TOP
+
+8016         5310 LOAD_FAST               20 (f_tc)
+             5312 LOAD_ATTR               47 (NULL|self + addRow)
+             5332 LOAD_CONST             101 ('Min Gear:')
+             5334 LOAD_DEREF               0 (self)
+             5336 LOAD_ATTR              124 (min_tcc_gear)
+             5356 CALL                     2
+             5364 POP_TOP
+
+8017         5366 LOAD_FAST               20 (f_tc)
+             5368 LOAD_ATTR               47 (NULL|self + addRow)
+             5388 LOAD_CONST             102 ('Accel Gear:')
+             5390 LOAD_DEREF               0 (self)
+             5392 LOAD_ATTR              130 (accel_lock_gear)
+             5412 CALL                     2
+             5420 POP_TOP
+
+8018         5422 LOAD_FAST               20 (f_tc)
+             5424 LOAD_ATTR               47 (NULL|self + addRow)
+             5444 LOAD_CONST             103 ('WOT Gear:')
+             5446 LOAD_DEREF               0 (self)
+             5448 LOAD_ATTR              132 (wot_lock_gear)
+             5468 CALL                     2
+             5476 POP_TOP
+
+8019         5478 LOAD_FAST               20 (f_tc)
+             5480 LOAD_ATTR               47 (NULL|self + addRow)
+             5500 LOAD_CONST               6 ('')
+             5502 LOAD_FAST               21 (lockup_btn)
+             5504 CALL                     2
+             5512 POP_TOP
+
+8020         5514 LOAD_FAST               19 (g_tc)
+             5516 LOAD_ATTR               49 (NULL|self + setLayout)
+             5536 LOAD_FAST               20 (f_tc)
+             5538 CALL                     1
+             5546 POP_TOP
+
+8021         5548 LOAD_FAST               16 (tv2)
+             5550 LOAD_ATTR               15 (NULL|self + addWidget)
+             5570 LOAD_FAST               19 (g_tc)
+             5572 CALL                     1
+             5580 POP_TOP
+
+8024         5582 LOAD_GLOBAL             17 (NULL + QGroupBox)
+             5592 LOAD_CONST             104 ('Per-Gear WOT Shift RPM (override)')
+             5594 CALL                     1
+             5602 STORE_FAST              22 (g_pgr)
+
+8025         5604 LOAD_GLOBAL              5 (NULL + QVBoxLayout)
+             5614 CALL                     0
+             5622 STORE_FAST              23 (gl)
+
+8026         5624 LOAD_GLOBAL             39 (NULL + QLabel)
+
+8027         5634 LOAD_CONST             105 ('Per-gear WOT shift RPM. Override the global WOT Shift RPM to keep the engine in its powerband across the gear stack (e.g. 6500 in 1-2 for full power, 6100 in 5-6 for cruise).')
+
+8026         5636 CALL                     1
+             5644 STORE_FAST              24 (help_lbl)
+
+8031         5646 LOAD_FAST               24 (help_lbl)
+             5648 LOAD_ATTR               43 (NULL|self + setStyleSheet)
+             5668 LOAD_CONST             106 ('color: #888; font-size: 9pt;')
+             5670 CALL                     1
+             5678 POP_TOP
+
+8032         5680 LOAD_FAST               24 (help_lbl)
+             5682 LOAD_ATTR               45 (NULL|self + setWordWrap)
+             5702 LOAD_CONST               8 (True)
+             5704 CALL                     1
+             5712 POP_TOP
+
+8033         5714 LOAD_FAST               23 (gl)
+             5716 LOAD_ATTR               15 (NULL|self + addWidget)
+             5736 LOAD_FAST               24 (help_lbl)
+             5738 CALL                     1
+             5746 POP_TOP
+
+8035         5748 LOAD_GLOBAL            137 (NULL + QTableWidget)
+             5758 CALL                     0
+             5766 LOAD_DEREF               0 (self)
+             5768 STORE_ATTR              69 (per_gear_rpm_table)
+
+8036         5778 LOAD_DEREF               0 (self)
+             5780 LOAD_ATTR              138 (per_gear_rpm_table)
+             5800 LOAD_ATTR              141 (NULL|self + setColumnCount)
+             5820 LOAD_CONST               3 (1)
+             5822 CALL                     1
+             5830 POP_TOP
+
+8037         5832 LOAD_DEREF               0 (self)
+             5834 LOAD_ATTR              138 (per_gear_rpm_table)
+             5854 LOAD_ATTR              143 (NULL|self + setHorizontalHeaderLabels)
+             5874 LOAD_CONST             107 ('Shift RPM')
+             5876 BUILD_LIST               1
+             5878 CALL                     1
+             5886 POP_TOP
+
+8038         5888 LOAD_DEREF               0 (self)
+             5890 LOAD_ATTR              138 (per_gear_rpm_table)
+             5910 LOAD_ATTR              145 (NULL|self + horizontalHeader)
+             5930 CALL                     0
+             5938 LOAD_ATTR              147 (NULL|self + setSectionResizeMode)
+
+8039         5958 LOAD_GLOBAL            148 (QHeaderView)
+             5968 LOAD_ATTR              150 (ResizeMode)
+             5988 LOAD_ATTR              152 (Stretch)
+
+8038         6008 CALL                     1
+             6016 POP_TOP
+
+8040         6018 LOAD_DEREF               0 (self)
+             6020 LOAD_ATTR              138 (per_gear_rpm_table)
+             6040 LOAD_ATTR               77 (NULL|self + setMinimumHeight)
+             6060 LOAD_CONST             108 (160)
+             6062 CALL                     1
+             6070 POP_TOP
+
+8041         6072 LOAD_DEREF               0 (self)
+             6074 LOAD_ATTR              138 (per_gear_rpm_table)
+             6094 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8042         6114 LOAD_CONST             109 ("Edit each gear's WOT upshift RPM. Values feed into the calc as per-gear overrides. Click 'Reset to Global' to revert to the WOT Shift RPM spinbox value.")
+
+8041         6116 CALL                     1
+             6124 POP_TOP
+
+8046         6126 LOAD_DEREF               0 (self)
+             6128 LOAD_ATTR              138 (per_gear_rpm_table)
+             6148 LOAD_ATTR              154 (itemChanged)
+             6168 LOAD_ATTR               33 (NULL|self + connect)
+             6188 LOAD_DEREF               0 (self)
+             6190 LOAD_ATTR              156 (_on_per_gear_rpm_changed)
+             6210 CALL                     1
+             6218 POP_TOP
+
+8047         6220 LOAD_FAST               23 (gl)
+             6222 LOAD_ATTR               15 (NULL|self + addWidget)
+             6242 LOAD_DEREF               0 (self)
+             6244 LOAD_ATTR              138 (per_gear_rpm_table)
+             6264 CALL                     1
+             6272 POP_TOP
+
+8050         6274 LOAD_GLOBAL            159 (NULL + QHBoxLayout)
+             6284 CALL                     0
+             6292 STORE_FAST              25 (btn_row)
+
+8051         6294 LOAD_GLOBAL             75 (NULL + QPushButton)
+             6304 LOAD_CONST             110 ('Reset to Global')
+             6306 CALL                     1
+             6314 STORE_FAST              26 (reset_btn)
+
+8052         6316 LOAD_FAST               26 (reset_btn)
+             6318 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8053         6338 LOAD_CONST             111 ('Set all per-shift values to match the WOT Shift RPM spinbox. Clears per-shift customization (per_gear_rpm = None).')
+
+8052         6340 CALL                     1
+             6348 POP_TOP
+
+8056         6350 LOAD_FAST               26 (reset_btn)
+             6352 LOAD_ATTR               78 (clicked)
+             6372 LOAD_ATTR               33 (NULL|self + connect)
+             6392 LOAD_DEREF               0 (self)
+             6394 LOAD_ATTR              160 (_reset_per_gear_rpm)
+             6414 CALL                     1
+             6422 POP_TOP
+
+8057         6424 LOAD_FAST               25 (btn_row)
+             6426 LOAD_ATTR               15 (NULL|self + addWidget)
+             6446 LOAD_FAST               26 (reset_btn)
+             6448 CALL                     1
+             6456 POP_TOP
+
+8059         6458 LOAD_GLOBAL             75 (NULL + QPushButton)
+             6468 LOAD_CONST             112 ('Step −200/shift')
+             6470 CALL                     1
+             6478 STORE_FAST              27 (step_btn)
+
+8060         6480 LOAD_FAST               27 (step_btn)
+             6482 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8061         6502 LOAD_CONST             113 ('Start at the global WOT Shift RPM for 1→2, then drop 200 RPM\nper subsequent shift. Common pattern for boosted builds: full\npower on launch, taper for cruise gears (e.g. 6800/6600/6400…).')
+
+8060         6504 CALL                     1
+             6512 POP_TOP
+
+8065         6514 LOAD_FAST               27 (step_btn)
+             6516 LOAD_ATTR               78 (clicked)
+             6536 LOAD_ATTR               33 (NULL|self + connect)
+             6556 LOAD_CLOSURE             0 (self)
+             6558 BUILD_TUPLE              1
+             6560 LOAD_CONST             114 (<code object <lambda> at 0x73ab02a98030, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 8065>)
+             6562 MAKE_FUNCTION            8 (closure)
+             6564 CALL                     1
+             6572 POP_TOP
+
+8066         6574 LOAD_FAST               25 (btn_row)
+             6576 LOAD_ATTR               15 (NULL|self + addWidget)
+             6596 LOAD_FAST               27 (step_btn)
+             6598 CALL                     1
+             6606 POP_TOP
+
+8068         6608 LOAD_GLOBAL             75 (NULL + QPushButton)
+             6618 LOAD_CONST             115 ('Match Torque Curve')
+             6620 CALL                     1
+             6628 STORE_FAST              28 (curve_btn)
+
+8069         6630 LOAD_FAST               28 (curve_btn)
+             6632 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8070         6652 LOAD_CONST             116 ("If a torque curve is loaded, set each shift RPM such that the\nengine lands in its peak-HP band after the shift. Picks the\nRPM that maximizes the next gear's avg HP across its band.\nFalls back to the global RPM if no curve is loaded.")
+
+8069         6654 CALL                     1
+             6662 POP_TOP
+
+8075         6664 LOAD_FAST               28 (curve_btn)
+             6666 LOAD_ATTR               78 (clicked)
+             6686 LOAD_ATTR               33 (NULL|self + connect)
+             6706 LOAD_DEREF               0 (self)
+             6708 LOAD_ATTR              162 (_quickfill_from_curve)
+             6728 CALL                     1
+             6736 POP_TOP
+
+8076         6738 LOAD_FAST               25 (btn_row)
+             6740 LOAD_ATTR               15 (NULL|self + addWidget)
+             6760 LOAD_FAST               28 (curve_btn)
+             6762 CALL                     1
+             6770 POP_TOP
+
+8077         6772 LOAD_FAST               23 (gl)
+             6774 LOAD_ATTR              165 (NULL|self + addLayout)
+             6794 LOAD_FAST               25 (btn_row)
+             6796 CALL                     1
+             6804 POP_TOP
+
+8080         6806 LOAD_GLOBAL             39 (NULL + QLabel)
+             6816 LOAD_CONST               6 ('')
+             6818 CALL                     1
+             6826 LOAD_DEREF               0 (self)
+             6828 STORE_ATTR              83 (per_gear_rpm_status)
+
+8081         6838 LOAD_DEREF               0 (self)
+             6840 LOAD_ATTR              166 (per_gear_rpm_status)
+             6860 LOAD_ATTR               43 (NULL|self + setStyleSheet)
+             6880 LOAD_CONST             117 ('color: #4a9eff; font-size: 9pt; padding: 2px;')
+             6882 CALL                     1
+             6890 POP_TOP
+
+8082         6892 LOAD_FAST               23 (gl)
+             6894 LOAD_ATTR               15 (NULL|self + addWidget)
+             6914 LOAD_DEREF               0 (self)
+             6916 LOAD_ATTR              166 (per_gear_rpm_status)
+             6936 CALL                     1
+             6944 POP_TOP
+
+8084         6946 LOAD_FAST               22 (g_pgr)
+             6948 LOAD_ATTR               49 (NULL|self + setLayout)
+             6968 LOAD_FAST               23 (gl)
+             6970 CALL                     1
+             6978 POP_TOP
+
+8085         6980 LOAD_FAST               16 (tv2)
+             6982 LOAD_ATTR               15 (NULL|self + addWidget)
+             7002 LOAD_FAST               22 (g_pgr)
+             7004 CALL                     1
+             7012 POP_TOP
+
+8091         7014 LOAD_GLOBAL             17 (NULL + QGroupBox)
+             7024 LOAD_CONST             118 ('Forced Induction (Boost Curve)')
+             7026 CALL                     1
+             7034 STORE_FAST              29 (g_boost)
+
+8092         7036 LOAD_FAST               29 (g_boost)
+             7038 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8093         7058 LOAD_CONST             119 ('Modify engine torque/HP at WOT for turbo or supercharged setups.\nMultiplier: effective_tq = base_tq * (1 + boost_psi * pct/100)\nTypical: turbo 7-9% per PSI, supercharger 5-6% per PSI.')
+
+8092         7060 CALL                     1
+             7068 POP_TOP
+
+8097         7070 LOAD_GLOBAL             19 (NULL + QFormLayout)
+             7080 CALL                     0
+             7088 STORE_FAST              30 (bl)
+
+8099         7090 LOAD_GLOBAL            169 (NULL + QCheckBox)
+             7100 LOAD_CONST             120 ('Enable boost-aware torque scaling')
+             7102 CALL                     1
+             7110 LOAD_DEREF               0 (self)
+             7112 STORE_ATTR              85 (boost_enabled)
+
+8100         7122 LOAD_DEREF               0 (self)
+             7124 LOAD_ATTR              170 (boost_enabled)
+             7144 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8101         7164 LOAD_CONST             121 ('Toggle whether boost contributes to torque/HP at runtime.\nOFF = naturally aspirated (no scaling).\nON = base curve × boost multiplier per RPM.')
+
+8100         7166 CALL                     1
+             7174 POP_TOP
+
+8105         7176 LOAD_DEREF               0 (self)
+             7178 LOAD_ATTR              170 (boost_enabled)
+             7198 LOAD_ATTR              172 (stateChanged)
+             7218 LOAD_ATTR               33 (NULL|self + connect)
+             7238 LOAD_DEREF               0 (self)
+             7240 LOAD_ATTR              174 (_on_boost_changed)
+             7260 CALL                     1
+             7268 POP_TOP
+
+8106         7270 LOAD_FAST               30 (bl)
+             7272 LOAD_ATTR               47 (NULL|self + addRow)
+             7292 LOAD_DEREF               0 (self)
+             7294 LOAD_ATTR              170 (boost_enabled)
+             7314 CALL                     1
+             7322 POP_TOP
+
+8108         7324 LOAD_DEREF               0 (self)
+             7326 LOAD_ATTR               61 (NULL|self + _dsb)
+             7346 LOAD_CONST              77 (2500)
+             7348 LOAD_CONST              63 (1500)
+             7350 LOAD_CONST             122 (5000)
+             7352 LOAD_CONST              69 (50)
+             7354 CALL                     4
+             7362 LOAD_DEREF               0 (self)
+             7364 STORE_ATTR              88 (boost_spool_rpm)
+
+8109         7374 LOAD_DEREF               0 (self)
+             7376 LOAD_ATTR              176 (boost_spool_rpm)
+             7396 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8110         7416 LOAD_CONST             123 ('RPM at which boost begins to rise meaningfully (above turbo lag).\nTypical: small turbo ~2000-2500, large single ~3000-3800.')
+
+8109         7418 CALL                     1
+             7426 POP_TOP
+
+8113         7428 LOAD_DEREF               0 (self)
+             7430 LOAD_ATTR              176 (boost_spool_rpm)
+             7450 LOAD_ATTR              126 (valueChanged)
+             7470 LOAD_ATTR               33 (NULL|self + connect)
+             7490 LOAD_DEREF               0 (self)
+             7492 LOAD_ATTR              174 (_on_boost_changed)
+             7512 CALL                     1
+             7520 POP_TOP
+
+8114         7522 LOAD_FAST               30 (bl)
+             7524 LOAD_ATTR               47 (NULL|self + addRow)
+             7544 LOAD_CONST             124 ('Spool RPM:')
+             7546 LOAD_DEREF               0 (self)
+             7548 LOAD_ATTR              176 (boost_spool_rpm)
+             7568 CALL                     2
+             7576 POP_TOP
+
+8116         7578 LOAD_DEREF               0 (self)
+             7580 LOAD_ATTR               61 (NULL|self + _dsb)
+             7600 LOAD_CONST              34 (10.0)
+             7602 LOAD_CONST              87 (0.0)
+             7604 LOAD_CONST              29 (50.0)
+             7606 LOAD_CONST              23 (0.5)
+             7608 CALL                     4
+             7616 LOAD_DEREF               0 (self)
+             7618 STORE_ATTR              89 (boost_peak_psi)
+
+8117         7628 LOAD_DEREF               0 (self)
+             7630 LOAD_ATTR              178 (boost_peak_psi)
+             7650 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8118         7670 LOAD_CONST             125 ('Peak boost in PSI. Set 0 to disable boost contribution.\nTypical: stock turbo 6-10 PSI, mid build 12-18 PSI, race 20+ PSI.')
+
+8117         7672 CALL                     1
+             7680 POP_TOP
+
+8121         7682 LOAD_DEREF               0 (self)
+             7684 LOAD_ATTR              178 (boost_peak_psi)
+             7704 LOAD_ATTR              126 (valueChanged)
+             7724 LOAD_ATTR               33 (NULL|self + connect)
+             7744 LOAD_DEREF               0 (self)
+             7746 LOAD_ATTR              174 (_on_boost_changed)
+             7766 CALL                     1
+             7774 POP_TOP
+
+8122         7776 LOAD_FAST               30 (bl)
+             7778 LOAD_ATTR               47 (NULL|self + addRow)
+             7798 LOAD_CONST             126 ('Peak Boost PSI:')
+             7800 LOAD_DEREF               0 (self)
+             7802 LOAD_ATTR              178 (boost_peak_psi)
+             7822 CALL                     2
+             7830 POP_TOP
+
+8124         7832 LOAD_DEREF               0 (self)
+             7834 LOAD_ATTR               61 (NULL|self + _dsb)
+             7854 LOAD_CONST             127 (4000)
+             7856 LOAD_CONST              77 (2500)
+             7858 LOAD_CONST             128 (7000)
+             7860 LOAD_CONST              69 (50)
+             7862 CALL                     4
+             7870 LOAD_DEREF               0 (self)
+             7872 STORE_ATTR              90 (boost_peak_rpm)
+
+8125         7882 LOAD_DEREF               0 (self)
+             7884 LOAD_ATTR              180 (boost_peak_rpm)
+             7904 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8126         7924 LOAD_CONST             129 ('RPM at which peak boost is achieved.\nTypical: small turbo ~3500-4500, supercharger nearly immediate.')
+
+8125         7926 CALL                     1
+             7934 POP_TOP
+
+8129         7936 LOAD_DEREF               0 (self)
+             7938 LOAD_ATTR              180 (boost_peak_rpm)
+             7958 LOAD_ATTR              126 (valueChanged)
+             7978 LOAD_ATTR               33 (NULL|self + connect)
+             7998 LOAD_DEREF               0 (self)
+             8000 LOAD_ATTR              174 (_on_boost_changed)
+             8020 CALL                     1
+             8028 POP_TOP
+
+8130         8030 LOAD_FAST               30 (bl)
+             8032 LOAD_ATTR               47 (NULL|self + addRow)
+             8052 LOAD_CONST             130 ('Peak RPM:')
+             8054 LOAD_DEREF               0 (self)
+             8056 LOAD_ATTR              180 (boost_peak_rpm)
+             8076 CALL                     2
+             8084 POP_TOP
+
+8132         8086 LOAD_DEREF               0 (self)
+             8088 LOAD_ATTR               61 (NULL|self + _dsb)
+             8108 LOAD_CONST              34 (10.0)
+             8110 LOAD_CONST              87 (0.0)
+             8112 LOAD_CONST              29 (50.0)
+             8114 LOAD_CONST              23 (0.5)
+             8116 CALL                     4
+             8124 LOAD_DEREF               0 (self)
+             8126 STORE_ATTR              91 (boost_redline_psi)
+
+8133         8136 LOAD_DEREF               0 (self)
+             8138 LOAD_ATTR              182 (boost_redline_psi)
+             8158 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8134         8178 LOAD_CONST             131 ('Boost PSI at redline. Equal to Peak PSI = flat shelf (stock).\nLess than Peak PSI = boost taper (common on small turbos or for\nexhaust-heat / wastegate creep reasons). Greater = unlikely.')
+
+8133         8180 CALL                     1
+             8188 POP_TOP
+
+8138         8190 LOAD_DEREF               0 (self)
+             8192 LOAD_ATTR              182 (boost_redline_psi)
+             8212 LOAD_ATTR              126 (valueChanged)
+             8232 LOAD_ATTR               33 (NULL|self + connect)
+             8252 LOAD_DEREF               0 (self)
+             8254 LOAD_ATTR              174 (_on_boost_changed)
+             8274 CALL                     1
+             8282 POP_TOP
+
+8139         8284 LOAD_FAST               30 (bl)
+             8286 LOAD_ATTR               47 (NULL|self + addRow)
+             8306 LOAD_CONST             132 ('Redline PSI:')
+             8308 LOAD_DEREF               0 (self)
+             8310 LOAD_ATTR              182 (boost_redline_psi)
+             8330 CALL                     2
+             8338 POP_TOP
+
+8141         8340 LOAD_DEREF               0 (self)
+             8342 LOAD_ATTR               61 (NULL|self + _dsb)
+             8362 LOAD_CONST             133 (7.5)
+             8364 LOAD_CONST              22 (1.0)
+             8366 LOAD_CONST              13 (15.0)
+             8368 LOAD_CONST              23 (0.5)
+             8370 CALL                     4
+             8378 LOAD_DEREF               0 (self)
+             8380 STORE_ATTR              92 (boost_tq_per_psi)
+
+8142         8390 LOAD_DEREF               0 (self)
+             8392 LOAD_ATTR              184 (boost_tq_per_psi)
+             8412 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8143         8432 LOAD_CONST             134 ('% torque gain per PSI of boost. Empirical multiplier — varies\nby engine, ICAT, fuel, octane:\n  Turbo, intercooled, pump 91: ~7-8% per PSI\n  Turbo, race fuel/E85:        ~8-9% per PSI\n  Supercharger, intercooled:   ~5-6% per PSI (parasitic loss)')
+
+8142         8434 CALL                     1
+             8442 POP_TOP
+
+8149         8444 LOAD_DEREF               0 (self)
+             8446 LOAD_ATTR              184 (boost_tq_per_psi)
+             8466 LOAD_ATTR              126 (valueChanged)
+             8486 LOAD_ATTR               33 (NULL|self + connect)
+             8506 LOAD_DEREF               0 (self)
+             8508 LOAD_ATTR              174 (_on_boost_changed)
+             8528 CALL                     1
+             8536 POP_TOP
+
+8150         8538 LOAD_FAST               30 (bl)
+             8540 LOAD_ATTR               47 (NULL|self + addRow)
+             8560 LOAD_CONST             135 ('% Torque per PSI:')
+             8562 LOAD_DEREF               0 (self)
+             8564 LOAD_ATTR              184 (boost_tq_per_psi)
+             8584 CALL                     2
+             8592 POP_TOP
+
+8152         8594 LOAD_GLOBAL             39 (NULL + QLabel)
+             8604 LOAD_CONST               6 ('')
+             8606 CALL                     1
+             8614 LOAD_DEREF               0 (self)
+             8616 STORE_ATTR              93 (boost_summary)
+
+8153         8626 LOAD_DEREF               0 (self)
+             8628 LOAD_ATTR              186 (boost_summary)
+             8648 LOAD_ATTR               43 (NULL|self + setStyleSheet)
+             8668 LOAD_CONST             136 ('color: #6cc; font-size: 9pt; padding: 4px;')
+             8670 CALL                     1
+             8678 POP_TOP
+
+8154         8680 LOAD_DEREF               0 (self)
+             8682 LOAD_ATTR              186 (boost_summary)
+             8702 LOAD_ATTR               45 (NULL|self + setWordWrap)
+             8722 LOAD_CONST               8 (True)
+             8724 CALL                     1
+             8732 POP_TOP
+
+8155         8734 LOAD_FAST               30 (bl)
+             8736 LOAD_ATTR               47 (NULL|self + addRow)
+             8756 LOAD_DEREF               0 (self)
+             8758 LOAD_ATTR              186 (boost_summary)
+             8778 CALL                     1
+             8786 POP_TOP
+
+8157         8788 LOAD_FAST               29 (g_boost)
+             8790 LOAD_ATTR               49 (NULL|self + setLayout)
+             8810 LOAD_FAST               30 (bl)
+             8812 CALL                     1
+             8820 POP_TOP
+
+8158         8822 LOAD_FAST               16 (tv2)
+             8824 LOAD_ATTR               15 (NULL|self + addWidget)
+             8844 LOAD_FAST               29 (g_boost)
+             8846 CALL                     1
+             8854 POP_TOP
+
+8161         8856 LOAD_GLOBAL            189 (NULL + BoostCurve)
+             8866 CALL                     0
+             8874 LOAD_DEREF               0 (self)
+             8876 STORE_ATTR              95 (boost_curve)
+
+8163         8886 LOAD_FAST               16 (tv2)
+             8888 LOAD_ATTR              105 (NULL|self + addStretch)
+             8908 CALL                     0
+             8916 POP_TOP
+
+8164         8918 LOAD_DEREF               0 (self)
+             8920 LOAD_ATTR               12 (settings_tabs)
+             8940 LOAD_ATTR              107 (NULL|self + addTab)
+             8960 LOAD_FAST               15 (t2)
+             8962 LOAD_CONST             137 ('Engine / TC')
+             8964 CALL                     2
+             8972 POP_TOP
+
+8167         8974 LOAD_GLOBAL              1 (NULL + QWidget)
+             8984 CALL                     0
+             8992 STORE_FAST              31 (t3)
+
+8168         8994 LOAD_GLOBAL              5 (NULL + QVBoxLayout)
+             9004 LOAD_FAST               31 (t3)
+             9006 CALL                     1
+             9014 STORE_FAST              32 (tv3)
+
+8169         9016 LOAD_FAST               32 (tv3)
+             9018 LOAD_ATTR                7 (NULL|self + setContentsMargins)
+             9038 LOAD_CONST               2 (4)
+             9040 LOAD_CONST               2 (4)
+             9042 LOAD_CONST               2 (4)
+             9044 LOAD_CONST               2 (4)
+             9046 CALL                     4
+             9054 POP_TOP
+
+8171         9056 LOAD_GLOBAL             17 (NULL + QGroupBox)
+             9066 LOAD_CONST             138 ('TPS Slope Curve')
+             9068 CALL                     1
+             9076 STORE_FAST              33 (g4)
+
+8172         9078 LOAD_GLOBAL             19 (NULL + QFormLayout)
+             9088 CALL                     0
+             9096 STORE_FAST              34 (f4)
+
+8173         9098 LOAD_GLOBAL             21 (NULL + QComboBox)
+             9108 CALL                     0
+             9116 LOAD_DEREF               0 (self)
+             9118 STORE_ATTR              96 (tb_preset)
+
+8174         9128 LOAD_DEREF               0 (self)
+             9130 LOAD_ATTR              192 (tb_preset)
+             9150 LOAD_ATTR               25 (NULL|self + addItems)
+             9170 LOAD_GLOBAL            194 (TB_PRESETS)
+             9180 LOAD_ATTR               29 (NULL|self + keys)
+             9200 CALL                     0
+             9208 CALL                     1
+             9216 POP_TOP
+
+8175         9218 LOAD_DEREF               0 (self)
+             9220 LOAD_ATTR              192 (tb_preset)
+             9240 LOAD_ATTR               30 (currentIndexChanged)
+             9260 LOAD_ATTR               33 (NULL|self + connect)
+             9280 LOAD_DEREF               0 (self)
+             9282 LOAD_ATTR              196 (_apply_tb_preset)
+             9302 CALL                     1
+             9310 POP_TOP
+
+8176         9312 LOAD_DEREF               0 (self)
+             9314 LOAD_ATTR              192 (tb_preset)
+             9334 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8177         9354 LOAD_CONST             139 ("Throttle body / pedal-mapping preset. Overwrites the 4 sliders below. ETC offsets are positive because drive-by-wire blades don't open until ~8-15% pedal. Cable TBs are 1:1 (offset 0). 'Custom' = no-op.")
+
+8176         9356 CALL                     1
+             9364 POP_TOP
+
+8181         9366 LOAD_DEREF               0 (self)
+             9368 LOAD_ATTR               61 (NULL|self + _dsb)
+             9388 LOAD_CONST             140 (0)
+             9390 LOAD_CONST             141 (-20)
+             9392 LOAD_CONST              69 (50)
+             9394 LOAD_CONST               3 (1)
+             9396 CALL                     4
+             9404 LOAD_DEREF               0 (self)
+             9406 STORE_ATTR              99 (tps_offset)
+
+8182         9416 LOAD_DEREF               0 (self)
+             9418 LOAD_ATTR              198 (tps_offset)
+             9438 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8183         9458 LOAD_CONST             142 ('Pedal % at which the slope curve starts rising (compensates for ETC dead zone). 0 = curve starts at 0% pedal (cable TBs). Higher = curve shifted right (ETC). Negative = aggressive low-TPS shifts.')
+
+8182         9460 CALL                     1
+             9468 POP_TOP
+
+8187         9470 LOAD_DEREF               0 (self)
+             9472 LOAD_ATTR               61 (NULL|self + _dsb)
+             9492 LOAD_CONST             143 (1.35)
+             9494 LOAD_CONST              23 (0.5)
+             9496 LOAD_CONST             144 (4.0)
+             9498 LOAD_CONST             145 (0.05)
+             9500 CALL                     4
+             9508 LOAD_DEREF               0 (self)
+             9510 STORE_ATTR             100 (tps_factor)
+
+8188         9520 LOAD_DEREF               0 (self)
+             9522 LOAD_ATTR              200 (tps_factor)
+             9542 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8189         9562 LOAD_CONST             146 ('Exponent of the TPS slope curve: (TPS/100)^factor. 1.0 = linear. >1 = held longer at low throttle, climbs sharper near WOT. <1 = early upshifts, lazy WOT. Default 1.35 fits stock LS tuning.')
+
+8188         9564 CALL                     1
+             9572 POP_TOP
+
+8193         9574 LOAD_DEREF               0 (self)
+             9576 LOAD_ATTR               61 (NULL|self + _dsb)
+             9596 LOAD_CONST             147 (5.0)
+             9598 LOAD_CONST              87 (0.0)
+             9600 LOAD_CONST              34 (10.0)
+             9602 LOAD_CONST              23 (0.5)
+             9604 CALL                     4
+             9612 LOAD_DEREF               0 (self)
+             9614 STORE_ATTR             101 (upf)
+
+8194         9624 LOAD_DEREF               0 (self)
+             9626 LOAD_ATTR              202 (upf)
+             9646 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8195         9666 LOAD_CONST             148 ('Upshift firmness 0-10. Blends an aggressive curve into the base. 0 = mushy / late shifts. 10 = quick, firm WOT shifts. Performance: 7-10. Tow/economy: 3-5.')
+
+8194         9668 CALL                     1
+             9676 POP_TOP
+
+8199         9678 LOAD_DEREF               0 (self)
+             9680 LOAD_ATTR               61 (NULL|self + _dsb)
+             9700 LOAD_CONST             147 (5.0)
+             9702 LOAD_CONST              87 (0.0)
+             9704 LOAD_CONST              34 (10.0)
+             9706 LOAD_CONST              23 (0.5)
+             9708 CALL                     4
+             9716 LOAD_DEREF               0 (self)
+             9718 STORE_ATTR             102 (downf)
+
+8200         9728 LOAD_DEREF               0 (self)
+             9730 LOAD_ATTR              204 (downf)
+             9750 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8201         9770 LOAD_CONST             149 ('Downshift firmness 0-10. Controls kickdown aggressiveness.\n  • HIGHER (7-10): downshift triggers at HIGHER speed — pressing\n    throttle drops a gear readily even at cruise speed (snappy\n    kickdown for racing/towing/spirited driving)\n  • LOWER (1-4):   downshift only at LOWER speed — engine has to\n    lug down before PCM drops a gear (eco / hunt-free cruise)\n  • 5 = balanced default\nTip: if Normal feels lazy on throttle pickup, bump this to 7-8.')
+
+8200         9772 CALL                     1
+             9780 POP_TOP
+
+8210         9782 LOAD_FAST               34 (f4)
+             9784 LOAD_ATTR               47 (NULL|self + addRow)
+             9804 LOAD_CONST             150 ('Preset:')
+             9806 LOAD_DEREF               0 (self)
+             9808 LOAD_ATTR              192 (tb_preset)
+             9828 CALL                     2
+             9836 POP_TOP
+
+8211         9838 LOAD_FAST               34 (f4)
+             9840 LOAD_ATTR               47 (NULL|self + addRow)
+             9860 LOAD_CONST             151 ('TPS Offset (%):')
+             9862 LOAD_DEREF               0 (self)
+             9864 LOAD_ATTR              198 (tps_offset)
+             9884 CALL                     2
+             9892 POP_TOP
+
+8212         9894 LOAD_FAST               34 (f4)
+             9896 LOAD_ATTR               47 (NULL|self + addRow)
+             9916 LOAD_CONST             152 ('Curve Factor:')
+             9918 LOAD_DEREF               0 (self)
+             9920 LOAD_ATTR              200 (tps_factor)
+             9940 CALL                     2
+             9948 POP_TOP
+
+8213         9950 LOAD_FAST               34 (f4)
+             9952 LOAD_ATTR               47 (NULL|self + addRow)
+             9972 LOAD_CONST             153 ('Up Firmness (0-10):')
+             9974 LOAD_DEREF               0 (self)
+             9976 LOAD_ATTR              202 (upf)
+             9996 CALL                     2
+            10004 POP_TOP
+
+8214        10006 LOAD_FAST               34 (f4)
+            10008 LOAD_ATTR               47 (NULL|self + addRow)
+            10028 LOAD_CONST             154 ('Down Firmness (0-10):')
+            10030 LOAD_DEREF               0 (self)
+            10032 LOAD_ATTR              204 (downf)
+            10052 CALL                     2
+            10060 POP_TOP
+
+8215        10062 LOAD_FAST               33 (g4)
+            10064 LOAD_ATTR               49 (NULL|self + setLayout)
+            10084 LOAD_FAST               34 (f4)
+            10086 CALL                     1
+            10094 POP_TOP
+
+8216        10096 LOAD_FAST               32 (tv3)
+            10098 LOAD_ATTR               15 (NULL|self + addWidget)
+            10118 LOAD_FAST               33 (g4)
+            10120 CALL                     1
+            10128 POP_TOP
+
+8218        10130 LOAD_GLOBAL             17 (NULL + QGroupBox)
+            10140 LOAD_CONST             155 ('Spreads / Hysteresis (MPH)')
+            10142 CALL                     1
+            10150 STORE_FAST              35 (g5)
+
+8219        10152 LOAD_GLOBAL             19 (NULL + QFormLayout)
+            10162 CALL                     0
+            10170 STORE_FAST              36 (f5)
+
+8220        10172 LOAD_DEREF               0 (self)
+            10174 LOAD_ATTR               61 (NULL|self + _dsb)
+            10194 LOAD_CONST             156 (4.5)
+            10196 LOAD_CONST              23 (0.5)
+            10198 LOAD_CONST              13 (15.0)
+            10200 LOAD_CONST              23 (0.5)
+            10202 CALL                     4
+            10210 LOAD_DEREF               0 (self)
+            10212 STORE_ATTR             103 (s_up)
+
+8221        10222 LOAD_DEREF               0 (self)
+            10224 LOAD_ATTR              206 (s_up)
+            10244 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8222        10264 LOAD_CONST             157 ('Minimum MPH gap between upshift and downshift in a given gear. Prevents shift hunting. Default 4.5. Higher for tight ratios (8L90/10L80: 5-6), lower for wide ratios (4L60E: 3-4).')
+
+8221        10266 CALL                     1
+            10274 POP_TOP
+
+8226        10276 LOAD_DEREF               0 (self)
+            10278 LOAD_ATTR               61 (NULL|self + _dsb)
+            10298 LOAD_CONST             147 (5.0)
+            10300 LOAD_CONST              23 (0.5)
+            10302 LOAD_CONST              34 (10.0)
+            10304 LOAD_CONST              23 (0.5)
+            10306 CALL                     4
+            10314 LOAD_DEREF               0 (self)
+            10316 STORE_ATTR             104 (s_lock)
+
+8227        10326 LOAD_DEREF               0 (self)
+            10328 LOAD_ATTR              208 (s_lock)
+            10348 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8228        10368 LOAD_CONST             158 ('Minimum MPH gap between TCC Lock and Unlock (hysteresis).\nStops the converter from oscillating around the lock point.\nStock GM uses 2-3 — TOO TIGHT for worn fluid or aftermarket\nconverters; expect lock/unlock hunting. Recommended:\n  4-5 MPH: street build, fresh fluid\n  5-7 MPH: high-mile build or aftermarket converter\n  7-8 MPH: race converter with low stall')
+
+8227        10370 CALL                     1
+            10378 POP_TOP
+
+8236        10380 LOAD_DEREF               0 (self)
+            10382 LOAD_ATTR               61 (NULL|self + _dsb)
+            10402 LOAD_CONST              24 (3.0)
+            10404 LOAD_CONST              23 (0.5)
+            10406 LOAD_CONST              34 (10.0)
+            10408 LOAD_CONST              23 (0.5)
+            10410 CALL                     4
+            10418 LOAD_DEREF               0 (self)
+            10420 STORE_ATTR             105 (s_lockup)
+
+8237        10430 LOAD_DEREF               0 (self)
+            10432 LOAD_ATTR              210 (s_lockup)
+            10452 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8238        10472 LOAD_CONST             159 ('Minimum MPH gap between Upshift and TCC Lock. Ensures TCC locks BEFORE the upshift fires. Too tight = lock and shift overlap (rough feel). Default 3.0.')
+
+8237        10474 CALL                     1
+            10482 POP_TOP
+
+8242        10484 LOAD_DEREF               0 (self)
+            10486 LOAD_ATTR               61 (NULL|self + _dsb)
+            10506 LOAD_CONST             160 (3.5)
+            10508 LOAD_CONST              23 (0.5)
+            10510 LOAD_CONST              34 (10.0)
+            10512 LOAD_CONST              23 (0.5)
+            10514 CALL                     4
+            10522 LOAD_DEREF               0 (self)
+            10524 STORE_ATTR             106 (s_unlock)
+
+8243        10534 LOAD_DEREF               0 (self)
+            10536 LOAD_ATTR              212 (s_unlock)
+            10556 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8244        10576 LOAD_CONST             161 ('Minimum MPH gap between TCC Unlock and the downshift speed. Stops you from unlocking and immediately downshifting. Default 3.5. Increase to 4-5 for smoother cruise.')
+
+8243        10578 CALL                     1
+            10586 POP_TOP
+
+8248        10588 LOAD_FAST               36 (f5)
+            10590 LOAD_ATTR               47 (NULL|self + addRow)
+            10610 LOAD_CONST             162 ('Upshift > Downshift:')
+            10612 LOAD_DEREF               0 (self)
+            10614 LOAD_ATTR              206 (s_up)
+            10634 CALL                     2
+            10642 POP_TOP
+
+8249        10644 LOAD_FAST               36 (f5)
+            10646 LOAD_ATTR               47 (NULL|self + addRow)
+            10666 LOAD_CONST             163 ('Lock > Unlock:')
+            10668 LOAD_DEREF               0 (self)
+            10670 LOAD_ATTR              208 (s_lock)
+            10690 CALL                     2
+            10698 POP_TOP
+
+8250        10700 LOAD_FAST               36 (f5)
+            10702 LOAD_ATTR               47 (NULL|self + addRow)
+            10722 LOAD_CONST             164 ('Upshift > Lock:')
+            10724 LOAD_DEREF               0 (self)
+            10726 LOAD_ATTR              210 (s_lockup)
+            10746 CALL                     2
+            10754 POP_TOP
+
+8251        10756 LOAD_FAST               36 (f5)
+            10758 LOAD_ATTR               47 (NULL|self + addRow)
+            10778 LOAD_CONST             165 ('Unlock > Downshift:')
+            10780 LOAD_DEREF               0 (self)
+            10782 LOAD_ATTR              212 (s_unlock)
+            10802 CALL                     2
+            10810 POP_TOP
+
+8252        10812 LOAD_FAST               35 (g5)
+            10814 LOAD_ATTR               49 (NULL|self + setLayout)
+            10834 LOAD_FAST               36 (f5)
+            10836 CALL                     1
+            10844 POP_TOP
+
+8253        10846 LOAD_FAST               32 (tv3)
+            10848 LOAD_ATTR               15 (NULL|self + addWidget)
+            10868 LOAD_FAST               35 (g5)
+            10870 CALL                     1
+            10878 POP_TOP
+
+8255        10880 LOAD_GLOBAL             17 (NULL + QGroupBox)
+            10890 LOAD_CONST             166 ('WOT Shift Lead')
+            10892 CALL                     1
+            10900 STORE_FAST              37 (g6)
+
+8256        10902 LOAD_GLOBAL             19 (NULL + QFormLayout)
+            10912 CALL                     0
+            10920 STORE_FAST              38 (f6)
+
+8257        10922 LOAD_GLOBAL             83 (NULL + QRadioButton)
+            10932 LOAD_CONST             167 ('RPM Mode (geometric)')
+            10934 CALL                     1
+            10942 LOAD_DEREF               0 (self)
+            10944 STORE_ATTR             107 (lead_rpm_rb)
+
+8258        10954 LOAD_DEREF               0 (self)
+            10956 LOAD_ATTR              214 (lead_rpm_rb)
+            10976 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8259        10996 LOAD_CONST             168 ('Geometric lead — early shift derived from gear ratio. Higher ratio = more inertia = more lead. Ignores Weight/RWHP.')
+
+8258        10998 CALL                     1
+            11006 POP_TOP
+
+8262        11008 LOAD_GLOBAL             83 (NULL + QRadioButton)
+            11018 LOAD_CONST             169 ('Time Mode (RWHP-based)')
+            11020 CALL                     1
+            11028 LOAD_DEREF               0 (self)
+            11030 STORE_ATTR             108 (lead_time_rb)
+
+8263        11040 LOAD_DEREF               0 (self)
+            11042 LOAD_ATTR              216 (lead_time_rb)
+            11062 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8264        11082 LOAD_CONST             170 ('Physics-based lead — accel rate = RWHP*0.75*375 / V / Weight (MPH/s). Uses per-gear shift delays (Tools > Edit Shift Delays). More accurate but requires accurate weight + RWHP inputs.')
+
+8263        11084 CALL                     1
+            11092 POP_TOP
+
+8268        11094 LOAD_DEREF               0 (self)
+            11096 LOAD_ATTR              214 (lead_rpm_rb)
+            11116 LOAD_ATTR               93 (NULL|self + setChecked)
+            11136 LOAD_CONST               8 (True)
+            11138 CALL                     1
+            11146 POP_TOP
+
+8269        11148 LOAD_GLOBAL            219 (NULL + QButtonGroup)
+            11158 LOAD_DEREF               0 (self)
+            11160 CALL                     1
+            11168 STORE_FAST              39 (bg)
+
+8270        11170 LOAD_FAST               39 (bg)
+            11172 LOAD_ATTR              221 (NULL|self + addButton)
+            11192 LOAD_DEREF               0 (self)
+            11194 LOAD_ATTR              214 (lead_rpm_rb)
+            11214 CALL                     1
+            11222 POP_TOP
+
+8271        11224 LOAD_FAST               39 (bg)
+            11226 LOAD_ATTR              221 (NULL|self + addButton)
+            11246 LOAD_DEREF               0 (self)
+            11248 LOAD_ATTR              216 (lead_time_rb)
+            11268 CALL                     1
+            11276 POP_TOP
+
+8272        11278 LOAD_DEREF               0 (self)
+            11280 LOAD_ATTR               61 (NULL|self + _dsb)
+            11300 LOAD_CONST             171 (2.5)
+            11302 LOAD_CONST              87 (0.0)
+            11304 LOAD_CONST             172 (8.0)
+            11306 LOAD_CONST              15 (0.1)
+            11308 CALL                     4
+            11316 LOAD_DEREF               0 (self)
+            11318 STORE_ATTR             111 (lead_val)
+
+8273        11328 LOAD_DEREF               0 (self)
+            11330 LOAD_ATTR              222 (lead_val)
+            11350 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8274        11370 LOAD_CONST             173 ('RPM-mode lead magnitude (1-8). Higher = shift earlier. 6L80: 2.5, 8L90: 2.0, 10L80: 1.5 (tighter ratios need less lead). Time-mode ignores this — uses per-gear delay table instead.')
+
+8273        11372 CALL                     1
+            11380 POP_TOP
+
+8278        11382 LOAD_DEREF               0 (self)
+            11384 LOAD_ATTR               61 (NULL|self + _dsb)
+            11404 LOAD_CONST             174 (0.4)
+            11406 LOAD_CONST             145 (0.05)
+            11408 LOAD_CONST              18 (1.5)
+            11410 LOAD_CONST             145 (0.05)
+            11412 CALL                     4
+            11420 LOAD_DEREF               0 (self)
+            11422 STORE_ATTR             112 (down_time)
+
+8279        11432 LOAD_DEREF               0 (self)
+            11434 LOAD_ATTR              224 (down_time)
+            11454 LOAD_ATTR               37 (NULL|self + setToolTip)
+
+8280        11474 LOAD_CONST             175 ('Total downshift response time (seconds) — sum of command delay and clutch fill time. Stock GM: 0.30-0.50. Aftermarket valve body: 0.15-0.25. Used in Time-mode lead only.')
+
+8279        11476 CALL                     1
+            11484 POP_TOP
+
+8284        11486 LOAD_FAST               38 (f6)
+            11488 LOAD_ATTR               47 (NULL|self + addRow)
+            11508 LOAD_CONST             176 ('Mode:')
+            11510 LOAD_DEREF               0 (self)
+            11512 LOAD_ATTR              214 (lead_rpm_rb)
+            11532 CALL                     2
+            11540 POP_TOP
+
+8285        11542 LOAD_FAST               38 (f6)
+            11544 LOAD_ATTR               47 (NULL|self + addRow)
+            11564 LOAD_CONST               6 ('')
+            11566 LOAD_DEREF               0 (self)
+            11568 LOAD_ATTR              216 (lead_time_rb)
+            11588 CALL                     2
+            11596 POP_TOP
+
+8286        11598 LOAD_FAST               38 (f6)
+            11600 LOAD_ATTR               47 (NULL|self + addRow)
+            11620 LOAD_CONST             177 ('Lead Value (1-8):')
+            11622 LOAD_DEREF               0 (self)
+            11624 LOAD_ATTR              222 (lead_val)
+            11644 CALL                     2
+            11652 POP_TOP
+
+8287        11654 LOAD_FAST               38 (f6)
+            11656 LOAD_ATTR               47 (NULL|self + addRow)
+            11676 LOAD_CONST             178 ('Down Shift Time (s):')
+            11678 LOAD_DEREF               0 (self)
+            11680 LOAD_ATTR              224 (down_time)
+            11700 CALL                     2
+            11708 POP_TOP
+
+8288        11710 LOAD_FAST               37 (g6)
+            11712 LOAD_ATTR               49 (NULL|self + setLayout)
+            11732 LOAD_FAST               38 (f6)
+            11734 CALL                     1
+            11742 POP_TOP
+
+8289        11744 LOAD_FAST               32 (tv3)
+            11746 LOAD_ATTR               15 (NULL|self + addWidget)
+            11766 LOAD_FAST               37 (g6)
+            11768 CALL                     1
+            11776 POP_TOP
+
+8290        11778 LOAD_FAST               32 (tv3)
+            11780 LOAD_ATTR              105 (NULL|self + addStretch)
+            11800 CALL                     0
+            11808 POP_TOP
+
+8291        11810 LOAD_DEREF               0 (self)
+            11812 LOAD_ATTR               12 (settings_tabs)
+            11832 LOAD_ATTR              107 (NULL|self + addTab)
+            11852 LOAD_FAST               31 (t3)
+            11854 LOAD_CONST             179 ('Shift Curve')
+            11856 CALL                     2
+            11864 POP_TOP
+
+8294        11866 LOAD_GLOBAL             75 (NULL + QPushButton)
+            11876 LOAD_CONST             180 ('CALCULATE ALL TABLES')
+            11878 CALL                     1
+            11886 STORE_FAST              40 (calc)
+
+8295        11888 LOAD_FAST               40 (calc)
+            11890 LOAD_ATTR               77 (NULL|self + setMinimumHeight)
+            11910 LOAD_CONST             181 (40)
+            11912 CALL                     1
+            11920 POP_TOP
+
+8296        11922 LOAD_FAST               40 (calc)
+            11924 LOAD_ATTR               43 (NULL|self + setStyleSheet)
+
+8297        11944 LOAD_CONST             182 ('QPushButton { font-weight: bold; background: #005A9E; color: white; }QPushButton:hover { background: #0073C7; }')
+
+8296        11946 CALL                     1
+            11954 POP_TOP
+
+8300        11956 LOAD_FAST               40 (calc)
+            11958 LOAD_ATTR               78 (clicked)
+            11978 LOAD_ATTR               33 (NULL|self + connect)
+            11998 LOAD_DEREF               0 (self)
+            12000 LOAD_ATTR              226 (calculate)
+            12020 CALL                     1
+            12028 POP_TOP
+
+8301        12030 LOAD_FAST                3 (v)
+            12032 LOAD_ATTR               15 (NULL|self + addWidget)
+            12052 LOAD_FAST               40 (calc)
+            12054 CALL                     1
+            12062 POP_TOP
+
+8303        12064 LOAD_GLOBAL             75 (NULL + QPushButton)
+            12074 LOAD_CONST             183 ('Export Tables')
+            12076 CALL                     1
+            12084 STORE_FAST              41 (export)
+
+8304        12086 LOAD_FAST               41 (export)
+            12088 LOAD_ATTR               77 (NULL|self + setMinimumHeight)
+            12108 LOAD_CONST              47 (32)
+            12110 CALL                     1
+            12118 POP_TOP
+
+8305        12120 LOAD_FAST               41 (export)
+            12122 LOAD_ATTR               78 (clicked)
+            12142 LOAD_ATTR               33 (NULL|self + connect)
+            12162 LOAD_DEREF               0 (self)
+            12164 LOAD_ATTR              228 (export)
+            12184 CALL                     1
+            12192 POP_TOP
+
+8306        12194 LOAD_FAST                3 (v)
+            12196 LOAD_ATTR               15 (NULL|self + addWidget)
+            12216 LOAD_FAST               41 (export)
+            12218 CALL                     1
+            12226 POP_TOP
+
+8308        12228 LOAD_FAST                1 (root)
+            12230 LOAD_ATTR               15 (NULL|self + addWidget)
+            12250 LOAD_FAST                2 (container)
+            12252 CALL                     1
+            12260 POP_TOP
+            12262 RETURN_CONST            59 (None)

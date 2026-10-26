@@ -1,0 +1,359 @@
+8311           0 RESUME                   0
+
+8313           2 LOAD_GLOBAL              1 (NULL + QWidget)
+              12 CALL                     0
+              20 STORE_FAST               2 (right_container)
+
+8314          22 LOAD_GLOBAL              3 (NULL + QVBoxLayout)
+              32 LOAD_FAST                2 (right_container)
+              34 CALL                     1
+              42 STORE_FAST               3 (rv)
+
+8315          44 LOAD_FAST                3 (rv)
+              46 LOAD_ATTR                5 (NULL|self + setContentsMargins)
+              66 LOAD_CONST               1 (0)
+              68 LOAD_CONST               1 (0)
+              70 LOAD_CONST               1 (0)
+              72 LOAD_CONST               1 (0)
+              74 CALL                     4
+              82 POP_TOP
+
+8316          84 LOAD_FAST                3 (rv)
+              86 LOAD_ATTR                7 (NULL|self + setSpacing)
+             106 LOAD_CONST               2 (4)
+             108 CALL                     1
+             116 POP_TOP
+
+8319         118 LOAD_GLOBAL              9 (NULL + QLabel)
+             128 LOAD_CONST               3 ('')
+             130 CALL                     1
+             138 LOAD_FAST                0 (self)
+             140 STORE_ATTR               5 (validation_banner)
+
+8320         150 LOAD_FAST                0 (self)
+             152 LOAD_ATTR               10 (validation_banner)
+             172 LOAD_ATTR               13 (NULL|self + setWordWrap)
+             192 LOAD_CONST               4 (True)
+             194 CALL                     1
+             202 POP_TOP
+
+8321         204 LOAD_FAST                0 (self)
+             206 LOAD_ATTR               10 (validation_banner)
+             226 LOAD_ATTR               15 (NULL|self + setStyleSheet)
+
+8322         246 LOAD_CONST               5 ('QLabel { background: #1e1e1e; color: #aaa; border: 1px solid #444; padding: 4px 8px; font-size: 10pt; }')
+
+8321         248 CALL                     1
+             256 POP_TOP
+
+8325         258 LOAD_FAST                0 (self)
+             260 LOAD_ATTR               10 (validation_banner)
+             280 LOAD_ATTR               17 (NULL|self + setText)
+
+8326         300 LOAD_CONST               6 ('Run Calculate (F5) to generate tables. Tooltips on every input.')
+
+8325         302 CALL                     1
+             310 POP_TOP
+
+8328         312 LOAD_FAST                3 (rv)
+             314 LOAD_ATTR               19 (NULL|self + addWidget)
+             334 LOAD_FAST                0 (self)
+             336 LOAD_ATTR               10 (validation_banner)
+             356 CALL                     1
+             364 POP_TOP
+
+8330         366 LOAD_GLOBAL             21 (NULL + QTabWidget)
+             376 CALL                     0
+             384 LOAD_FAST                0 (self)
+             386 STORE_ATTR              11 (tabs)
+
+8331         396 LOAD_GLOBAL             25 (NULL + QTableWidget)
+             406 CALL                     0
+             414 LOAD_FAST                0 (self)
+             416 STORE_ATTR              13 (grid_up)
+
+8332         426 LOAD_GLOBAL             25 (NULL + QTableWidget)
+             436 CALL                     0
+             444 LOAD_FAST                0 (self)
+             446 STORE_ATTR              14 (grid_dn)
+
+8333         456 LOAD_GLOBAL             25 (NULL + QTableWidget)
+             466 CALL                     0
+             474 LOAD_FAST                0 (self)
+             476 STORE_ATTR              15 (grid_lock)
+
+8334         486 LOAD_GLOBAL             25 (NULL + QTableWidget)
+             496 CALL                     0
+             504 LOAD_FAST                0 (self)
+             506 STORE_ATTR              16 (grid_unlock)
+
+8335         516 LOAD_GLOBAL             25 (NULL + QTableWidget)
+             526 CALL                     0
+             534 LOAD_FAST                0 (self)
+             536 STORE_ATTR              17 (grid_summary)
+
+8337         546 LOAD_FAST                0 (self)
+             548 LOAD_ATTR               26 (grid_up)
+             568 LOAD_FAST                0 (self)
+             570 LOAD_ATTR               28 (grid_dn)
+             590 LOAD_FAST                0 (self)
+             592 LOAD_ATTR               30 (grid_lock)
+
+8338         612 LOAD_FAST                0 (self)
+             614 LOAD_ATTR               32 (grid_unlock)
+             634 LOAD_FAST                0 (self)
+             636 LOAD_ATTR               34 (grid_summary)
+
+8337         656 BUILD_TUPLE              5
+             658 GET_ITER
+         >>  660 FOR_ITER                36 (to 736)
+             664 STORE_FAST               4 (grid)
+
+8339         666 LOAD_FAST                4 (grid)
+             668 LOAD_ATTR               37 (NULL|self + setAlternatingRowColors)
+             688 LOAD_CONST               4 (True)
+             690 CALL                     1
+             698 POP_TOP
+
+8340         700 LOAD_FAST                4 (grid)
+             702 LOAD_ATTR               15 (NULL|self + setStyleSheet)
+             722 LOAD_CONST               7 ('QTableWidget { selection-background-color: #2864A0; }')
+             724 CALL                     1
+             732 POP_TOP
+             734 JUMP_BACKWARD           38 (to 660)
+
+8337     >>  736 END_FOR
+
+8342         738 LOAD_FAST                0 (self)
+             740 LOAD_ATTR               22 (tabs)
+             760 LOAD_ATTR               39 (NULL|self + addTab)
+             780 LOAD_FAST                0 (self)
+             782 LOAD_ATTR               26 (grid_up)
+             802 LOAD_CONST               8 ('Upshift (MPH)')
+             804 CALL                     2
+             812 POP_TOP
+
+8343         814 LOAD_FAST                0 (self)
+             816 LOAD_ATTR               22 (tabs)
+             836 LOAD_ATTR               39 (NULL|self + addTab)
+             856 LOAD_FAST                0 (self)
+             858 LOAD_ATTR               28 (grid_dn)
+             878 LOAD_CONST               9 ('Downshift (MPH)')
+             880 CALL                     2
+             888 POP_TOP
+
+8344         890 LOAD_FAST                0 (self)
+             892 LOAD_ATTR               22 (tabs)
+             912 LOAD_ATTR               39 (NULL|self + addTab)
+             932 LOAD_FAST                0 (self)
+             934 LOAD_ATTR               30 (grid_lock)
+             954 LOAD_CONST              10 ('TCC Lock (MPH)')
+             956 CALL                     2
+             964 POP_TOP
+
+8345         966 LOAD_FAST                0 (self)
+             968 LOAD_ATTR               22 (tabs)
+             988 LOAD_ATTR               39 (NULL|self + addTab)
+            1008 LOAD_FAST                0 (self)
+            1010 LOAD_ATTR               32 (grid_unlock)
+            1030 LOAD_CONST              11 ('TCC Unlock (MPH)')
+            1032 CALL                     2
+            1040 POP_TOP
+
+8346        1042 LOAD_FAST                0 (self)
+            1044 LOAD_ATTR               22 (tabs)
+            1064 LOAD_ATTR               39 (NULL|self + addTab)
+            1084 LOAD_FAST                0 (self)
+            1086 LOAD_ATTR               34 (grid_summary)
+            1106 LOAD_CONST              12 ('WOT Summary')
+            1108 CALL                     2
+            1116 POP_TOP
+
+8349        1118 LOAD_GLOBAL              1 (NULL + QWidget)
+            1128 CALL                     0
+            1136 STORE_FAST               5 (plot_container)
+
+8350        1138 LOAD_GLOBAL              3 (NULL + QVBoxLayout)
+            1148 LOAD_FAST                5 (plot_container)
+            1150 CALL                     1
+            1158 STORE_FAST               6 (plot_layout)
+
+8351        1160 LOAD_FAST                6 (plot_layout)
+            1162 LOAD_ATTR                5 (NULL|self + setContentsMargins)
+            1182 LOAD_CONST               2 (4)
+            1184 LOAD_CONST               2 (4)
+            1186 LOAD_CONST               2 (4)
+            1188 LOAD_CONST               2 (4)
+            1190 CALL                     4
+            1198 POP_TOP
+
+8352        1200 LOAD_FAST                6 (plot_layout)
+            1202 LOAD_ATTR                7 (NULL|self + setSpacing)
+            1222 LOAD_CONST              13 (2)
+            1224 CALL                     1
+            1232 POP_TOP
+
+8353        1234 LOAD_GLOBAL             41 (NULL + QHBoxLayout)
+            1244 CALL                     0
+            1252 STORE_FAST               7 (plot_controls)
+
+8354        1254 LOAD_GLOBAL             43 (NULL + QCheckBox)
+            1264 LOAD_CONST              14 ('Overlay all enabled modes')
+            1266 CALL                     1
+            1274 LOAD_FAST                0 (self)
+            1276 STORE_ATTR              22 (plot_overlay_cb)
+
+8355        1286 LOAD_FAST                0 (self)
+            1288 LOAD_ATTR               44 (plot_overlay_cb)
+            1308 LOAD_ATTR               47 (NULL|self + setChecked)
+            1328 LOAD_CONST               4 (True)
+            1330 CALL                     1
+            1338 POP_TOP
+
+8356        1340 LOAD_FAST                0 (self)
+            1342 LOAD_ATTR               44 (plot_overlay_cb)
+            1362 LOAD_ATTR               49 (NULL|self + setToolTip)
+
+8357        1382 LOAD_CONST              15 ('When checked, draws Pattern A / Pattern B / Hot Trans / etc.\nshift curves alongside the Normal mode for visual comparison.\nEach mode uses a distinct line style (dash, dot, dash-dot).')
+
+8356        1384 CALL                     1
+            1392 POP_TOP
+
+8361        1394 LOAD_FAST                0 (self)
+            1396 LOAD_ATTR               44 (plot_overlay_cb)
+            1416 LOAD_ATTR               50 (toggled)
+            1436 LOAD_ATTR               53 (NULL|self + connect)
+            1456 LOAD_FAST                0 (self)
+            1458 LOAD_ATTR               54 (_on_plot_overlay_toggle)
+            1478 CALL                     1
+            1486 POP_TOP
+
+8362        1488 LOAD_FAST                7 (plot_controls)
+            1490 LOAD_ATTR               19 (NULL|self + addWidget)
+            1510 LOAD_FAST                0 (self)
+            1512 LOAD_ATTR               44 (plot_overlay_cb)
+            1532 CALL                     1
+            1540 POP_TOP
+
+8363        1542 LOAD_GLOBAL             43 (NULL + QCheckBox)
+            1552 LOAD_CONST              16 ('Show downshift curves')
+            1554 CALL                     1
+            1562 LOAD_FAST                0 (self)
+            1564 STORE_ATTR              28 (plot_downshift_cb)
+
+8364        1574 LOAD_FAST                0 (self)
+            1576 LOAD_ATTR               56 (plot_downshift_cb)
+            1596 LOAD_ATTR               47 (NULL|self + setChecked)
+            1616 LOAD_CONST               4 (True)
+            1618 CALL                     1
+            1626 POP_TOP
+
+8365        1628 LOAD_FAST                0 (self)
+            1630 LOAD_ATTR               56 (plot_downshift_cb)
+            1650 LOAD_ATTR               50 (toggled)
+            1670 LOAD_ATTR               53 (NULL|self + connect)
+            1690 LOAD_FAST                0 (self)
+            1692 LOAD_ATTR               58 (_on_plot_downshift_toggle)
+            1712 CALL                     1
+            1720 POP_TOP
+
+8366        1722 LOAD_FAST                7 (plot_controls)
+            1724 LOAD_ATTR               19 (NULL|self + addWidget)
+            1744 LOAD_FAST                0 (self)
+            1746 LOAD_ATTR               56 (plot_downshift_cb)
+            1766 CALL                     1
+            1774 POP_TOP
+
+8367        1776 LOAD_FAST                7 (plot_controls)
+            1778 LOAD_ATTR               61 (NULL|self + addStretch)
+            1798 LOAD_CONST              17 (1)
+            1800 CALL                     1
+            1808 POP_TOP
+
+8368        1810 LOAD_FAST                6 (plot_layout)
+            1812 LOAD_ATTR               63 (NULL|self + addLayout)
+            1832 LOAD_FAST                7 (plot_controls)
+            1834 CALL                     1
+            1842 POP_TOP
+
+8369        1844 LOAD_GLOBAL             65 (NULL + ShiftCurvePlot)
+            1854 CALL                     0
+            1862 LOAD_FAST                0 (self)
+            1864 STORE_ATTR              33 (plot_widget)
+
+8370        1874 LOAD_FAST                6 (plot_layout)
+            1876 LOAD_ATTR               19 (NULL|self + addWidget)
+            1896 LOAD_FAST                0 (self)
+            1898 LOAD_ATTR               66 (plot_widget)
+            1918 LOAD_CONST              17 (1)
+            1920 CALL                     2
+            1928 POP_TOP
+
+8371        1930 LOAD_FAST                0 (self)
+            1932 LOAD_ATTR               22 (tabs)
+            1952 LOAD_ATTR               39 (NULL|self + addTab)
+            1972 LOAD_FAST                5 (plot_container)
+            1974 LOAD_CONST              18 ('Shift Curve Plot')
+            1976 CALL                     2
+            1984 POP_TOP
+
+8374        1986 LOAD_GLOBAL             69 (NULL + PressureTab)
+            1996 CALL                     0
+            2004 LOAD_FAST                0 (self)
+            2006 STORE_ATTR              35 (pressure_tab)
+
+8375        2016 LOAD_FAST                0 (self)
+            2018 LOAD_ATTR               70 (pressure_tab)
+            2038 LOAD_ATTR               73 (NULL|self + set_intent_override_callback)
+            2058 LOAD_FAST                0 (self)
+            2060 LOAD_ATTR               74 (_on_pressure_intent_override)
+            2080 CALL                     1
+            2088 POP_TOP
+
+8376        2090 LOAD_FAST                0 (self)
+            2092 LOAD_ATTR               22 (tabs)
+            2112 LOAD_ATTR               39 (NULL|self + addTab)
+            2132 LOAD_FAST                0 (self)
+            2134 LOAD_ATTR               70 (pressure_tab)
+            2154 LOAD_CONST              19 ('TCM Pressures')
+            2156 CALL                     2
+            2164 POP_TOP
+
+8379        2166 LOAD_GLOBAL             77 (NULL + GearCalculatorTab)
+
+8380        2176 LOAD_FAST                0 (self)
+            2178 LOAD_ATTR               78 (_apply_axle_from_calc)
+
+8379        2198 KW_NAMES                20 (('apply_axle_callback',))
+            2200 CALL                     1
+            2208 LOAD_FAST                0 (self)
+            2210 STORE_ATTR              40 (gear_calc_tab)
+
+8381        2220 LOAD_FAST                0 (self)
+            2222 LOAD_ATTR               22 (tabs)
+            2242 LOAD_ATTR               39 (NULL|self + addTab)
+            2262 LOAD_FAST                0 (self)
+            2264 LOAD_ATTR               80 (gear_calc_tab)
+            2284 LOAD_CONST              21 ('Gear Calculator')
+            2286 CALL                     2
+            2294 POP_TOP
+
+8385        2296 BUILD_MAP                0
+            2298 LOAD_FAST                0 (self)
+            2300 STORE_ATTR              41 (pressure_intent_overrides)
+
+8387        2310 LOAD_FAST                3 (rv)
+            2312 LOAD_ATTR               19 (NULL|self + addWidget)
+            2332 LOAD_FAST                0 (self)
+            2334 LOAD_ATTR               22 (tabs)
+            2354 LOAD_CONST              17 (1)
+            2356 CALL                     2
+            2364 POP_TOP
+
+8388        2366 LOAD_FAST                1 (root)
+            2368 LOAD_ATTR               19 (NULL|self + addWidget)
+            2388 LOAD_FAST                2 (right_container)
+            2390 LOAD_CONST              17 (1)
+            2392 CALL                     2
+            2400 POP_TOP
+            2402 RETURN_CONST             0 (None)

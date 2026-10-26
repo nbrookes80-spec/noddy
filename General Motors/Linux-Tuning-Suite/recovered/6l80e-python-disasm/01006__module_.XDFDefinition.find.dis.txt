@@ -1,0 +1,30 @@
+1006           0 RESUME                   0
+
+1007           2 LOAD_FAST                1 (title_substr)
+               4 LOAD_ATTR                1 (NULL|self + lower)
+              24 CALL                     0
+              32 STORE_FAST               2 (lo)
+
+1008          34 LOAD_FAST                0 (self)
+              36 LOAD_ATTR                2 (parameters)
+              56 GET_ITER
+         >>   58 FOR_ITER                34 (to 130)
+              62 STORE_FAST               3 (p)
+
+1009          64 LOAD_FAST                2 (lo)
+              66 LOAD_FAST                3 (p)
+              68 LOAD_ATTR                4 (title)
+              88 LOAD_ATTR                1 (NULL|self + lower)
+             108 CALL                     0
+             116 CONTAINS_OP              0
+             118 POP_JUMP_IF_TRUE         1 (to 122)
+             120 JUMP_BACKWARD           32 (to 58)
+
+1010     >>  122 LOAD_FAST                3 (p)
+             124 SWAP                     2
+             126 POP_TOP
+             128 RETURN_VALUE
+
+1008     >>  130 END_FOR
+
+1011         132 RETURN_CONST             0 (None)

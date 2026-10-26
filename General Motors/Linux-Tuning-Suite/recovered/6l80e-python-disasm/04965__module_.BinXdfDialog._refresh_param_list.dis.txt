@@ -1,0 +1,171 @@
+4965           0 RESUME                   0
+
+4966           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (param_list)
+              24 LOAD_ATTR                3 (NULL|self + setRowCount)
+              44 LOAD_CONST               1 (0)
+              46 CALL                     1
+              54 POP_TOP
+
+4967          56 LOAD_FAST                0 (self)
+              58 LOAD_ATTR                4 (xdf)
+              78 POP_JUMP_IF_NOT_NONE     1 (to 82)
+
+4968          80 RETURN_CONST             0 (None)
+
+4969     >>   82 LOAD_FAST                0 (self)
+              84 LOAD_ATTR                6 (filter_edit)
+             104 LOAD_ATTR                9 (NULL|self + text)
+             124 CALL                     0
+             132 LOAD_ATTR               11 (NULL|self + lower)
+             152 CALL                     0
+             160 LOAD_ATTR               13 (NULL|self + strip)
+             180 CALL                     0
+             188 STORE_FAST               1 (filt)
+
+4970         190 LOAD_FAST                0 (self)
+             192 LOAD_ATTR               14 (cat_combo)
+             212 LOAD_ATTR               17 (NULL|self + currentText)
+             232 CALL                     0
+             240 STORE_FAST               2 (cat_filt)
+
+4971         242 LOAD_FAST                2 (cat_filt)
+             244 LOAD_CONST               2 ('(all)')
+             246 COMPARE_OP              40 (==)
+             250 POP_JUMP_IF_FALSE        2 (to 256)
+
+4972         252 LOAD_CONST               0 (None)
+             254 STORE_FAST               2 (cat_filt)
+
+4974     >>  256 LOAD_FAST                0 (self)
+             258 LOAD_ATTR                4 (xdf)
+             278 LOAD_ATTR               18 (parameters)
+             298 GET_ITER
+             300 LOAD_FAST_AND_CLEAR      3 (p)
+             302 SWAP                     2
+             304 BUILD_LIST               0
+             306 SWAP                     2
+         >>  308 FOR_ITER                51 (to 414)
+             312 STORE_FAST               3 (p)
+
+4975         314 LOAD_FAST                1 (filt)
+             316 POP_JUMP_IF_FALSE       28 (to 374)
+             318 LOAD_FAST                1 (filt)
+             320 LOAD_FAST                3 (p)
+             322 LOAD_ATTR               20 (title)
+             342 LOAD_ATTR               11 (NULL|self + lower)
+             362 CALL                     0
+             370 CONTAINS_OP              0
+             372 POP_JUMP_IF_FALSE       19 (to 412)
+
+4976     >>  374 LOAD_FAST                2 (cat_filt)
+             376 POP_JUMP_IF_FALSE       15 (to 408)
+             378 LOAD_FAST                3 (p)
+             380 LOAD_ATTR               22 (category)
+             400 LOAD_FAST                2 (cat_filt)
+             402 COMPARE_OP              40 (==)
+             406 POP_JUMP_IF_FALSE        2 (to 412)
+
+4974     >>  408 LOAD_FAST                3 (p)
+             410 LIST_APPEND              2
+         >>  412 JUMP_BACKWARD           53 (to 308)
+         >>  414 END_FOR
+             416 STORE_FAST               4 (params)
+             418 STORE_FAST               3 (p)
+
+4977         420 LOAD_FAST                0 (self)
+             422 LOAD_ATTR                0 (param_list)
+             442 LOAD_ATTR                3 (NULL|self + setRowCount)
+             462 LOAD_GLOBAL             25 (NULL + len)
+             472 LOAD_FAST                4 (params)
+             474 CALL                     1
+             482 CALL                     1
+             490 POP_TOP
+
+4978         492 LOAD_FAST                4 (params)
+             494 LOAD_FAST                0 (self)
+             496 STORE_ATTR              13 (_filtered_params)
+
+4979         506 LOAD_GLOBAL             29 (NULL + enumerate)
+             516 LOAD_FAST                4 (params)
+             518 CALL                     1
+             526 GET_ITER
+         >>  528 FOR_ITER               179 (to 890)
+             532 UNPACK_SEQUENCE          2
+             536 STORE_FAST               5 (i)
+             538 STORE_FAST               3 (p)
+
+4980         540 LOAD_FAST                0 (self)
+             542 LOAD_ATTR                0 (param_list)
+             562 LOAD_ATTR               31 (NULL|self + setItem)
+             582 LOAD_FAST                5 (i)
+             584 LOAD_CONST               1 (0)
+             586 LOAD_GLOBAL             33 (NULL + QTableWidgetItem)
+             596 LOAD_FAST                3 (p)
+             598 LOAD_ATTR               20 (title)
+             618 CALL                     1
+             626 CALL                     3
+             634 POP_TOP
+
+4981         636 LOAD_FAST                0 (self)
+             638 LOAD_ATTR                0 (param_list)
+             658 LOAD_ATTR               31 (NULL|self + setItem)
+             678 LOAD_FAST                5 (i)
+             680 LOAD_CONST               3 (1)
+             682 LOAD_GLOBAL             33 (NULL + QTableWidgetItem)
+             692 LOAD_FAST                3 (p)
+             694 LOAD_ATTR               34 (kind)
+             714 CALL                     1
+             722 CALL                     3
+             730 POP_TOP
+
+4982         732 LOAD_FAST                3 (p)
+             734 LOAD_ATTR               36 (z_axis)
+             754 POP_JUMP_IF_FALSE       26 (to 808)
+             756 LOAD_CONST               4 ('0x')
+             758 LOAD_FAST                3 (p)
+             760 LOAD_ATTR               36 (z_axis)
+             780 LOAD_ATTR               38 (address)
+             800 LOAD_CONST               5 ('X')
+             802 FORMAT_VALUE             4 (with format)
+             804 BUILD_STRING             2
+             806 JUMP_FORWARD             1 (to 810)
+         >>  808 LOAD_CONST               6 ('')
+         >>  810 STORE_FAST               6 (addr_txt)
+
+4983         812 LOAD_FAST                0 (self)
+             814 LOAD_ATTR                0 (param_list)
+             834 LOAD_ATTR               31 (NULL|self + setItem)
+             854 LOAD_FAST                5 (i)
+             856 LOAD_CONST               7 (2)
+             858 LOAD_GLOBAL             33 (NULL + QTableWidgetItem)
+             868 LOAD_FAST                6 (addr_txt)
+             870 CALL                     1
+             878 CALL                     3
+             886 POP_TOP
+             888 JUMP_BACKWARD          181 (to 528)
+
+4979     >>  890 END_FOR
+
+4984         892 LOAD_FAST                0 (self)
+             894 LOAD_ATTR                0 (param_list)
+             914 LOAD_ATTR               41 (NULL|self + horizontalHeader)
+             934 CALL                     0
+             942 LOAD_ATTR               43 (NULL|self + setSectionResizeMode)
+
+4985         962 LOAD_CONST               1 (0)
+             964 LOAD_GLOBAL             44 (QHeaderView)
+             974 LOAD_ATTR               46 (ResizeMode)
+             994 LOAD_ATTR               48 (Stretch)
+
+4984        1014 CALL                     2
+            1022 POP_TOP
+            1024 RETURN_CONST             0 (None)
+         >> 1026 SWAP                     2
+            1028 POP_TOP
+
+4974        1030 SWAP                     2
+            1032 STORE_FAST               3 (p)
+            1034 RERAISE                  0
+ExceptionTable:
+  304 to 414 -> 1026 [2]

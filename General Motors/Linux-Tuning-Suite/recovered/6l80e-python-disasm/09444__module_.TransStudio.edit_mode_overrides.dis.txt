@@ -1,0 +1,91 @@
+9444           0 RESUME                   0
+
+9446           2 LOAD_GLOBAL              1 (NULL + len)
+              12 LOAD_GLOBAL              2 (TRANS_DB)
+              22 LOAD_FAST                0 (self)
+              24 LOAD_ATTR                4 (trans)
+              44 LOAD_ATTR                7 (NULL|self + currentText)
+              64 CALL                     0
+              72 BINARY_SUBSCR
+              76 LOAD_CONST               1 ('ratios')
+              78 BINARY_SUBSCR
+              82 CALL                     1
+              90 STORE_FAST               1 (n)
+
+9447          92 LOAD_FAST                1 (n)
+              94 LOAD_CONST               2 (4)
+              96 COMPARE_OP              26 (<=)
+             100 POP_JUMP_IF_FALSE        2 (to 106)
+             102 LOAD_CONST               3 ('4spd')
+             104 JUMP_FORWARD             1 (to 108)
+         >>  106 LOAD_CONST               4 ('6plus')
+         >>  108 STORE_FAST               2 (layout_key)
+
+9448         110 LOAD_GLOBAL              8 (MODE_LAYOUTS)
+             120 LOAD_FAST                2 (layout_key)
+             122 BINARY_SUBSCR
+             126 STORE_FAST               3 (mode_names)
+
+9449         128 LOAD_FAST                0 (self)
+             130 LOAD_ATTR               11 (NULL|self + _gather_config)
+             150 CALL                     0
+             158 STORE_FAST               4 (normal_cfg)
+
+9450         160 LOAD_GLOBAL             13 (NULL + ModeOverridesDialog)
+             170 LOAD_FAST                0 (self)
+             172 LOAD_FAST                3 (mode_names)
+             174 LOAD_FAST                0 (self)
+             176 LOAD_ATTR               14 (mode_overrides)
+             196 LOAD_FAST                4 (normal_cfg)
+             198 CALL                     4
+             206 STORE_FAST               5 (dlg)
+
+9451         208 LOAD_FAST                5 (dlg)
+             210 LOAD_ATTR               16 (intents_changed)
+             230 LOAD_ATTR               19 (NULL|self + connect)
+             250 LOAD_FAST                0 (self)
+             252 LOAD_ATTR               20 (_save_custom_intents)
+             272 CALL                     1
+             280 POP_TOP
+
+9452         282 LOAD_FAST                5 (dlg)
+             284 LOAD_ATTR               23 (NULL|self + exec)
+             304 CALL                     0
+             312 POP_JUMP_IF_FALSE      107 (to 528)
+
+9453         314 LOAD_FAST                5 (dlg)
+             316 LOAD_ATTR               25 (NULL|self + get_overrides)
+             336 CALL                     0
+             344 LOAD_FAST                0 (self)
+             346 STORE_ATTR               7 (mode_overrides)
+
+9454         356 LOAD_GLOBAL             27 (NULL + any)
+             366 LOAD_CONST               5 (<code object <genexpr> at 0x73ab02a65830, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 9454>)
+             368 MAKE_FUNCTION            0
+             370 LOAD_FAST                0 (self)
+             372 LOAD_ATTR               14 (mode_overrides)
+             392 LOAD_ATTR               29 (NULL|self + values)
+             412 CALL                     0
+             420 GET_ITER
+             422 CALL                     0
+             430 CALL                     1
+             438 STORE_FAST               6 (any_enabled)
+
+9455         440 LOAD_FAST                6 (any_enabled)
+             442 POP_JUMP_IF_FALSE       41 (to 526)
+             444 LOAD_FAST                0 (self)
+             446 LOAD_ATTR               30 (multi_mode_enabled)
+             466 POP_JUMP_IF_TRUE        28 (to 524)
+
+9456         468 LOAD_FAST                0 (self)
+             470 LOAD_ATTR               32 (act_dual)
+             490 LOAD_ATTR               35 (NULL|self + setChecked)
+             510 LOAD_CONST               6 (True)
+             512 CALL                     1
+             520 POP_TOP
+             522 RETURN_CONST             7 (None)
+
+9455     >>  524 RETURN_CONST             7 (None)
+         >>  526 RETURN_CONST             7 (None)
+
+9452     >>  528 RETURN_CONST             7 (None)

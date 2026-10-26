@@ -1,0 +1,56 @@
+1020           0 RESUME                   0
+
+1022           2 LOAD_CONST               1 (0)
+               4 LOAD_CONST               0 (None)
+               6 IMPORT_NAME              0 (xml.etree.ElementTree)
+               8 IMPORT_FROM              1 (etree)
+              10 SWAP                     2
+              12 POP_TOP
+              14 IMPORT_FROM              2 (ElementTree)
+              16 STORE_FAST               2 (ET)
+              18 POP_TOP
+
+1023          20 NOP
+
+1024          22 LOAD_FAST                2 (ET)
+              24 LOAD_ATTR                7 (NULL|self + parse)
+              44 LOAD_FAST                1 (path)
+              46 CALL                     1
+              54 STORE_FAST               3 (tree)
+
+1027          56 LOAD_FAST                0 (cls)
+              58 LOAD_ATTR               13 (NULL|self + _from_element)
+              78 LOAD_FAST                3 (tree)
+              80 LOAD_ATTR               15 (NULL|self + getroot)
+             100 CALL                     0
+             108 CALL                     1
+             116 RETURN_VALUE
+         >>  118 PUSH_EXC_INFO
+
+1025         120 LOAD_FAST                2 (ET)
+             122 LOAD_ATTR                8 (ParseError)
+             142 CHECK_EXC_MATCH
+             144 POP_JUMP_IF_FALSE       19 (to 184)
+             146 STORE_FAST               4 (e)
+
+1026         148 LOAD_GLOBAL             11 (NULL + ValueError)
+             158 LOAD_CONST               2 ('Invalid XDF XML: ')
+             160 LOAD_FAST                4 (e)
+             162 FORMAT_VALUE             0
+             164 BUILD_STRING             2
+             166 CALL                     1
+             174 RAISE_VARARGS            1
+         >>  176 LOAD_CONST               0 (None)
+             178 STORE_FAST               4 (e)
+             180 DELETE_FAST              4 (e)
+             182 RERAISE                  1
+
+1025     >>  184 RERAISE                  0
+         >>  186 COPY                     3
+             188 POP_EXCEPT
+             190 RERAISE                  1
+ExceptionTable:
+  22 to 54 -> 118 [0]
+  118 to 146 -> 186 [1] lasti
+  148 to 174 -> 176 [1] lasti
+  176 to 184 -> 186 [1] lasti

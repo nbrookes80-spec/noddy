@@ -1,0 +1,48 @@
+                0 COPY_FREE_VARS           2
+
+10352           2 RESUME                   0
+
+10353           4 LOAD_DEREF               6 (p)
+                6 LOAD_ATTR                1 (NULL|self + setFont)
+               26 LOAD_FAST                3 (font)
+               28 CALL                     1
+               36 POP_TOP
+
+10354          38 LOAD_FAST                4 (color)
+               40 POP_JUMP_IF_FALSE       24 (to 90)
+
+10355          42 LOAD_DEREF               6 (p)
+               44 LOAD_ATTR                3 (NULL|self + setPen)
+               64 PUSH_NULL
+               66 LOAD_DEREF               5 (QPen)
+               68 LOAD_FAST                4 (color)
+               70 CALL                     1
+               78 CALL                     1
+               86 POP_TOP
+               88 JUMP_FORWARD            34 (to 158)
+
+10357     >>   90 LOAD_DEREF               6 (p)
+               92 LOAD_ATTR                3 (NULL|self + setPen)
+              112 PUSH_NULL
+              114 LOAD_DEREF               5 (QPen)
+              116 LOAD_GLOBAL              5 (NULL + QColor)
+              126 LOAD_CONST               1 (0)
+              128 LOAD_CONST               1 (0)
+              130 LOAD_CONST               1 (0)
+              132 CALL                     3
+              140 CALL                     1
+              148 CALL                     1
+              156 POP_TOP
+
+10358     >>  158 LOAD_DEREF               6 (p)
+              160 LOAD_ATTR                7 (NULL|self + drawText)
+              180 LOAD_GLOBAL              9 (NULL + int)
+              190 LOAD_FAST                0 (x)
+              192 CALL                     1
+              200 LOAD_GLOBAL              9 (NULL + int)
+              210 LOAD_FAST                1 (y)
+              212 CALL                     1
+              220 LOAD_FAST                2 (text)
+              222 CALL                     3
+              230 POP_TOP
+              232 RETURN_CONST             0 (None)

@@ -1,0 +1,53 @@
+6537           0 RESUME                   0
+
+6539           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                1 (NULL|self + _refresh_mode_combo)
+              24 CALL                     0
+              32 POP_TOP
+
+6540          34 LOAD_FAST                0 (self)
+              36 LOAD_ATTR                3 (NULL|self + _populate_intent_combo)
+              56 CALL                     0
+              64 POP_TOP
+
+6542          66 LOAD_FAST                0 (self)
+              68 LOAD_ATTR                4 (is_4spd)
+              88 UNARY_NOT
+              90 COPY                     1
+              92 POP_JUMP_IF_FALSE       28 (to 150)
+              94 POP_TOP
+
+6543          96 LOAD_CONST               1 ('TCC Apply')
+              98 LOAD_FAST                0 (self)
+             100 LOAD_ATTR                6 (table_combo)
+             120 LOAD_ATTR                9 (NULL|self + currentText)
+             140 CALL                     0
+             148 CONTAINS_OP              0
+
+6542     >>  150 STORE_FAST               2 (is_tcc)
+
+6544         152 LOAD_GLOBAL             11 (NULL + hasattr)
+             162 LOAD_FAST                0 (self)
+             164 LOAD_CONST               2 ('tcc_era_combo')
+             166 CALL                     2
+             174 POP_JUMP_IF_FALSE       54 (to 284)
+
+6545         176 LOAD_FAST                0 (self)
+             178 LOAD_ATTR               12 (tcc_era_label)
+             198 LOAD_ATTR               15 (NULL|self + setVisible)
+             218 LOAD_FAST                2 (is_tcc)
+             220 CALL                     1
+             228 POP_TOP
+
+6546         230 LOAD_FAST                0 (self)
+             232 LOAD_ATTR               16 (tcc_era_combo)
+             252 LOAD_ATTR               15 (NULL|self + setVisible)
+             272 LOAD_FAST                2 (is_tcc)
+             274 CALL                     1
+             282 POP_TOP
+
+6547     >>  284 LOAD_FAST                0 (self)
+             286 LOAD_ATTR               19 (NULL|self + _refresh)
+             306 CALL                     0
+             314 POP_TOP
+             316 RETURN_CONST             0 (None)

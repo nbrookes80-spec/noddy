@@ -1,0 +1,7 @@
+               0 COPY_FREE_VARS           1
+
+5227           2 RESUME                   0
+               4 LOAD_DEREF               1 (fvals)
+               6 LOAD_FAST                0 (i)
+               8 BINARY_SUBSCR
+              12 RETURN_VALUE

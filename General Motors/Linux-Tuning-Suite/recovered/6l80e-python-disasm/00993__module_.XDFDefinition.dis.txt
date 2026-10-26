@@ -1,0 +1,88 @@
+ 993           0 RESUME                   0
+               2 LOAD_NAME                0 (__name__)
+               4 STORE_NAME               1 (__module__)
+               6 LOAD_CONST               0 ('XDFDefinition')
+               8 STORE_NAME               2 (__qualname__)
+
+ 994          10 LOAD_CONST               1 ('Parsed XDF document — collection of XDFParameter objects.\n\n    Usage:\n        xdf = XDFDefinition.from_file("e38_6l80.xdf")\n        param = xdf.find("Base Shift Pressure")\n        data = param.read(bin_bytes)\n    ')
+              12 STORE_NAME               3 (__doc__)
+
+1001          14 LOAD_CONST               2 (<code object __init__ at 0x73ab02a103f0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1001>)
+              16 MAKE_FUNCTION            0
+              18 STORE_NAME               4 (__init__)
+
+1006          20 LOAD_CONST               3 (<code object find at 0x73ab02bd8960, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1006>)
+              22 MAKE_FUNCTION            0
+              24 STORE_NAME               5 (find)
+
+1013          26 LOAD_CONST               4 (<code object find_all at 0x73ab034aa6b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1013>)
+              28 MAKE_FUNCTION            0
+              30 STORE_NAME               6 (find_all)
+
+1017          32 LOAD_CONST               5 (<code object categories at 0x73ab02a05df0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1017>)
+              34 MAKE_FUNCTION            0
+              36 STORE_NAME               7 (categories)
+
+1020          38 LOAD_NAME                8 (classmethod)
+
+1021          40 LOAD_CONST               6 (<code object from_file at 0x73ab034e9830, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1020>)
+              42 MAKE_FUNCTION            0
+
+1020          44 CALL                     0
+
+1021          52 STORE_NAME               9 (from_file)
+
+1029          54 LOAD_NAME                8 (classmethod)
+
+1030          56 LOAD_CONST               7 (<code object from_string at 0x73ab02b7f870, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1029>)
+              58 MAKE_FUNCTION            0
+
+1029          60 CALL                     0
+
+1030          68 STORE_NAME              10 (from_string)
+
+1034          70 LOAD_NAME                8 (classmethod)
+
+1035          72 LOAD_CONST               8 (<code object _from_element at 0x30c021a0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1034>)
+              74 MAKE_FUNCTION            0
+
+1034          76 CALL                     0
+
+1035          84 STORE_NAME              11 (_from_element)
+
+1056          86 LOAD_NAME               12 (staticmethod)
+
+1057          88 LOAD_CONST               9 (<code object _parse_int at 0x73ab034eaa30, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1056>)
+              90 MAKE_FUNCTION            0
+
+1056          92 CALL                     0
+
+1057         100 STORE_NAME              13 (_parse_int)
+
+1068         102 LOAD_NAME               12 (staticmethod)
+
+1069         104 LOAD_CONST              10 (<code object _parse_axis at 0x30c05c20, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1068>)
+             106 MAKE_FUNCTION            0
+
+1068         108 CALL                     0
+
+1069         116 STORE_NAME              14 (_parse_axis)
+
+1102         118 LOAD_NAME                8 (classmethod)
+
+1103         120 LOAD_CONST              11 (<code object _parse_scalar at 0x30b60500, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1102>)
+             122 MAKE_FUNCTION            0
+
+1102         124 CALL                     0
+
+1103         132 STORE_NAME              15 (_parse_scalar)
+
+1125         134 LOAD_NAME                8 (classmethod)
+
+1126         136 LOAD_CONST              12 (<code object _parse_table at 0x30c06470, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1125>)
+             138 MAKE_FUNCTION            0
+
+1125         140 CALL                     0
+
+1126         148 STORE_NAME              16 (_parse_table)
+             150 RETURN_CONST            13 (None)

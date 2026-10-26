@@ -1,0 +1,54 @@
+8986           0 RESUME                   0
+
+8991           2 LOAD_GLOBAL              1 (NULL + hasattr)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_CONST               1 ('pressure_intent_overrides')
+              16 CALL                     2
+              24 POP_JUMP_IF_TRUE         7 (to 40)
+
+8992          26 BUILD_MAP                0
+              28 LOAD_FAST                0 (self)
+              30 STORE_ATTR               1 (pressure_intent_overrides)
+
+8993     >>   40 LOAD_FAST                2 (intent)
+              42 LOAD_FAST                0 (self)
+              44 LOAD_ATTR                2 (pressure_intent_overrides)
+              64 LOAD_FAST                1 (mode)
+              66 STORE_SUBSCR
+
+8995          70 LOAD_FAST                0 (self)
+              72 LOAD_ATTR                4 (_last_result)
+              92 POP_JUMP_IF_FALSE       15 (to 124)
+              94 LOAD_FAST                0 (self)
+              96 LOAD_ATTR                4 (_last_result)
+             116 LOAD_CONST               2 ('n_gears')
+             118 BINARY_SUBSCR
+             122 JUMP_FORWARD             1 (to 126)
+         >>  124 LOAD_CONST               3 (6)
+         >>  126 STORE_FAST               3 (n_gears)
+
+8996         128 LOAD_FAST                0 (self)
+             130 LOAD_ATTR                7 (NULL|self + _generate_pressure_tables)
+             150 LOAD_FAST                3 (n_gears)
+             152 CALL                     1
+             160 POP_TOP
+
+8997         162 LOAD_FAST                0 (self)
+             164 LOAD_ATTR                9 (NULL|self + statusBar)
+             184 CALL                     0
+             192 LOAD_ATTR               11 (NULL|self + showMessage)
+
+8998         212 LOAD_CONST               4 ("Pressure intent for '")
+             214 LOAD_FAST                1 (mode)
+             216 FORMAT_VALUE             0
+             218 LOAD_CONST               5 ("' set to '")
+             220 LOAD_FAST                2 (intent)
+             222 FORMAT_VALUE             0
+             224 LOAD_CONST               6 ("'. Table updated; export will use this value.")
+             226 BUILD_STRING             5
+
+8999         228 LOAD_CONST               7 (5000)
+
+8997         230 CALL                     2
+             238 POP_TOP
+             240 RETURN_CONST             8 (None)

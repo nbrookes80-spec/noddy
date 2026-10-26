@@ -1,0 +1,23 @@
+4149           0 RESUME                   0
+
+4150           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (load_btn)
+              24 LOAD_ATTR                3 (NULL|self + setEnabled)
+              44 LOAD_CONST               1 (True)
+              46 CALL                     1
+              54 POP_TOP
+
+4151          56 LOAD_FAST                0 (self)
+              58 LOAD_ATTR                0 (load_btn)
+              78 LOAD_ATTR                5 (NULL|self + setText)
+              98 LOAD_CONST               2 ('Load CSV…')
+             100 CALL                     1
+             108 POP_TOP
+
+4152         110 LOAD_FAST                0 (self)
+             112 LOAD_ATTR                6 (progress_bar)
+             132 LOAD_ATTR                9 (NULL|self + setVisible)
+             152 LOAD_CONST               3 (False)
+             154 CALL                     1
+             162 POP_TOP
+             164 RETURN_CONST             0 (None)

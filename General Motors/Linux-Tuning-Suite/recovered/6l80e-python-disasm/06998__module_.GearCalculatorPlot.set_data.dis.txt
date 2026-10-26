@@ -1,0 +1,43 @@
+6998           0 RESUME                   0
+
+7000           2 LOAD_FAST                1 (ratios)
+               4 LOAD_FAST                0 (self)
+               6 STORE_ATTR               0 (ratios)
+
+7001          16 LOAD_FAST                2 (axle)
+              18 LOAD_FAST                0 (self)
+              20 STORE_ATTR               1 (axle)
+
+7002          30 LOAD_FAST                3 (tire_dia)
+              32 LOAD_FAST                0 (self)
+              34 STORE_ATTR               2 (tire_dia)
+
+7003          44 LOAD_FAST                4 (redline_rpm)
+              46 LOAD_FAST                0 (self)
+              48 STORE_ATTR               3 (redline_rpm)
+
+7004          58 LOAD_FAST                5 (idle_rpm)
+              60 LOAD_FAST                0 (self)
+              62 STORE_ATTR               4 (idle_rpm)
+
+7005          72 LOAD_FAST                6 (cruise_mph)
+              74 LOAD_FAST                0 (self)
+              76 STORE_ATTR               5 (cruise_mph)
+
+7006          86 LOAD_FAST                7 (target_top_mph)
+              88 LOAD_FAST                0 (self)
+              90 STORE_ATTR               6 (target_top_mph)
+
+7007         100 LOAD_FAST                8 (unit_label)
+             102 LOAD_FAST                0 (self)
+             104 STORE_ATTR               7 (unit_label)
+
+7008         114 LOAD_FAST                9 (unit_scale)
+             116 LOAD_FAST                0 (self)
+             118 STORE_ATTR               8 (unit_scale)
+
+7009         128 LOAD_FAST                0 (self)
+             130 LOAD_ATTR               19 (NULL|self + update)
+             150 CALL                     0
+             158 POP_TOP
+             160 RETURN_CONST             0 (None)

@@ -1,0 +1,87 @@
+5390           0 RESUME                   0
+
+5392           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (intent_combos)
+              24 LOAD_FAST                1 (mode)
+              26 BINARY_SUBSCR
+              30 LOAD_ATTR                3 (NULL|self + currentText)
+              50 CALL                     0
+              58 STORE_FAST               2 (intent)
+
+5393          60 LOAD_GLOBAL              5 (NULL + intent_to_overrides)
+              70 LOAD_FAST                2 (intent)
+              72 LOAD_FAST                0 (self)
+              74 LOAD_ATTR                6 (normal_cfg)
+              94 CALL                     2
+             102 STORE_FAST               3 (overrides)
+
+5394         104 LOAD_FAST                0 (self)
+             106 LOAD_ATTR                8 (FIELDS)
+             126 GET_ITER
+         >>  128 FOR_ITER               152 (to 436)
+             132 UNPACK_SEQUENCE          3
+             136 STORE_FAST               4 (key)
+             138 STORE_FAST               5 (_)
+             140 STORE_FAST               5 (_)
+
+5395         142 LOAD_FAST                0 (self)
+             144 LOAD_ATTR               10 (field_widgets)
+             164 LOAD_FAST                1 (mode)
+             166 LOAD_FAST                4 (key)
+             168 BUILD_TUPLE              2
+             170 BINARY_SUBSCR
+             174 STORE_FAST               6 (le)
+
+5396         176 LOAD_FAST                4 (key)
+             178 LOAD_FAST                3 (overrides)
+             180 CONTAINS_OP              0
+             182 POP_JUMP_IF_FALSE      109 (to 402)
+
+5397         184 LOAD_FAST                3 (overrides)
+             186 LOAD_FAST                4 (key)
+             188 BINARY_SUBSCR
+             192 STORE_FAST               7 (val)
+
+5398         194 LOAD_GLOBAL             13 (NULL + isinstance)
+             204 LOAD_FAST                7 (val)
+             206 LOAD_GLOBAL             14 (int)
+             216 CALL                     2
+             224 POP_JUMP_IF_TRUE        32 (to 290)
+             226 LOAD_GLOBAL             13 (NULL + isinstance)
+             236 LOAD_FAST                7 (val)
+             238 LOAD_GLOBAL             16 (float)
+             248 CALL                     2
+             256 POP_JUMP_IF_FALSE       52 (to 362)
+             258 LOAD_FAST                7 (val)
+             260 LOAD_ATTR               19 (NULL|self + is_integer)
+             280 CALL                     0
+             288 POP_JUMP_IF_FALSE       36 (to 362)
+
+5399     >>  290 LOAD_FAST                6 (le)
+             292 LOAD_ATTR               21 (NULL|self + setText)
+             312 LOAD_GLOBAL             23 (NULL + str)
+             322 LOAD_GLOBAL             15 (NULL + int)
+             332 LOAD_FAST                7 (val)
+             334 CALL                     1
+             342 CALL                     1
+             350 CALL                     1
+             358 POP_TOP
+             360 JUMP_BACKWARD          117 (to 128)
+
+5401     >>  362 LOAD_FAST                6 (le)
+             364 LOAD_ATTR               21 (NULL|self + setText)
+             384 LOAD_FAST                7 (val)
+             386 LOAD_CONST               1 ('g')
+             388 FORMAT_VALUE             4 (with format)
+             390 CALL                     1
+             398 POP_TOP
+             400 JUMP_BACKWARD          137 (to 128)
+
+5403     >>  402 LOAD_FAST                6 (le)
+             404 LOAD_ATTR               25 (NULL|self + clear)
+             424 CALL                     0
+             432 POP_TOP
+             434 JUMP_BACKWARD          154 (to 128)
+
+5394     >>  436 END_FOR
+             438 RETURN_CONST             2 (None)

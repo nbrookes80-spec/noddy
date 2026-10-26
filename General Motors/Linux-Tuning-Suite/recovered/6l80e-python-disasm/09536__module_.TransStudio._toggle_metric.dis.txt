@@ -1,0 +1,17 @@
+9536           0 RESUME                   0
+
+9537           2 LOAD_FAST                1 (enabled)
+               4 LOAD_FAST                0 (self)
+               6 STORE_ATTR               0 (metric)
+
+9539          16 LOAD_FAST                0 (self)
+              18 LOAD_ATTR                2 (_last_result)
+              38 POP_JUMP_IF_FALSE       17 (to 74)
+
+9540          40 LOAD_FAST                0 (self)
+              42 LOAD_ATTR                5 (NULL|self + calculate)
+              62 CALL                     0
+              70 POP_TOP
+              72 RETURN_CONST             0 (None)
+
+9539     >>   74 RETURN_CONST             0 (None)

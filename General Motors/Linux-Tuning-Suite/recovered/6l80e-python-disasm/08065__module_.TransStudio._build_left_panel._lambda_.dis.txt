@@ -1,0 +1,8 @@
+               0 COPY_FREE_VARS           1
+
+8065           2 RESUME                   0
+               4 LOAD_DEREF               0 (self)
+               6 LOAD_ATTR                1 (NULL|self + _quickfill_stepped)
+              26 LOAD_CONST               1 (-200)
+              28 CALL                     1
+              36 RETURN_VALUE

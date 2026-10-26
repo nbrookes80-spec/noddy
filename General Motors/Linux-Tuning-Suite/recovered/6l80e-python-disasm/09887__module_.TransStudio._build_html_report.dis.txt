@@ -1,0 +1,505 @@
+               0 MAKE_CELL               24 (scale)
+
+9887           2 RESUME                   0
+
+9888           4 LOAD_FAST                0 (self)
+               6 LOAD_ATTR                0 (_last_cfg)
+              26 STORE_FAST               1 (cfg)
+
+9889          28 LOAD_FAST                0 (self)
+              30 LOAD_ATTR                2 (_last_result)
+              50 STORE_FAST               2 (res)
+
+9890          52 LOAD_FAST                0 (self)
+              54 LOAD_ATTR                5 (NULL|self + _validate)
+              74 LOAD_FAST                1 (cfg)
+              76 LOAD_FAST                2 (res)
+              78 CALL                     2
+              86 STORE_FAST               3 (warnings)
+
+9891          88 LOAD_FAST                0 (self)
+              90 LOAD_ATTR                6 (metric)
+             110 POP_JUMP_IF_FALSE        2 (to 116)
+             112 LOAD_CONST               1 ('KPH')
+             114 JUMP_FORWARD             1 (to 118)
+         >>  116 LOAD_CONST               2 ('MPH')
+         >>  118 STORE_FAST               4 (unit)
+
+9892         120 LOAD_FAST                0 (self)
+             122 LOAD_ATTR                6 (metric)
+             142 POP_JUMP_IF_FALSE        2 (to 148)
+             144 LOAD_CONST               3 (1.609344)
+             146 JUMP_FORWARD             1 (to 150)
+         >>  148 LOAD_CONST               4 (1.0)
+         >>  150 STORE_DEREF             24 (scale)
+
+9893         152 LOAD_FAST                2 (res)
+             154 LOAD_CONST               5 ('n_gears')
+             156 BINARY_SUBSCR
+             160 STORE_FAST               5 (n)
+
+9894         162 LOAD_FAST                5 (n)
+             164 LOAD_CONST               6 (1)
+             166 BINARY_OP               10 (-)
+             170 STORE_FAST               6 (n_shifts)
+
+9896         172 LOAD_CONST              83 ((False,))
+             174 LOAD_CLOSURE            24 (scale)
+             176 BUILD_TUPLE              1
+             178 LOAD_CONST               7 (<code object fmt_table at 0x30c7d560, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 9896>)
+             180 MAKE_FUNCTION            9 (defaults, closure)
+             182 STORE_FAST               7 (fmt_table)
+
+9918         184 LOAD_GLOBAL              9 (NULL + range)
+             194 LOAD_GLOBAL             10 (TPS_COLS)
+             204 CALL                     1
+             212 GET_ITER
+             214 LOAD_FAST_AND_CLEAR      8 (c)
+             216 SWAP                     2
+             218 BUILD_LIST               0
+             220 SWAP                     2
+         >>  222 FOR_ITER                13 (to 252)
+             226 STORE_FAST               8 (c)
+             228 LOAD_FAST                8 (c)
+             230 LOAD_GLOBAL             12 (TPS_STEP)
+             240 BINARY_OP                5 (*)
+             244 LOAD_CONST               8 ('.1f')
+             246 FORMAT_VALUE             4 (with format)
+             248 LIST_APPEND              2
+             250 JUMP_BACKWARD           15 (to 222)
+         >>  252 END_FOR
+             254 STORE_FAST               9 (tps_cols)
+             256 STORE_FAST               8 (c)
+
+9919         258 LOAD_GLOBAL              9 (NULL + range)
+             268 LOAD_FAST                6 (n_shifts)
+             270 CALL                     1
+             278 GET_ITER
+             280 LOAD_FAST_AND_CLEAR     10 (i)
+             282 SWAP                     2
+             284 BUILD_LIST               0
+             286 SWAP                     2
+         >>  288 FOR_ITER                16 (to 324)
+             292 STORE_FAST              10 (i)
+             294 LOAD_CONST               9 ('Up ')
+             296 LOAD_FAST               10 (i)
+             298 LOAD_CONST               6 (1)
+             300 BINARY_OP                0 (+)
+             304 FORMAT_VALUE             0
+             306 LOAD_CONST              10 ('→')
+             308 LOAD_FAST               10 (i)
+             310 LOAD_CONST              11 (2)
+             312 BINARY_OP                0 (+)
+             316 FORMAT_VALUE             0
+             318 BUILD_STRING             4
+             320 LIST_APPEND              2
+             322 JUMP_BACKWARD           18 (to 288)
+         >>  324 END_FOR
+             326 STORE_FAST              11 (up_lbls)
+             328 STORE_FAST              10 (i)
+
+9920         330 LOAD_GLOBAL              9 (NULL + range)
+             340 LOAD_FAST                6 (n_shifts)
+             342 CALL                     1
+             350 GET_ITER
+             352 LOAD_FAST_AND_CLEAR     10 (i)
+             354 SWAP                     2
+             356 BUILD_LIST               0
+             358 SWAP                     2
+         >>  360 FOR_ITER                16 (to 396)
+             364 STORE_FAST              10 (i)
+             366 LOAD_CONST              12 ('Dn ')
+             368 LOAD_FAST               10 (i)
+             370 LOAD_CONST              11 (2)
+             372 BINARY_OP                0 (+)
+             376 FORMAT_VALUE             0
+             378 LOAD_CONST              10 ('→')
+             380 LOAD_FAST               10 (i)
+             382 LOAD_CONST               6 (1)
+             384 BINARY_OP                0 (+)
+             388 FORMAT_VALUE             0
+             390 BUILD_STRING             4
+             392 LIST_APPEND              2
+             394 JUMP_BACKWARD           18 (to 360)
+         >>  396 END_FOR
+             398 STORE_FAST              12 (dn_lbls)
+             400 STORE_FAST              10 (i)
+
+9921         402 LOAD_GLOBAL              9 (NULL + range)
+             412 LOAD_FAST                5 (n)
+             414 CALL                     1
+             422 GET_ITER
+             424 LOAD_FAST_AND_CLEAR     10 (i)
+             426 SWAP                     2
+             428 BUILD_LIST               0
+             430 SWAP                     2
+         >>  432 FOR_ITER                10 (to 456)
+             436 STORE_FAST              10 (i)
+             438 LOAD_CONST              13 ('Gear ')
+             440 LOAD_FAST               10 (i)
+             442 LOAD_CONST               6 (1)
+             444 BINARY_OP                0 (+)
+             448 FORMAT_VALUE             0
+             450 BUILD_STRING             2
+             452 LIST_APPEND              2
+             454 JUMP_BACKWARD           12 (to 432)
+         >>  456 END_FOR
+             458 STORE_FAST              13 (gear_lbls)
+             460 STORE_FAST              10 (i)
+
+9924         462 LOAD_CONST              14 ('Transmission')
+             464 LOAD_FAST                0 (self)
+             466 LOAD_ATTR               14 (trans)
+             486 LOAD_ATTR               17 (NULL|self + currentText)
+             506 CALL                     0
+             514 BUILD_TUPLE              2
+
+9925         516 LOAD_CONST              15 ('Tire Dia')
+             518 LOAD_FAST                1 (cfg)
+             520 LOAD_CONST              16 ('tire_dia')
+             522 BINARY_SUBSCR
+             526 LOAD_CONST              17 ('.2f')
+             528 FORMAT_VALUE             4 (with format)
+             530 LOAD_CONST              18 (' in')
+             532 BUILD_STRING             2
+             534 BUILD_TUPLE              2
+
+9926         536 LOAD_CONST              19 ('Axle Ratio')
+             538 LOAD_FAST                1 (cfg)
+             540 LOAD_CONST              20 ('axle')
+             542 BINARY_SUBSCR
+             546 LOAD_CONST              17 ('.2f')
+             548 FORMAT_VALUE             4 (with format)
+             550 BUILD_TUPLE              2
+
+9927         552 LOAD_CONST              21 ('T-Case Ratio')
+             554 LOAD_FAST                1 (cfg)
+             556 LOAD_CONST              22 ('chain')
+             558 BINARY_SUBSCR
+             562 LOAD_CONST              17 ('.2f')
+             564 FORMAT_VALUE             4 (with format)
+             566 BUILD_TUPLE              2
+
+9928         568 LOAD_CONST              23 ('Vehicle Weight')
+             570 LOAD_FAST                1 (cfg)
+             572 LOAD_CONST              24 ('weight')
+             574 BINARY_SUBSCR
+             578 LOAD_CONST              25 ('.0f')
+             580 FORMAT_VALUE             4 (with format)
+             582 LOAD_CONST              26 (' lb')
+             584 BUILD_STRING             2
+             586 BUILD_TUPLE              2
+
+9929         588 LOAD_CONST              27 ('RWHP')
+             590 LOAD_FAST                1 (cfg)
+             592 LOAD_CONST              28 ('rwhp')
+             594 BINARY_SUBSCR
+             598 LOAD_CONST              25 ('.0f')
+             600 FORMAT_VALUE             4 (with format)
+             602 BUILD_TUPLE              2
+
+9930         604 LOAD_CONST              29 ('Idle RPM')
+             606 LOAD_FAST                1 (cfg)
+             608 LOAD_CONST              30 ('idle_rpm')
+             610 BINARY_SUBSCR
+             614 LOAD_CONST              25 ('.0f')
+             616 FORMAT_VALUE             4 (with format)
+             618 BUILD_TUPLE              2
+
+9931         620 LOAD_CONST              31 ('Stall RPM')
+             622 LOAD_FAST                1 (cfg)
+             624 LOAD_CONST              32 ('stall_rpm')
+             626 BINARY_SUBSCR
+             630 LOAD_CONST              25 ('.0f')
+             632 FORMAT_VALUE             4 (with format)
+             634 LOAD_CONST              33 (' (slip ')
+             636 LOAD_FAST                2 (res)
+             638 LOAD_CONST              34 ('slip_pct')
+             640 BINARY_SUBSCR
+             644 LOAD_CONST               8 ('.1f')
+             646 FORMAT_VALUE             4 (with format)
+             648 LOAD_CONST              35 ('%)')
+             650 BUILD_STRING             4
+             652 BUILD_TUPLE              2
+
+9932         654 LOAD_CONST              36 ('WOT Shift RPM')
+             656 LOAD_FAST                1 (cfg)
+             658 LOAD_CONST              37 ('shift_rpm')
+             660 BINARY_SUBSCR
+             664 LOAD_CONST              25 ('.0f')
+             666 FORMAT_VALUE             4 (with format)
+             668 BUILD_TUPLE              2
+
+9933         670 LOAD_CONST              38 ('Min TCC RPM')
+             672 LOAD_FAST                1 (cfg)
+             674 LOAD_CONST              39 ('min_tcc_rpm')
+             676 BINARY_SUBSCR
+             680 LOAD_CONST              25 ('.0f')
+             682 FORMAT_VALUE             4 (with format)
+             684 BUILD_TUPLE              2
+
+9934         686 LOAD_CONST              40 ('TPS Factor / Offset')
+             688 LOAD_FAST                1 (cfg)
+             690 LOAD_CONST              41 ('tps_factor')
+             692 BINARY_SUBSCR
+             696 FORMAT_VALUE             0
+             698 LOAD_CONST              42 (' / ')
+             700 LOAD_FAST                1 (cfg)
+             702 LOAD_CONST              43 ('tps_offset')
+             704 BINARY_SUBSCR
+             708 FORMAT_VALUE             0
+             710 BUILD_STRING             3
+             712 BUILD_TUPLE              2
+
+9935         714 LOAD_CONST              44 ('Up/Down Firmness')
+             716 LOAD_FAST                1 (cfg)
+             718 LOAD_CONST              45 ('up_firmness')
+             720 BINARY_SUBSCR
+             724 FORMAT_VALUE             0
+             726 LOAD_CONST              42 (' / ')
+             728 LOAD_FAST                1 (cfg)
+             730 LOAD_CONST              46 ('down_firmness')
+             732 BINARY_SUBSCR
+             736 FORMAT_VALUE             0
+             738 BUILD_STRING             3
+             740 BUILD_TUPLE              2
+
+9936         742 LOAD_CONST              47 ('Lead Mode')
+             744 LOAD_FAST                1 (cfg)
+             746 LOAD_CONST              48 ('lead_mode')
+             748 BINARY_SUBSCR
+             752 LOAD_ATTR               19 (NULL|self + upper)
+             772 CALL                     0
+             780 FORMAT_VALUE             0
+             782 LOAD_CONST              49 (' (')
+             784 LOAD_FAST                1 (cfg)
+             786 LOAD_CONST              50 ('lead_value')
+             788 BINARY_SUBSCR
+             792 FORMAT_VALUE             0
+             794 LOAD_CONST              51 (')')
+             796 BUILD_STRING             4
+             798 BUILD_TUPLE              2
+
+9937         800 LOAD_CONST              52 ('TCC Min/Accel/WOT Gear')
+
+9938         802 LOAD_FAST                1 (cfg)
+             804 LOAD_CONST              53 ('min_tcc_gear')
+             806 BINARY_SUBSCR
+             810 FORMAT_VALUE             0
+             812 LOAD_CONST              42 (' / ')
+             814 LOAD_FAST                1 (cfg)
+             816 LOAD_CONST              54 ('accel_lock_gear')
+             818 BINARY_SUBSCR
+             822 FORMAT_VALUE             0
+             824 LOAD_CONST              42 (' / ')
+             826 LOAD_FAST                1 (cfg)
+             828 LOAD_CONST              55 ('wot_lock_gear')
+             830 BINARY_SUBSCR
+             834 FORMAT_VALUE             0
+             836 BUILD_STRING             5
+
+9937         838 BUILD_TUPLE              2
+
+9923         840 BUILD_LIST              14
+             842 STORE_FAST              14 (cfg_rows)
+
+9940         844 LOAD_CONST              56 ("<table class='cfg'>")
+             846 LOAD_CONST              57 ('')
+             848 LOAD_ATTR               21 (NULL|self + join)
+             868 LOAD_CONST              58 (<code object <genexpr> at 0x73ab02a65d30, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 9940>)
+             870 MAKE_FUNCTION            0
+
+9941         872 LOAD_FAST               14 (cfg_rows)
+
+9940         874 GET_ITER
+             876 CALL                     0
+             884 CALL                     1
+             892 BINARY_OP                0 (+)
+
+9941         896 LOAD_CONST              59 ('</table>')
+
+9940         898 BINARY_OP                0 (+)
+             902 STORE_FAST              15 (cfg_html)
+
+9943         904 LOAD_FAST                3 (warnings)
+             906 POP_JUMP_IF_FALSE       31 (to 970)
+
+9944         908 LOAD_CONST              60 ("<div class='warn'><b>⚠ Validation findings:</b><ul>")
+
+9945         910 LOAD_CONST              57 ('')
+             912 LOAD_ATTR               21 (NULL|self + join)
+             932 LOAD_CONST              61 (<code object <genexpr> at 0x73ab02a99110, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 9945>)
+             934 MAKE_FUNCTION            0
+             936 LOAD_FAST                3 (warnings)
+             938 GET_ITER
+             940 CALL                     0
+             948 CALL                     1
+
+9944         956 BINARY_OP                0 (+)
+
+9945         960 LOAD_CONST              62 ('</ul></div>')
+
+9944         962 BINARY_OP                0 (+)
+             966 STORE_FAST              16 (warn_html)
+             968 JUMP_FORWARD             2 (to 974)
+
+9947     >>  970 LOAD_CONST              63 ("<div class='ok'>✓ All validation checks pass.</div>")
+             972 STORE_FAST              16 (warn_html)
+
+9949     >>  974 LOAD_FAST                0 (self)
+             976 LOAD_ATTR               23 (NULL|self + _build_svg_plot)
+             996 LOAD_FAST                2 (res)
+             998 LOAD_DEREF              24 (scale)
+            1000 LOAD_FAST                4 (unit)
+            1002 CALL                     3
+            1010 STORE_FAST              17 (svg)
+
+9950        1012 PUSH_NULL
+            1014 LOAD_FAST                7 (fmt_table)
+            1016 LOAD_FAST                2 (res)
+            1018 LOAD_CONST              64 ('upshift')
+            1020 BINARY_SUBSCR
+            1024 LOAD_FAST               11 (up_lbls)
+            1026 LOAD_FAST                9 (tps_cols)
+            1028 CALL                     3
+            1036 STORE_FAST              18 (up_html)
+
+9951        1038 PUSH_NULL
+            1040 LOAD_FAST                7 (fmt_table)
+            1042 LOAD_FAST                2 (res)
+            1044 LOAD_CONST              65 ('downshift')
+            1046 BINARY_SUBSCR
+            1050 LOAD_FAST               12 (dn_lbls)
+            1052 LOAD_FAST                9 (tps_cols)
+            1054 CALL                     3
+            1062 STORE_FAST              19 (dn_html)
+
+9952        1064 PUSH_NULL
+            1066 LOAD_FAST                7 (fmt_table)
+            1068 LOAD_FAST                2 (res)
+            1070 LOAD_CONST              66 ('tcc_lock')
+            1072 BINARY_SUBSCR
+            1076 LOAD_FAST               13 (gear_lbls)
+            1078 LOAD_FAST                9 (tps_cols)
+            1080 CALL                     3
+            1088 STORE_FAST              20 (lock_html)
+
+9953        1090 PUSH_NULL
+            1092 LOAD_FAST                7 (fmt_table)
+            1094 LOAD_FAST                2 (res)
+            1096 LOAD_CONST              67 ('tcc_unlock')
+            1098 BINARY_SUBSCR
+            1102 LOAD_FAST               13 (gear_lbls)
+            1104 LOAD_FAST                9 (tps_cols)
+            1106 CALL                     3
+            1114 STORE_FAST              21 (unlock_html)
+
+9955        1116 LOAD_CONST              68 (0)
+            1118 LOAD_CONST              69 (('datetime',))
+            1120 IMPORT_NAME             12 (datetime)
+            1122 IMPORT_FROM             12 (datetime)
+            1124 STORE_FAST              22 (datetime)
+            1126 POP_TOP
+
+9956        1128 LOAD_FAST               22 (datetime)
+            1130 LOAD_ATTR               27 (NULL|self + now)
+            1150 CALL                     0
+            1158 LOAD_ATTR               29 (NULL|self + strftime)
+            1178 LOAD_CONST              70 ('%Y-%m-%d %H:%M')
+            1180 CALL                     1
+            1188 STORE_FAST              23 (ts)
+
+9958        1190 LOAD_CONST              71 ('<!DOCTYPE html>\n<html><head><meta charset="utf-8">\n<title>Transmission Tune Report — ')
+
+9960        1192 LOAD_FAST                0 (self)
+            1194 LOAD_ATTR               14 (trans)
+            1214 LOAD_ATTR               17 (NULL|self + currentText)
+            1234 CALL                     0
+            1242 FORMAT_VALUE             0
+            1244 LOAD_CONST              72 ('</title>\n<style>\n  body { font-family: -apple-system, Segoe UI, Roboto, sans-serif;\n          background: #fff; color: #222; padding: 24px; max-width: 1400px; margin: auto; }\n  h1 { border-bottom: 2px solid #005A9E; padding-bottom: 6px; }\n  h2 { color: #005A9E; margin-top: 30px; border-bottom: 1px solid #ccc; padding-bottom: 4px; }\n  table { border-collapse: collapse; margin: 10px 0; font-size: 11pt; }\n  th, td { border: 1px solid #ccc; padding: 4px 8px; text-align: center; }\n  th { background: #eef; font-weight: bold; }\n  .cfg th { background: #f4f4f4; text-align: left; }\n  .cfg td { text-align: left; font-family: Consolas, monospace; }\n  .shift-table { font-family: Consolas, monospace; font-size: 9pt; }\n  .shift-table td { padding: 2px 6px; }\n  .warn { background: #fff4e0; border: 1px solid #c80; padding: 10px; margin: 12px 0;\n           border-radius: 4px; }\n  .ok { background: #e0ffe0; border: 1px solid #2a2; padding: 10px; margin: 12px 0;\n         border-radius: 4px; }\n  .meta { color: #888; font-size: 9pt; margin-top: 30px; }\n  svg { background: #fafafa; border: 1px solid #ccc; margin: 10px 0; }\n</style></head>\n<body>\n<h1>Transmission Tune Report</h1>\n<p>')
+
+9982        1246 LOAD_FAST                0 (self)
+            1248 LOAD_ATTR               14 (trans)
+            1268 LOAD_ATTR               17 (NULL|self + currentText)
+            1288 CALL                     0
+            1296 FORMAT_VALUE             0
+            1298 LOAD_CONST              73 (' — generated ')
+            1300 LOAD_FAST               23 (ts)
+            1302 FORMAT_VALUE             0
+            1304 LOAD_CONST              74 ('</p>\n<h2>Configuration</h2>\n')
+
+9984        1306 LOAD_FAST               15 (cfg_html)
+            1308 FORMAT_VALUE             0
+            1310 LOAD_CONST              75 ('\n')
+
+9985        1312 LOAD_FAST               16 (warn_html)
+            1314 FORMAT_VALUE             0
+            1316 LOAD_CONST              76 ('\n<h2>Shift Curve Plot</h2>\n')
+
+9987        1318 LOAD_FAST               17 (svg)
+            1320 FORMAT_VALUE             0
+            1322 LOAD_CONST              77 ('\n<h2>Upshift Table (')
+
+9988        1324 LOAD_FAST                4 (unit)
+            1326 FORMAT_VALUE             0
+            1328 LOAD_CONST              78 (')</h2>\n')
+
+9989        1330 LOAD_FAST               18 (up_html)
+            1332 FORMAT_VALUE             0
+            1334 LOAD_CONST              79 ('\n<h2>Downshift Table (')
+
+9990        1336 LOAD_FAST                4 (unit)
+            1338 FORMAT_VALUE             0
+            1340 LOAD_CONST              78 (')</h2>\n')
+
+9991        1342 LOAD_FAST               19 (dn_html)
+            1344 FORMAT_VALUE             0
+            1346 LOAD_CONST              80 ('\n<h2>TCC Lock Table (')
+
+9992        1348 LOAD_FAST                4 (unit)
+            1350 FORMAT_VALUE             0
+            1352 LOAD_CONST              78 (')</h2>\n')
+
+9993        1354 LOAD_FAST               20 (lock_html)
+            1356 FORMAT_VALUE             0
+            1358 LOAD_CONST              81 ('\n<h2>TCC Unlock Table (')
+
+9994        1360 LOAD_FAST                4 (unit)
+            1362 FORMAT_VALUE             0
+            1364 LOAD_CONST              78 (')</h2>\n')
+
+9995        1366 LOAD_FAST               21 (unlock_html)
+            1368 FORMAT_VALUE             0
+            1370 LOAD_CONST              82 ("\n<div class='meta'>\n  Generated by Ewalt's Auto Tuning Transmission Calibration Studio.\n</div>\n</body></html>")
+
+9958        1372 BUILD_STRING            29
+            1374 RETURN_VALUE
+         >> 1376 SWAP                     2
+            1378 POP_TOP
+
+9918        1380 SWAP                     2
+            1382 STORE_FAST               8 (c)
+            1384 RERAISE                  0
+         >> 1386 SWAP                     2
+            1388 POP_TOP
+
+9919        1390 SWAP                     2
+            1392 STORE_FAST              10 (i)
+            1394 RERAISE                  0
+         >> 1396 SWAP                     2
+            1398 POP_TOP
+
+9920        1400 SWAP                     2
+            1402 STORE_FAST              10 (i)
+            1404 RERAISE                  0
+         >> 1406 SWAP                     2
+            1408 POP_TOP
+
+9921        1410 SWAP                     2
+            1412 STORE_FAST              10 (i)
+            1414 RERAISE                  0
+ExceptionTable:
+  218 to 252 -> 1376 [2]
+  284 to 324 -> 1386 [2]
+  356 to 396 -> 1396 [2]
+  428 to 456 -> 1406 [2]

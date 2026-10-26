@@ -1,0 +1,147 @@
+6549           0 RESUME                   0
+
+6550           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (mode_combo)
+              24 LOAD_ATTR                3 (NULL|self + blockSignals)
+              44 LOAD_CONST               1 (True)
+              46 CALL                     1
+              54 POP_TOP
+
+6551          56 LOAD_FAST                0 (self)
+              58 LOAD_ATTR                0 (mode_combo)
+              78 LOAD_ATTR                5 (NULL|self + clear)
+              98 CALL                     0
+             106 POP_TOP
+
+6552         108 LOAD_FAST                0 (self)
+             110 LOAD_ATTR                6 (table_combo)
+             130 LOAD_ATTR                9 (NULL|self + currentText)
+             150 CALL                     0
+             158 STORE_FAST               1 (table_name)
+
+6553         160 LOAD_FAST                0 (self)
+             162 LOAD_ATTR               10 (is_4spd)
+             182 EXTENDED_ARG             1
+             184 POP_JUMP_IF_FALSE      263 (to 712)
+
+6554         186 LOAD_CONST               2 ('Base Shift Pressure')
+             188 LOAD_FAST                1 (table_name)
+             190 CONTAINS_OP              0
+             192 POP_JUMP_IF_FALSE       62 (to 318)
+
+6555         194 LOAD_FAST                0 (self)
+             196 LOAD_ATTR                0 (mode_combo)
+             216 LOAD_ATTR               13 (NULL|self + addItems)
+             236 LOAD_GLOBAL             15 (NULL + list)
+             246 LOAD_FAST                0 (self)
+             248 LOAD_ATTR               16 (pressure_4spd)
+             268 LOAD_ATTR               19 (NULL|self + keys)
+             288 CALL                     0
+             296 CALL                     1
+             304 CALL                     1
+             312 POP_TOP
+             314 EXTENDED_ARG             1
+             316 JUMP_FORWARD           322 (to 962)
+
+6556     >>  318 LOAD_CONST               3 ('Brake Shift Pressure')
+             320 LOAD_FAST                1 (table_name)
+             322 CONTAINS_OP              0
+             324 POP_JUMP_IF_FALSE       62 (to 450)
+
+6557         326 LOAD_FAST                0 (self)
+             328 LOAD_ATTR                0 (mode_combo)
+             348 LOAD_ATTR               13 (NULL|self + addItems)
+             368 LOAD_GLOBAL             15 (NULL + list)
+             378 LOAD_FAST                0 (self)
+             380 LOAD_ATTR               20 (brake_shift_4spd)
+             400 LOAD_ATTR               19 (NULL|self + keys)
+             420 CALL                     0
+             428 CALL                     1
+             436 CALL                     1
+             444 POP_TOP
+             446 EXTENDED_ARG             1
+             448 JUMP_FORWARD           256 (to 962)
+
+6558     >>  450 LOAD_CONST               4 ('Desired Shift Time')
+             452 LOAD_FAST                1 (table_name)
+             454 CONTAINS_OP              0
+             456 POP_JUMP_IF_FALSE       61 (to 580)
+
+6559         458 LOAD_FAST                0 (self)
+             460 LOAD_ATTR                0 (mode_combo)
+             480 LOAD_ATTR               13 (NULL|self + addItems)
+             500 LOAD_GLOBAL             15 (NULL + list)
+             510 LOAD_FAST                0 (self)
+             512 LOAD_ATTR               22 (shift_time_4spd)
+             532 LOAD_ATTR               19 (NULL|self + keys)
+             552 CALL                     0
+             560 CALL                     1
+             568 CALL                     1
+             576 POP_TOP
+             578 JUMP_FORWARD           191 (to 962)
+
+6560     >>  580 LOAD_CONST               5 ('TCC DC')
+             582 LOAD_FAST                1 (table_name)
+             584 CONTAINS_OP              0
+             586 POP_JUMP_IF_FALSE       29 (to 646)
+
+6561         588 LOAD_FAST                0 (self)
+             590 LOAD_ATTR                0 (mode_combo)
+             610 LOAD_ATTR               13 (NULL|self + addItems)
+             630 LOAD_CONST               6 ('(single table)')
+             632 BUILD_LIST               1
+             634 CALL                     1
+             642 POP_TOP
+             644 JUMP_FORWARD           158 (to 962)
+
+6562     >>  646 LOAD_CONST               7 ('Force Motor Current')
+             648 LOAD_FAST                1 (table_name)
+             650 CONTAINS_OP              0
+             652 POP_JUMP_IF_FALSE      154 (to 962)
+
+6563         654 LOAD_FAST                0 (self)
+             656 LOAD_ATTR                0 (mode_combo)
+             676 LOAD_ATTR               13 (NULL|self + addItems)
+             696 LOAD_CONST               6 ('(single table)')
+             698 BUILD_LIST               1
+             700 CALL                     1
+             708 POP_TOP
+             710 JUMP_FORWARD           125 (to 962)
+
+6565     >>  712 LOAD_CONST               8 ('TCC Apply')
+             714 LOAD_FAST                1 (table_name)
+             716 CONTAINS_OP              0
+             718 POP_JUMP_IF_FALSE       61 (to 842)
+
+6566         720 LOAD_FAST                0 (self)
+             722 LOAD_ATTR                0 (mode_combo)
+             742 LOAD_ATTR               13 (NULL|self + addItems)
+             762 LOAD_GLOBAL             15 (NULL + list)
+             772 LOAD_FAST                0 (self)
+             774 LOAD_ATTR               24 (tcc_apply_tables)
+             794 LOAD_ATTR               19 (NULL|self + keys)
+             814 CALL                     0
+             822 CALL                     1
+             830 CALL                     1
+             838 POP_TOP
+             840 JUMP_FORWARD            60 (to 962)
+
+6568     >>  842 LOAD_FAST                0 (self)
+             844 LOAD_ATTR                0 (mode_combo)
+             864 LOAD_ATTR               13 (NULL|self + addItems)
+             884 LOAD_GLOBAL             15 (NULL + list)
+             894 LOAD_FAST                0 (self)
+             896 LOAD_ATTR               26 (pressure_tables)
+             916 LOAD_ATTR               19 (NULL|self + keys)
+             936 CALL                     0
+             944 CALL                     1
+             952 CALL                     1
+             960 POP_TOP
+
+6569     >>  962 LOAD_FAST                0 (self)
+             964 LOAD_ATTR                0 (mode_combo)
+             984 LOAD_ATTR                3 (NULL|self + blockSignals)
+            1004 LOAD_CONST               9 (False)
+            1006 CALL                     1
+            1014 POP_TOP
+            1016 RETURN_CONST             0 (None)

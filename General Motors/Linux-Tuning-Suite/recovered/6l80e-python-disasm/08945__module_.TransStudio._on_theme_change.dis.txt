@@ -1,0 +1,54 @@
+8945           0 RESUME                   0
+
+8947           2 LOAD_CONST               1 (0)
+               4 LOAD_CONST               2 (('QApplication',))
+               6 IMPORT_NAME              0 (PyQt6.QtWidgets)
+               8 IMPORT_FROM              1 (QApplication)
+              10 STORE_FAST               2 (QApplication)
+              12 POP_TOP
+
+8948          14 PUSH_NULL
+              16 LOAD_FAST                2 (QApplication)
+              18 LOAD_ATTR                4 (instance)
+              38 CALL                     0
+              46 STORE_FAST               3 (app)
+
+8949          48 LOAD_FAST                3 (app)
+              50 POP_JUMP_IF_NONE        22 (to 96)
+
+8950          52 LOAD_GLOBAL              6 (Theme)
+              62 LOAD_ATTR                9 (NULL|self + apply)
+              82 LOAD_FAST                1 (theme_name)
+              84 LOAD_FAST                3 (app)
+              86 CALL                     2
+              94 POP_TOP
+
+8952     >>   96 LOAD_GLOBAL             11 (NULL + hasattr)
+             106 LOAD_FAST                0 (self)
+             108 LOAD_CONST               4 ('_theme_actions')
+             110 CALL                     2
+             118 POP_JUMP_IF_FALSE       55 (to 230)
+
+8953         120 LOAD_FAST                0 (self)
+             122 LOAD_ATTR               12 (_theme_actions)
+             142 LOAD_ATTR               15 (NULL|self + items)
+             162 CALL                     0
+             170 GET_ITER
+         >>  172 FOR_ITER                25 (to 226)
+             176 UNPACK_SEQUENCE          2
+             180 STORE_FAST               4 (n)
+             182 STORE_FAST               5 (a)
+
+8954         184 LOAD_FAST                5 (a)
+             186 LOAD_ATTR               17 (NULL|self + setChecked)
+             206 LOAD_FAST                4 (n)
+             208 LOAD_FAST                1 (theme_name)
+             210 COMPARE_OP              40 (==)
+             214 CALL                     1
+             222 POP_TOP
+             224 JUMP_BACKWARD           27 (to 172)
+
+8953     >>  226 END_FOR
+             228 RETURN_CONST             3 (None)
+
+8952     >>  230 RETURN_CONST             3 (None)

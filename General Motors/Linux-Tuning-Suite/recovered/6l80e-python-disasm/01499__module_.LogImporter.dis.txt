@@ -1,0 +1,135 @@
+1499           0 RESUME                   0
+               2 LOAD_NAME                0 (__name__)
+               4 STORE_NAME               1 (__module__)
+               6 LOAD_CONST               0 ('LogImporter')
+               8 STORE_NAME               2 (__qualname__)
+
+1500          10 LOAD_CONST               1 ('Reads a dyno log CSV and analyzes against calc predictions.\n\n    Column-name matching is fuzzy (case-insensitive substring match) to\n    handle the wide variation across VCM Scanner / EFILive / OBDLink / etc.\n    Common aliases are listed below; first match wins.\n    ')
+              12 STORE_NAME               3 (__doc__)
+
+1508          14 BUILD_LIST               0
+              16 LOAD_CONST               2 (('engine rpm', 'engine speed', 'rpm', 'spark engine'))
+              18 LIST_EXTEND              1
+              20 STORE_NAME               4 (RPM_ALIASES)
+
+1509          22 BUILD_LIST               0
+              24 LOAD_CONST               3 (('vehicle speed', 'vss', 'speed (mph)'))
+              26 LIST_EXTEND              1
+              28 STORE_NAME               5 (MPH_ALIASES)
+
+1510          30 BUILD_LIST               0
+              32 LOAD_CONST               4 (('vehicle speed (kph)', 'vss (kph)', 'speed (kph)'))
+              34 LIST_EXTEND              1
+              36 STORE_NAME               6 (KPH_ALIASES)
+
+1511          38 BUILD_LIST               0
+              40 LOAD_CONST               5 (('tps (%)', 'throttle position', 'tps', 'app', 'apps'))
+              42 LIST_EXTEND              1
+              44 STORE_NAME               7 (TPS_ALIASES)
+
+1512          46 BUILD_LIST               0
+              48 LOAD_CONST               6 (('current gear', 'trans gear', 'gear', 'trans current'))
+              50 LIST_EXTEND              1
+              52 STORE_NAME               8 (GEAR_ALIASES)
+
+1513          54 BUILD_LIST               0
+              56 LOAD_CONST               7 (('trans temp', 'atf temp', 'transmission oil', 'tft', 'trans fluid'))
+              58 LIST_EXTEND              1
+              60 STORE_NAME               9 (TRANS_TEMP_ALIASES)
+
+1515          62 BUILD_LIST               0
+              64 LOAD_CONST               8 (('trans input speed', 'input shaft', 'tiss', 'turbine'))
+              66 LIST_EXTEND              1
+              68 STORE_NAME              10 (INPUT_SPD_ALIASES)
+
+1516          70 BUILD_LIST               0
+              72 LOAD_CONST               9 (('trans output speed', 'output shaft', 'toss'))
+              74 LIST_EXTEND              1
+              76 STORE_NAME              11 (OUTPUT_SPD_ALIASES)
+
+1517          78 BUILD_LIST               0
+              80 LOAD_CONST              10 (('tcc duty', 'torque converter clutch duty', 'tcc pwm', 'tcc dc'))
+              82 LIST_EXTEND              1
+              84 STORE_NAME              12 (TCC_DC_ALIASES)
+
+1520          86 LOAD_CONST              11 (<code object __init__ at 0x73ab02bcb030, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1520>)
+              88 MAKE_FUNCTION            0
+              90 STORE_NAME              13 (__init__)
+
+1526          92 LOAD_NAME               14 (classmethod)
+
+1527          94 LOAD_CONST              24 ((None, None))
+              96 LOAD_CONST              13 (<code object from_csv at 0x30c08380, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1526>)
+              98 MAKE_FUNCTION            1 (defaults)
+
+1526         100 CALL                     0
+
+1527         108 STORE_NAME              15 (from_csv)
+
+1620         110 LOAD_NAME               14 (classmethod)
+
+1621         112 LOAD_CONST              25 ((5,))
+             114 LOAD_CONST              14 (<code object _sniff_header_row at 0x30c08a90, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1620>)
+             116 MAKE_FUNCTION            1 (defaults)
+
+1620         118 CALL                     0
+
+1621         126 STORE_NAME              16 (_sniff_header_row)
+
+1642         128 LOAD_NAME               17 (staticmethod)
+
+1643         130 LOAD_CONST              15 (<code object _is_number at 0x73ab02a06450, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1642>)
+             132 MAKE_FUNCTION            0
+
+1642         134 CALL                     0
+
+1643         142 STORE_NAME              18 (_is_number)
+
+1650         144 LOAD_NAME               14 (classmethod)
+
+1651         146 LOAD_CONST              26 ((None,))
+             148 LOAD_CONST              16 (<code object from_dataframe at 0x30c09310, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1650>)
+             150 MAKE_FUNCTION            1 (defaults)
+
+1650         152 CALL                     0
+
+1651         160 STORE_NAME              19 (from_dataframe)
+
+1692         162 LOAD_CONST              17 (<code object _build_column_map at 0x30c06bb0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1692>)
+             164 MAKE_FUNCTION            0
+             166 STORE_NAME              20 (_build_column_map)
+
+1717         168 LOAD_CONST              18 (<code object _find_col at 0x73ab02a342b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1717>)
+             170 MAKE_FUNCTION            0
+             172 STORE_NAME              21 (_find_col)
+
+1725         174 LOAD_CONST              19 (<code object get_col at 0x73ab02a40160, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1725>)
+             176 MAKE_FUNCTION            0
+             178 STORE_NAME              22 (get_col)
+
+1732         180 LOAD_NAME               23 (property)
+
+1733         182 LOAD_CONST              20 (<code object is_empty at 0x73ab02bcb430, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1732>)
+             184 MAKE_FUNCTION            0
+
+1732         186 CALL                     0
+
+1733         194 STORE_NAME              24 (is_empty)
+
+1736         196 LOAD_NAME               23 (property)
+
+1737         198 LOAD_CONST              21 (<code object n_samples at 0x73ab02a10d50, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1736>)
+             200 MAKE_FUNCTION            0
+
+1736         202 CALL                     0
+
+1737         210 STORE_NAME              25 (n_samples)
+
+1740         212 LOAD_CONST              22 (<code object detected_columns at 0x73ab034eb330, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1740>)
+             214 MAKE_FUNCTION            0
+             216 STORE_NAME              26 (detected_columns)
+
+1749         218 LOAD_CONST              23 (<code object analyze at 0x30c0b2d0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1749>)
+             220 MAKE_FUNCTION            0
+             222 STORE_NAME              27 (analyze)
+             224 RETURN_CONST            12 (None)

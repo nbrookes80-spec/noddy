@@ -1,0 +1,196 @@
+10060           0 RESUME                   0
+
+10062           2 LOAD_FAST                0 (self)
+                4 LOAD_ATTR                0 (_last_result)
+               24 POP_JUMP_IF_TRUE        24 (to 74)
+
+10063          26 LOAD_GLOBAL              3 (NULL + QMessageBox)
+               36 LOAD_ATTR                4 (information)
+               56 LOAD_FAST                0 (self)
+               58 LOAD_CONST               1 ('Calculate first')
+
+10064          60 LOAD_CONST               2 ('Run Calculate on the current config first.')
+
+10063          62 CALL                     3
+               70 POP_TOP
+
+10065          72 RETURN_CONST             3 (None)
+
+10066     >>   74 LOAD_GLOBAL              7 (NULL + QFileDialog)
+               84 LOAD_ATTR                8 (getOpenFileName)
+              104 LOAD_FAST                0 (self)
+              106 LOAD_CONST               4 ('Compare with Profile')
+
+10067         108 LOAD_CONST               5 ('')
+              110 LOAD_CONST               6 ('JSON (*.json)')
+
+10066         112 CALL                     4
+              120 UNPACK_SEQUENCE          2
+              124 STORE_FAST               1 (path)
+              126 STORE_FAST               2 (_)
+
+10068         128 LOAD_FAST                1 (path)
+              130 POP_JUMP_IF_TRUE         1 (to 134)
+
+10069         132 RETURN_CONST             3 (None)
+
+10070     >>  134 NOP
+
+10071         136 LOAD_GLOBAL             11 (NULL + open)
+              146 LOAD_FAST                1 (path)
+              148 CALL                     1
+              156 BEFORE_WITH
+              158 STORE_FAST               3 (f)
+
+10072         160 LOAD_GLOBAL             13 (NULL + json)
+              170 LOAD_ATTR               14 (load)
+              190 LOAD_FAST                3 (f)
+              192 CALL                     1
+              200 STORE_FAST               4 (cmp_cfg)
+
+10071         202 LOAD_CONST               3 (None)
+              204 LOAD_CONST               3 (None)
+              206 LOAD_CONST               3 (None)
+              208 CALL                     2
+              216 POP_TOP
+
+10074     >>  218 LOAD_GLOBAL             17 (NULL + dict)
+              228 LOAD_FAST                0 (self)
+              230 LOAD_ATTR               18 (_last_cfg)
+              250 CALL                     1
+              258 STORE_FAST               5 (base_cfg)
+
+10075         260 LOAD_CONST               7 (('tire_dia', 'axle', 'chain', 'weight', 'rwhp', 'idle_rpm', 'stall_rpm', 'shift_rpm', 'downshift_rpm', 'min_tcc_rpm', 'tps_offset', 'tps_factor', 'up_firmness', 'down_firmness', 'spread_up', 'spread_lock', 'spread_lock_up', 'spread_unlock_dn', 'min_tcc_gear', 'accel_lock_gear', 'wot_lock_gear', 'lead_value', 'down_time'))
+              262 GET_ITER
+          >>  264 FOR_ITER                15 (to 298)
+              268 STORE_FAST               6 (k)
+
+10082         270 LOAD_FAST                6 (k)
+              272 LOAD_FAST_CHECK          4 (cmp_cfg)
+              274 CONTAINS_OP              0
+              276 POP_JUMP_IF_TRUE         1 (to 280)
+              278 JUMP_BACKWARD            8 (to 264)
+
+10083     >>  280 LOAD_FAST                4 (cmp_cfg)
+              282 LOAD_FAST                6 (k)
+              284 BINARY_SUBSCR
+              288 LOAD_FAST                5 (base_cfg)
+              290 LOAD_FAST                6 (k)
+              292 STORE_SUBSCR
+              296 JUMP_BACKWARD           17 (to 264)
+
+10075     >>  298 END_FOR
+
+10084         300 LOAD_FAST_CHECK          4 (cmp_cfg)
+              302 LOAD_ATTR               21 (NULL|self + get)
+              322 LOAD_CONST               8 ('trans_name')
+              324 CALL                     1
+              332 POP_JUMP_IF_FALSE       29 (to 392)
+              334 LOAD_FAST                4 (cmp_cfg)
+              336 LOAD_CONST               8 ('trans_name')
+              338 BINARY_SUBSCR
+              342 LOAD_GLOBAL             22 (TRANS_DB)
+              352 CONTAINS_OP              0
+              354 POP_JUMP_IF_FALSE       18 (to 392)
+
+10085         356 LOAD_GLOBAL             22 (TRANS_DB)
+              366 LOAD_FAST                4 (cmp_cfg)
+              368 LOAD_CONST               8 ('trans_name')
+              370 BINARY_SUBSCR
+              374 BINARY_SUBSCR
+              378 LOAD_CONST               9 ('ratios')
+              380 BINARY_SUBSCR
+              384 LOAD_FAST                5 (base_cfg)
+              386 LOAD_CONST               9 ('ratios')
+              388 STORE_SUBSCR
+
+10086     >>  392 LOAD_FAST                4 (cmp_cfg)
+              394 LOAD_ATTR               21 (NULL|self + get)
+              414 LOAD_CONST              10 ('lead_mode')
+              416 CALL                     1
+              424 POP_JUMP_IF_FALSE        8 (to 442)
+
+10087         426 LOAD_FAST                4 (cmp_cfg)
+              428 LOAD_CONST              10 ('lead_mode')
+              430 BINARY_SUBSCR
+              434 LOAD_FAST                5 (base_cfg)
+              436 LOAD_CONST              10 ('lead_mode')
+              438 STORE_SUBSCR
+
+10088     >>  442 LOAD_GLOBAL             24 (CalcEngine)
+              452 LOAD_ATTR               27 (NULL|self + calculate)
+              472 LOAD_FAST                5 (base_cfg)
+              474 CALL                     1
+              482 STORE_FAST               7 (cmp_res)
+
+10089         484 LOAD_GLOBAL             29 (NULL + CompareDialog)
+              494 LOAD_FAST                0 (self)
+              496 LOAD_FAST                0 (self)
+              498 LOAD_ATTR                0 (_last_result)
+              518 LOAD_FAST                7 (cmp_res)
+
+10090         520 LOAD_GLOBAL             30 (os)
+              530 LOAD_ATTR               32 (path)
+              550 LOAD_ATTR               35 (NULL|self + basename)
+              570 LOAD_FAST                1 (path)
+              572 CALL                     1
+
+10089         580 CALL                     4
+
+10090         588 LOAD_ATTR               37 (NULL|self + exec)
+              608 CALL                     0
+              616 POP_TOP
+              618 RETURN_CONST             3 (None)
+
+10071     >>  620 PUSH_EXC_INFO
+              622 WITH_EXCEPT_START
+              624 POP_JUMP_IF_TRUE         1 (to 628)
+              626 RERAISE                  2
+          >>  628 POP_TOP
+              630 POP_EXCEPT
+              632 POP_TOP
+              634 POP_TOP
+              636 JUMP_BACKWARD          210 (to 218)
+          >>  638 COPY                     3
+              640 POP_EXCEPT
+              642 RERAISE                  1
+          >>  644 PUSH_EXC_INFO
+
+10091         646 LOAD_GLOBAL             38 (Exception)
+              656 CHECK_EXC_MATCH
+              658 POP_JUMP_IF_FALSE       42 (to 744)
+              660 STORE_FAST               8 (e)
+
+10092         662 LOAD_GLOBAL              3 (NULL + QMessageBox)
+              672 LOAD_ATTR               40 (critical)
+              692 LOAD_FAST                0 (self)
+              694 LOAD_CONST              11 ('Compare Failed')
+              696 LOAD_GLOBAL             43 (NULL + str)
+              706 LOAD_FAST                8 (e)
+              708 CALL                     1
+              716 CALL                     3
+              724 POP_TOP
+              726 POP_EXCEPT
+              728 LOAD_CONST               3 (None)
+              730 STORE_FAST               8 (e)
+              732 DELETE_FAST              8 (e)
+              734 RETURN_CONST             3 (None)
+          >>  736 LOAD_CONST               3 (None)
+              738 STORE_FAST               8 (e)
+              740 DELETE_FAST              8 (e)
+              742 RERAISE                  1
+
+10091     >>  744 RERAISE                  0
+          >>  746 COPY                     3
+              748 POP_EXCEPT
+              750 RERAISE                  1
+ExceptionTable:
+  136 to 156 -> 644 [0]
+  158 to 200 -> 620 [1] lasti
+  202 to 276 -> 644 [0]
+  280 to 616 -> 644 [0]
+  620 to 628 -> 638 [3] lasti
+  630 to 642 -> 644 [0]
+  644 to 660 -> 746 [1] lasti
+  662 to 724 -> 736 [1] lasti
+  736 to 744 -> 746 [1] lasti

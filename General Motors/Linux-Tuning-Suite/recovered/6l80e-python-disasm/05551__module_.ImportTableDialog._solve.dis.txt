@@ -1,0 +1,208 @@
+               0 MAKE_CELL                9 (base_cfg)
+               2 MAKE_CELL               10 (n_shifts_target)
+               4 MAKE_CELL               11 (target)
+
+5551           6 RESUME                   0
+
+5552           8 LOAD_FAST                0 (self)
+              10 LOAD_ATTR                1 (NULL|self + _parse_table)
+              30 CALL                     0
+              38 STORE_DEREF             11 (target)
+
+5553          40 LOAD_DEREF              11 (target)
+              42 POP_JUMP_IF_TRUE        28 (to 100)
+
+5554          44 LOAD_FAST                0 (self)
+              46 LOAD_ATTR                2 (output)
+              66 LOAD_ATTR                5 (NULL|self + setText)
+              86 LOAD_CONST               1 ("Couldn't parse a table with 17 numeric columns.")
+              88 CALL                     1
+              96 POP_TOP
+
+5555          98 RETURN_CONST             0 (None)
+
+5556     >>  100 LOAD_GLOBAL              7 (NULL + len)
+             110 LOAD_DEREF              11 (target)
+             112 CALL                     1
+             120 STORE_DEREF             10 (n_shifts_target)
+
+5558         122 LOAD_GLOBAL              9 (NULL + dict)
+             132 LOAD_FAST                0 (self)
+             134 LOAD_ATTR               10 (cfg)
+             154 CALL                     1
+             162 STORE_DEREF              9 (base_cfg)
+
+5560         164 LOAD_CLOSURE             9 (base_cfg)
+             166 LOAD_CLOSURE            10 (n_shifts_target)
+             168 LOAD_CLOSURE            11 (target)
+             170 BUILD_TUPLE              3
+             172 LOAD_CONST               2 (<code object objective at 0x30b75950, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5560>)
+             174 MAKE_FUNCTION            8 (closure)
+             176 STORE_FAST               1 (objective)
+
+5584         178 LOAD_DEREF               9 (base_cfg)
+             180 LOAD_ATTR               13 (NULL|self + get)
+             200 LOAD_CONST               3 ('tps_factor')
+             202 LOAD_CONST               4 (1.35)
+             204 CALL                     2
+
+5585         212 LOAD_DEREF               9 (base_cfg)
+             214 LOAD_ATTR               13 (NULL|self + get)
+             234 LOAD_CONST               5 ('tps_offset')
+             236 LOAD_CONST               6 (0.0)
+             238 CALL                     2
+
+5586         246 LOAD_DEREF               9 (base_cfg)
+             248 LOAD_ATTR               13 (NULL|self + get)
+             268 LOAD_CONST               7 ('up_firmness')
+             270 LOAD_CONST               8 (5.0)
+             272 CALL                     2
+
+5587         280 LOAD_DEREF               9 (base_cfg)
+             282 LOAD_ATTR               13 (NULL|self + get)
+             302 LOAD_CONST               9 ('shift_rpm')
+             304 LOAD_CONST              10 (6200.0)
+             306 CALL                     2
+
+5584         314 BUILD_LIST               4
+             316 STORE_FAST               2 (x0)
+
+5588         318 LOAD_GLOBAL             15 (NULL + nelder_mead)
+             328 LOAD_FAST                1 (objective)
+             330 LOAD_FAST                2 (x0)
+             332 LOAD_CONST              11 (400)
+             334 LOAD_CONST              12 (0.5)
+             336 KW_NAMES                13 (('max_iter', 'init_step'))
+             338 CALL                     4
+             346 UNPACK_SEQUENCE          2
+             350 STORE_FAST               3 (best)
+             352 STORE_FAST               4 (best_err)
+
+5590         354 BUILD_LIST               0
+             356 LOAD_CONST              14 ((1.0, 5.0, 7.0, 6000.0))
+             358 LIST_EXTEND              1
+             360 BUILD_LIST               0
+             362 LOAD_CONST              15 ((1.5, 10.0, 3.0, 6400.0))
+             364 LIST_EXTEND              1
+
+5591         366 BUILD_LIST               0
+             368 LOAD_CONST              16 ((0.8, 0.0, 5.0, 6200.0))
+             370 LIST_EXTEND              1
+
+5590         372 BUILD_TUPLE              3
+             374 GET_ITER
+         >>  376 FOR_ITER                30 (to 440)
+             380 STORE_FAST               5 (x_alt)
+
+5592         382 LOAD_GLOBAL             15 (NULL + nelder_mead)
+             392 LOAD_FAST                1 (objective)
+             394 LOAD_FAST                5 (x_alt)
+             396 LOAD_CONST              11 (400)
+             398 LOAD_CONST              12 (0.5)
+             400 KW_NAMES                13 (('max_iter', 'init_step'))
+             402 CALL                     4
+             410 UNPACK_SEQUENCE          2
+             414 STORE_FAST               6 (cand)
+             416 STORE_FAST               7 (err)
+
+5593         418 LOAD_FAST                7 (err)
+             420 LOAD_FAST                4 (best_err)
+             422 COMPARE_OP               2 (<)
+             426 POP_JUMP_IF_TRUE         1 (to 430)
+             428 JUMP_BACKWARD           27 (to 376)
+
+5594     >>  430 LOAD_FAST                6 (cand)
+             432 LOAD_FAST                7 (err)
+             434 STORE_FAST               4 (best_err)
+             436 STORE_FAST               3 (best)
+             438 JUMP_BACKWARD           32 (to 376)
+
+5590     >>  440 END_FOR
+
+5595         442 LOAD_GLOBAL             17 (NULL + math)
+             452 LOAD_ATTR               18 (sqrt)
+             472 LOAD_FAST                4 (best_err)
+             474 CALL                     1
+             482 STORE_FAST               8 (rms)
+
+5597         484 LOAD_GLOBAL             21 (NULL + round)
+             494 LOAD_FAST                3 (best)
+             496 LOAD_CONST              17 (0)
+             498 BINARY_SUBSCR
+             502 LOAD_CONST              18 (3)
+             504 CALL                     2
+
+5598         512 LOAD_GLOBAL             21 (NULL + round)
+             522 LOAD_FAST                3 (best)
+             524 LOAD_CONST              19 (1)
+             526 BINARY_SUBSCR
+             530 LOAD_CONST              19 (1)
+             532 CALL                     2
+
+5599         540 LOAD_GLOBAL             21 (NULL + round)
+             550 LOAD_FAST                3 (best)
+             552 LOAD_CONST              20 (2)
+             554 BINARY_SUBSCR
+             558 LOAD_CONST              20 (2)
+             560 CALL                     2
+
+5600         568 LOAD_GLOBAL             23 (NULL + int)
+             578 LOAD_GLOBAL             21 (NULL + round)
+             588 LOAD_FAST                3 (best)
+             590 LOAD_CONST              18 (3)
+             592 BINARY_SUBSCR
+             596 LOAD_CONST              21 (50)
+             598 BINARY_OP               11 (/)
+             602 CALL                     1
+             610 LOAD_CONST              21 (50)
+             612 BINARY_OP                5 (*)
+             616 CALL                     1
+
+5596         624 LOAD_CONST              22 (('tps_factor', 'tps_offset', 'up_firmness', 'shift_rpm'))
+             626 BUILD_CONST_KEY_MAP      4
+             628 LOAD_FAST                0 (self)
+             630 STORE_ATTR              12 (result)
+
+5602         640 LOAD_FAST                0 (self)
+             642 LOAD_ATTR                2 (output)
+             662 LOAD_ATTR                5 (NULL|self + setText)
+
+5603         682 LOAD_CONST              23 ('RMS error: ')
+             684 LOAD_FAST                8 (rms)
+             686 LOAD_CONST              24 ('.2f')
+             688 FORMAT_VALUE             4 (with format)
+             690 LOAD_CONST              25 (' MPH per cell\n  TPS Factor:    ')
+
+5604         692 LOAD_FAST                0 (self)
+             694 LOAD_ATTR               24 (result)
+             714 LOAD_CONST               3 ('tps_factor')
+             716 BINARY_SUBSCR
+             720 FORMAT_VALUE             0
+             722 LOAD_CONST              26 ('\n  TPS Offset:    ')
+
+5605         724 LOAD_FAST                0 (self)
+             726 LOAD_ATTR               24 (result)
+             746 LOAD_CONST               5 ('tps_offset')
+             748 BINARY_SUBSCR
+             752 FORMAT_VALUE             0
+             754 LOAD_CONST              27 ('\n  Up Firmness:   ')
+
+5606         756 LOAD_FAST                0 (self)
+             758 LOAD_ATTR               24 (result)
+             778 LOAD_CONST               7 ('up_firmness')
+             780 BINARY_SUBSCR
+             784 FORMAT_VALUE             0
+             786 LOAD_CONST              28 ('\n  WOT Shift RPM: ')
+
+5607         788 LOAD_FAST                0 (self)
+             790 LOAD_ATTR               24 (result)
+             810 LOAD_CONST               9 ('shift_rpm')
+             812 BINARY_SUBSCR
+             816 FORMAT_VALUE             0
+             818 LOAD_CONST              29 ("\n\nClick 'Apply to Main UI' to push these values into the main fields.")
+
+5603         820 BUILD_STRING            11
+
+5602         822 CALL                     1
+             830 POP_TOP
+             832 RETURN_CONST             0 (None)

@@ -1,0 +1,313 @@
+8468           0 RESUME                   0
+
+8469           2 LOAD_GLOBAL              1 (NULL + range)
+              12 LOAD_GLOBAL              2 (TPS_COLS)
+              22 CALL                     1
+              30 GET_ITER
+              32 LOAD_FAST_AND_CLEAR      2 (c)
+              34 SWAP                     2
+              36 BUILD_LIST               0
+              38 SWAP                     2
+         >>   40 FOR_ITER                13 (to 70)
+              44 STORE_FAST               2 (c)
+              46 LOAD_FAST                2 (c)
+              48 LOAD_GLOBAL              4 (TPS_STEP)
+              58 BINARY_OP                5 (*)
+              62 LOAD_CONST               1 ('.2f')
+              64 FORMAT_VALUE             4 (with format)
+              66 LIST_APPEND              2
+              68 JUMP_BACKWARD           15 (to 40)
+         >>   70 END_FOR
+              72 STORE_FAST               3 (tps_labels)
+              74 STORE_FAST               2 (c)
+
+8470          76 LOAD_FAST                1 (n)
+              78 LOAD_CONST               2 (1)
+              80 BINARY_OP               10 (-)
+              84 STORE_FAST               4 (n_shifts)
+
+8473          86 LOAD_FAST                0 (self)
+              88 LOAD_ATTR                6 (grid_up)
+             108 LOAD_CONST               3 (False)
+             110 BUILD_TUPLE              2
+             112 LOAD_FAST                0 (self)
+             114 LOAD_ATTR                8 (grid_dn)
+             134 LOAD_CONST               4 (True)
+             136 BUILD_TUPLE              2
+             138 BUILD_TUPLE              2
+             140 GET_ITER
+         >>  142 FOR_ITER               215 (to 576)
+             146 UNPACK_SEQUENCE          2
+             150 STORE_FAST               5 (grid)
+             152 STORE_FAST               6 (is_dn)
+
+8474         154 LOAD_FAST                5 (grid)
+             156 LOAD_ATTR               11 (NULL|self + setUpdatesEnabled)
+             176 LOAD_CONST               3 (False)
+             178 CALL                     1
+             186 POP_TOP
+
+8475         188 LOAD_FAST                5 (grid)
+             190 LOAD_ATTR               13 (NULL|self + setColumnCount)
+             210 LOAD_GLOBAL              2 (TPS_COLS)
+             220 CALL                     1
+             228 POP_TOP
+
+8476         230 LOAD_FAST                5 (grid)
+             232 LOAD_ATTR               15 (NULL|self + setRowCount)
+             252 LOAD_FAST                4 (n_shifts)
+             254 CALL                     1
+             262 POP_TOP
+
+8477         264 LOAD_FAST                5 (grid)
+             266 LOAD_ATTR               17 (NULL|self + setHorizontalHeaderLabels)
+             286 LOAD_FAST                3 (tps_labels)
+             288 CALL                     1
+             296 POP_TOP
+
+8478         298 LOAD_FAST                5 (grid)
+             300 LOAD_ATTR               19 (NULL|self + setVerticalHeaderLabels)
+
+8479         320 LOAD_GLOBAL              1 (NULL + range)
+             330 LOAD_FAST                4 (n_shifts)
+             332 CALL                     1
+             340 GET_ITER
+             342 LOAD_FAST_AND_CLEAR      7 (i)
+             344 SWAP                     2
+             346 BUILD_LIST               0
+             348 SWAP                     2
+         >>  350 FOR_ITER                30 (to 414)
+             354 STORE_FAST               7 (i)
+             356 LOAD_FAST                6 (is_dn)
+             358 POP_JUMP_IF_TRUE        13 (to 386)
+             360 LOAD_FAST                7 (i)
+             362 LOAD_CONST               2 (1)
+             364 BINARY_OP                0 (+)
+             368 FORMAT_VALUE             0
+             370 LOAD_CONST               5 ('->')
+             372 LOAD_FAST                7 (i)
+             374 LOAD_CONST               6 (2)
+             376 BINARY_OP                0 (+)
+             380 FORMAT_VALUE             0
+             382 BUILD_STRING             3
+             384 JUMP_FORWARD            12 (to 410)
+         >>  386 LOAD_FAST                7 (i)
+             388 LOAD_CONST               6 (2)
+             390 BINARY_OP                0 (+)
+             394 FORMAT_VALUE             0
+             396 LOAD_CONST               5 ('->')
+             398 LOAD_FAST                7 (i)
+             400 LOAD_CONST               2 (1)
+             402 BINARY_OP                0 (+)
+             406 FORMAT_VALUE             0
+             408 BUILD_STRING             3
+         >>  410 LIST_APPEND              2
+             412 JUMP_BACKWARD           32 (to 350)
+         >>  414 END_FOR
+             416 SWAP                     2
+             418 STORE_FAST               7 (i)
+
+8478         420 CALL                     1
+             428 POP_TOP
+
+8481         430 LOAD_FAST                5 (grid)
+             432 LOAD_ATTR               21 (NULL|self + horizontalHeader)
+             452 CALL                     0
+             460 LOAD_ATTR               23 (NULL|self + setSectionResizeMode)
+             480 LOAD_GLOBAL             24 (QHeaderView)
+             490 LOAD_ATTR               26 (ResizeMode)
+             510 LOAD_ATTR               28 (Stretch)
+             530 CALL                     1
+             538 POP_TOP
+
+8482         540 LOAD_FAST                5 (grid)
+             542 LOAD_ATTR               11 (NULL|self + setUpdatesEnabled)
+             562 LOAD_CONST               4 (True)
+             564 CALL                     1
+             572 POP_TOP
+             574 JUMP_BACKWARD          217 (to 142)
+
+8473     >>  576 END_FOR
+
+8485         578 LOAD_FAST                0 (self)
+             580 LOAD_ATTR               30 (grid_lock)
+             600 LOAD_FAST                0 (self)
+             602 LOAD_ATTR               32 (grid_unlock)
+             622 BUILD_TUPLE              2
+             624 GET_ITER
+         >>  626 FOR_ITER               192 (to 1014)
+             630 STORE_FAST               5 (grid)
+
+8486         632 LOAD_FAST                5 (grid)
+             634 LOAD_ATTR               11 (NULL|self + setUpdatesEnabled)
+             654 LOAD_CONST               3 (False)
+             656 CALL                     1
+             664 POP_TOP
+
+8487         666 LOAD_FAST                5 (grid)
+             668 LOAD_ATTR               13 (NULL|self + setColumnCount)
+             688 LOAD_GLOBAL              2 (TPS_COLS)
+             698 CALL                     1
+             706 POP_TOP
+
+8488         708 LOAD_FAST                5 (grid)
+             710 LOAD_ATTR               15 (NULL|self + setRowCount)
+             730 LOAD_FAST                1 (n)
+             732 CALL                     1
+             740 POP_TOP
+
+8489         742 LOAD_FAST                5 (grid)
+             744 LOAD_ATTR               17 (NULL|self + setHorizontalHeaderLabels)
+             764 LOAD_FAST                3 (tps_labels)
+             766 CALL                     1
+             774 POP_TOP
+
+8490         776 LOAD_FAST                5 (grid)
+             778 LOAD_ATTR               19 (NULL|self + setVerticalHeaderLabels)
+             798 LOAD_GLOBAL              1 (NULL + range)
+             808 LOAD_FAST                1 (n)
+             810 CALL                     1
+             818 GET_ITER
+             820 LOAD_FAST_AND_CLEAR      7 (i)
+             822 SWAP                     2
+             824 BUILD_LIST               0
+             826 SWAP                     2
+         >>  828 FOR_ITER                10 (to 852)
+             832 STORE_FAST               7 (i)
+             834 LOAD_CONST               7 ('Gear ')
+             836 LOAD_FAST                7 (i)
+             838 LOAD_CONST               2 (1)
+             840 BINARY_OP                0 (+)
+             844 FORMAT_VALUE             0
+             846 BUILD_STRING             2
+             848 LIST_APPEND              2
+             850 JUMP_BACKWARD           12 (to 828)
+         >>  852 END_FOR
+             854 SWAP                     2
+             856 STORE_FAST               7 (i)
+             858 CALL                     1
+             866 POP_TOP
+
+8491         868 LOAD_FAST                5 (grid)
+             870 LOAD_ATTR               21 (NULL|self + horizontalHeader)
+             890 CALL                     0
+             898 LOAD_ATTR               23 (NULL|self + setSectionResizeMode)
+             918 LOAD_GLOBAL             24 (QHeaderView)
+             928 LOAD_ATTR               26 (ResizeMode)
+             948 LOAD_ATTR               28 (Stretch)
+             968 CALL                     1
+             976 POP_TOP
+
+8492         978 LOAD_FAST                5 (grid)
+             980 LOAD_ATTR               11 (NULL|self + setUpdatesEnabled)
+            1000 LOAD_CONST               4 (True)
+            1002 CALL                     1
+            1010 POP_TOP
+            1012 JUMP_BACKWARD          194 (to 626)
+
+8485     >> 1014 END_FOR
+
+8495        1016 LOAD_FAST                0 (self)
+            1018 LOAD_ATTR               34 (grid_summary)
+            1038 LOAD_ATTR               11 (NULL|self + setUpdatesEnabled)
+            1058 LOAD_CONST               3 (False)
+            1060 CALL                     1
+            1068 POP_TOP
+
+8496        1070 LOAD_FAST                0 (self)
+            1072 LOAD_ATTR               34 (grid_summary)
+            1092 LOAD_ATTR               13 (NULL|self + setColumnCount)
+            1112 LOAD_CONST               8 (5)
+            1114 CALL                     1
+            1122 POP_TOP
+
+8497        1124 LOAD_FAST                0 (self)
+            1126 LOAD_ATTR               34 (grid_summary)
+            1146 LOAD_ATTR               15 (NULL|self + setRowCount)
+            1166 LOAD_FAST                1 (n)
+            1168 CALL                     1
+            1176 POP_TOP
+
+8498        1178 LOAD_FAST                0 (self)
+            1180 LOAD_ATTR               34 (grid_summary)
+            1200 LOAD_ATTR               17 (NULL|self + setHorizontalHeaderLabels)
+            1220 BUILD_LIST               0
+            1222 LOAD_CONST               9 (('Min MPH (idle)', 'Redline MPH', 'WOT MPH (slip)', 'Upshift @ WOT', 'Downshift @ WOT'))
+            1224 LIST_EXTEND              1
+            1226 CALL                     1
+            1234 POP_TOP
+
+8502        1236 LOAD_FAST                0 (self)
+            1238 LOAD_ATTR               34 (grid_summary)
+            1258 LOAD_ATTR               19 (NULL|self + setVerticalHeaderLabels)
+            1278 LOAD_GLOBAL              1 (NULL + range)
+            1288 LOAD_FAST                1 (n)
+            1290 CALL                     1
+            1298 GET_ITER
+            1300 LOAD_FAST_AND_CLEAR      7 (i)
+            1302 SWAP                     2
+            1304 BUILD_LIST               0
+            1306 SWAP                     2
+         >> 1308 FOR_ITER                10 (to 1332)
+            1312 STORE_FAST               7 (i)
+            1314 LOAD_CONST               7 ('Gear ')
+            1316 LOAD_FAST                7 (i)
+            1318 LOAD_CONST               2 (1)
+            1320 BINARY_OP                0 (+)
+            1324 FORMAT_VALUE             0
+            1326 BUILD_STRING             2
+            1328 LIST_APPEND              2
+            1330 JUMP_BACKWARD           12 (to 1308)
+         >> 1332 END_FOR
+            1334 SWAP                     2
+            1336 STORE_FAST               7 (i)
+            1338 CALL                     1
+            1346 POP_TOP
+
+8503        1348 LOAD_FAST                0 (self)
+            1350 LOAD_ATTR               34 (grid_summary)
+            1370 LOAD_ATTR               21 (NULL|self + horizontalHeader)
+            1390 CALL                     0
+            1398 LOAD_ATTR               23 (NULL|self + setSectionResizeMode)
+            1418 LOAD_GLOBAL             24 (QHeaderView)
+            1428 LOAD_ATTR               26 (ResizeMode)
+            1448 LOAD_ATTR               28 (Stretch)
+            1468 CALL                     1
+            1476 POP_TOP
+
+8504        1478 LOAD_FAST                0 (self)
+            1480 LOAD_ATTR               34 (grid_summary)
+            1500 LOAD_ATTR               11 (NULL|self + setUpdatesEnabled)
+            1520 LOAD_CONST               4 (True)
+            1522 CALL                     1
+            1530 POP_TOP
+            1532 RETURN_CONST             0 (None)
+         >> 1534 SWAP                     2
+            1536 POP_TOP
+
+8469        1538 SWAP                     2
+            1540 STORE_FAST               2 (c)
+            1542 RERAISE                  0
+         >> 1544 SWAP                     2
+            1546 POP_TOP
+
+8479        1548 SWAP                     2
+            1550 STORE_FAST               7 (i)
+            1552 RERAISE                  0
+         >> 1554 SWAP                     2
+            1556 POP_TOP
+
+8490        1558 SWAP                     2
+            1560 STORE_FAST               7 (i)
+            1562 RERAISE                  0
+         >> 1564 SWAP                     2
+            1566 POP_TOP
+
+8502        1568 SWAP                     2
+            1570 STORE_FAST               7 (i)
+            1572 RERAISE                  0
+ExceptionTable:
+  36 to 70 -> 1534 [2]
+  346 to 414 -> 1544 [5]
+  824 to 852 -> 1554 [5]
+  1304 to 1332 -> 1564 [4]

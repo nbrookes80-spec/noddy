@@ -1,0 +1,117 @@
+               0 MAKE_CELL                7 (global_rpm)
+
+8670           2 RESUME                   0
+
+8672           4 LOAD_FAST                0 (self)
+               6 LOAD_ATTR                0 (per_gear_rpm_table)
+              26 LOAD_ATTR                3 (NULL|self + rowCount)
+              46 CALL                     0
+              54 STORE_FAST               2 (n_shifts)
+
+8673          56 BUILD_LIST               0
+              58 STORE_FAST               3 (values)
+
+8674          60 LOAD_FAST                0 (self)
+              62 LOAD_ATTR                4 (shift_rpm)
+              82 LOAD_ATTR                7 (NULL|self + value)
+             102 CALL                     0
+             110 STORE_DEREF              7 (global_rpm)
+
+8675         112 LOAD_GLOBAL              9 (NULL + range)
+             122 LOAD_FAST                2 (n_shifts)
+             124 CALL                     1
+             132 GET_ITER
+         >>  134 FOR_ITER                99 (to 336)
+             138 STORE_FAST               4 (i)
+
+8676         140 LOAD_FAST                0 (self)
+             142 LOAD_ATTR                0 (per_gear_rpm_table)
+             162 LOAD_ATTR               11 (NULL|self + item)
+             182 LOAD_FAST                4 (i)
+             184 LOAD_CONST               1 (0)
+             186 CALL                     2
+             194 STORE_FAST               5 (cell)
+
+8677         196 NOP
+
+8678         198 LOAD_FAST                5 (cell)
+             200 POP_JUMP_IF_FALSE       25 (to 252)
+             202 LOAD_GLOBAL             13 (NULL + float)
+             212 LOAD_FAST                5 (cell)
+             214 LOAD_ATTR               15 (NULL|self + text)
+             234 CALL                     0
+             242 CALL                     1
+             250 JUMP_FORWARD             1 (to 254)
+         >>  252 LOAD_DEREF               7 (global_rpm)
+         >>  254 STORE_FAST               6 (v)
+
+8679         256 LOAD_GLOBAL             17 (NULL + max)
+             266 LOAD_CONST               2 (1500.0)
+             268 LOAD_GLOBAL             19 (NULL + min)
+             278 LOAD_CONST               3 (10000.0)
+             280 LOAD_FAST                6 (v)
+             282 CALL                     2
+             290 CALL                     2
+             298 STORE_FAST               6 (v)
+
+8682     >>  300 LOAD_FAST                3 (values)
+             302 LOAD_ATTR               25 (NULL|self + append)
+             322 LOAD_FAST                6 (v)
+             324 CALL                     1
+             332 POP_TOP
+             334 JUMP_BACKWARD          101 (to 134)
+
+8675     >>  336 END_FOR
+
+8684         338 LOAD_GLOBAL             27 (NULL + all)
+             348 LOAD_CLOSURE             7 (global_rpm)
+             350 BUILD_TUPLE              1
+             352 LOAD_CONST               4 (<code object <genexpr> at 0x73ab02a65430, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 8684>)
+             354 MAKE_FUNCTION            8 (closure)
+             356 LOAD_FAST                3 (values)
+             358 GET_ITER
+             360 CALL                     0
+             368 CALL                     1
+             376 POP_JUMP_IF_FALSE        8 (to 394)
+
+8685         378 LOAD_CONST               5 (None)
+             380 LOAD_FAST                0 (self)
+             382 STORE_ATTR              14 (per_gear_rpm)
+             392 JUMP_FORWARD             7 (to 408)
+
+8687     >>  394 LOAD_FAST                3 (values)
+             396 LOAD_FAST                0 (self)
+             398 STORE_ATTR              14 (per_gear_rpm)
+
+8688     >>  408 LOAD_FAST                0 (self)
+             410 LOAD_ATTR               31 (NULL|self + _refresh_per_gear_highlight)
+             430 CALL                     0
+             438 POP_TOP
+
+8689         440 LOAD_FAST                0 (self)
+             442 LOAD_ATTR               33 (NULL|self + _on_input_changed)
+             462 CALL                     0
+             470 POP_TOP
+             472 RETURN_CONST             5 (None)
+         >>  474 PUSH_EXC_INFO
+
+8680         476 LOAD_GLOBAL             20 (ValueError)
+             486 LOAD_GLOBAL             22 (AttributeError)
+             496 BUILD_TUPLE              2
+             498 CHECK_EXC_MATCH
+             500 POP_JUMP_IF_FALSE        5 (to 512)
+             502 POP_TOP
+
+8681         504 LOAD_DEREF               7 (global_rpm)
+             506 STORE_FAST               6 (v)
+             508 POP_EXCEPT
+             510 JUMP_BACKWARD          106 (to 300)
+
+8680     >>  512 RERAISE                  0
+         >>  514 COPY                     3
+             516 POP_EXCEPT
+             518 RERAISE                  1
+ExceptionTable:
+  198 to 298 -> 474 [1]
+  474 to 506 -> 514 [2] lasti
+  512 to 512 -> 514 [2] lasti

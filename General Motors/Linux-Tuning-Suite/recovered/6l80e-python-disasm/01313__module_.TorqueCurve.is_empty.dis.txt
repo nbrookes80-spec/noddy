@@ -1,0 +1,9 @@
+1313           0 RESUME                   0
+
+1315           2 LOAD_GLOBAL              1 (NULL + len)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_ATTR                2 (points)
+              34 CALL                     1
+              42 LOAD_CONST               1 (2)
+              44 COMPARE_OP               2 (<)
+              48 RETURN_VALUE

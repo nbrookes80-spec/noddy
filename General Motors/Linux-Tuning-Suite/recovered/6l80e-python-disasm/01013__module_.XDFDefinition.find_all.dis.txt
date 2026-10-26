@@ -1,0 +1,39 @@
+1013           0 RESUME                   0
+
+1014           2 LOAD_FAST                1 (title_substr)
+               4 LOAD_ATTR                1 (NULL|self + lower)
+              24 CALL                     0
+              32 STORE_FAST               2 (lo)
+
+1015          34 LOAD_FAST                0 (self)
+              36 LOAD_ATTR                2 (parameters)
+              56 GET_ITER
+              58 LOAD_FAST_AND_CLEAR      3 (p)
+              60 SWAP                     2
+              62 BUILD_LIST               0
+              64 SWAP                     2
+         >>   66 FOR_ITER                33 (to 136)
+              70 STORE_FAST               3 (p)
+              72 LOAD_FAST                2 (lo)
+              74 LOAD_FAST                3 (p)
+              76 LOAD_ATTR                4 (title)
+              96 LOAD_ATTR                1 (NULL|self + lower)
+             116 CALL                     0
+             124 CONTAINS_OP              0
+             126 POP_JUMP_IF_TRUE         1 (to 130)
+             128 JUMP_BACKWARD           32 (to 66)
+         >>  130 LOAD_FAST                3 (p)
+             132 LIST_APPEND              2
+             134 JUMP_BACKWARD           35 (to 66)
+         >>  136 END_FOR
+             138 SWAP                     2
+             140 STORE_FAST               3 (p)
+             142 RETURN_VALUE
+         >>  144 SWAP                     2
+             146 POP_TOP
+             148 SWAP                     2
+             150 STORE_FAST               3 (p)
+             152 RERAISE                  0
+ExceptionTable:
+  62 to 126 -> 144 [2]
+  130 to 136 -> 144 [2]

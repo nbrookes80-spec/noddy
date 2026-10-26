@@ -1,0 +1,228 @@
+8507           0 RESUME                   0
+
+8508           2 LOAD_GLOBAL              0 (TRANS_DB)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_ATTR                2 (trans)
+              34 LOAD_ATTR                5 (NULL|self + currentText)
+              54 CALL                     0
+              62 BINARY_SUBSCR
+              66 STORE_FAST               1 (spec)
+
+8509          68 BUILD_MAP                0
+
+8510          70 LOAD_CONST               1 ('ratios')
+              72 LOAD_FAST                1 (spec)
+              74 LOAD_CONST               1 ('ratios')
+              76 BINARY_SUBSCR
+
+8509          80 MAP_ADD                  1
+
+8511          82 LOAD_CONST               2 ('tire_dia')
+              84 LOAD_FAST                0 (self)
+              86 LOAD_ATTR                6 (tire)
+             106 LOAD_ATTR                9 (NULL|self + value)
+             126 CALL                     0
+
+8509         134 MAP_ADD                  1
+
+8512         136 LOAD_CONST               3 ('axle')
+             138 LOAD_FAST                0 (self)
+             140 LOAD_ATTR               10 (axle)
+             160 LOAD_ATTR                9 (NULL|self + value)
+             180 CALL                     0
+
+8509         188 MAP_ADD                  1
+
+8513         190 LOAD_CONST               4 ('chain')
+             192 LOAD_FAST                0 (self)
+             194 LOAD_ATTR               12 (chain)
+             214 LOAD_ATTR                9 (NULL|self + value)
+             234 CALL                     0
+
+8509         242 MAP_ADD                  1
+
+8514         244 LOAD_CONST               5 ('weight')
+             246 LOAD_FAST                0 (self)
+             248 LOAD_ATTR               14 (weight)
+             268 LOAD_ATTR                9 (NULL|self + value)
+             288 CALL                     0
+
+8509         296 MAP_ADD                  1
+
+8515         298 LOAD_CONST               6 ('rwhp')
+             300 LOAD_FAST                0 (self)
+             302 LOAD_ATTR               16 (rwhp)
+             322 LOAD_ATTR                9 (NULL|self + value)
+             342 CALL                     0
+
+8509         350 MAP_ADD                  1
+
+8516         352 LOAD_CONST               7 ('vss_count')
+             354 LOAD_FAST                0 (self)
+             356 LOAD_ATTR               18 (vss_count)
+             376 LOAD_ATTR                9 (NULL|self + value)
+             396 CALL                     0
+
+8509         404 MAP_ADD                  1
+
+8517         406 LOAD_CONST               8 ('idle_rpm')
+             408 LOAD_FAST                0 (self)
+             410 LOAD_ATTR               20 (idle)
+             430 LOAD_ATTR                9 (NULL|self + value)
+             450 CALL                     0
+
+8509         458 MAP_ADD                  1
+
+8518         460 LOAD_CONST               9 ('stall_rpm')
+             462 LOAD_FAST                0 (self)
+             464 LOAD_ATTR               22 (stall)
+             484 LOAD_ATTR                9 (NULL|self + value)
+             504 CALL                     0
+
+8509         512 MAP_ADD                  1
+
+8519         514 LOAD_CONST              10 ('meas_slip')
+             516 LOAD_FAST                0 (self)
+             518 LOAD_ATTR               24 (meas_slip)
+             538 LOAD_ATTR                9 (NULL|self + value)
+             558 CALL                     0
+
+8509         566 MAP_ADD                  1
+
+8520         568 LOAD_CONST              11 ('shift_rpm')
+             570 LOAD_FAST                0 (self)
+             572 LOAD_ATTR               26 (shift_rpm)
+             592 LOAD_ATTR                9 (NULL|self + value)
+             612 CALL                     0
+
+8509         620 MAP_ADD                  1
+
+8521         622 LOAD_CONST              12 ('downshift_rpm')
+             624 LOAD_FAST                0 (self)
+             626 LOAD_ATTR               28 (drpm)
+             646 LOAD_ATTR                9 (NULL|self + value)
+             666 CALL                     0
+
+8509         674 MAP_ADD                  1
+
+8522         676 LOAD_CONST              13 ('min_tcc_rpm')
+             678 LOAD_FAST                0 (self)
+             680 LOAD_ATTR               30 (min_tcc_rpm)
+             700 LOAD_ATTR                9 (NULL|self + value)
+             720 CALL                     0
+
+8509         728 MAP_ADD                  1
+
+8523         730 LOAD_CONST              14 ('min_tcc_gear')
+             732 LOAD_FAST                0 (self)
+             734 LOAD_ATTR               32 (min_tcc_gear)
+             754 LOAD_ATTR                9 (NULL|self + value)
+             774 CALL                     0
+
+8509         782 MAP_ADD                  1
+
+8524         784 LOAD_CONST              15 ('accel_lock_gear')
+             786 LOAD_FAST                0 (self)
+             788 LOAD_ATTR               34 (accel_lock_gear)
+             808 LOAD_ATTR                9 (NULL|self + value)
+             828 CALL                     0
+
+8509         836 MAP_ADD                  1
+
+8525         838 LOAD_CONST              16 ('wot_lock_gear')
+             840 LOAD_FAST                0 (self)
+             842 LOAD_ATTR               36 (wot_lock_gear)
+             862 LOAD_ATTR                9 (NULL|self + value)
+             882 CALL                     0
+
+8509         890 MAP_ADD                  1
+
+8526         892 LOAD_CONST              17 ('stall_lock_logic')
+             894 LOAD_FAST                0 (self)
+             896 LOAD_ATTR               38 (lockup_flags)
+             916 LOAD_ATTR               41 (NULL|self + get)
+             936 LOAD_CONST              18 ('stall_lock')
+             938 LOAD_CONST              19 (False)
+             940 CALL                     2
+
+8509         948 MAP_ADD                  1
+
+8527         950 LOAD_FAST                0 (self)
+             952 LOAD_ATTR               38 (lockup_flags)
+             972 LOAD_ATTR               41 (NULL|self + get)
+             992 LOAD_CONST              20 ('init_lock')
+             994 LOAD_CONST              19 (False)
+             996 CALL                     2
+
+8528        1004 LOAD_FAST                0 (self)
+            1006 LOAD_ATTR               42 (tps_offset)
+            1026 LOAD_ATTR                9 (NULL|self + value)
+            1046 CALL                     0
+
+8529        1054 LOAD_FAST                0 (self)
+            1056 LOAD_ATTR               44 (tps_factor)
+            1076 LOAD_ATTR                9 (NULL|self + value)
+            1096 CALL                     0
+
+8530        1104 LOAD_FAST                0 (self)
+            1106 LOAD_ATTR               46 (upf)
+            1126 LOAD_ATTR                9 (NULL|self + value)
+            1146 CALL                     0
+
+8531        1154 LOAD_FAST                0 (self)
+            1156 LOAD_ATTR               48 (downf)
+            1176 LOAD_ATTR                9 (NULL|self + value)
+            1196 CALL                     0
+
+8532        1204 LOAD_FAST                0 (self)
+            1206 LOAD_ATTR               50 (s_up)
+            1226 LOAD_ATTR                9 (NULL|self + value)
+            1246 CALL                     0
+
+8533        1254 LOAD_FAST                0 (self)
+            1256 LOAD_ATTR               52 (s_lock)
+            1276 LOAD_ATTR                9 (NULL|self + value)
+            1296 CALL                     0
+
+8534        1304 LOAD_FAST                0 (self)
+            1306 LOAD_ATTR               54 (s_lockup)
+            1326 LOAD_ATTR                9 (NULL|self + value)
+            1346 CALL                     0
+
+8535        1354 LOAD_FAST                0 (self)
+            1356 LOAD_ATTR               56 (s_unlock)
+            1376 LOAD_ATTR                9 (NULL|self + value)
+            1396 CALL                     0
+
+8536        1404 LOAD_FAST                0 (self)
+            1406 LOAD_ATTR               58 (lead_rpm_rb)
+            1426 LOAD_ATTR               61 (NULL|self + isChecked)
+            1446 CALL                     0
+            1454 POP_JUMP_IF_FALSE        2 (to 1460)
+            1456 LOAD_CONST              21 ('rpm')
+            1458 JUMP_FORWARD             1 (to 1462)
+         >> 1460 LOAD_CONST              22 ('time')
+
+8537     >> 1462 LOAD_FAST                0 (self)
+            1464 LOAD_ATTR               62 (lead_val)
+            1484 LOAD_ATTR                9 (NULL|self + value)
+            1504 CALL                     0
+
+8538        1512 LOAD_FAST                0 (self)
+            1514 LOAD_ATTR               64 (down_time)
+            1534 LOAD_ATTR                9 (NULL|self + value)
+            1554 CALL                     0
+
+8539        1562 LOAD_FAST                0 (self)
+            1564 LOAD_ATTR               66 (shift_delays)
+
+8540        1584 LOAD_FAST                0 (self)
+            1586 LOAD_ATTR               68 (per_gear_rpm)
+
+8541        1606 LOAD_FAST                0 (self)
+            1608 LOAD_ATTR               70 (torque_curve)
+
+8509        1628 LOAD_CONST              23 (('init_lock_logic', 'tps_offset', 'tps_factor', 'up_firmness', 'down_firmness', 'spread_up', 'spread_lock', 'spread_lock_up', 'spread_unlock_dn', 'lead_mode', 'lead_value', 'down_time', 'delays', 'per_gear_rpm', 'torque_curve'))
+            1630 BUILD_CONST_KEY_MAP     15
+            1632 DICT_UPDATE              1
+            1634 RETURN_VALUE

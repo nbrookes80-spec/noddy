@@ -1,0 +1,13 @@
+1017           0 RESUME                   0
+
+1018           2 LOAD_GLOBAL              1 (NULL + sorted)
+              12 LOAD_GLOBAL              3 (NULL + set)
+              22 LOAD_CONST               1 (<code object <genexpr> at 0x73ab02a05ce0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1018>)
+              24 MAKE_FUNCTION            0
+              26 LOAD_FAST                0 (self)
+              28 LOAD_ATTR                4 (parameters)
+              48 GET_ITER
+              50 CALL                     0
+              58 CALL                     1
+              66 CALL                     1
+              74 RETURN_VALUE

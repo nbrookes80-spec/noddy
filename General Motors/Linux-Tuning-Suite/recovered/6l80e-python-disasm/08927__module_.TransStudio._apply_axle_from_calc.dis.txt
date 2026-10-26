@@ -1,0 +1,14 @@
+8927           0 RESUME                   0
+
+8930           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (axle)
+              24 LOAD_ATTR                3 (NULL|self + setValue)
+              44 LOAD_FAST                1 (axle)
+              46 CALL                     1
+              54 POP_TOP
+
+8931          56 LOAD_FAST                0 (self)
+              58 LOAD_ATTR                5 (NULL|self + calculate)
+              78 CALL                     0
+              86 POP_TOP
+              88 RETURN_CONST             1 (None)

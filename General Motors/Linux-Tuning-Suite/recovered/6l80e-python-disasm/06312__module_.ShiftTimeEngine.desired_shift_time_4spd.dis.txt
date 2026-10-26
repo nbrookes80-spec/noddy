@@ -1,0 +1,115 @@
+6312           0 RESUME                   0
+
+6314           2 LOAD_GLOBAL              0 (SHIFT_TIME_INTENTS_4SPD)
+              12 LOAD_ATTR                3 (NULL|self + get)
+              32 LOAD_FAST                0 (intent_name)
+
+6315          34 LOAD_GLOBAL              0 (SHIFT_TIME_INTENTS_4SPD)
+              44 LOAD_CONST               1 ('Normal')
+              46 BINARY_SUBSCR
+
+6314          50 CALL                     2
+              58 STORE_FAST               1 (intent)
+
+6316          60 LOAD_GLOBAL              5 (NULL + float)
+              70 LOAD_GLOBAL              6 (SHIFT_TIME_TORQUE_COLS)
+              80 LOAD_CONST               2 (-1)
+              82 BINARY_SUBSCR
+              86 CALL                     1
+              94 STORE_FAST               2 (max_torque)
+
+6317          96 BUILD_LIST               0
+              98 STORE_FAST               3 (rows)
+
+6318         100 LOAD_GLOBAL              8 (SHIFT_TIME_SHIFTS)
+             110 GET_ITER
+         >>  112 FOR_ITER               136 (to 388)
+             116 STORE_FAST               4 (shift)
+
+6319         118 LOAD_FAST                1 (intent)
+             120 LOAD_FAST                4 (shift)
+             122 BINARY_SUBSCR
+             126 STORE_FAST               5 (p)
+
+6320         128 LOAD_FAST                5 (p)
+             130 LOAD_CONST               3 ('max_s')
+             132 BINARY_SUBSCR
+             136 STORE_FAST               6 (t_max)
+
+6321         138 LOAD_FAST                5 (p)
+             140 LOAD_CONST               4 ('min_s')
+             142 BINARY_SUBSCR
+             146 STORE_FAST               7 (t_min)
+
+6322         148 LOAD_FAST                5 (p)
+             150 LOAD_CONST               5 ('curve')
+             152 BINARY_SUBSCR
+             156 STORE_FAST               8 (curve)
+
+6323         158 BUILD_LIST               0
+             160 STORE_FAST               9 (row)
+
+6324         162 LOAD_GLOBAL              6 (SHIFT_TIME_TORQUE_COLS)
+             172 GET_ITER
+         >>  174 FOR_ITER                86 (to 350)
+             178 STORE_FAST              10 (tq)
+
+6325         180 LOAD_FAST                6 (t_max)
+             182 LOAD_CONST               6 (0)
+             184 COMPARE_OP              40 (==)
+             188 POP_JUMP_IF_FALSE       23 (to 236)
+             190 LOAD_FAST                7 (t_min)
+             192 LOAD_CONST               6 (0)
+             194 COMPARE_OP              40 (==)
+             198 POP_JUMP_IF_FALSE       18 (to 236)
+
+6326         200 LOAD_FAST                9 (row)
+             202 LOAD_ATTR               11 (NULL|self + append)
+             222 LOAD_CONST               7 (0.0)
+             224 CALL                     1
+             232 POP_TOP
+
+6327         234 JUMP_BACKWARD           31 (to 174)
+
+6328     >>  236 LOAD_GLOBAL             13 (NULL + min)
+             246 LOAD_CONST               8 (1.0)
+             248 LOAD_FAST               10 (tq)
+             250 LOAD_FAST                2 (max_torque)
+             252 BINARY_OP               11 (/)
+             256 CALL                     2
+             264 STORE_FAST              11 (t_norm)
+
+6330         266 LOAD_FAST                6 (t_max)
+             268 LOAD_FAST                6 (t_max)
+             270 LOAD_FAST                7 (t_min)
+             272 BINARY_OP               10 (-)
+             276 LOAD_FAST               11 (t_norm)
+             278 LOAD_FAST                8 (curve)
+             280 BINARY_OP                8 (**)
+             284 BINARY_OP                5 (*)
+             288 BINARY_OP               10 (-)
+             292 STORE_FAST              12 (sec)
+
+6331         294 LOAD_FAST                9 (row)
+             296 LOAD_ATTR               11 (NULL|self + append)
+             316 LOAD_GLOBAL             15 (NULL + max)
+             326 LOAD_FAST                7 (t_min)
+             328 LOAD_FAST               12 (sec)
+             330 CALL                     2
+             338 CALL                     1
+             346 POP_TOP
+             348 JUMP_BACKWARD           88 (to 174)
+
+6324     >>  350 END_FOR
+
+6332         352 LOAD_FAST                3 (rows)
+             354 LOAD_ATTR               11 (NULL|self + append)
+             374 LOAD_FAST                9 (row)
+             376 CALL                     1
+             384 POP_TOP
+             386 JUMP_BACKWARD          138 (to 112)
+
+6318     >>  388 END_FOR
+
+6333         390 LOAD_FAST                3 (rows)
+             392 RETURN_VALUE

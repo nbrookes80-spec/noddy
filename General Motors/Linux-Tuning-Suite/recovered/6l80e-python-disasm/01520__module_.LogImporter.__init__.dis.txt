@@ -1,0 +1,18 @@
+1520           0 RESUME                   0
+
+1521           2 BUILD_LIST               0
+               4 LOAD_FAST                0 (self)
+               6 STORE_ATTR               0 (rows)
+
+1522          16 BUILD_MAP                0
+              18 LOAD_FAST                0 (self)
+              20 STORE_ATTR               1 (col_map)
+
+1523          30 BUILD_LIST               0
+              32 LOAD_FAST                0 (self)
+              34 STORE_ATTR               2 (headers)
+
+1524          44 LOAD_CONST               1 (0.0)
+              46 LOAD_FAST                0 (self)
+              48 STORE_ATTR               3 (sample_rate)
+              58 RETURN_CONST             0 (None)

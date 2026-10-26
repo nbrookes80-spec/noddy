@@ -1,0 +1,44 @@
+7236           0 RESUME                   0
+
+7237           2 LOAD_GLOBAL              1 (NULL + QDoubleSpinBox)
+              12 CALL                     0
+              20 STORE_FAST               5 (w)
+
+7238          22 LOAD_FAST                5 (w)
+              24 LOAD_ATTR                3 (NULL|self + setRange)
+              44 LOAD_FAST                2 (lo)
+              46 LOAD_FAST                3 (hi)
+              48 CALL                     2
+              56 POP_TOP
+
+7239          58 LOAD_FAST                5 (w)
+              60 LOAD_ATTR                5 (NULL|self + setSingleStep)
+              80 LOAD_FAST                4 (step)
+              82 CALL                     1
+              90 POP_TOP
+
+7240          92 LOAD_FAST                5 (w)
+              94 LOAD_ATTR                7 (NULL|self + setValue)
+             114 LOAD_FAST                1 (default)
+             116 CALL                     1
+             124 POP_TOP
+
+7241         126 LOAD_FAST                5 (w)
+             128 LOAD_ATTR                9 (NULL|self + setDecimals)
+             148 LOAD_FAST                4 (step)
+             150 LOAD_CONST               1 (1)
+             152 COMPARE_OP               2 (<)
+             156 POP_JUMP_IF_FALSE        8 (to 174)
+             158 LOAD_CONST               2 (2)
+             160 CALL                     1
+             168 POP_TOP
+
+7242         170 LOAD_FAST                5 (w)
+             172 RETURN_VALUE
+
+7241     >>  174 LOAD_CONST               3 (0)
+             176 CALL                     1
+             184 POP_TOP
+
+7242         186 LOAD_FAST                5 (w)
+             188 RETURN_VALUE

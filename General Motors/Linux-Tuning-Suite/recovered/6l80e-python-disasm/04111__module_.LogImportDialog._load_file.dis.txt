@@ -1,0 +1,191 @@
+               0 MAKE_CELL                0 (self)
+
+4111           2 RESUME                   0
+
+4112           4 LOAD_GLOBAL              1 (NULL + QFileDialog)
+              14 LOAD_ATTR                2 (getOpenFileName)
+
+4113          34 LOAD_DEREF               0 (self)
+              36 LOAD_CONST               1 ('Import Log CSV')
+              38 LOAD_CONST               2 ('')
+
+4114          40 LOAD_CONST               3 ('CSV (*.csv);;All files (*.*)')
+
+4112          42 CALL                     4
+              50 UNPACK_SEQUENCE          2
+              54 STORE_FAST               1 (path)
+              56 STORE_FAST               2 (_)
+
+4116          58 LOAD_FAST                1 (path)
+              60 POP_JUMP_IF_TRUE         1 (to 64)
+
+4117          62 RETURN_CONST             0 (None)
+
+4120     >>   64 LOAD_DEREF               0 (self)
+              66 LOAD_ATTR                4 (downsample_combo)
+              86 LOAD_ATTR                7 (NULL|self + currentIndex)
+             106 CALL                     0
+             114 STORE_FAST               3 (idx)
+
+4121         116 BUILD_LIST               0
+             118 LOAD_CONST               4 ((None, 10.0, 20.0, 50.0))
+             120 LIST_EXTEND              1
+             122 LOAD_FAST                3 (idx)
+             124 BINARY_SUBSCR
+             128 STORE_FAST               4 (target_hz)
+
+4124         130 LOAD_DEREF               0 (self)
+             132 LOAD_ATTR                8 (load_btn)
+             152 LOAD_ATTR               11 (NULL|self + setEnabled)
+             172 LOAD_CONST               5 (False)
+             174 CALL                     1
+             182 POP_TOP
+
+4125         184 LOAD_DEREF               0 (self)
+             186 LOAD_ATTR                8 (load_btn)
+             206 LOAD_ATTR               13 (NULL|self + setText)
+             226 LOAD_CONST               6 ('Loading…')
+             228 CALL                     1
+             236 POP_TOP
+
+4126         238 LOAD_DEREF               0 (self)
+             240 LOAD_ATTR               14 (progress_bar)
+             260 LOAD_ATTR               17 (NULL|self + setVisible)
+             280 LOAD_CONST               7 (True)
+             282 CALL                     1
+             290 POP_TOP
+
+4127         292 LOAD_DEREF               0 (self)
+             294 LOAD_ATTR               14 (progress_bar)
+             314 LOAD_ATTR               19 (NULL|self + setValue)
+             334 LOAD_CONST               8 (0)
+             336 CALL                     1
+             344 POP_TOP
+
+4128         346 LOAD_DEREF               0 (self)
+             348 LOAD_ATTR               20 (file_label)
+             368 LOAD_ATTR               13 (NULL|self + setText)
+             388 LOAD_CONST               9 ('Parsing ')
+             390 LOAD_FAST                1 (path)
+             392 LOAD_ATTR               23 (NULL|self + split)
+             412 LOAD_CONST              10 ('/')
+             414 CALL                     1
+             422 LOAD_CONST              11 (-1)
+             424 BINARY_SUBSCR
+             428 FORMAT_VALUE             0
+             430 LOAD_CONST              12 ('…')
+             432 BUILD_STRING             3
+             434 CALL                     1
+             442 POP_TOP
+
+4132         444 LOAD_GLOBAL             25 (NULL + QThread)
+             454 CALL                     0
+             462 LOAD_DEREF               0 (self)
+             464 STORE_ATTR              13 (_import_thread)
+
+4133         474 LOAD_GLOBAL             29 (NULL + LogImportWorker)
+             484 LOAD_FAST                1 (path)
+             486 LOAD_FAST                4 (target_hz)
+             488 KW_NAMES                13 (('target_hz',))
+             490 CALL                     2
+             498 LOAD_DEREF               0 (self)
+             500 STORE_ATTR              15 (_import_worker)
+
+4134         510 LOAD_DEREF               0 (self)
+             512 LOAD_ATTR               30 (_import_worker)
+             532 LOAD_ATTR               33 (NULL|self + moveToThread)
+             552 LOAD_DEREF               0 (self)
+             554 LOAD_ATTR               26 (_import_thread)
+             574 CALL                     1
+             582 POP_TOP
+
+4136         584 LOAD_DEREF               0 (self)
+             586 LOAD_ATTR               26 (_import_thread)
+             606 LOAD_ATTR               34 (started)
+             626 LOAD_ATTR               37 (NULL|self + connect)
+             646 LOAD_DEREF               0 (self)
+             648 LOAD_ATTR               30 (_import_worker)
+             668 LOAD_ATTR               38 (run)
+             688 CALL                     1
+             696 POP_TOP
+
+4137         698 LOAD_DEREF               0 (self)
+             700 LOAD_ATTR               30 (_import_worker)
+             720 LOAD_ATTR               40 (progress)
+             740 LOAD_ATTR               37 (NULL|self + connect)
+             760 LOAD_DEREF               0 (self)
+             762 LOAD_ATTR               14 (progress_bar)
+             782 LOAD_ATTR               18 (setValue)
+             802 CALL                     1
+             810 POP_TOP
+
+4138         812 LOAD_DEREF               0 (self)
+             814 LOAD_ATTR               30 (_import_worker)
+             834 LOAD_ATTR               42 (finished)
+             854 LOAD_ATTR               37 (NULL|self + connect)
+
+4139         874 LOAD_FAST                1 (path)
+             876 BUILD_TUPLE              1
+             878 LOAD_CLOSURE             0 (self)
+             880 BUILD_TUPLE              1
+             882 LOAD_CONST              14 (<code object <lambda> at 0x73ab02a121f0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4139>)
+             884 MAKE_FUNCTION            9 (defaults, closure)
+
+4138         886 CALL                     1
+             894 POP_TOP
+
+4140         896 LOAD_DEREF               0 (self)
+             898 LOAD_ATTR               30 (_import_worker)
+             918 LOAD_ATTR               44 (error)
+             938 LOAD_ATTR               37 (NULL|self + connect)
+             958 LOAD_DEREF               0 (self)
+             960 LOAD_ATTR               46 (_on_import_error)
+             980 CALL                     1
+             988 POP_TOP
+
+4142         990 LOAD_DEREF               0 (self)
+             992 LOAD_ATTR               30 (_import_worker)
+            1012 LOAD_ATTR               42 (finished)
+            1032 LOAD_ATTR               37 (NULL|self + connect)
+            1052 LOAD_DEREF               0 (self)
+            1054 LOAD_ATTR               26 (_import_thread)
+            1074 LOAD_ATTR               48 (quit)
+            1094 CALL                     1
+            1102 POP_TOP
+
+4143        1104 LOAD_DEREF               0 (self)
+            1106 LOAD_ATTR               30 (_import_worker)
+            1126 LOAD_ATTR               44 (error)
+            1146 LOAD_ATTR               37 (NULL|self + connect)
+            1166 LOAD_DEREF               0 (self)
+            1168 LOAD_ATTR               26 (_import_thread)
+            1188 LOAD_ATTR               48 (quit)
+            1208 CALL                     1
+            1216 POP_TOP
+
+4144        1218 LOAD_DEREF               0 (self)
+            1220 LOAD_ATTR               26 (_import_thread)
+            1240 LOAD_ATTR               42 (finished)
+            1260 LOAD_ATTR               37 (NULL|self + connect)
+            1280 LOAD_DEREF               0 (self)
+            1282 LOAD_ATTR               30 (_import_worker)
+            1302 LOAD_ATTR               50 (deleteLater)
+            1322 CALL                     1
+            1330 POP_TOP
+
+4145        1332 LOAD_DEREF               0 (self)
+            1334 LOAD_ATTR               26 (_import_thread)
+            1354 LOAD_ATTR               42 (finished)
+            1374 LOAD_ATTR               37 (NULL|self + connect)
+            1394 LOAD_DEREF               0 (self)
+            1396 LOAD_ATTR               26 (_import_thread)
+            1416 LOAD_ATTR               50 (deleteLater)
+            1436 CALL                     1
+            1444 POP_TOP
+
+4147        1446 LOAD_DEREF               0 (self)
+            1448 LOAD_ATTR               26 (_import_thread)
+            1468 LOAD_ATTR               53 (NULL|self + start)
+            1488 CALL                     0
+            1496 POP_TOP
+            1498 RETURN_CONST             0 (None)

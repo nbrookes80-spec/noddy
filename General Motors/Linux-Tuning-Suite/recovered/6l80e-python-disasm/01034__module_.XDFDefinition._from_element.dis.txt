@@ -1,0 +1,113 @@
+1034           0 RESUME                   0
+
+1036           2 PUSH_NULL
+               4 LOAD_FAST                0 (cls)
+               6 CALL                     0
+              14 STORE_FAST               2 (xdf)
+
+1037          16 LOAD_FAST                1 (root)
+              18 LOAD_ATTR                1 (NULL|self + find)
+              38 LOAD_CONST               1 ('XDFHEADER')
+              40 CALL                     1
+              48 STORE_FAST               3 (hdr)
+
+1038          50 LOAD_FAST                3 (hdr)
+              52 POP_JUMP_IF_NONE       119 (to 292)
+
+1039          54 LOAD_FAST                3 (hdr)
+              56 LOAD_ATTR                1 (NULL|self + find)
+              76 LOAD_CONST               2 ('deftitle')
+              78 CALL                     1
+              86 STORE_FAST               4 (t)
+
+1040          88 LOAD_FAST                4 (t)
+              90 POP_JUMP_IF_NONE        43 (to 178)
+              92 LOAD_FAST                4 (t)
+              94 LOAD_ATTR                2 (text)
+             114 POP_JUMP_IF_FALSE       31 (to 178)
+
+1041         116 LOAD_FAST                4 (t)
+             118 LOAD_ATTR                2 (text)
+             138 LOAD_ATTR                5 (NULL|self + strip)
+             158 CALL                     0
+             166 LOAD_FAST                2 (xdf)
+             168 STORE_ATTR               3 (title)
+
+1042     >>  178 LOAD_FAST                3 (hdr)
+             180 LOAD_ATTR                1 (NULL|self + find)
+             200 LOAD_CONST               3 ('BASEOFFSET')
+             202 CALL                     1
+             210 STORE_FAST               5 (base)
+
+1043         212 LOAD_FAST                5 (base)
+             214 POP_JUMP_IF_NONE        38 (to 292)
+
+1044         216 LOAD_FAST                0 (cls)
+             218 LOAD_ATTR                9 (NULL|self + _parse_int)
+             238 LOAD_FAST                5 (base)
+             240 LOAD_ATTR               11 (NULL|self + get)
+             260 LOAD_CONST               4 ('offset')
+             262 LOAD_CONST               5 ('0')
+             264 CALL                     2
+             272 CALL                     1
+             280 LOAD_FAST                2 (xdf)
+             282 STORE_ATTR               6 (base_offset)
+
+1046     >>  292 LOAD_FAST                1 (root)
+             294 LOAD_ATTR               15 (NULL|self + findall)
+             314 LOAD_CONST               6 ('XDFCONSTANT')
+             316 CALL                     1
+             324 GET_ITER
+         >>  326 FOR_ITER                49 (to 428)
+             330 STORE_FAST               6 (el)
+
+1047         332 LOAD_FAST                0 (cls)
+             334 LOAD_ATTR               17 (NULL|self + _parse_scalar)
+             354 LOAD_FAST                6 (el)
+             356 CALL                     1
+             364 STORE_FAST               7 (p)
+
+1048         366 LOAD_FAST                7 (p)
+             368 POP_JUMP_IF_TRUE         1 (to 372)
+             370 JUMP_BACKWARD           23 (to 326)
+
+1049     >>  372 LOAD_FAST                2 (xdf)
+             374 LOAD_ATTR               18 (parameters)
+             394 LOAD_ATTR               21 (NULL|self + append)
+             414 LOAD_FAST                7 (p)
+             416 CALL                     1
+             424 POP_TOP
+             426 JUMP_BACKWARD           51 (to 326)
+
+1046     >>  428 END_FOR
+
+1050         430 LOAD_FAST                1 (root)
+             432 LOAD_ATTR               15 (NULL|self + findall)
+             452 LOAD_CONST               7 ('XDFTABLE')
+             454 CALL                     1
+             462 GET_ITER
+         >>  464 FOR_ITER                49 (to 566)
+             468 STORE_FAST               6 (el)
+
+1051         470 LOAD_FAST                0 (cls)
+             472 LOAD_ATTR               23 (NULL|self + _parse_table)
+             492 LOAD_FAST                6 (el)
+             494 CALL                     1
+             502 STORE_FAST               7 (p)
+
+1052         504 LOAD_FAST                7 (p)
+             506 POP_JUMP_IF_TRUE         1 (to 510)
+             508 JUMP_BACKWARD           23 (to 464)
+
+1053     >>  510 LOAD_FAST                2 (xdf)
+             512 LOAD_ATTR               18 (parameters)
+             532 LOAD_ATTR               21 (NULL|self + append)
+             552 LOAD_FAST                7 (p)
+             554 CALL                     1
+             562 POP_TOP
+             564 JUMP_BACKWARD           51 (to 464)
+
+1050     >>  566 END_FOR
+
+1054         568 LOAD_FAST                2 (xdf)
+             570 RETURN_VALUE

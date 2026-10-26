@@ -1,0 +1,19 @@
+               0 COPY_FREE_VARS           1
+
+3982           2 RESUME                   0
+
+3983           4 LOAD_GLOBAL              0 (super)
+              14 LOAD_DEREF               3 (__class__)
+              16 LOAD_FAST                0 (self)
+              18 LOAD_SUPER_ATTR          5 (NULL|self + __init__)
+              22 CALL                     0
+              30 POP_TOP
+
+3984          32 LOAD_FAST                1 (filepath)
+              34 LOAD_FAST                0 (self)
+              36 STORE_ATTR               2 (filepath)
+
+3985          46 LOAD_FAST                2 (target_hz)
+              48 LOAD_FAST                0 (self)
+              50 STORE_ATTR               3 (target_hz)
+              60 RETURN_CONST             0 (None)

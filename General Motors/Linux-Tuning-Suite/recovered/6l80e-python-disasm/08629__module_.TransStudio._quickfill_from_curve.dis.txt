@@ -1,0 +1,174 @@
+8629           0 RESUME                   0
+
+8637           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (torque_curve)
+              24 LOAD_ATTR                2 (is_empty)
+              44 POP_JUMP_IF_FALSE       24 (to 94)
+
+8638          46 LOAD_GLOBAL              5 (NULL + QMessageBox)
+              56 LOAD_ATTR                6 (information)
+              76 LOAD_FAST                0 (self)
+              78 LOAD_CONST               1 ('No torque curve')
+
+8639          80 LOAD_CONST               2 ('Load a torque curve first via Tools → Torque Curve. Without it, this just picks the global RPM.')
+
+8638          82 CALL                     3
+              90 POP_TOP
+
+8641          92 RETURN_CONST             3 (None)
+
+8642     >>   94 LOAD_GLOBAL              8 (TRANS_DB)
+             104 LOAD_FAST                0 (self)
+             106 LOAD_ATTR               10 (trans)
+             126 LOAD_ATTR               13 (NULL|self + currentText)
+             146 CALL                     0
+             154 BINARY_SUBSCR
+             158 LOAD_CONST               4 ('ratios')
+             160 BINARY_SUBSCR
+             164 STORE_FAST               1 (ratios)
+
+8643         166 LOAD_GLOBAL             15 (NULL + len)
+             176 LOAD_FAST                1 (ratios)
+             178 CALL                     1
+             186 LOAD_CONST               5 (2)
+             188 COMPARE_OP               2 (<)
+             192 POP_JUMP_IF_FALSE        1 (to 196)
+
+8644         194 RETURN_CONST             3 (None)
+
+8645     >>  196 LOAD_FAST                0 (self)
+             198 LOAD_ATTR                0 (torque_curve)
+             218 LOAD_ATTR               16 (peak_hp_rpm)
+             238 STORE_FAST               2 (peak_hp_rpm)
+
+8646         240 LOAD_FAST                0 (self)
+             242 LOAD_ATTR                0 (torque_curve)
+             262 LOAD_ATTR               18 (rpm_range)
+             282 UNPACK_SEQUENCE          2
+             286 STORE_FAST               3 (rpm_lo)
+             288 STORE_FAST               4 (rpm_hi)
+
+8647         290 LOAD_GLOBAL             21 (NULL + int)
+             300 LOAD_FAST                0 (self)
+             302 LOAD_ATTR               22 (shift_rpm)
+             322 LOAD_ATTR               25 (NULL|self + value)
+             342 CALL                     0
+             350 CALL                     1
+             358 STORE_FAST               5 (global_rpm)
+
+8649         360 LOAD_FAST                0 (self)
+             362 LOAD_ATTR               26 (per_gear_rpm_table)
+             382 STORE_FAST               6 (tbl)
+
+8650         384 LOAD_FAST                6 (tbl)
+             386 LOAD_ATTR               29 (NULL|self + blockSignals)
+             406 LOAD_CONST               6 (True)
+             408 CALL                     1
+             416 POP_TOP
+
+8651         418 LOAD_GLOBAL             31 (NULL + range)
+             428 LOAD_FAST                6 (tbl)
+             430 LOAD_ATTR               33 (NULL|self + rowCount)
+             450 CALL                     0
+             458 CALL                     1
+             466 GET_ITER
+         >>  468 FOR_ITER               139 (to 750)
+             472 STORE_FAST               7 (i)
+
+8655         474 LOAD_FAST                7 (i)
+             476 LOAD_CONST               7 (1)
+             478 BINARY_OP                0 (+)
+             482 LOAD_GLOBAL             15 (NULL + len)
+             492 LOAD_FAST                1 (ratios)
+             494 CALL                     1
+             502 COMPARE_OP               2 (<)
+             506 POP_JUMP_IF_FALSE       65 (to 638)
+
+8656         508 LOAD_FAST                2 (peak_hp_rpm)
+             510 LOAD_FAST                1 (ratios)
+             512 LOAD_FAST                7 (i)
+             514 BINARY_SUBSCR
+             518 BINARY_OP                5 (*)
+             522 LOAD_FAST                1 (ratios)
+             524 LOAD_FAST                7 (i)
+             526 LOAD_CONST               7 (1)
+             528 BINARY_OP                0 (+)
+             532 BINARY_SUBSCR
+             536 BINARY_OP               11 (/)
+             540 STORE_FAST               8 (target)
+
+8658         542 LOAD_GLOBAL             35 (NULL + max)
+             552 LOAD_FAST                3 (rpm_lo)
+             554 LOAD_CONST               8 (500)
+             556 BINARY_OP                0 (+)
+             560 LOAD_GLOBAL             37 (NULL + min)
+             570 LOAD_FAST                4 (rpm_hi)
+             572 LOAD_FAST                8 (target)
+             574 CALL                     2
+             582 CALL                     2
+             590 STORE_FAST               8 (target)
+
+8659         592 LOAD_GLOBAL             35 (NULL + max)
+             602 LOAD_CONST               9 (2000)
+             604 LOAD_GLOBAL             37 (NULL + min)
+             614 LOAD_CONST              10 (10000)
+             616 LOAD_FAST                8 (target)
+             618 CALL                     2
+             626 CALL                     2
+             634 STORE_FAST               8 (target)
+             636 JUMP_FORWARD             2 (to 642)
+
+8661     >>  638 LOAD_FAST                5 (global_rpm)
+             640 STORE_FAST               8 (target)
+
+8662     >>  642 LOAD_FAST                6 (tbl)
+             644 LOAD_ATTR               39 (NULL|self + setItem)
+             664 LOAD_FAST                7 (i)
+             666 LOAD_CONST              11 (0)
+             668 LOAD_GLOBAL             41 (NULL + QTableWidgetItem)
+             678 LOAD_GLOBAL             21 (NULL + int)
+             688 LOAD_GLOBAL             43 (NULL + round)
+             698 LOAD_FAST                8 (target)
+             700 LOAD_CONST              12 (50)
+             702 BINARY_OP               11 (/)
+             706 CALL                     1
+             714 LOAD_CONST              12 (50)
+             716 BINARY_OP                5 (*)
+             720 CALL                     1
+             728 FORMAT_VALUE             0
+             730 CALL                     1
+             738 CALL                     3
+             746 POP_TOP
+             748 JUMP_BACKWARD          141 (to 468)
+
+8651     >>  750 END_FOR
+
+8663         752 LOAD_FAST                6 (tbl)
+             754 LOAD_ATTR               29 (NULL|self + blockSignals)
+             774 LOAD_CONST              13 (False)
+             776 CALL                     1
+             784 POP_TOP
+
+8664         786 LOAD_FAST                0 (self)
+             788 LOAD_ATTR               45 (NULL|self + _on_per_gear_rpm_changed)
+             808 LOAD_CONST               3 (None)
+             810 CALL                     1
+             818 POP_TOP
+
+8665         820 LOAD_FAST                0 (self)
+             822 LOAD_ATTR               47 (NULL|self + statusBar)
+             842 CALL                     0
+             850 LOAD_ATTR               49 (NULL|self + showMessage)
+
+8666         870 LOAD_CONST              14 ('Per-shift RPMs set to land near peak HP (')
+             872 LOAD_FAST                2 (peak_hp_rpm)
+             874 LOAD_CONST              15 ('.0f')
+             876 FORMAT_VALUE             4 (with format)
+             878 LOAD_CONST              16 (' RPM) after each shift.')
+             880 BUILD_STRING             3
+
+8667         882 LOAD_CONST              17 (5000)
+
+8665         884 CALL                     2
+             892 POP_TOP
+             894 RETURN_CONST             3 (None)

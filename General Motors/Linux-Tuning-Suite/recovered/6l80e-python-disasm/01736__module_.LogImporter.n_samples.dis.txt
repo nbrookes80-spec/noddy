@@ -1,0 +1,7 @@
+1736           0 RESUME                   0
+
+1738           2 LOAD_GLOBAL              1 (NULL + len)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_ATTR                2 (rows)
+              34 CALL                     1
+              42 RETURN_VALUE

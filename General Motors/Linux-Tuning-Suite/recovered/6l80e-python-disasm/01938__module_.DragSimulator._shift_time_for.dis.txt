@@ -1,0 +1,33 @@
+1938           0 RESUME                   0
+
+1947           2 LOAD_GLOBAL              1 (NULL + len)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_ATTR                2 (ratios)
+              34 CALL                     1
+              42 STORE_FAST               3 (n)
+
+1949          44 LOAD_FAST                1 (gear_idx)
+              46 LOAD_GLOBAL              5 (NULL + max)
+              56 LOAD_CONST               1 (1)
+              58 LOAD_FAST                3 (n)
+              60 LOAD_CONST               1 (1)
+              62 BINARY_OP               10 (-)
+              66 CALL                     2
+              74 BINARY_OP               11 (/)
+              78 STORE_FAST               4 (gear_frac)
+
+1950          80 LOAD_CONST               2 (0.55)
+              82 LOAD_CONST               3 (0.2)
+              84 LOAD_FAST                4 (gear_frac)
+              86 BINARY_OP                5 (*)
+              90 BINARY_OP               10 (-)
+              94 STORE_FAST               5 (base)
+
+1952          96 LOAD_FAST                5 (base)
+              98 LOAD_CONST               4 (0.4)
+             100 LOAD_CONST               5 (0.6)
+             102 LOAD_FAST                2 (torque_load_frac)
+             104 BINARY_OP                5 (*)
+             108 BINARY_OP                0 (+)
+             112 BINARY_OP                5 (*)
+             116 RETURN_VALUE

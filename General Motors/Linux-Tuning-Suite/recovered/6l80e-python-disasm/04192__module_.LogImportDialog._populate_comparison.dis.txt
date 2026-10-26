@@ -1,0 +1,552 @@
+4192           0 RESUME                   0
+
+4195           2 BUILD_LIST               0
+               4 STORE_FAST               2 (rows)
+
+4197           6 LOAD_FAST                0 (self)
+               8 LOAD_ATTR                0 (sim_cfg)
+              28 STORE_FAST               3 (cfg)
+
+4198          30 LOAD_FAST                3 (cfg)
+              32 LOAD_CONST               1 ('stall_rpm')
+              34 BINARY_SUBSCR
+              38 STORE_FAST               4 (predicted_stall)
+
+4199          40 LOAD_FAST                1 (analysis)
+              42 LOAD_CONST               2 ('stall_peak_rpm')
+              44 BINARY_SUBSCR
+              48 STORE_FAST               5 (measured_stall)
+
+4200          50 LOAD_FAST                5 (measured_stall)
+              52 POP_JUMP_IF_NONE        54 (to 162)
+
+4201          54 LOAD_FAST                5 (measured_stall)
+              56 LOAD_FAST                4 (predicted_stall)
+              58 BINARY_OP               10 (-)
+              62 STORE_FAST               6 (delta)
+
+4202          64 LOAD_FAST                2 (rows)
+              66 LOAD_ATTR                3 (NULL|self + append)
+
+4203          86 LOAD_CONST               4 ('Stall RPM (foot-brake)')
+
+4204          88 LOAD_FAST                4 (predicted_stall)
+              90 LOAD_CONST               5 ('.0f')
+              92 FORMAT_VALUE             4 (with format)
+
+4205          94 LOAD_FAST                5 (measured_stall)
+              96 LOAD_CONST               5 ('.0f')
+              98 FORMAT_VALUE             4 (with format)
+
+4206         100 LOAD_FAST                6 (delta)
+             102 LOAD_CONST               6 ('+.0f')
+             104 FORMAT_VALUE             4 (with format)
+             106 LOAD_CONST               7 (' RPM')
+             108 BUILD_STRING             2
+             110 LOAD_GLOBAL              5 (NULL + abs)
+             120 LOAD_FAST                6 (delta)
+             122 CALL                     1
+             130 LOAD_CONST               8 (200)
+             132 COMPARE_OP               2 (<)
+             136 POP_JUMP_IF_FALSE        2 (to 142)
+             138 LOAD_CONST               9 (' ✓')
+             140 JUMP_FORWARD             1 (to 144)
+         >>  142 LOAD_CONST              10 (' ⚠')
+         >>  144 BINARY_OP                0 (+)
+
+4202         148 BUILD_TUPLE              4
+             150 CALL                     1
+             158 POP_TOP
+             160 JUMP_FORWARD            23 (to 208)
+
+4209     >>  162 LOAD_FAST                2 (rows)
+             164 LOAD_ATTR                3 (NULL|self + append)
+
+4210         184 LOAD_CONST               4 ('Stall RPM (foot-brake)')
+
+4211         186 LOAD_FAST                4 (predicted_stall)
+             188 LOAD_CONST               5 ('.0f')
+             190 FORMAT_VALUE             4 (with format)
+
+4212         192 LOAD_CONST              11 ('—')
+
+4213         194 LOAD_CONST              12 ('(no <5 MPH samples at TPS>80%)')
+
+4209         196 BUILD_TUPLE              4
+             198 CALL                     1
+             206 POP_TOP
+
+4217     >>  208 LOAD_FAST                0 (self)
+             210 LOAD_ATTR                6 (calc_result)
+             230 POP_JUMP_IF_NONE        29 (to 290)
+
+4218         232 LOAD_FAST                0 (self)
+             234 LOAD_ATTR                6 (calc_result)
+             254 LOAD_ATTR                9 (NULL|self + get)
+             274 LOAD_CONST              13 ('slip_pct')
+             276 LOAD_CONST              14 (0)
+             278 CALL                     2
+             286 STORE_FAST               7 (predicted_slip)
+             288 JUMP_FORWARD             2 (to 294)
+
+4220     >>  290 LOAD_CONST              14 (0)
+             292 STORE_FAST               7 (predicted_slip)
+
+4221     >>  294 LOAD_FAST                1 (analysis)
+             296 LOAD_CONST              15 ('wot_slip_pct')
+             298 BINARY_SUBSCR
+             302 STORE_FAST               8 (measured_slip)
+
+4222         304 LOAD_FAST                8 (measured_slip)
+             306 POP_JUMP_IF_NONE        92 (to 492)
+
+4223         308 LOAD_FAST                8 (measured_slip)
+             310 LOAD_FAST                7 (predicted_slip)
+             312 BINARY_OP               10 (-)
+             316 STORE_FAST               6 (delta)
+
+4224         318 LOAD_FAST                2 (rows)
+             320 LOAD_ATTR                3 (NULL|self + append)
+
+4225         340 LOAD_CONST              16 ('WOT Slip %')
+
+4226         342 LOAD_FAST                7 (predicted_slip)
+             344 LOAD_CONST              17 ('.1f')
+             346 FORMAT_VALUE             4 (with format)
+             348 LOAD_CONST              18 ('%')
+             350 BUILD_STRING             2
+
+4227         352 LOAD_FAST                8 (measured_slip)
+             354 LOAD_CONST              17 ('.1f')
+             356 FORMAT_VALUE             4 (with format)
+             358 LOAD_CONST              18 ('%')
+             360 BUILD_STRING             2
+
+4228         362 LOAD_FAST                6 (delta)
+             364 LOAD_CONST              19 ('+.1f')
+             366 FORMAT_VALUE             4 (with format)
+             368 LOAD_CONST              18 ('%')
+             370 BUILD_STRING             2
+             372 LOAD_GLOBAL              5 (NULL + abs)
+             382 LOAD_FAST                6 (delta)
+             384 CALL                     1
+             392 LOAD_CONST              20 (1.5)
+             394 COMPARE_OP               2 (<)
+             398 POP_JUMP_IF_FALSE        2 (to 404)
+             400 LOAD_CONST               9 (' ✓')
+             402 JUMP_FORWARD             1 (to 406)
+         >>  404 LOAD_CONST              10 (' ⚠')
+         >>  406 BINARY_OP                0 (+)
+
+4224         410 BUILD_TUPLE              4
+             412 CALL                     1
+             420 POP_TOP
+
+4230         422 LOAD_FAST                8 (measured_slip)
+             424 LOAD_FAST                0 (self)
+             426 STORE_ATTR               5 (_measured_slip)
+
+4231         436 LOAD_FAST                0 (self)
+             438 LOAD_ATTR               12 (apply_slip_btn)
+             458 LOAD_ATTR               15 (NULL|self + setEnabled)
+             478 LOAD_CONST              21 (True)
+             480 CALL                     1
+             488 POP_TOP
+             490 JUMP_FORWARD            32 (to 556)
+
+4233     >>  492 LOAD_FAST                2 (rows)
+             494 LOAD_ATTR                3 (NULL|self + append)
+
+4234         514 LOAD_CONST              16 ('WOT Slip %')
+
+4235         516 LOAD_FAST                7 (predicted_slip)
+             518 LOAD_CONST              17 ('.1f')
+             520 FORMAT_VALUE             4 (with format)
+             522 LOAD_CONST              18 ('%')
+             524 BUILD_STRING             2
+
+4236         526 LOAD_CONST              11 ('—')
+
+4237         528 LOAD_CONST              22 ('(no WOT samples — need TPS>90%, MPH>10)')
+
+4233         530 BUILD_TUPLE              4
+             532 CALL                     1
+             540 POP_TOP
+
+4239         542 LOAD_CONST               3 (None)
+             544 LOAD_FAST                0 (self)
+             546 STORE_ATTR               5 (_measured_slip)
+
+4242     >>  556 LOAD_FAST                1 (analysis)
+             558 LOAD_CONST              23 ('temp_range')
+             560 BINARY_SUBSCR
+             564 POP_JUMP_IF_NONE        48 (to 662)
+
+4243         566 LOAD_FAST                1 (analysis)
+             568 LOAD_CONST              23 ('temp_range')
+             570 BINARY_SUBSCR
+             574 UNPACK_SEQUENCE          2
+             578 STORE_FAST               9 (t_min)
+             580 STORE_FAST              10 (t_max)
+
+4244         582 LOAD_FAST                2 (rows)
+             584 LOAD_ATTR                3 (NULL|self + append)
+
+4245         604 LOAD_CONST              24 ('ATF Temp Range')
+
+4246         606 LOAD_CONST              11 ('—')
+
+4247         608 LOAD_FAST                9 (t_min)
+             610 LOAD_CONST               5 ('.0f')
+             612 FORMAT_VALUE             4 (with format)
+             614 LOAD_CONST              25 (' - ')
+             616 LOAD_FAST               10 (t_max)
+             618 LOAD_CONST               5 ('.0f')
+             620 FORMAT_VALUE             4 (with format)
+             622 LOAD_CONST              26 (' °F')
+             624 BUILD_STRING             4
+
+4248         626 LOAD_FAST               10 (t_max)
+             628 LOAD_CONST              27 (220)
+             630 COMPARE_OP               2 (<)
+             634 POP_JUMP_IF_FALSE        2 (to 640)
+             636 LOAD_CONST              28 ('✓ in normal range')
+             638 JUMP_FORWARD             5 (to 650)
+
+4249     >>  640 LOAD_CONST              29 ('⚠ ran hot (>')
+             642 LOAD_CONST              27 (220)
+             644 FORMAT_VALUE             0
+             646 LOAD_CONST              30 (' °F)')
+             648 BUILD_STRING             3
+
+4244     >>  650 BUILD_TUPLE              4
+             652 CALL                     1
+             660 POP_TOP
+
+4253     >>  662 LOAD_FAST                2 (rows)
+             664 LOAD_ATTR                3 (NULL|self + append)
+             684 LOAD_CONST              31 ('Samples')
+             686 LOAD_CONST              11 ('—')
+             688 LOAD_FAST                1 (analysis)
+             690 LOAD_CONST              32 ('n_samples')
+             692 BINARY_SUBSCR
+             696 FORMAT_VALUE             0
+             698 LOAD_CONST              33 ('')
+             700 BUILD_TUPLE              4
+             702 CALL                     1
+             710 POP_TOP
+
+4255         712 LOAD_FAST                0 (self)
+             714 LOAD_ATTR               16 (cmp_table)
+             734 LOAD_ATTR               19 (NULL|self + setRowCount)
+             754 LOAD_GLOBAL             21 (NULL + len)
+             764 LOAD_FAST                2 (rows)
+             766 CALL                     1
+             774 CALL                     1
+             782 POP_TOP
+
+4256         784 LOAD_GLOBAL             23 (NULL + enumerate)
+             794 LOAD_FAST                2 (rows)
+             796 CALL                     1
+             804 GET_ITER
+         >>  806 FOR_ITER               106 (to 1022)
+             810 UNPACK_SEQUENCE          2
+             814 STORE_FAST              11 (i)
+             816 STORE_FAST              12 (row)
+
+4257         818 LOAD_GLOBAL             23 (NULL + enumerate)
+             828 LOAD_FAST               12 (row)
+             830 CALL                     1
+             838 GET_ITER
+         >>  840 FOR_ITER                87 (to 1018)
+             844 UNPACK_SEQUENCE          2
+             848 STORE_FAST              13 (c)
+             850 STORE_FAST              14 (val)
+
+4258         852 LOAD_GLOBAL             25 (NULL + QTableWidgetItem)
+             862 LOAD_FAST               14 (val)
+             864 CALL                     1
+             872 STORE_FAST              15 (item)
+
+4259         874 LOAD_FAST               13 (c)
+             876 LOAD_CONST              14 (0)
+             878 COMPARE_OP              40 (==)
+             882 POP_JUMP_IF_FALSE       37 (to 958)
+
+4260         884 LOAD_FAST               15 (item)
+             886 LOAD_ATTR               27 (NULL|self + setForeground)
+             906 LOAD_GLOBAL             29 (NULL + QBrush)
+             916 LOAD_GLOBAL             31 (NULL + QColor)
+             926 LOAD_CONST              34 (180)
+             928 LOAD_CONST              34 (180)
+             930 LOAD_CONST               8 (200)
+             932 CALL                     3
+             940 CALL                     1
+             948 CALL                     1
+             956 POP_TOP
+
+4261     >>  958 LOAD_FAST                0 (self)
+             960 LOAD_ATTR               16 (cmp_table)
+             980 LOAD_ATTR               33 (NULL|self + setItem)
+            1000 LOAD_FAST               11 (i)
+            1002 LOAD_FAST               13 (c)
+            1004 LOAD_FAST               15 (item)
+            1006 CALL                     3
+            1014 POP_TOP
+            1016 JUMP_BACKWARD           89 (to 840)
+
+4257     >> 1018 END_FOR
+            1020 JUMP_BACKWARD          108 (to 806)
+
+4256     >> 1022 END_FOR
+
+4264        1024 LOAD_FAST                1 (analysis)
+            1026 LOAD_CONST              35 ('shift_events')
+            1028 BINARY_SUBSCR
+            1032 STORE_FAST              16 (events)
+
+4266        1034 BUILD_LIST               0
+            1036 STORE_FAST              17 (predicted_mph)
+
+4267        1038 LOAD_FAST                0 (self)
+            1040 LOAD_ATTR                6 (calc_result)
+            1060 POP_JUMP_IF_NONE        68 (to 1198)
+
+4268        1062 LOAD_FAST                0 (self)
+            1064 LOAD_ATTR                6 (calc_result)
+            1084 LOAD_ATTR                9 (NULL|self + get)
+            1104 LOAD_CONST              36 ('upshift')
+            1106 BUILD_LIST               0
+            1108 CALL                     2
+            1116 GET_ITER
+         >> 1118 FOR_ITER                37 (to 1196)
+            1122 STORE_FAST              12 (row)
+
+4269        1124 LOAD_GLOBAL             21 (NULL + len)
+            1134 LOAD_FAST               12 (row)
+            1136 CALL                     1
+            1144 LOAD_CONST              37 (16)
+            1146 COMPARE_OP              68 (>)
+            1150 POP_JUMP_IF_TRUE         1 (to 1154)
+            1152 JUMP_BACKWARD           18 (to 1118)
+
+4270     >> 1154 LOAD_FAST               17 (predicted_mph)
+            1156 LOAD_ATTR                3 (NULL|self + append)
+            1176 LOAD_FAST               12 (row)
+            1178 LOAD_CONST              37 (16)
+            1180 BINARY_SUBSCR
+            1184 CALL                     1
+            1192 POP_TOP
+            1194 JUMP_BACKWARD           39 (to 1118)
+
+4268     >> 1196 END_FOR
+
+4272     >> 1198 LOAD_FAST                0 (self)
+            1200 LOAD_ATTR               34 (shift_table)
+            1220 LOAD_ATTR               19 (NULL|self + setRowCount)
+            1240 LOAD_GLOBAL             21 (NULL + len)
+            1250 LOAD_FAST               16 (events)
+            1252 CALL                     1
+            1260 CALL                     1
+            1268 POP_TOP
+
+4273        1270 LOAD_GLOBAL             23 (NULL + enumerate)
+            1280 LOAD_FAST               16 (events)
+            1282 CALL                     1
+            1290 GET_ITER
+         >> 1292 EXTENDED_ARG             1
+            1294 FOR_ITER               287 (to 1872)
+            1298 UNPACK_SEQUENCE          2
+            1302 STORE_FAST              11 (i)
+            1304 STORE_FAST              18 (ev)
+
+4274        1306 LOAD_FAST               18 (ev)
+            1308 LOAD_CONST              38 ('gear_from')
+            1310 BINARY_SUBSCR
+            1314 LOAD_CONST              39 (1)
+            1316 BINARY_OP               10 (-)
+            1320 STORE_FAST              19 (shift_idx)
+
+4275        1322 LOAD_FAST               19 (shift_idx)
+            1324 LOAD_GLOBAL             21 (NULL + len)
+            1334 LOAD_FAST               17 (predicted_mph)
+            1336 CALL                     1
+            1344 COMPARE_OP               2 (<)
+            1348 POP_JUMP_IF_FALSE        5 (to 1360)
+            1350 LOAD_FAST               17 (predicted_mph)
+            1352 LOAD_FAST               19 (shift_idx)
+            1354 BINARY_SUBSCR
+            1358 JUMP_FORWARD             1 (to 1362)
+         >> 1360 LOAD_CONST               3 (None)
+         >> 1362 STORE_FAST              20 (pred)
+
+4276        1364 LOAD_FAST               20 (pred)
+            1366 POP_JUMP_IF_NONE         8 (to 1384)
+            1368 LOAD_FAST               18 (ev)
+            1370 LOAD_CONST              40 ('mph')
+            1372 BINARY_SUBSCR
+            1376 LOAD_FAST               20 (pred)
+            1378 BINARY_OP               10 (-)
+            1382 JUMP_FORWARD             1 (to 1386)
+         >> 1384 LOAD_CONST               3 (None)
+         >> 1386 STORE_FAST               6 (delta)
+
+4278        1388 LOAD_FAST               18 (ev)
+            1390 LOAD_CONST              38 ('gear_from')
+            1392 BINARY_SUBSCR
+            1396 FORMAT_VALUE             0
+            1398 LOAD_CONST              41 ('→')
+            1400 LOAD_FAST               18 (ev)
+            1402 LOAD_CONST              42 ('gear_to')
+            1404 BINARY_SUBSCR
+            1408 FORMAT_VALUE             0
+            1410 BUILD_STRING             3
+
+4279        1412 LOAD_FAST               18 (ev)
+            1414 LOAD_CONST              40 ('mph')
+            1416 BINARY_SUBSCR
+            1420 LOAD_CONST              17 ('.1f')
+            1422 FORMAT_VALUE             4 (with format)
+
+4280        1424 LOAD_FAST               20 (pred)
+            1426 POP_JUMP_IF_NONE         4 (to 1436)
+            1428 LOAD_FAST               20 (pred)
+            1430 LOAD_CONST              17 ('.1f')
+            1432 FORMAT_VALUE             4 (with format)
+            1434 JUMP_FORWARD             1 (to 1438)
+         >> 1436 LOAD_CONST              11 ('—')
+
+4281     >> 1438 LOAD_FAST                6 (delta)
+            1440 POP_JUMP_IF_NONE         4 (to 1450)
+            1442 LOAD_FAST                6 (delta)
+            1444 LOAD_CONST              19 ('+.1f')
+            1446 FORMAT_VALUE             4 (with format)
+            1448 JUMP_FORWARD             1 (to 1452)
+         >> 1450 LOAD_CONST              11 ('—')
+
+4282     >> 1452 LOAD_FAST               18 (ev)
+            1454 LOAD_CONST              43 ('rpm')
+            1456 BINARY_SUBSCR
+            1460 LOAD_CONST               5 ('.0f')
+            1462 FORMAT_VALUE             4 (with format)
+
+4277        1464 BUILD_LIST               5
+            1466 STORE_FAST              21 (cells)
+
+4284        1468 LOAD_GLOBAL             23 (NULL + enumerate)
+            1478 LOAD_FAST               21 (cells)
+            1480 CALL                     1
+            1488 GET_ITER
+         >> 1490 FOR_ITER               186 (to 1866)
+            1494 UNPACK_SEQUENCE          2
+            1498 STORE_FAST              13 (c)
+            1500 STORE_FAST              14 (val)
+
+4285        1502 LOAD_GLOBAL             25 (NULL + QTableWidgetItem)
+            1512 LOAD_FAST               14 (val)
+            1514 CALL                     1
+            1522 STORE_FAST              15 (item)
+
+4286        1524 LOAD_FAST               13 (c)
+            1526 LOAD_CONST              44 (3)
+            1528 COMPARE_OP              40 (==)
+            1532 POP_JUMP_IF_FALSE      136 (to 1806)
+            1534 LOAD_FAST                6 (delta)
+            1536 POP_JUMP_IF_NONE       134 (to 1806)
+
+4288        1538 LOAD_GLOBAL              5 (NULL + abs)
+            1548 LOAD_FAST                6 (delta)
+            1550 CALL                     1
+            1558 STORE_FAST              22 (abs_d)
+
+4289        1560 LOAD_FAST               22 (abs_d)
+            1562 LOAD_CONST              45 (2)
+            1564 COMPARE_OP               2 (<)
+            1568 POP_JUMP_IF_FALSE       38 (to 1646)
+
+4290        1570 LOAD_FAST               15 (item)
+            1572 LOAD_ATTR               27 (NULL|self + setForeground)
+            1592 LOAD_GLOBAL             29 (NULL + QBrush)
+            1602 LOAD_GLOBAL             31 (NULL + QColor)
+            1612 LOAD_CONST              46 (120)
+            1614 LOAD_CONST               8 (200)
+            1616 LOAD_CONST              46 (120)
+            1618 CALL                     3
+            1626 CALL                     1
+            1634 CALL                     1
+            1642 POP_TOP
+            1644 JUMP_FORWARD            80 (to 1806)
+
+4291     >> 1646 LOAD_FAST               22 (abs_d)
+            1648 LOAD_CONST              47 (5)
+            1650 COMPARE_OP               2 (<)
+            1654 POP_JUMP_IF_FALSE       38 (to 1732)
+
+4292        1656 LOAD_FAST               15 (item)
+            1658 LOAD_ATTR               27 (NULL|self + setForeground)
+            1678 LOAD_GLOBAL             29 (NULL + QBrush)
+            1688 LOAD_GLOBAL             31 (NULL + QColor)
+            1698 LOAD_CONST               8 (200)
+            1700 LOAD_CONST              34 (180)
+            1702 LOAD_CONST              48 (80)
+            1704 CALL                     3
+            1712 CALL                     1
+            1720 CALL                     1
+            1728 POP_TOP
+            1730 JUMP_FORWARD            37 (to 1806)
+
+4294     >> 1732 LOAD_FAST               15 (item)
+            1734 LOAD_ATTR               27 (NULL|self + setForeground)
+            1754 LOAD_GLOBAL             29 (NULL + QBrush)
+            1764 LOAD_GLOBAL             31 (NULL + QColor)
+            1774 LOAD_CONST              27 (220)
+            1776 LOAD_CONST              48 (80)
+            1778 LOAD_CONST              48 (80)
+            1780 CALL                     3
+            1788 CALL                     1
+            1796 CALL                     1
+            1804 POP_TOP
+
+4295     >> 1806 LOAD_FAST                0 (self)
+            1808 LOAD_ATTR               34 (shift_table)
+            1828 LOAD_ATTR               33 (NULL|self + setItem)
+            1848 LOAD_FAST               11 (i)
+            1850 LOAD_FAST               13 (c)
+            1852 LOAD_FAST               15 (item)
+            1854 CALL                     3
+            1862 POP_TOP
+            1864 JUMP_BACKWARD          188 (to 1490)
+
+4284     >> 1866 END_FOR
+            1868 EXTENDED_ARG             1
+            1870 JUMP_BACKWARD          290 (to 1292)
+
+4273     >> 1872 END_FOR
+
+4298        1874 LOAD_FAST                1 (analysis)
+            1876 LOAD_CONST              49 ('warnings')
+            1878 BINARY_SUBSCR
+            1882 POP_JUMP_IF_FALSE       49 (to 1982)
+
+4299        1884 LOAD_FAST                0 (self)
+            1886 LOAD_ATTR               36 (warn_label)
+            1906 LOAD_ATTR               39 (NULL|self + setText)
+            1926 LOAD_CONST              50 ('⚠ ')
+            1928 LOAD_CONST              51 ('\n⚠ ')
+            1930 LOAD_ATTR               41 (NULL|self + join)
+            1950 LOAD_FAST                1 (analysis)
+            1952 LOAD_CONST              49 ('warnings')
+            1954 BINARY_SUBSCR
+            1958 CALL                     1
+            1966 BINARY_OP                0 (+)
+            1970 CALL                     1
+            1978 POP_TOP
+            1980 RETURN_CONST             3 (None)
+
+4301     >> 1982 LOAD_FAST                0 (self)
+            1984 LOAD_ATTR               36 (warn_label)
+            2004 LOAD_ATTR               39 (NULL|self + setText)
+            2024 LOAD_CONST              33 ('')
+            2026 CALL                     1
+            2034 POP_TOP
+            2036 RETURN_CONST             3 (None)

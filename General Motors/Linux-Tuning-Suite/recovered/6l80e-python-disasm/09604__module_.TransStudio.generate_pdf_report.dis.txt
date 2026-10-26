@@ -1,0 +1,222 @@
+9604           0 RESUME                   0
+
+9608           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (_last_result)
+              24 POP_JUMP_IF_TRUE        24 (to 74)
+
+9609          26 LOAD_GLOBAL              3 (NULL + QMessageBox)
+              36 LOAD_ATTR                4 (information)
+              56 LOAD_FAST                0 (self)
+              58 LOAD_CONST               1 ('Calculate first')
+
+9610          60 LOAD_CONST               2 ('Run Calculate before generating a report.')
+
+9609          62 CALL                     3
+              70 POP_TOP
+
+9611          72 RETURN_CONST             3 (None)
+
+9612     >>   74 NOP
+
+9613          76 LOAD_CONST               4 (0)
+              78 LOAD_CONST               5 (('letter',))
+              80 IMPORT_NAME              3 (reportlab.lib.pagesizes)
+              82 IMPORT_FROM              4 (letter)
+              84 STORE_FAST               1 (letter)
+              86 POP_TOP
+
+9614          88 LOAD_CONST               4 (0)
+              90 LOAD_CONST               6 (('colors',))
+              92 IMPORT_NAME              5 (reportlab.lib)
+              94 IMPORT_FROM              6 (colors)
+              96 STORE_FAST               2 (rlcolors)
+              98 POP_TOP
+
+9615         100 LOAD_CONST               4 (0)
+             102 LOAD_CONST               7 (('getSampleStyleSheet', 'ParagraphStyle'))
+             104 IMPORT_NAME              7 (reportlab.lib.styles)
+             106 IMPORT_FROM              8 (getSampleStyleSheet)
+             108 STORE_FAST               3 (getSampleStyleSheet)
+             110 IMPORT_FROM              9 (ParagraphStyle)
+             112 STORE_FAST               4 (ParagraphStyle)
+             114 POP_TOP
+
+9616         116 LOAD_CONST               4 (0)
+             118 LOAD_CONST               8 (('inch',))
+             120 IMPORT_NAME             10 (reportlab.lib.units)
+             122 IMPORT_FROM             11 (inch)
+             124 STORE_FAST               5 (inch)
+             126 POP_TOP
+
+9617         128 LOAD_CONST               4 (0)
+             130 LOAD_CONST               9 (('SimpleDocTemplate', 'Paragraph', 'Spacer', 'Table', 'TableStyle', 'PageBreak'))
+             132 IMPORT_NAME             12 (reportlab.platypus)
+             134 IMPORT_FROM             13 (SimpleDocTemplate)
+             136 STORE_FAST               6 (SimpleDocTemplate)
+             138 IMPORT_FROM             14 (Paragraph)
+             140 STORE_FAST               7 (Paragraph)
+             142 IMPORT_FROM             15 (Spacer)
+             144 STORE_FAST               8 (Spacer)
+             146 IMPORT_FROM             16 (Table)
+             148 STORE_FAST               9 (Table)
+             150 IMPORT_FROM             17 (TableStyle)
+             152 STORE_FAST              10 (TableStyle)
+             154 IMPORT_FROM             18 (PageBreak)
+             156 STORE_FAST              11 (PageBreak)
+             158 POP_TOP
+
+9630         160 LOAD_CONST              12 ('tune_sheet_')
+             162 LOAD_FAST                0 (self)
+             164 LOAD_ATTR               42 (trans)
+             184 LOAD_ATTR               45 (NULL|self + currentText)
+             204 CALL                     0
+             212 LOAD_ATTR               47 (NULL|self + split)
+             232 CALL                     0
+             240 LOAD_CONST               4 (0)
+             242 BINARY_SUBSCR
+             246 FORMAT_VALUE             0
+             248 LOAD_CONST              13 ('.pdf')
+             250 BUILD_STRING             3
+             252 STORE_FAST              12 (default)
+
+9631         254 LOAD_GLOBAL             49 (NULL + getattr)
+             264 LOAD_FAST                0 (self)
+             266 LOAD_CONST              14 ('profile_metadata')
+             268 BUILD_MAP                0
+             270 CALL                     3
+             278 COPY                     1
+             280 POP_JUMP_IF_TRUE         2 (to 286)
+             282 POP_TOP
+             284 BUILD_MAP                0
+         >>  286 STORE_FAST              13 (meta)
+
+9632         288 LOAD_FAST               13 (meta)
+             290 LOAD_ATTR               51 (NULL|self + get)
+             310 LOAD_CONST              15 ('vehicle_name')
+             312 CALL                     1
+             320 POP_JUMP_IF_FALSE       25 (to 372)
+
+9633         322 LOAD_CONST              12 ('tune_sheet_')
+             324 LOAD_FAST               13 (meta)
+             326 LOAD_CONST              15 ('vehicle_name')
+             328 BINARY_SUBSCR
+             332 LOAD_ATTR               53 (NULL|self + replace)
+             352 LOAD_CONST              16 (' ')
+             354 LOAD_CONST              17 ('_')
+             356 CALL                     2
+             364 FORMAT_VALUE             0
+             366 LOAD_CONST              13 ('.pdf')
+             368 BUILD_STRING             3
+             370 STORE_FAST              12 (default)
+
+9634     >>  372 LOAD_GLOBAL             55 (NULL + QFileDialog)
+             382 LOAD_ATTR               56 (getSaveFileName)
+
+9635         402 LOAD_FAST                0 (self)
+             404 LOAD_CONST              18 ('Save PDF Tune Sheet')
+             406 LOAD_FAST               12 (default)
+             408 LOAD_CONST              19 ('PDF (*.pdf)')
+
+9634         410 CALL                     4
+             418 UNPACK_SEQUENCE          2
+             422 STORE_FAST              14 (path)
+             424 STORE_FAST              15 (_)
+
+9637         426 LOAD_FAST               14 (path)
+             428 POP_JUMP_IF_TRUE         1 (to 432)
+
+9638         430 RETURN_CONST             3 (None)
+
+9640     >>  432 NOP
+
+9641         434 LOAD_FAST                0 (self)
+             436 LOAD_ATTR               59 (NULL|self + _build_pdf_report)
+             456 LOAD_FAST               14 (path)
+             458 CALL                     1
+             466 POP_TOP
+
+9642         468 LOAD_FAST                0 (self)
+             470 LOAD_ATTR               61 (NULL|self + statusBar)
+             490 CALL                     0
+             498 LOAD_ATTR               63 (NULL|self + showMessage)
+             518 LOAD_CONST              20 ('PDF saved: ')
+             520 LOAD_FAST               14 (path)
+             522 FORMAT_VALUE             0
+             524 BUILD_STRING             2
+             526 LOAD_CONST              21 (6000)
+             528 CALL                     2
+             536 POP_TOP
+             538 RETURN_CONST             3 (None)
+         >>  540 PUSH_EXC_INFO
+
+9619         542 LOAD_GLOBAL             38 (ImportError)
+             552 CHECK_EXC_MATCH
+             554 POP_JUMP_IF_FALSE       26 (to 608)
+             556 POP_TOP
+
+9620         558 LOAD_GLOBAL              3 (NULL + QMessageBox)
+             568 LOAD_ATTR               40 (warning)
+
+9621         588 LOAD_FAST                0 (self)
+             590 LOAD_CONST              10 ('reportlab Required')
+
+9622         592 LOAD_CONST              11 ("PDF export requires the 'reportlab' library.\n\nInstall via:  pip install reportlab\n\nAlternatively, use File → Generate HTML Report which works without extra dependencies.")
+
+9620         594 CALL                     3
+             602 POP_TOP
+
+9627         604 POP_EXCEPT
+             606 RETURN_CONST             3 (None)
+
+9619     >>  608 RERAISE                  0
+         >>  610 COPY                     3
+             612 POP_EXCEPT
+             614 RERAISE                  1
+         >>  616 PUSH_EXC_INFO
+
+9643         618 LOAD_GLOBAL             64 (Exception)
+             628 CHECK_EXC_MATCH
+             630 POP_JUMP_IF_FALSE       62 (to 756)
+             632 STORE_FAST              16 (e)
+
+9644         634 LOAD_CONST               4 (0)
+             636 LOAD_CONST               3 (None)
+             638 IMPORT_NAME             33 (traceback)
+             640 STORE_FAST              17 (traceback)
+
+9645         642 LOAD_FAST               17 (traceback)
+             644 LOAD_ATTR               69 (NULL|self + print_exc)
+             664 CALL                     0
+             672 POP_TOP
+
+9646         674 LOAD_GLOBAL              3 (NULL + QMessageBox)
+             684 LOAD_ATTR               70 (critical)
+             704 LOAD_FAST                0 (self)
+             706 LOAD_CONST              22 ('PDF Failed')
+             708 LOAD_GLOBAL             73 (NULL + str)
+             718 LOAD_FAST               16 (e)
+             720 CALL                     1
+             728 CALL                     3
+             736 POP_TOP
+             738 POP_EXCEPT
+             740 LOAD_CONST               3 (None)
+             742 STORE_FAST              16 (e)
+             744 DELETE_FAST             16 (e)
+             746 RETURN_CONST             3 (None)
+         >>  748 LOAD_CONST               3 (None)
+             750 STORE_FAST              16 (e)
+             752 DELETE_FAST             16 (e)
+             754 RERAISE                  1
+
+9643     >>  756 RERAISE                  0
+         >>  758 COPY                     3
+             760 POP_EXCEPT
+             762 RERAISE                  1
+ExceptionTable:
+  76 to 158 -> 540 [0]
+  434 to 536 -> 616 [0]
+  540 to 602 -> 610 [1] lasti
+  608 to 608 -> 610 [1] lasti
+  616 to 632 -> 758 [1] lasti
+  634 to 736 -> 748 [1] lasti
+  748 to 756 -> 758 [1] lasti

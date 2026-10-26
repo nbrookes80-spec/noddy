@@ -1,0 +1,242 @@
+7447           0 RESUME                   0
+
+7449           2 LOAD_CONST               1 (0)
+               4 LOAD_CONST               2 (('QPalette', 'QColor'))
+               6 IMPORT_NAME              0 (PyQt6.QtGui)
+               8 IMPORT_FROM              1 (QPalette)
+              10 STORE_FAST               3 (QPalette)
+              12 IMPORT_FROM              2 (QColor)
+              14 STORE_FAST               4 (_QC)
+              16 POP_TOP
+
+7450          18 LOAD_FAST                1 (name)
+              20 LOAD_FAST                0 (cls)
+              22 LOAD_ATTR                6 (_PALETTES)
+              42 CONTAINS_OP              1
+              44 POP_JUMP_IF_FALSE        2 (to 50)
+
+7451          46 LOAD_CONST               3 ('Dark')
+              48 STORE_FAST               1 (name)
+
+7452     >>   50 LOAD_FAST                1 (name)
+              52 LOAD_FAST                0 (cls)
+              54 STORE_ATTR               4 (current_name)
+
+7453          64 LOAD_FAST                0 (cls)
+              66 LOAD_ATTR                6 (_PALETTES)
+              86 LOAD_FAST                1 (name)
+              88 BINARY_SUBSCR
+              92 STORE_FAST               5 (c)
+
+7454          94 PUSH_NULL
+              96 LOAD_FAST                3 (QPalette)
+              98 CALL                     0
+             106 STORE_FAST               6 (pal)
+
+7455         108 LOAD_FAST                6 (pal)
+             110 LOAD_ATTR               11 (NULL|self + setColor)
+             130 LOAD_FAST                3 (QPalette)
+             132 LOAD_ATTR               12 (ColorRole)
+             152 LOAD_ATTR               14 (Window)
+             172 PUSH_NULL
+             174 LOAD_FAST                4 (_QC)
+             176 LOAD_FAST                5 (c)
+             178 LOAD_CONST               4 ('window')
+             180 BINARY_SUBSCR
+             184 CALL                     1
+             192 CALL                     2
+             200 POP_TOP
+
+7456         202 LOAD_FAST                6 (pal)
+             204 LOAD_ATTR               11 (NULL|self + setColor)
+             224 LOAD_FAST                3 (QPalette)
+             226 LOAD_ATTR               12 (ColorRole)
+             246 LOAD_ATTR               16 (WindowText)
+             266 PUSH_NULL
+             268 LOAD_FAST                4 (_QC)
+             270 LOAD_FAST                5 (c)
+             272 LOAD_CONST               5 ('window_text')
+             274 BINARY_SUBSCR
+             278 CALL                     1
+             286 CALL                     2
+             294 POP_TOP
+
+7457         296 LOAD_FAST                6 (pal)
+             298 LOAD_ATTR               11 (NULL|self + setColor)
+             318 LOAD_FAST                3 (QPalette)
+             320 LOAD_ATTR               12 (ColorRole)
+             340 LOAD_ATTR               18 (Base)
+             360 PUSH_NULL
+             362 LOAD_FAST                4 (_QC)
+             364 LOAD_FAST                5 (c)
+             366 LOAD_CONST               6 ('base')
+             368 BINARY_SUBSCR
+             372 CALL                     1
+             380 CALL                     2
+             388 POP_TOP
+
+7458         390 LOAD_FAST                6 (pal)
+             392 LOAD_ATTR               11 (NULL|self + setColor)
+             412 LOAD_FAST                3 (QPalette)
+             414 LOAD_ATTR               12 (ColorRole)
+             434 LOAD_ATTR               20 (AlternateBase)
+             454 PUSH_NULL
+             456 LOAD_FAST                4 (_QC)
+             458 LOAD_FAST                5 (c)
+             460 LOAD_CONST               7 ('alt_base')
+             462 BINARY_SUBSCR
+             466 CALL                     1
+             474 CALL                     2
+             482 POP_TOP
+
+7459         484 LOAD_FAST                6 (pal)
+             486 LOAD_ATTR               11 (NULL|self + setColor)
+             506 LOAD_FAST                3 (QPalette)
+             508 LOAD_ATTR               12 (ColorRole)
+             528 LOAD_ATTR               22 (Button)
+             548 PUSH_NULL
+             550 LOAD_FAST                4 (_QC)
+             552 LOAD_FAST                5 (c)
+             554 LOAD_CONST               8 ('button')
+             556 BINARY_SUBSCR
+             560 CALL                     1
+             568 CALL                     2
+             576 POP_TOP
+
+7460         578 LOAD_FAST                6 (pal)
+             580 LOAD_ATTR               11 (NULL|self + setColor)
+             600 LOAD_FAST                3 (QPalette)
+             602 LOAD_ATTR               12 (ColorRole)
+             622 LOAD_ATTR               24 (ButtonText)
+             642 PUSH_NULL
+             644 LOAD_FAST                4 (_QC)
+             646 LOAD_FAST                5 (c)
+             648 LOAD_CONST               9 ('button_text')
+             650 BINARY_SUBSCR
+             654 CALL                     1
+             662 CALL                     2
+             670 POP_TOP
+
+7461         672 LOAD_FAST                6 (pal)
+             674 LOAD_ATTR               11 (NULL|self + setColor)
+             694 LOAD_FAST                3 (QPalette)
+             696 LOAD_ATTR               12 (ColorRole)
+             716 LOAD_ATTR               26 (Text)
+             736 PUSH_NULL
+             738 LOAD_FAST                4 (_QC)
+             740 LOAD_FAST                5 (c)
+             742 LOAD_CONST              10 ('text')
+             744 BINARY_SUBSCR
+             748 CALL                     1
+             756 CALL                     2
+             764 POP_TOP
+
+7462         766 LOAD_FAST                6 (pal)
+             768 LOAD_ATTR               11 (NULL|self + setColor)
+             788 LOAD_FAST                3 (QPalette)
+             790 LOAD_ATTR               12 (ColorRole)
+             810 LOAD_ATTR               28 (Highlight)
+             830 PUSH_NULL
+             832 LOAD_FAST                4 (_QC)
+             834 LOAD_FAST                5 (c)
+             836 LOAD_CONST              11 ('highlight')
+             838 BINARY_SUBSCR
+             842 CALL                     1
+             850 CALL                     2
+             858 POP_TOP
+
+7463         860 LOAD_FAST                6 (pal)
+             862 LOAD_ATTR               11 (NULL|self + setColor)
+             882 LOAD_FAST                3 (QPalette)
+             884 LOAD_ATTR               12 (ColorRole)
+             904 LOAD_ATTR               30 (HighlightedText)
+             924 PUSH_NULL
+             926 LOAD_FAST                4 (_QC)
+             928 LOAD_FAST                5 (c)
+             930 LOAD_CONST              12 ('highlight_text')
+             932 BINARY_SUBSCR
+             936 CALL                     1
+             944 CALL                     2
+             952 POP_TOP
+
+7464         954 LOAD_FAST                6 (pal)
+             956 LOAD_ATTR               11 (NULL|self + setColor)
+             976 LOAD_FAST                3 (QPalette)
+             978 LOAD_ATTR               12 (ColorRole)
+             998 LOAD_ATTR               32 (ToolTipBase)
+            1018 PUSH_NULL
+            1020 LOAD_FAST                4 (_QC)
+            1022 LOAD_FAST                5 (c)
+            1024 LOAD_CONST               6 ('base')
+            1026 BINARY_SUBSCR
+            1030 CALL                     1
+            1038 CALL                     2
+            1046 POP_TOP
+
+7465        1048 LOAD_FAST                6 (pal)
+            1050 LOAD_ATTR               11 (NULL|self + setColor)
+            1070 LOAD_FAST                3 (QPalette)
+            1072 LOAD_ATTR               12 (ColorRole)
+            1092 LOAD_ATTR               34 (ToolTipText)
+            1112 PUSH_NULL
+            1114 LOAD_FAST                4 (_QC)
+            1116 LOAD_FAST                5 (c)
+            1118 LOAD_CONST              10 ('text')
+            1120 BINARY_SUBSCR
+            1124 CALL                     1
+            1132 CALL                     2
+            1140 POP_TOP
+
+7466        1142 LOAD_FAST                2 (app)
+            1144 LOAD_ATTR               37 (NULL|self + setPalette)
+            1164 LOAD_FAST                6 (pal)
+            1166 CALL                     1
+            1174 POP_TOP
+
+7468        1176 LOAD_CONST              13 ('\n            QTabBar::tab {\n                background: ')
+
+7470        1178 LOAD_FAST                5 (c)
+            1180 LOAD_CONST              14 ('tab_bg')
+            1182 BINARY_SUBSCR
+            1186 FORMAT_VALUE             0
+            1188 LOAD_CONST              15 (';\n                color: ')
+
+7471        1190 LOAD_FAST                5 (c)
+            1192 LOAD_CONST               5 ('window_text')
+            1194 BINARY_SUBSCR
+            1198 FORMAT_VALUE             0
+            1200 LOAD_CONST              16 (';\n                padding: 6px 14px;\n                border: 1px solid ')
+
+7473        1202 LOAD_FAST                5 (c)
+            1204 LOAD_CONST              17 ('groupbox_border')
+            1206 BINARY_SUBSCR
+            1210 FORMAT_VALUE             0
+            1212 LOAD_CONST              18 (';\n            }\n            QTabBar::tab:selected {\n                background: ')
+
+7476        1214 LOAD_FAST                5 (c)
+            1216 LOAD_CONST              19 ('tab_active')
+            1218 BINARY_SUBSCR
+            1222 FORMAT_VALUE             0
+            1224 LOAD_CONST              15 (';\n                color: ')
+
+7477        1226 LOAD_FAST                5 (c)
+            1228 LOAD_CONST              10 ('text')
+            1230 BINARY_SUBSCR
+            1234 FORMAT_VALUE             0
+            1236 LOAD_CONST              20 (';\n                font-weight: bold;\n            }\n            QGroupBox {\n                border: 1px solid ')
+
+7481        1238 LOAD_FAST                5 (c)
+            1240 LOAD_CONST              17 ('groupbox_border')
+            1242 BINARY_SUBSCR
+            1246 FORMAT_VALUE             0
+            1248 LOAD_CONST              21 (';\n                border-radius: 4px;\n                margin-top: 8px;\n                padding-top: 10px;\n            }\n            QGroupBox::title {\n                subcontrol-origin: margin;\n                left: 8px;\n                padding: 0 4px;\n            }\n        ')
+
+7468        1250 BUILD_STRING            13
+            1252 STORE_FAST               7 (qss)
+
+7492        1254 LOAD_FAST                2 (app)
+            1256 LOAD_ATTR               39 (NULL|self + setStyleSheet)
+            1276 LOAD_FAST                7 (qss)
+            1278 CALL                     1
+            1286 POP_TOP
+            1288 RETURN_CONST             0 (None)

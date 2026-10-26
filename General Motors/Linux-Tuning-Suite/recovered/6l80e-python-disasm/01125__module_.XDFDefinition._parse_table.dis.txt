@@ -1,0 +1,181 @@
+1125           0 RESUME                   0
+
+1127           2 LOAD_GLOBAL              1 (NULL + XDFParameter)
+              12 CALL                     0
+              20 STORE_FAST               2 (p)
+
+1128          22 LOAD_FAST                1 (el)
+              24 LOAD_ATTR                3 (NULL|self + get)
+              44 LOAD_CONST               1 ('uniqueid')
+              46 LOAD_CONST               2 ('')
+              48 CALL                     2
+              56 LOAD_FAST                2 (p)
+              58 STORE_ATTR               2 (uid)
+
+1129          68 LOAD_FAST                1 (el)
+              70 LOAD_ATTR                7 (NULL|self + find)
+              90 LOAD_CONST               3 ('title')
+              92 CALL                     1
+             100 STORE_FAST               3 (t)
+
+1130         102 LOAD_FAST                3 (t)
+             104 POP_JUMP_IF_NONE        43 (to 192)
+             106 LOAD_FAST                3 (t)
+             108 LOAD_ATTR                8 (text)
+             128 POP_JUMP_IF_FALSE       31 (to 192)
+
+1131         130 LOAD_FAST                3 (t)
+             132 LOAD_ATTR                8 (text)
+             152 LOAD_ATTR               11 (NULL|self + strip)
+             172 CALL                     0
+             180 LOAD_FAST                2 (p)
+             182 STORE_ATTR               6 (title)
+
+1132     >>  192 LOAD_FAST                1 (el)
+             194 LOAD_ATTR                7 (NULL|self + find)
+             214 LOAD_CONST               4 ('CATEGORYMEM')
+             216 CALL                     1
+             224 STORE_FAST               4 (cat)
+
+1133         226 LOAD_FAST                4 (cat)
+             228 POP_JUMP_IF_NONE        43 (to 316)
+
+1134         230 LOAD_FAST                4 (cat)
+             232 LOAD_ATTR                3 (NULL|self + get)
+             252 LOAD_CONST               5 ('category')
+             254 LOAD_CONST               2 ('')
+             256 CALL                     2
+             264 COPY                     1
+             266 POP_JUMP_IF_TRUE        18 (to 304)
+             268 POP_TOP
+             270 LOAD_FAST                4 (cat)
+             272 LOAD_ATTR                3 (NULL|self + get)
+             292 LOAD_CONST               6 ('index')
+             294 LOAD_CONST               2 ('')
+             296 CALL                     2
+         >>  304 LOAD_FAST                2 (p)
+             306 STORE_ATTR               7 (category)
+
+1135     >>  316 LOAD_FAST                1 (el)
+             318 LOAD_ATTR               17 (NULL|self + findall)
+             338 LOAD_CONST               7 ('XDFAXIS')
+             340 CALL                     1
+             348 GET_ITER
+         >>  350 FOR_ITER               158 (to 670)
+             354 STORE_FAST               5 (axis_el)
+
+1136         356 LOAD_FAST                5 (axis_el)
+             358 LOAD_ATTR                3 (NULL|self + get)
+             378 LOAD_CONST               8 ('id')
+             380 LOAD_CONST               2 ('')
+             382 CALL                     2
+             390 LOAD_ATTR               19 (NULL|self + lower)
+             410 CALL                     0
+             418 STORE_FAST               6 (axis_id)
+
+1137         420 LOAD_FAST                0 (cls)
+             422 LOAD_ATTR               21 (NULL|self + _parse_axis)
+             442 LOAD_FAST                5 (axis_el)
+             444 LOAD_FAST                6 (axis_id)
+             446 CALL                     2
+             454 STORE_FAST               7 (ax)
+
+1138         456 LOAD_FAST                7 (ax)
+             458 POP_JUMP_IF_NOT_NONE     1 (to 462)
+
+1139         460 JUMP_BACKWARD           56 (to 350)
+
+1140     >>  462 LOAD_FAST                6 (axis_id)
+             464 LOAD_CONST               9 ('x')
+             466 COMPARE_OP              40 (==)
+             470 POP_JUMP_IF_FALSE        8 (to 488)
+
+1141         472 LOAD_FAST                7 (ax)
+             474 LOAD_FAST                2 (p)
+             476 STORE_ATTR              11 (x_axis)
+             486 JUMP_BACKWARD           69 (to 350)
+
+1142     >>  488 LOAD_FAST                6 (axis_id)
+             490 LOAD_CONST              10 ('y')
+             492 COMPARE_OP              40 (==)
+             496 POP_JUMP_IF_FALSE        8 (to 514)
+
+1143         498 LOAD_FAST                7 (ax)
+             500 LOAD_FAST                2 (p)
+             502 STORE_ATTR              12 (y_axis)
+             512 JUMP_BACKWARD           82 (to 350)
+
+1144     >>  514 LOAD_FAST                6 (axis_id)
+             516 LOAD_CONST              11 ('z')
+             518 COMPARE_OP              40 (==)
+             522 POP_JUMP_IF_TRUE         1 (to 526)
+             524 JUMP_BACKWARD           88 (to 350)
+
+1145     >>  526 LOAD_FAST                7 (ax)
+             528 LOAD_FAST                2 (p)
+             530 STORE_ATTR              13 (z_axis)
+
+1146         540 LOAD_FAST                5 (axis_el)
+             542 LOAD_ATTR                7 (NULL|self + find)
+             562 LOAD_CONST              12 ('units')
+             564 CALL                     1
+             572 STORE_FAST               8 (units_el)
+
+1147         574 LOAD_FAST                8 (units_el)
+             576 POP_JUMP_IF_NOT_NONE     1 (to 580)
+             578 JUMP_BACKWARD          115 (to 350)
+         >>  580 LOAD_FAST                8 (units_el)
+             582 LOAD_ATTR                8 (text)
+             602 POP_JUMP_IF_TRUE         1 (to 606)
+             604 JUMP_BACKWARD          128 (to 350)
+
+1148     >>  606 LOAD_FAST                8 (units_el)
+             608 LOAD_ATTR                8 (text)
+             628 LOAD_ATTR               11 (NULL|self + strip)
+             648 CALL                     0
+             656 LOAD_FAST                2 (p)
+             658 STORE_ATTR              14 (units)
+             668 JUMP_BACKWARD          160 (to 350)
+
+1135     >>  670 END_FOR
+
+1149         672 LOAD_FAST                2 (p)
+             674 LOAD_ATTR               26 (z_axis)
+             694 POP_JUMP_IF_TRUE         1 (to 698)
+
+1150         696 RETURN_CONST             0 (None)
+
+1151     >>  698 LOAD_FAST                2 (p)
+             700 LOAD_ATTR               22 (x_axis)
+             720 POP_JUMP_IF_FALSE       21 (to 764)
+             722 LOAD_FAST                2 (p)
+             724 LOAD_ATTR               24 (y_axis)
+             744 POP_JUMP_IF_FALSE        9 (to 764)
+
+1152         746 LOAD_CONST              13 ('table_2d')
+             748 LOAD_FAST                2 (p)
+             750 STORE_ATTR              15 (kind)
+
+1157         760 LOAD_FAST                2 (p)
+             762 RETURN_VALUE
+
+1153     >>  764 LOAD_FAST                2 (p)
+             766 LOAD_ATTR               22 (x_axis)
+             786 POP_JUMP_IF_TRUE        12 (to 812)
+             788 LOAD_FAST                2 (p)
+             790 LOAD_ATTR               24 (y_axis)
+             810 POP_JUMP_IF_FALSE        9 (to 830)
+
+1154     >>  812 LOAD_CONST              14 ('table_1d')
+             814 LOAD_FAST                2 (p)
+             816 STORE_ATTR              15 (kind)
+
+1157         826 LOAD_FAST                2 (p)
+             828 RETURN_VALUE
+
+1156     >>  830 LOAD_CONST              15 ('scalar')
+             832 LOAD_FAST                2 (p)
+             834 STORE_ATTR              15 (kind)
+
+1157         844 LOAD_FAST                2 (p)
+             846 RETURN_VALUE

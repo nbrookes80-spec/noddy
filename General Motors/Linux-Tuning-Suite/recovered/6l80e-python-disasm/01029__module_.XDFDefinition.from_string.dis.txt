@@ -1,0 +1,20 @@
+1029           0 RESUME                   0
+
+1031           2 LOAD_CONST               1 (0)
+               4 LOAD_CONST               0 (None)
+               6 IMPORT_NAME              0 (xml.etree.ElementTree)
+               8 IMPORT_FROM              1 (etree)
+              10 SWAP                     2
+              12 POP_TOP
+              14 IMPORT_FROM              2 (ElementTree)
+              16 STORE_FAST               2 (ET)
+              18 POP_TOP
+
+1032          20 LOAD_FAST                0 (cls)
+              22 LOAD_ATTR                7 (NULL|self + _from_element)
+              42 LOAD_FAST                2 (ET)
+              44 LOAD_ATTR                9 (NULL|self + fromstring)
+              64 LOAD_FAST                1 (xml_str)
+              66 CALL                     1
+              74 CALL                     1
+              82 RETURN_VALUE

@@ -1,0 +1,90 @@
+4754           0 RESUME                   0
+
+4755           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                1 (NULL|self + _sync_curve_from_table_silent)
+              24 CALL                     0
+              32 POP_TOP
+
+4756          34 LOAD_FAST                0 (self)
+              36 LOAD_ATTR                2 (curve)
+              56 LOAD_ATTR                4 (is_empty)
+              76 POP_JUMP_IF_FALSE       28 (to 134)
+
+4757          78 LOAD_FAST                0 (self)
+              80 LOAD_ATTR                6 (summary)
+             100 LOAD_ATTR                9 (NULL|self + setText)
+
+4758         120 LOAD_CONST               1 ('No torque curve loaded. Time-mode WOT lead will use the\nsingle RWHP scalar from the Drivetrain panel.')
+
+4757         122 CALL                     1
+             130 POP_TOP
+             132 RETURN_CONST             0 (None)
+
+4762     >>  134 LOAD_FAST                0 (self)
+             136 LOAD_ATTR                2 (curve)
+             156 LOAD_ATTR               10 (rpm_range)
+             176 UNPACK_SEQUENCE          2
+             180 STORE_FAST               1 (rpm_lo)
+             182 STORE_FAST               2 (rpm_hi)
+
+4763         184 LOAD_FAST                0 (self)
+             186 LOAD_ATTR                6 (summary)
+             206 LOAD_ATTR                9 (NULL|self + setText)
+
+4764         226 LOAD_CONST               2 ('  Peak HP : ')
+             228 LOAD_FAST                0 (self)
+             230 LOAD_ATTR                2 (curve)
+             250 LOAD_ATTR               12 (peak_hp)
+             270 LOAD_CONST               3 ('.1f')
+             272 FORMAT_VALUE             4 (with format)
+             274 LOAD_CONST               4 (' @ ')
+             276 LOAD_FAST                0 (self)
+             278 LOAD_ATTR                2 (curve)
+             298 LOAD_ATTR               14 (peak_hp_rpm)
+             318 LOAD_CONST               5 ('.0f')
+             320 FORMAT_VALUE             4 (with format)
+             322 LOAD_CONST               6 (' RPM\n  Peak TQ : ')
+
+4765         324 LOAD_FAST                0 (self)
+             326 LOAD_ATTR                2 (curve)
+             346 LOAD_ATTR               16 (peak_tq)
+             366 LOAD_CONST               3 ('.1f')
+             368 FORMAT_VALUE             4 (with format)
+             370 LOAD_CONST               7 (' lb·ft @ ')
+             372 LOAD_FAST                0 (self)
+             374 LOAD_ATTR                2 (curve)
+             394 LOAD_ATTR               18 (peak_tq_rpm)
+             414 LOAD_CONST               5 ('.0f')
+             416 FORMAT_VALUE             4 (with format)
+             418 LOAD_CONST               8 (' RPM\n  RPM band: ')
+
+4766         420 LOAD_FAST                1 (rpm_lo)
+             422 LOAD_CONST               5 ('.0f')
+             424 FORMAT_VALUE             4 (with format)
+             426 LOAD_CONST               9 (' – ')
+             428 LOAD_FAST                2 (rpm_hi)
+             430 LOAD_CONST               5 ('.0f')
+             432 FORMAT_VALUE             4 (with format)
+             434 LOAD_CONST              10 ('  (')
+             436 LOAD_GLOBAL             21 (NULL + len)
+             446 LOAD_FAST                0 (self)
+             448 LOAD_ATTR                2 (curve)
+             468 LOAD_ATTR               22 (points)
+             488 CALL                     1
+             496 FORMAT_VALUE             0
+             498 LOAD_CONST              11 (' points)\n  Avg HP across shift band (3000–6000): ')
+
+4768         500 LOAD_FAST                0 (self)
+             502 LOAD_ATTR                2 (curve)
+             522 LOAD_ATTR               25 (NULL|self + avg_hp)
+             542 LOAD_CONST              12 (3000)
+             544 LOAD_CONST              13 (6000)
+             546 CALL                     2
+             554 LOAD_CONST               3 ('.1f')
+             556 FORMAT_VALUE             4 (with format)
+
+4764         558 BUILD_STRING            16
+
+4763         560 CALL                     1
+             568 POP_TOP
+             570 RETURN_CONST             0 (None)

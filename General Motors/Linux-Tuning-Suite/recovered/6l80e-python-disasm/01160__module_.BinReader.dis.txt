@@ -1,0 +1,40 @@
+1160           0 RESUME                   0
+               2 LOAD_NAME                0 (__name__)
+               4 STORE_NAME               1 (__module__)
+               6 LOAD_CONST               0 ('BinReader')
+               8 STORE_NAME               2 (__qualname__)
+
+1161          10 LOAD_CONST               1 ('Reads a raw .BIN flash dump file and exposes parameter lookups via an\n    XDFDefinition.\n\n    Usage:\n        reader = BinReader.from_file("dump.bin", xdf)\n        stall = reader.read("Stall Speed")             # scalar\n        table = reader.read_table("Base Shift Pressure")  # 2D list\n    ')
+              12 STORE_NAME               3 (__doc__)
+
+1169          14 LOAD_CONST               9 ((None,))
+              16 LOAD_CONST               3 (<code object __init__ at 0x73ab02bcad30, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1169>)
+              18 MAKE_FUNCTION            1 (defaults)
+              20 STORE_NAME               4 (__init__)
+
+1174          22 LOAD_NAME                5 (classmethod)
+
+1175          24 LOAD_CONST               9 ((None,))
+              26 LOAD_CONST               4 (<code object from_file at 0x73ab02b1f9b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1174>)
+              28 MAKE_FUNCTION            1 (defaults)
+
+1174          30 CALL                     0
+
+1175          38 STORE_NAME               6 (from_file)
+
+1180          40 LOAD_CONST               5 (<code object attach_xdf at 0x73ab02a1c2d0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1180>)
+              42 MAKE_FUNCTION            0
+              44 STORE_NAME               7 (attach_xdf)
+
+1183          46 LOAD_CONST               6 (<code object read at 0x73ab02bd8c00, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1183>)
+              48 MAKE_FUNCTION            0
+              50 STORE_NAME               8 (read)
+
+1189          52 LOAD_CONST               7 (<code object read_table at 0x73ab03537800, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1189>)
+              54 MAKE_FUNCTION            0
+              56 STORE_NAME               9 (read_table)
+
+1195          58 LOAD_CONST               8 (<code object info at 0x30bfe710, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1195>)
+              60 MAKE_FUNCTION            0
+              62 STORE_NAME              10 (info)
+              64 RETURN_CONST             2 (None)

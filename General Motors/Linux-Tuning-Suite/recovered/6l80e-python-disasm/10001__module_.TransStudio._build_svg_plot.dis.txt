@@ -1,0 +1,477 @@
+10001           0 RESUME                   0
+
+10002           2 LOAD_CONST               1 ((900, 360))
+                4 UNPACK_SEQUENCE          2
+                8 STORE_FAST               4 (W)
+               10 STORE_FAST               5 (H)
+
+10003          12 LOAD_CONST               2 ((60, 100, 30, 40))
+               14 UNPACK_SEQUENCE          4
+               18 STORE_FAST               6 (pad_l)
+               20 STORE_FAST               7 (pad_r)
+               22 STORE_FAST               8 (pad_t)
+               24 STORE_FAST               9 (pad_b)
+
+10004          26 LOAD_FAST                4 (W)
+               28 LOAD_FAST                6 (pad_l)
+               30 BINARY_OP               10 (-)
+               34 LOAD_FAST                7 (pad_r)
+               36 BINARY_OP               10 (-)
+               40 STORE_FAST              10 (plot_w)
+
+10005          42 LOAD_FAST                5 (H)
+               44 LOAD_FAST                8 (pad_t)
+               46 BINARY_OP               10 (-)
+               50 LOAD_FAST                9 (pad_b)
+               52 BINARY_OP               10 (-)
+               56 STORE_FAST              11 (plot_h)
+
+10006          58 LOAD_FAST                1 (res)
+               60 LOAD_CONST               3 ('upshift')
+               62 BINARY_SUBSCR
+               66 STORE_FAST              12 (up)
+
+10007          68 LOAD_FAST               12 (up)
+               70 GET_ITER
+               72 LOAD_FAST_AND_CLEAR     13 (row)
+               74 LOAD_FAST_AND_CLEAR     14 (v)
+               76 SWAP                     3
+               78 BUILD_LIST               0
+               80 SWAP                     2
+          >>   82 FOR_ITER                14 (to 114)
+               86 STORE_FAST              13 (row)
+               88 LOAD_FAST               13 (row)
+               90 GET_ITER
+          >>   92 FOR_ITER                 7 (to 110)
+               96 STORE_FAST              14 (v)
+               98 LOAD_FAST               14 (v)
+              100 LOAD_FAST                2 (scale)
+              102 BINARY_OP                5 (*)
+              106 LIST_APPEND              3
+              108 JUMP_BACKWARD            9 (to 92)
+          >>  110 END_FOR
+              112 JUMP_BACKWARD           16 (to 82)
+          >>  114 END_FOR
+              116 STORE_FAST              15 (all_vals)
+              118 STORE_FAST              13 (row)
+              120 STORE_FAST              14 (v)
+
+10008         122 LOAD_GLOBAL              1 (NULL + max)
+              132 LOAD_FAST               15 (all_vals)
+              134 CALL                     1
+              142 LOAD_CONST               4 (1.05)
+              144 BINARY_OP                5 (*)
+              148 STORE_FAST              16 (y_max)
+
+10009         150 LOAD_CONST               5 (0)
+              152 STORE_FAST              17 (y_min)
+
+10010         154 BUILD_LIST               0
+              156 LOAD_CONST               6 (('#2864A0', '#288264', '#B48228', '#8C50A0', '#A03C3C', '#50828C', '#786432', '#A06E82', '#466E46'))
+              158 LIST_EXTEND              1
+              160 STORE_FAST              18 (colors)
+
+10012         162 BUILD_LIST               0
+              164 STORE_FAST              19 (paths)
+
+10013         166 LOAD_GLOBAL              3 (NULL + enumerate)
+              176 LOAD_FAST               12 (up)
+              178 CALL                     1
+              186 GET_ITER
+          >>  188 EXTENDED_ARG             1
+              190 FOR_ITER               273 (to 740)
+              194 UNPACK_SEQUENCE          2
+              198 STORE_FAST              20 (g)
+              200 STORE_FAST              13 (row)
+
+10014         202 BUILD_LIST               0
+              204 STORE_FAST              21 (pts)
+
+10015         206 LOAD_CONST               5 (0)
+              208 STORE_FAST              22 (last_y)
+
+10016         210 LOAD_GLOBAL              3 (NULL + enumerate)
+              220 LOAD_FAST               13 (row)
+              222 CALL                     1
+              230 GET_ITER
+          >>  232 FOR_ITER                72 (to 380)
+              236 UNPACK_SEQUENCE          2
+              240 STORE_FAST              23 (col)
+              242 STORE_FAST              14 (v)
+
+10017         244 LOAD_FAST                6 (pad_l)
+              246 LOAD_FAST               23 (col)
+              248 LOAD_FAST               10 (plot_w)
+              250 BINARY_OP                5 (*)
+              254 LOAD_GLOBAL              4 (TPS_COLS)
+              264 LOAD_CONST               7 (1)
+              266 BINARY_OP               10 (-)
+              270 BINARY_OP               11 (/)
+              274 BINARY_OP                0 (+)
+              278 STORE_FAST              24 (x)
+
+10018         280 LOAD_FAST                8 (pad_t)
+              282 LOAD_FAST               11 (plot_h)
+              284 BINARY_OP                0 (+)
+              288 LOAD_FAST               14 (v)
+              290 LOAD_FAST                2 (scale)
+              292 BINARY_OP                5 (*)
+              296 LOAD_FAST               17 (y_min)
+              298 BINARY_OP               10 (-)
+              302 LOAD_FAST               16 (y_max)
+              304 LOAD_FAST               17 (y_min)
+              306 BINARY_OP               10 (-)
+              310 BINARY_OP               11 (/)
+              314 LOAD_FAST               11 (plot_h)
+              316 BINARY_OP                5 (*)
+              320 BINARY_OP               10 (-)
+              324 STORE_FAST              25 (y)
+
+10019         326 LOAD_FAST               21 (pts)
+              328 LOAD_ATTR                7 (NULL|self + append)
+              348 LOAD_FAST               24 (x)
+              350 LOAD_CONST               8 ('.1f')
+              352 FORMAT_VALUE             4 (with format)
+              354 LOAD_CONST               9 (',')
+              356 LOAD_FAST               25 (y)
+              358 LOAD_CONST               8 ('.1f')
+              360 FORMAT_VALUE             4 (with format)
+              362 BUILD_STRING             3
+              364 CALL                     1
+              372 POP_TOP
+
+10020         374 LOAD_FAST               25 (y)
+              376 STORE_FAST              22 (last_y)
+              378 JUMP_BACKWARD           74 (to 232)
+
+10016     >>  380 END_FOR
+
+10021         382 LOAD_FAST               18 (colors)
+              384 LOAD_FAST               20 (g)
+              386 LOAD_GLOBAL              9 (NULL + len)
+              396 LOAD_FAST               18 (colors)
+              398 CALL                     1
+              406 BINARY_OP                6 (%)
+              410 BINARY_SUBSCR
+              414 STORE_FAST              26 (color)
+
+10022         416 LOAD_FAST               19 (paths)
+              418 LOAD_ATTR                7 (NULL|self + append)
+
+10023         438 LOAD_CONST              10 ('<polyline points="')
+              440 LOAD_CONST              11 (' ')
+              442 LOAD_ATTR               11 (NULL|self + join)
+              462 LOAD_FAST               21 (pts)
+              464 CALL                     1
+              472 FORMAT_VALUE             0
+              474 LOAD_CONST              12 ('" fill="none" stroke="')
+              476 LOAD_FAST               26 (color)
+              478 FORMAT_VALUE             0
+              480 LOAD_CONST              13 ('" stroke-width="2.2"/>')
+              482 BUILD_STRING             5
+
+10022         484 CALL                     1
+              492 POP_TOP
+
+10026         494 LOAD_FAST               20 (g)
+              496 LOAD_CONST               7 (1)
+              498 BINARY_OP                0 (+)
+              502 FORMAT_VALUE             0
+              504 LOAD_CONST              14 ('→')
+              506 LOAD_FAST               20 (g)
+              508 LOAD_CONST              15 (2)
+              510 BINARY_OP                0 (+)
+              514 FORMAT_VALUE             0
+              516 BUILD_STRING             3
+              518 STORE_FAST              27 (label)
+
+10027         520 LOAD_FAST               20 (g)
+              522 LOAD_GLOBAL              9 (NULL + len)
+              532 LOAD_FAST                1 (res)
+              534 LOAD_ATTR               13 (NULL|self + get)
+              554 LOAD_CONST              16 ('rpm_targets')
+              556 BUILD_LIST               0
+              558 CALL                     2
+              566 CALL                     1
+              574 COMPARE_OP               2 (<)
+              578 POP_JUMP_IF_FALSE       39 (to 658)
+
+10028         580 LOAD_FAST               27 (label)
+              582 LOAD_CONST              17 (' (')
+              584 LOAD_GLOBAL             15 (NULL + int)
+              594 LOAD_GLOBAL             17 (NULL + round)
+              604 LOAD_FAST                1 (res)
+              606 LOAD_CONST              16 ('rpm_targets')
+              608 BINARY_SUBSCR
+              612 LOAD_FAST               20 (g)
+              614 BINARY_SUBSCR
+              618 LOAD_CONST              18 (50)
+              620 BINARY_OP               11 (/)
+              624 CALL                     1
+              632 LOAD_CONST              18 (50)
+              634 BINARY_OP                5 (*)
+              638 CALL                     1
+              646 FORMAT_VALUE             0
+              648 LOAD_CONST              19 (')')
+              650 BUILD_STRING             3
+              652 BINARY_OP               13 (+=)
+              656 STORE_FAST              27 (label)
+
+10029     >>  658 LOAD_FAST               19 (paths)
+              660 LOAD_ATTR                7 (NULL|self + append)
+
+10030         680 LOAD_CONST              20 ('<text x="')
+              682 LOAD_FAST                6 (pad_l)
+              684 LOAD_FAST               10 (plot_w)
+              686 BINARY_OP                0 (+)
+              690 LOAD_CONST              21 (4)
+              692 BINARY_OP                0 (+)
+              696 FORMAT_VALUE             0
+              698 LOAD_CONST              22 ('" y="')
+              700 LOAD_FAST               22 (last_y)
+              702 LOAD_CONST              21 (4)
+              704 BINARY_OP                0 (+)
+              708 FORMAT_VALUE             0
+              710 LOAD_CONST              23 ('" fill="')
+              712 LOAD_FAST               26 (color)
+              714 FORMAT_VALUE             0
+              716 LOAD_CONST              24 ('" font-size="11" font-family="Consolas">')
+
+10031         718 LOAD_FAST               27 (label)
+              720 FORMAT_VALUE             0
+              722 LOAD_CONST              25 ('</text>')
+
+10030         724 BUILD_STRING             9
+
+10029         726 CALL                     1
+              734 POP_TOP
+              736 EXTENDED_ARG             1
+              738 JUMP_BACKWARD          276 (to 188)
+
+10013     >>  740 END_FOR
+
+10033         742 LOAD_CONST              26 ('<line x1="')
+              744 LOAD_FAST                6 (pad_l)
+              746 FORMAT_VALUE             0
+              748 LOAD_CONST              27 ('" y1="')
+              750 LOAD_FAST                8 (pad_t)
+              752 FORMAT_VALUE             0
+              754 LOAD_CONST              28 ('" x2="')
+              756 LOAD_FAST                6 (pad_l)
+              758 FORMAT_VALUE             0
+              760 LOAD_CONST              29 ('" y2="')
+              762 LOAD_FAST                8 (pad_t)
+              764 LOAD_FAST               11 (plot_h)
+              766 BINARY_OP                0 (+)
+              770 FORMAT_VALUE             0
+              772 LOAD_CONST              30 ('" stroke="#666"/><line x1="')
+
+10035         774 LOAD_FAST                6 (pad_l)
+              776 FORMAT_VALUE             0
+              778 LOAD_CONST              27 ('" y1="')
+              780 LOAD_FAST                8 (pad_t)
+              782 LOAD_FAST               11 (plot_h)
+              784 BINARY_OP                0 (+)
+              788 FORMAT_VALUE             0
+              790 LOAD_CONST              28 ('" x2="')
+              792 LOAD_FAST                6 (pad_l)
+              794 LOAD_FAST               10 (plot_w)
+              796 BINARY_OP                0 (+)
+              800 FORMAT_VALUE             0
+              802 LOAD_CONST              29 ('" y2="')
+
+10036         804 LOAD_FAST                8 (pad_t)
+              806 LOAD_FAST               11 (plot_h)
+              808 BINARY_OP                0 (+)
+              812 FORMAT_VALUE             0
+              814 LOAD_CONST              31 ('" stroke="#666"/>')
+
+10033         816 BUILD_STRING            17
+              818 STORE_FAST              28 (axis)
+
+10037         820 BUILD_LIST               0
+              822 STORE_FAST              29 (ticks)
+
+10038         824 LOAD_GLOBAL             19 (NULL + range)
+              834 LOAD_CONST              32 (6)
+              836 CALL                     1
+              844 GET_ITER
+          >>  846 FOR_ITER                73 (to 996)
+              850 STORE_FAST              30 (i)
+
+10039         852 LOAD_FAST                8 (pad_t)
+              854 LOAD_FAST               11 (plot_h)
+              856 BINARY_OP                0 (+)
+              860 LOAD_FAST               30 (i)
+              862 LOAD_FAST               11 (plot_h)
+              864 BINARY_OP                5 (*)
+              868 LOAD_CONST              33 (5)
+              870 BINARY_OP               11 (/)
+              874 BINARY_OP               10 (-)
+              878 STORE_FAST              25 (y)
+
+10040         880 LOAD_FAST               17 (y_min)
+              882 LOAD_FAST               30 (i)
+              884 LOAD_FAST               16 (y_max)
+              886 LOAD_FAST               17 (y_min)
+              888 BINARY_OP               10 (-)
+              892 BINARY_OP                5 (*)
+              896 LOAD_CONST              33 (5)
+              898 BINARY_OP               11 (/)
+              902 BINARY_OP                0 (+)
+              906 STORE_FAST              31 (val)
+
+10041         908 LOAD_FAST               29 (ticks)
+              910 LOAD_ATTR                7 (NULL|self + append)
+
+10042         930 LOAD_CONST              34 ('<text x="6" y="')
+              932 LOAD_FAST               25 (y)
+              934 LOAD_CONST              21 (4)
+              936 BINARY_OP                0 (+)
+              940 FORMAT_VALUE             0
+              942 LOAD_CONST              35 ('" font-size="10" fill="#555">')
+              944 LOAD_FAST               31 (val)
+              946 LOAD_CONST              36 ('.0f')
+              948 FORMAT_VALUE             4 (with format)
+              950 LOAD_CONST              37 ('</text><line x1="')
+
+10043         952 LOAD_FAST                6 (pad_l)
+              954 FORMAT_VALUE             0
+              956 LOAD_CONST              27 ('" y1="')
+              958 LOAD_FAST               25 (y)
+              960 FORMAT_VALUE             0
+              962 LOAD_CONST              28 ('" x2="')
+              964 LOAD_FAST                6 (pad_l)
+              966 LOAD_FAST               10 (plot_w)
+              968 BINARY_OP                0 (+)
+              972 FORMAT_VALUE             0
+              974 LOAD_CONST              29 ('" y2="')
+              976 LOAD_FAST               25 (y)
+              978 FORMAT_VALUE             0
+              980 LOAD_CONST              38 ('" stroke="#eee"/>')
+
+10042         982 BUILD_STRING            13
+
+10041         984 CALL                     1
+              992 POP_TOP
+              994 JUMP_BACKWARD           75 (to 846)
+
+10038     >>  996 END_FOR
+
+10046         998 LOAD_GLOBAL             19 (NULL + range)
+             1008 LOAD_CONST               5 (0)
+             1010 LOAD_GLOBAL              4 (TPS_COLS)
+             1020 LOAD_CONST              21 (4)
+             1022 CALL                     3
+             1030 GET_ITER
+          >> 1032 FOR_ITER                64 (to 1164)
+             1036 STORE_FAST              30 (i)
+
+10047        1038 LOAD_FAST                6 (pad_l)
+             1040 LOAD_FAST               30 (i)
+             1042 LOAD_FAST               10 (plot_w)
+             1044 BINARY_OP                5 (*)
+             1048 LOAD_GLOBAL              4 (TPS_COLS)
+             1058 LOAD_CONST               7 (1)
+             1060 BINARY_OP               10 (-)
+             1064 BINARY_OP               11 (/)
+             1068 BINARY_OP                0 (+)
+             1072 STORE_FAST              24 (x)
+
+10048        1074 LOAD_FAST               29 (ticks)
+             1076 LOAD_ATTR                7 (NULL|self + append)
+
+10049        1096 LOAD_CONST              20 ('<text x="')
+             1098 LOAD_FAST               24 (x)
+             1100 LOAD_CONST              39 (12)
+             1102 BINARY_OP               10 (-)
+             1106 FORMAT_VALUE             0
+             1108 LOAD_CONST              22 ('" y="')
+             1110 LOAD_FAST                8 (pad_t)
+             1112 LOAD_FAST               11 (plot_h)
+             1114 BINARY_OP                0 (+)
+             1118 LOAD_CONST              40 (16)
+             1120 BINARY_OP                0 (+)
+             1124 FORMAT_VALUE             0
+             1126 LOAD_CONST              35 ('" font-size="10" fill="#555">')
+
+10050        1128 LOAD_FAST               30 (i)
+             1130 LOAD_GLOBAL             20 (TPS_STEP)
+             1140 BINARY_OP                5 (*)
+             1144 LOAD_CONST              36 ('.0f')
+             1146 FORMAT_VALUE             4 (with format)
+             1148 LOAD_CONST              41 ('%</text>')
+
+10049        1150 BUILD_STRING             7
+
+10048        1152 CALL                     1
+             1160 POP_TOP
+             1162 JUMP_BACKWARD           66 (to 1032)
+
+10046     >> 1164 END_FOR
+
+10052        1166 LOAD_CONST              20 ('<text x="')
+             1168 LOAD_FAST                6 (pad_l)
+             1170 FORMAT_VALUE             0
+             1172 LOAD_CONST              22 ('" y="')
+             1174 LOAD_FAST                8 (pad_t)
+             1176 LOAD_CONST              42 (8)
+             1178 BINARY_OP               10 (-)
+             1182 FORMAT_VALUE             0
+             1184 LOAD_CONST              43 ('" font-size="11" fill="#222">Shift Speed (')
+
+10053        1186 LOAD_FAST                3 (unit)
+             1188 FORMAT_VALUE             0
+             1190 LOAD_CONST              44 (')</text><text x="')
+
+10054        1192 LOAD_FAST                6 (pad_l)
+             1194 LOAD_FAST               10 (plot_w)
+             1196 LOAD_CONST              15 (2)
+             1198 BINARY_OP               11 (/)
+             1202 BINARY_OP                0 (+)
+             1206 FORMAT_VALUE             0
+             1208 LOAD_CONST              22 ('" y="')
+             1210 LOAD_FAST                5 (H)
+             1212 LOAD_CONST              32 (6)
+             1214 BINARY_OP               10 (-)
+             1218 FORMAT_VALUE             0
+             1220 LOAD_CONST              45 ('" font-size="11" fill="#222">TPS (%)</text>')
+
+10052        1222 BUILD_STRING            11
+             1224 STORE_FAST              32 (labels)
+
+10056        1226 LOAD_CONST              46 ('<svg width="')
+             1228 LOAD_FAST                4 (W)
+             1230 FORMAT_VALUE             0
+             1232 LOAD_CONST              47 ('" height="')
+             1234 LOAD_FAST                5 (H)
+             1236 FORMAT_VALUE             0
+             1238 LOAD_CONST              48 ('" xmlns="http://www.w3.org/2000/svg">')
+
+10057        1240 LOAD_CONST              49 ('')
+             1242 LOAD_ATTR               11 (NULL|self + join)
+             1262 LOAD_FAST               29 (ticks)
+             1264 CALL                     1
+             1272 FORMAT_VALUE             0
+             1274 LOAD_FAST               28 (axis)
+             1276 FORMAT_VALUE             0
+             1278 LOAD_CONST              49 ('')
+             1280 LOAD_ATTR               11 (NULL|self + join)
+             1300 LOAD_FAST               19 (paths)
+             1302 CALL                     1
+             1310 FORMAT_VALUE             0
+             1312 LOAD_FAST               32 (labels)
+             1314 FORMAT_VALUE             0
+             1316 LOAD_CONST              50 ('</svg>')
+
+10056        1318 BUILD_STRING            10
+             1320 RETURN_VALUE
+          >> 1322 SWAP                     2
+             1324 POP_TOP
+
+10007        1326 SWAP                     3
+             1328 STORE_FAST              14 (v)
+             1330 STORE_FAST              13 (row)
+             1332 RERAISE                  0
+ExceptionTable:
+  78 to 114 -> 1322 [3]

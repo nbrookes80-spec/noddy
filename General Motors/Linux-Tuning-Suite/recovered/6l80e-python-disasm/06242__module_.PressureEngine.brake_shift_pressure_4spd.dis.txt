@@ -1,0 +1,160 @@
+6242           0 RESUME                   0
+
+6252           2 LOAD_GLOBAL              0 (BRAKE_SHIFT_INTENTS_4SPD)
+              12 LOAD_ATTR                3 (NULL|self + get)
+              32 LOAD_FAST                0 (intent_name)
+
+6253          34 LOAD_GLOBAL              0 (BRAKE_SHIFT_INTENTS_4SPD)
+              44 LOAD_CONST               1 ('Normal')
+              46 BINARY_SUBSCR
+
+6252          50 CALL                     2
+              58 STORE_FAST               1 (intent)
+
+6254          60 LOAD_GLOBAL              4 (BRAKE_SHIFT_4SPD_MAX_PSI)
+              70 STORE_FAST               2 (cap)
+
+6255          72 BUILD_LIST               0
+              74 STORE_FAST               3 (out)
+
+6256          76 LOAD_GLOBAL              6 (BRAKE_SHIFT_4SPD_SHIFTS)
+              86 GET_ITER
+         >>   88 FOR_ITER               198 (to 488)
+              92 STORE_FAST               4 (shift)
+
+6257          94 LOAD_FAST                1 (intent)
+              96 LOAD_FAST                4 (shift)
+              98 BINARY_SUBSCR
+             102 STORE_FAST               5 (p)
+
+6258         104 LOAD_FAST                5 (p)
+             106 LOAD_CONST               2 ('base_high')
+             108 BINARY_SUBSCR
+             112 STORE_FAST               6 (base_high)
+
+6259         114 LOAD_FAST                5 (p)
+             116 LOAD_CONST               3 ('valley_psi')
+             118 BINARY_SUBSCR
+             122 STORE_FAST               7 (valley)
+
+6260         124 LOAD_FAST                5 (p)
+             126 LOAD_CONST               4 ('valley_center')
+             128 BINARY_SUBSCR
+             132 STORE_FAST               8 (center)
+
+6261         134 LOAD_FAST                5 (p)
+             136 LOAD_CONST               5 ('high_end_psi')
+             138 BINARY_SUBSCR
+             142 STORE_FAST               9 (high_end)
+
+6262         144 BUILD_LIST               0
+             146 STORE_FAST              10 (row)
+
+6263         148 LOAD_GLOBAL              8 (BRAKE_SHIFT_4SPD_TORQUE_COLS)
+             158 GET_ITER
+         >>  160 FOR_ITER               143 (to 450)
+             164 STORE_FAST              11 (tq)
+
+6264         166 LOAD_FAST               11 (tq)
+             168 LOAD_CONST               6 (60)
+             170 COMPARE_OP              26 (<=)
+             174 POP_JUMP_IF_FALSE        3 (to 182)
+
+6265         176 LOAD_FAST                6 (base_high)
+             178 STORE_FAST              12 (val)
+             180 JUMP_FORWARD            96 (to 374)
+
+6266     >>  182 LOAD_FAST               11 (tq)
+             184 LOAD_FAST                8 (center)
+             186 COMPARE_OP               2 (<)
+             190 POP_JUMP_IF_FALSE       33 (to 258)
+
+6267         192 LOAD_FAST               11 (tq)
+             194 LOAD_CONST               6 (60)
+             196 BINARY_OP               10 (-)
+             200 LOAD_GLOBAL             11 (NULL + max)
+             210 LOAD_CONST               7 (1.0)
+             212 LOAD_FAST                8 (center)
+             214 LOAD_CONST               6 (60)
+             216 BINARY_OP               10 (-)
+             220 CALL                     2
+             228 BINARY_OP               11 (/)
+             232 STORE_FAST              13 (f)
+
+6268         234 LOAD_FAST                6 (base_high)
+             236 LOAD_FAST                7 (valley)
+             238 LOAD_FAST                6 (base_high)
+             240 BINARY_OP               10 (-)
+             244 LOAD_FAST               13 (f)
+             246 BINARY_OP                5 (*)
+             250 BINARY_OP                0 (+)
+             254 STORE_FAST              12 (val)
+             256 JUMP_FORWARD            58 (to 374)
+
+6269     >>  258 LOAD_FAST               11 (tq)
+             260 LOAD_FAST                8 (center)
+             262 LOAD_CONST               8 (100)
+             264 BINARY_OP                0 (+)
+             268 COMPARE_OP               2 (<)
+             272 POP_JUMP_IF_FALSE        3 (to 280)
+
+6270         274 LOAD_FAST                7 (valley)
+             276 STORE_FAST              12 (val)
+             278 JUMP_FORWARD            47 (to 374)
+
+6272     >>  280 LOAD_GLOBAL              8 (BRAKE_SHIFT_4SPD_TORQUE_COLS)
+             290 LOAD_CONST               9 (-1)
+             292 BINARY_SUBSCR
+             296 STORE_FAST              14 (range_top)
+
+6273         298 LOAD_FAST               11 (tq)
+             300 LOAD_FAST                8 (center)
+             302 LOAD_CONST               8 (100)
+             304 BINARY_OP                0 (+)
+             308 BINARY_OP               10 (-)
+             312 LOAD_GLOBAL             11 (NULL + max)
+             322 LOAD_CONST               7 (1.0)
+             324 LOAD_FAST               14 (range_top)
+             326 LOAD_FAST                8 (center)
+             328 LOAD_CONST               8 (100)
+             330 BINARY_OP                0 (+)
+             334 BINARY_OP               10 (-)
+             338 CALL                     2
+             346 BINARY_OP               11 (/)
+             350 STORE_FAST              13 (f)
+
+6274         352 LOAD_FAST                7 (valley)
+             354 LOAD_FAST                9 (high_end)
+             356 LOAD_FAST                7 (valley)
+             358 BINARY_OP               10 (-)
+             362 LOAD_FAST               13 (f)
+             364 BINARY_OP                5 (*)
+             368 BINARY_OP                0 (+)
+             372 STORE_FAST              12 (val)
+
+6275     >>  374 LOAD_FAST               10 (row)
+             376 LOAD_ATTR               13 (NULL|self + append)
+             396 LOAD_GLOBAL             15 (NULL + round)
+             406 LOAD_GLOBAL             17 (NULL + min)
+             416 LOAD_FAST               12 (val)
+             418 LOAD_FAST                2 (cap)
+             420 CALL                     2
+             428 LOAD_CONST              10 (0)
+             430 CALL                     2
+             438 CALL                     1
+             446 POP_TOP
+             448 JUMP_BACKWARD          145 (to 160)
+
+6263     >>  450 END_FOR
+
+6276         452 LOAD_FAST                3 (out)
+             454 LOAD_ATTR               13 (NULL|self + append)
+             474 LOAD_FAST               10 (row)
+             476 CALL                     1
+             484 POP_TOP
+             486 JUMP_BACKWARD          200 (to 88)
+
+6256     >>  488 END_FOR
+
+6277         490 LOAD_FAST                3 (out)
+             492 RETURN_VALUE

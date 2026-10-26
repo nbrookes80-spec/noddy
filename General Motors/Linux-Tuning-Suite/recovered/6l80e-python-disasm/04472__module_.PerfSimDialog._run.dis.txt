@@ -1,0 +1,384 @@
+4472           0 RESUME                   0
+
+4473           2 LOAD_GLOBAL              1 (NULL + dict)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_ATTR                2 (sim_cfg)
+              34 CALL                     1
+              42 STORE_FAST               1 (cfg)
+
+4475          44 LOAD_FAST                1 (cfg)
+              46 LOAD_ATTR                5 (NULL|self + get)
+              66 LOAD_CONST               1 ('torque_curve')
+              68 CALL                     1
+              76 POP_JUMP_IF_NONE        15 (to 108)
+              78 LOAD_FAST                1 (cfg)
+              80 LOAD_CONST               1 ('torque_curve')
+              82 BINARY_SUBSCR
+              86 LOAD_ATTR                6 (is_empty)
+             106 POP_JUMP_IF_FALSE       24 (to 156)
+
+4476     >>  108 LOAD_GLOBAL              9 (NULL + QMessageBox)
+             118 LOAD_ATTR               10 (warning)
+             138 LOAD_FAST                0 (self)
+             140 LOAD_CONST               2 ('No torque curve')
+
+4477         142 LOAD_CONST               3 ('Performance sim requires a torque curve.\nLoad one via Tools → Torque Curve, then re-run.')
+
+4476         144 CALL                     3
+             152 POP_TOP
+
+4479         154 RETURN_CONST             0 (None)
+
+4481     >>  156 LOAD_GLOBAL             13 (NULL + DragSimulator)
+             166 LOAD_FAST                1 (cfg)
+             168 LOAD_FAST                0 (self)
+             170 LOAD_ATTR               14 (shift_points_mph)
+
+4482         190 LOAD_FAST                0 (self)
+             192 LOAD_ATTR               16 (cda_spin)
+             212 LOAD_ATTR               19 (NULL|self + value)
+             232 CALL                     0
+             240 LOAD_FAST                0 (self)
+             242 LOAD_ATTR               20 (crr_spin)
+             262 LOAD_ATTR               19 (NULL|self + value)
+             282 CALL                     0
+
+4483         290 LOAD_FAST                0 (self)
+             292 LOAD_ATTR               22 (launch_grip_spin)
+             312 LOAD_ATTR               19 (NULL|self + value)
+             332 CALL                     0
+
+4484         340 LOAD_FAST                0 (self)
+             342 LOAD_ATTR               24 (eff_spin)
+             362 LOAD_ATTR               19 (NULL|self + value)
+             382 CALL                     0
+
+4481         390 KW_NAMES                 4 (('shift_points_mph', 'cda', 'crr', 'launch_grip_g', 'drivetrain_eff'))
+             392 CALL                     6
+             400 STORE_FAST               2 (sim)
+
+4485         402 LOAD_FAST                2 (sim)
+             404 LOAD_ATTR               27 (NULL|self + simulate)
+             424 CALL                     0
+             432 STORE_FAST               3 (results)
+
+4486         434 LOAD_FAST                3 (results)
+             436 POP_JUMP_IF_NOT_NONE    28 (to 494)
+
+4487         438 LOAD_FAST                0 (self)
+             440 LOAD_ATTR               28 (results_label)
+             460 LOAD_ATTR               31 (NULL|self + setText)
+             480 LOAD_CONST               5 ('Simulation failed')
+             482 CALL                     1
+             490 POP_TOP
+
+4488         492 RETURN_CONST             0 (None)
+
+4489     >>  494 LOAD_FAST                3 (results)
+             496 LOAD_FAST                0 (self)
+             498 STORE_ATTR              16 (last_results)
+
+4492         508 LOAD_CONST               6 (<code object fmt at 0x73ab02a1d0d0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4492>)
+             510 MAKE_FUNCTION            0
+             512 STORE_FAST               4 (fmt)
+
+4494         514 LOAD_CONST               7 (<code object fmtmph at 0x73ab02a1d1b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4494>)
+             516 MAKE_FUNCTION            0
+             518 STORE_FAST               5 (fmtmph)
+
+4498         520 LOAD_CONST               8 ('  0-30: ')
+             522 PUSH_NULL
+             524 LOAD_FAST                4 (fmt)
+             526 LOAD_FAST                3 (results)
+             528 LOAD_CONST               9 ('t_0_30')
+             530 BINARY_SUBSCR
+             534 CALL                     1
+             542 FORMAT_VALUE             0
+             544 LOAD_CONST              10 ('     0-60: ')
+
+4499         546 PUSH_NULL
+             548 LOAD_FAST                4 (fmt)
+             550 LOAD_FAST                3 (results)
+             552 LOAD_CONST              11 ('t_0_60')
+             554 BINARY_SUBSCR
+             558 CALL                     1
+             566 FORMAT_VALUE             0
+             568 LOAD_CONST              12 ('     0-100: ')
+
+4500         570 PUSH_NULL
+             572 LOAD_FAST                4 (fmt)
+             574 LOAD_FAST                3 (results)
+             576 LOAD_CONST              13 ('t_0_100')
+             578 BINARY_SUBSCR
+             582 CALL                     1
+             590 FORMAT_VALUE             0
+             592 LOAD_CONST              14 ('     0-120: ')
+
+4501         594 PUSH_NULL
+             596 LOAD_FAST                4 (fmt)
+             598 LOAD_FAST                3 (results)
+             600 LOAD_CONST              15 ('t_0_120')
+             602 BINARY_SUBSCR
+             606 CALL                     1
+             614 FORMAT_VALUE             0
+             616 LOAD_CONST              16 ('\n  1/8 mile: ')
+
+4502         618 PUSH_NULL
+             620 LOAD_FAST                4 (fmt)
+             622 LOAD_FAST                3 (results)
+             624 LOAD_CONST              17 ('t_eighth')
+             626 BINARY_SUBSCR
+             630 CALL                     1
+             638 FORMAT_VALUE             0
+             640 LOAD_CONST              18 ('  @  ')
+             642 PUSH_NULL
+             644 LOAD_FAST                5 (fmtmph)
+             646 LOAD_FAST                3 (results)
+             648 LOAD_CONST              19 ('v_eighth')
+             650 BINARY_SUBSCR
+             654 CALL                     1
+             662 FORMAT_VALUE             0
+             664 LOAD_CONST              20 ('\n  1/4 mile: ')
+
+4503         666 PUSH_NULL
+             668 LOAD_FAST                4 (fmt)
+             670 LOAD_FAST                3 (results)
+             672 LOAD_CONST              21 ('t_quarter')
+             674 BINARY_SUBSCR
+             678 CALL                     1
+             686 FORMAT_VALUE             0
+             688 LOAD_CONST              18 ('  @  ')
+             690 PUSH_NULL
+             692 LOAD_FAST                5 (fmtmph)
+             694 LOAD_FAST                3 (results)
+             696 LOAD_CONST              22 ('v_quarter')
+             698 BINARY_SUBSCR
+             702 CALL                     1
+             710 FORMAT_VALUE             0
+             712 LOAD_CONST              23 ('    (top speed in trace: ')
+
+4504         714 LOAD_FAST                3 (results)
+             716 LOAD_CONST              24 ('max_v')
+             718 BINARY_SUBSCR
+             722 LOAD_CONST              25 ('.1f')
+             724 FORMAT_VALUE             4 (with format)
+             726 LOAD_CONST              26 (' mph)')
+
+4498         728 BUILD_STRING            19
+
+4497         730 STORE_FAST               6 (text)
+
+4506         732 LOAD_FAST                0 (self)
+             734 LOAD_ATTR               28 (results_label)
+             754 LOAD_ATTR               31 (NULL|self + setText)
+             774 LOAD_FAST                6 (text)
+             776 CALL                     1
+             784 POP_TOP
+
+4509         786 LOAD_FAST                3 (results)
+             788 LOAD_ATTR                5 (NULL|self + get)
+             808 LOAD_CONST              27 ('shift_events')
+             810 BUILD_LIST               0
+             812 CALL                     2
+             820 STORE_FAST               7 (events)
+
+4510         822 LOAD_FAST                0 (self)
+             824 LOAD_ATTR               34 (shift_table)
+             844 LOAD_ATTR               37 (NULL|self + setRowCount)
+             864 LOAD_GLOBAL             39 (NULL + len)
+             874 LOAD_FAST                7 (events)
+             876 CALL                     1
+             884 CALL                     1
+             892 POP_TOP
+
+4511         894 LOAD_FAST                0 (self)
+             896 LOAD_ATTR                2 (sim_cfg)
+             916 LOAD_ATTR                5 (NULL|self + get)
+             936 LOAD_CONST              28 ('per_gear_rpm')
+             938 CALL                     1
+             946 COPY                     1
+             948 POP_JUMP_IF_TRUE        41 (to 1032)
+             950 POP_TOP
+
+4512         952 LOAD_FAST                0 (self)
+             954 LOAD_ATTR                2 (sim_cfg)
+             974 LOAD_CONST              29 ('shift_rpm')
+             976 BINARY_SUBSCR
+             980 BUILD_LIST               1
+             982 LOAD_GLOBAL             39 (NULL + len)
+             992 LOAD_FAST                0 (self)
+             994 LOAD_ATTR                2 (sim_cfg)
+            1014 LOAD_CONST              30 ('ratios')
+            1016 BINARY_SUBSCR
+            1020 CALL                     1
+            1028 BINARY_OP                5 (*)
+
+4511     >> 1032 STORE_FAST               8 (shift_rpms)
+
+4513        1034 LOAD_GLOBAL             41 (NULL + max)
+            1044 LOAD_FAST                8 (shift_rpms)
+            1046 CALL                     1
+            1054 LOAD_CONST              31 (500)
+            1056 BINARY_OP                0 (+)
+            1060 STORE_FAST               9 (rev_limit)
+
+4514        1062 LOAD_GLOBAL             43 (NULL + enumerate)
+            1072 LOAD_FAST                7 (events)
+            1074 CALL                     1
+            1082 GET_ITER
+         >> 1084 FOR_ITER               249 (to 1586)
+            1088 UNPACK_SEQUENCE          2
+            1092 STORE_FAST              10 (i)
+            1094 STORE_FAST              11 (ev)
+
+4515        1096 LOAD_FAST                9 (rev_limit)
+            1098 LOAD_FAST               11 (ev)
+            1100 LOAD_CONST              32 ('rpm_init')
+            1102 BINARY_SUBSCR
+            1106 BINARY_OP               10 (-)
+            1110 STORE_FAST              12 (margin)
+
+4516        1112 LOAD_FAST               12 (margin)
+            1114 LOAD_CONST              33 (0)
+            1116 COMPARE_OP              92 (>=)
+            1120 POP_JUMP_IF_FALSE        6 (to 1134)
+            1122 LOAD_CONST              34 ('+')
+            1124 LOAD_FAST               12 (margin)
+            1126 LOAD_CONST              35 ('.0f')
+            1128 FORMAT_VALUE             4 (with format)
+            1130 BUILD_STRING             2
+            1132 JUMP_FORWARD             3 (to 1140)
+         >> 1134 LOAD_FAST               12 (margin)
+            1136 LOAD_CONST              35 ('.0f')
+            1138 FORMAT_VALUE             4 (with format)
+         >> 1140 STORE_FAST              13 (margin_str)
+
+4517        1142 LOAD_FAST               12 (margin)
+            1144 LOAD_CONST              36 (200)
+            1146 COMPARE_OP              68 (>)
+            1150 POP_JUMP_IF_FALSE       13 (to 1178)
+            1152 LOAD_GLOBAL             45 (NULL + QColor)
+            1162 LOAD_CONST              37 (120)
+            1164 LOAD_CONST              36 (200)
+            1166 LOAD_CONST              37 (120)
+            1168 CALL                     3
+            1176 JUMP_FORWARD            30 (to 1238)
+
+4518     >> 1178 LOAD_FAST               12 (margin)
+            1180 LOAD_CONST              33 (0)
+            1182 COMPARE_OP              68 (>)
+            1186 POP_JUMP_IF_FALSE       13 (to 1214)
+            1188 LOAD_GLOBAL             45 (NULL + QColor)
+            1198 LOAD_CONST              36 (200)
+            1200 LOAD_CONST              38 (180)
+            1202 LOAD_CONST              39 (80)
+            1204 CALL                     3
+            1212 JUMP_FORWARD            12 (to 1238)
+
+4519     >> 1214 LOAD_GLOBAL             45 (NULL + QColor)
+            1224 LOAD_CONST              40 (220)
+            1226 LOAD_CONST              39 (80)
+            1228 LOAD_CONST              39 (80)
+            1230 CALL                     3
+
+4517     >> 1238 STORE_FAST              14 (margin_color)
+
+4520        1240 LOAD_FAST               11 (ev)
+            1242 LOAD_CONST              32 ('rpm_init')
+            1244 BINARY_SUBSCR
+            1248 LOAD_FAST               11 (ev)
+            1250 LOAD_CONST              41 ('rpm_post')
+            1252 BINARY_SUBSCR
+            1256 BINARY_OP               10 (-)
+            1260 STORE_FAST              15 (rpm_drop)
+
+4522        1262 LOAD_FAST               11 (ev)
+            1264 LOAD_CONST              42 ('shift_name')
+            1266 BINARY_SUBSCR
+
+4523        1270 LOAD_FAST               11 (ev)
+            1272 LOAD_CONST              43 ('mph_init')
+            1274 BINARY_SUBSCR
+            1278 LOAD_CONST              25 ('.1f')
+            1280 FORMAT_VALUE             4 (with format)
+
+4524        1282 LOAD_FAST               11 (ev)
+            1284 LOAD_CONST              32 ('rpm_init')
+            1286 BINARY_SUBSCR
+            1290 LOAD_CONST              35 ('.0f')
+            1292 FORMAT_VALUE             4 (with format)
+
+4525        1294 LOAD_FAST               11 (ev)
+            1296 LOAD_CONST              41 ('rpm_post')
+            1298 BINARY_SUBSCR
+            1302 LOAD_CONST              35 ('.0f')
+            1304 FORMAT_VALUE             4 (with format)
+
+4526        1306 LOAD_CONST              44 ('-')
+            1308 LOAD_FAST               15 (rpm_drop)
+            1310 LOAD_CONST              35 ('.0f')
+            1312 FORMAT_VALUE             4 (with format)
+            1314 BUILD_STRING             2
+
+4527        1316 LOAD_FAST               13 (margin_str)
+
+4521        1318 BUILD_LIST               6
+            1320 STORE_FAST              16 (cells)
+
+4529        1322 LOAD_GLOBAL             43 (NULL + enumerate)
+            1332 LOAD_FAST               16 (cells)
+            1334 CALL                     1
+            1342 GET_ITER
+         >> 1344 FOR_ITER               117 (to 1582)
+            1348 UNPACK_SEQUENCE          2
+            1352 STORE_FAST              17 (c)
+            1354 STORE_FAST              18 (val)
+
+4530        1356 LOAD_GLOBAL             47 (NULL + QTableWidgetItem)
+            1366 LOAD_FAST               18 (val)
+            1368 CALL                     1
+            1376 STORE_FAST              19 (item)
+
+4531        1378 LOAD_FAST               19 (item)
+            1380 LOAD_ATTR               49 (NULL|self + setTextAlignment)
+            1400 LOAD_GLOBAL             50 (Qt)
+            1410 LOAD_ATTR               52 (AlignmentFlag)
+            1430 LOAD_ATTR               54 (AlignCenter)
+            1450 CALL                     1
+            1458 POP_TOP
+
+4532        1460 LOAD_FAST               17 (c)
+            1462 LOAD_CONST              45 (5)
+            1464 COMPARE_OP              40 (==)
+            1468 POP_JUMP_IF_FALSE       26 (to 1522)
+
+4533        1470 LOAD_FAST               19 (item)
+            1472 LOAD_ATTR               57 (NULL|self + setForeground)
+            1492 LOAD_GLOBAL             59 (NULL + QBrush)
+            1502 LOAD_FAST               14 (margin_color)
+            1504 CALL                     1
+            1512 CALL                     1
+            1520 POP_TOP
+
+4534     >> 1522 LOAD_FAST                0 (self)
+            1524 LOAD_ATTR               34 (shift_table)
+            1544 LOAD_ATTR               61 (NULL|self + setItem)
+            1564 LOAD_FAST               10 (i)
+            1566 LOAD_FAST               17 (c)
+            1568 LOAD_FAST               19 (item)
+            1570 CALL                     3
+            1578 POP_TOP
+            1580 JUMP_BACKWARD          119 (to 1344)
+
+4529     >> 1582 END_FOR
+            1584 JUMP_BACKWARD          251 (to 1084)
+
+4514     >> 1586 END_FOR
+
+4536        1588 LOAD_FAST                0 (self)
+            1590 LOAD_ATTR               62 (plot)
+            1610 LOAD_ATTR               65 (NULL|self + set_results)
+            1630 LOAD_FAST                3 (results)
+            1632 CALL                     1
+            1640 POP_TOP
+            1642 RETURN_CONST             0 (None)

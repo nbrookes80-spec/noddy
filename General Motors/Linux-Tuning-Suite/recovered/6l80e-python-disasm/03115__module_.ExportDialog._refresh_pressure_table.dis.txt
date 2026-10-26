@@ -1,0 +1,1072 @@
+3115           0 RESUME                   0
+
+3118           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (is_4spd)
+              24 EXTENDED_ARG             3
+              26 POP_JUMP_IF_FALSE      910 (to 1848)
+
+3119          28 LOAD_FAST                0 (self)
+              30 LOAD_ATTR                3 (NULL|self + _get_4spd_current_table)
+              50 CALL                     0
+              58 UNPACK_SEQUENCE          5
+              62 STORE_FAST               1 (data)
+              64 STORE_FAST               2 (row_lbls)
+              66 STORE_FAST               3 (col_lbls)
+              68 STORE_FAST               4 (kind)
+              70 STORE_FAST               5 (header)
+
+3120          72 LOAD_FAST                1 (data)
+              74 POP_JUMP_IF_TRUE        82 (to 240)
+
+3121          76 LOAD_FAST                0 (self)
+              78 LOAD_ATTR                4 (pressure_grid)
+              98 LOAD_ATTR                7 (NULL|self + setVisible)
+             118 LOAD_CONST               1 (False)
+             120 CALL                     1
+             128 POP_TOP
+
+3122         130 LOAD_FAST                0 (self)
+             132 LOAD_ATTR                8 (pressure_placeholder)
+             152 LOAD_ATTR                7 (NULL|self + setVisible)
+             172 LOAD_CONST               2 (True)
+             174 CALL                     1
+             182 POP_TOP
+
+3123         184 LOAD_FAST                0 (self)
+             186 LOAD_ATTR               10 (pressure_title)
+             206 LOAD_ATTR               13 (NULL|self + setText)
+             226 LOAD_CONST               3 ('')
+             228 CALL                     1
+             236 POP_TOP
+
+3124         238 RETURN_CONST             4 (None)
+
+3125     >>  240 LOAD_FAST                0 (self)
+             242 LOAD_ATTR                4 (pressure_grid)
+             262 LOAD_ATTR                7 (NULL|self + setVisible)
+             282 LOAD_CONST               2 (True)
+             284 CALL                     1
+             292 POP_TOP
+
+3126         294 LOAD_FAST                0 (self)
+             296 LOAD_ATTR                8 (pressure_placeholder)
+             316 LOAD_ATTR                7 (NULL|self + setVisible)
+             336 LOAD_CONST               1 (False)
+             338 CALL                     1
+             346 POP_TOP
+
+3128         348 LOAD_GLOBAL             15 (NULL + hasattr)
+             358 LOAD_FAST                0 (self)
+             360 LOAD_CONST               5 ('pressure_unit_combo')
+             362 CALL                     2
+             370 POP_JUMP_IF_FALSE       26 (to 424)
+             372 LOAD_FAST                0 (self)
+             374 LOAD_ATTR               16 (pressure_unit_combo)
+             394 LOAD_ATTR               19 (NULL|self + currentText)
+             414 CALL                     0
+             422 JUMP_FORWARD             1 (to 426)
+         >>  424 LOAD_CONST               6 ('PSI')
+         >>  426 STORE_FAST               6 (unit)
+
+3130         428 LOAD_FAST                4 (kind)
+             430 LOAD_CONST               7 ('psi_4spd')
+             432 COMPARE_OP              40 (==)
+             436 POP_JUMP_IF_FALSE       14 (to 466)
+             438 LOAD_FAST                6 (unit)
+             440 LOAD_CONST               8 ('kPa')
+             442 COMPARE_OP              40 (==)
+             446 POP_JUMP_IF_FALSE        9 (to 466)
+
+3131         448 LOAD_GLOBAL             20 (PSI_TO_KPA)
+             458 LOAD_CONST               8 ('kPa')
+             460 STORE_FAST               8 (unit_label)
+             462 STORE_FAST               7 (scale)
+             464 JUMP_FORWARD            27 (to 520)
+
+3132     >>  466 LOAD_FAST                4 (kind)
+             468 LOAD_CONST               7 ('psi_4spd')
+             470 COMPARE_OP              40 (==)
+             474 POP_JUMP_IF_FALSE        6 (to 488)
+
+3133         476 LOAD_CONST               9 ((1.0, 'PSI'))
+             478 UNPACK_SEQUENCE          2
+             482 STORE_FAST               7 (scale)
+             484 STORE_FAST               8 (unit_label)
+             486 JUMP_FORWARD            16 (to 520)
+
+3134     >>  488 LOAD_FAST                4 (kind)
+             490 LOAD_CONST              10 ('sec')
+             492 COMPARE_OP              40 (==)
+             496 POP_JUMP_IF_FALSE        6 (to 510)
+
+3135         498 LOAD_CONST              11 ((1.0, 'sec'))
+             500 UNPACK_SEQUENCE          2
+             504 STORE_FAST               7 (scale)
+             506 STORE_FAST               8 (unit_label)
+             508 JUMP_FORWARD             5 (to 520)
+
+3137     >>  510 LOAD_CONST              12 ((1.0, '%'))
+             512 UNPACK_SEQUENCE          2
+             516 STORE_FAST               7 (scale)
+             518 STORE_FAST               8 (unit_label)
+
+3139     >>  520 LOAD_CONST               3 ('')
+             522 STORE_FAST               9 (extra)
+
+3140         524 LOAD_FAST                4 (kind)
+             526 LOAD_CONST               7 ('psi_4spd')
+             528 COMPARE_OP              40 (==)
+             532 POP_JUMP_IF_FALSE       20 (to 574)
+
+3141         534 LOAD_GLOBAL             22 (PRESSURE_4SPD_MAX_PSI)
+             544 LOAD_FAST                7 (scale)
+             546 BINARY_OP                5 (*)
+             550 STORE_FAST              10 (cap)
+
+3142         552 LOAD_CONST              13 ('   [Cap: ')
+             554 LOAD_FAST               10 (cap)
+             556 LOAD_CONST              14 ('.0f')
+             558 FORMAT_VALUE             4 (with format)
+             560 LOAD_CONST              15 (' ')
+             562 LOAD_FAST                8 (unit_label)
+             564 FORMAT_VALUE             0
+             566 LOAD_CONST              16 (']')
+             568 BUILD_STRING             5
+             570 STORE_FAST               9 (extra)
+             572 JUMP_FORWARD             7 (to 588)
+
+3143     >>  574 LOAD_FAST                4 (kind)
+             576 LOAD_CONST              10 ('sec')
+             578 COMPARE_OP              40 (==)
+             582 POP_JUMP_IF_FALSE        2 (to 588)
+
+3144         584 LOAD_CONST              17 ('   [seconds — lower = faster shift]')
+             586 STORE_FAST               9 (extra)
+
+3145     >>  588 LOAD_FAST                0 (self)
+             590 LOAD_ATTR               10 (pressure_title)
+             610 LOAD_ATTR               13 (NULL|self + setText)
+             630 LOAD_FAST                5 (header)
+             632 FORMAT_VALUE             0
+             634 LOAD_CONST              18 (' (')
+             636 LOAD_FAST                8 (unit_label)
+             638 FORMAT_VALUE             0
+             640 LOAD_CONST              19 (')')
+             642 LOAD_FAST                9 (extra)
+             644 FORMAT_VALUE             0
+             646 BUILD_STRING             5
+             648 CALL                     1
+             656 POP_TOP
+
+3147         658 LOAD_FAST                0 (self)
+             660 LOAD_ATTR                4 (pressure_grid)
+             680 LOAD_ATTR               25 (NULL|self + setRowCount)
+             700 LOAD_GLOBAL             27 (NULL + len)
+             710 LOAD_FAST                1 (data)
+             712 CALL                     1
+             720 CALL                     1
+             728 POP_TOP
+
+3148         730 LOAD_FAST                1 (data)
+             732 POP_JUMP_IF_FALSE       14 (to 762)
+             734 LOAD_GLOBAL             27 (NULL + len)
+             744 LOAD_FAST                1 (data)
+             746 LOAD_CONST              20 (0)
+             748 BINARY_SUBSCR
+             752 CALL                     1
+             760 JUMP_FORWARD             1 (to 764)
+         >>  762 LOAD_CONST              20 (0)
+         >>  764 STORE_FAST              11 (cols)
+
+3149         766 LOAD_FAST                0 (self)
+             768 LOAD_ATTR                4 (pressure_grid)
+             788 LOAD_ATTR               29 (NULL|self + setColumnCount)
+             808 LOAD_FAST               11 (cols)
+             810 CALL                     1
+             818 POP_TOP
+
+3150         820 LOAD_FAST                0 (self)
+             822 LOAD_ATTR                4 (pressure_grid)
+             842 LOAD_ATTR               31 (NULL|self + setHorizontalHeaderLabels)
+             862 LOAD_FAST                3 (col_lbls)
+             864 LOAD_CONST               4 (None)
+             866 LOAD_FAST               11 (cols)
+             868 BINARY_SLICE
+             870 CALL                     1
+             878 POP_TOP
+
+3151         880 LOAD_FAST                0 (self)
+             882 LOAD_ATTR                4 (pressure_grid)
+             902 LOAD_ATTR               33 (NULL|self + setVerticalHeaderLabels)
+             922 LOAD_FAST                2 (row_lbls)
+             924 LOAD_CONST               4 (None)
+             926 LOAD_GLOBAL             27 (NULL + len)
+             936 LOAD_FAST                1 (data)
+             938 CALL                     1
+             946 BINARY_SLICE
+             948 CALL                     1
+             956 POP_TOP
+
+3152         958 LOAD_FAST                0 (self)
+             960 LOAD_ATTR                4 (pressure_grid)
+             980 LOAD_ATTR               35 (NULL|self + horizontalHeader)
+            1000 CALL                     0
+            1008 LOAD_ATTR               37 (NULL|self + setSectionResizeMode)
+
+3153        1028 LOAD_GLOBAL             38 (QHeaderView)
+            1038 LOAD_ATTR               40 (ResizeMode)
+            1058 LOAD_ATTR               42 (Stretch)
+
+3152        1078 CALL                     1
+            1086 POP_TOP
+
+3155        1088 LOAD_FAST                1 (data)
+            1090 GET_ITER
+            1092 LOAD_FAST_AND_CLEAR     12 (row)
+            1094 LOAD_FAST_AND_CLEAR     13 (v)
+            1096 SWAP                     3
+            1098 BUILD_LIST               0
+            1100 SWAP                     2
+         >> 1102 FOR_ITER                14 (to 1134)
+            1106 STORE_FAST              12 (row)
+            1108 LOAD_FAST               12 (row)
+            1110 GET_ITER
+         >> 1112 FOR_ITER                 7 (to 1130)
+            1116 STORE_FAST              13 (v)
+            1118 LOAD_FAST               13 (v)
+            1120 LOAD_FAST                7 (scale)
+            1122 BINARY_OP                5 (*)
+            1126 LIST_APPEND              3
+            1128 JUMP_BACKWARD            9 (to 1112)
+         >> 1130 END_FOR
+            1132 JUMP_BACKWARD           16 (to 1102)
+         >> 1134 END_FOR
+            1136 SWAP                     3
+            1138 STORE_FAST              13 (v)
+            1140 STORE_FAST              12 (row)
+            1142 COPY                     1
+            1144 POP_JUMP_IF_TRUE         3 (to 1152)
+            1146 POP_TOP
+            1148 LOAD_CONST              20 (0)
+            1150 BUILD_LIST               1
+         >> 1152 STORE_FAST              14 (flat)
+
+3156        1154 LOAD_GLOBAL             45 (NULL + min)
+            1164 LOAD_FAST               14 (flat)
+            1166 CALL                     1
+            1174 LOAD_GLOBAL             47 (NULL + max)
+            1184 LOAD_FAST               14 (flat)
+            1186 CALL                     1
+            1194 STORE_FAST              16 (hi)
+            1196 STORE_FAST              15 (lo)
+
+3157        1198 LOAD_FAST               16 (hi)
+            1200 LOAD_FAST               15 (lo)
+            1202 COMPARE_OP              68 (>)
+            1206 POP_JUMP_IF_FALSE        5 (to 1218)
+            1208 LOAD_FAST               16 (hi)
+            1210 LOAD_FAST               15 (lo)
+            1212 BINARY_OP               10 (-)
+            1216 JUMP_FORWARD             1 (to 1220)
+         >> 1218 LOAD_CONST              21 (1.0)
+         >> 1220 STORE_FAST              17 (rng)
+
+3158        1222 LOAD_FAST                4 (kind)
+            1224 LOAD_CONST              10 ('sec')
+            1226 COMPARE_OP              40 (==)
+            1230 POP_JUMP_IF_FALSE        2 (to 1236)
+            1232 LOAD_CONST              22 ('{:.3f}')
+            1234 JUMP_FORWARD             1 (to 1238)
+         >> 1236 LOAD_CONST              23 ('{:.1f}')
+         >> 1238 STORE_FAST              18 (fmt)
+
+3159        1240 LOAD_GLOBAL             49 (NULL + enumerate)
+            1250 LOAD_FAST                1 (data)
+            1252 CALL                     1
+            1260 GET_ITER
+         >> 1262 EXTENDED_ARG             1
+            1264 FOR_ITER               288 (to 1844)
+            1268 UNPACK_SEQUENCE          2
+            1272 STORE_FAST              19 (r)
+            1274 STORE_FAST              12 (row)
+
+3160        1276 LOAD_GLOBAL             49 (NULL + enumerate)
+            1286 LOAD_FAST               12 (row)
+            1288 CALL                     1
+            1296 GET_ITER
+         >> 1298 EXTENDED_ARG             1
+            1300 FOR_ITER               267 (to 1838)
+            1304 UNPACK_SEQUENCE          2
+            1308 STORE_FAST              20 (c)
+            1310 STORE_FAST              21 (val)
+
+3161        1312 LOAD_FAST               21 (val)
+            1314 LOAD_FAST                7 (scale)
+            1316 BINARY_OP                5 (*)
+            1320 STORE_FAST              22 (disp)
+
+3162        1322 LOAD_GLOBAL             51 (NULL + QTableWidgetItem)
+            1332 LOAD_FAST               18 (fmt)
+            1334 LOAD_ATTR               53 (NULL|self + format)
+            1354 LOAD_FAST               22 (disp)
+            1356 CALL                     1
+            1364 CALL                     1
+            1372 STORE_FAST              23 (item)
+
+3163        1374 LOAD_FAST               23 (item)
+            1376 LOAD_ATTR               55 (NULL|self + setTextAlignment)
+            1396 LOAD_GLOBAL             56 (Qt)
+            1406 LOAD_ATTR               58 (AlignmentFlag)
+            1426 LOAD_ATTR               60 (AlignCenter)
+            1446 CALL                     1
+            1454 POP_TOP
+
+3164        1456 LOAD_FAST               22 (disp)
+            1458 LOAD_FAST               15 (lo)
+            1460 BINARY_OP               10 (-)
+            1464 LOAD_FAST               17 (rng)
+            1466 BINARY_OP               11 (/)
+            1470 STORE_FAST              24 (t)
+
+3165        1472 LOAD_FAST                4 (kind)
+            1474 LOAD_CONST              24 ('pct')
+            1476 COMPARE_OP              40 (==)
+            1480 POP_JUMP_IF_FALSE       37 (to 1556)
+
+3166        1482 LOAD_GLOBAL             63 (NULL + int)
+            1492 LOAD_CONST              25 (40)
+            1494 LOAD_CONST              26 (200)
+            1496 LOAD_FAST               24 (t)
+            1498 BINARY_OP                5 (*)
+            1502 BINARY_OP                0 (+)
+            1506 CALL                     1
+            1514 STORE_FAST              25 (r_ch)
+            1516 LOAD_GLOBAL             63 (NULL + int)
+            1526 LOAD_CONST              27 (150)
+            1528 LOAD_CONST              28 (50)
+            1530 LOAD_FAST               24 (t)
+            1532 BINARY_OP                5 (*)
+            1536 BINARY_OP                0 (+)
+            1540 CALL                     1
+            1548 STORE_FAST              26 (g_ch)
+            1550 LOAD_CONST              29 (60)
+            1552 STORE_FAST              27 (b_ch)
+            1554 JUMP_FORWARD            36 (to 1628)
+
+3168     >> 1556 LOAD_GLOBAL             63 (NULL + int)
+            1566 LOAD_CONST              28 (50)
+            1568 LOAD_CONST              26 (200)
+            1570 LOAD_FAST               24 (t)
+            1572 BINARY_OP                5 (*)
+            1576 BINARY_OP                0 (+)
+            1580 CALL                     1
+            1588 STORE_FAST              25 (r_ch)
+            1590 LOAD_CONST              29 (60)
+            1592 STORE_FAST              26 (g_ch)
+            1594 LOAD_GLOBAL             63 (NULL + int)
+            1604 LOAD_CONST              26 (200)
+            1606 LOAD_CONST              27 (150)
+            1608 LOAD_FAST               24 (t)
+            1610 BINARY_OP                5 (*)
+            1614 BINARY_OP               10 (-)
+            1618 CALL                     1
+            1626 STORE_FAST              27 (b_ch)
+
+3169     >> 1628 LOAD_FAST               23 (item)
+            1630 LOAD_ATTR               65 (NULL|self + setBackground)
+            1650 LOAD_GLOBAL             67 (NULL + QBrush)
+            1660 LOAD_GLOBAL             69 (NULL + QColor)
+            1670 LOAD_FAST               25 (r_ch)
+            1672 LOAD_FAST               26 (g_ch)
+            1674 LOAD_FAST               27 (b_ch)
+            1676 CALL                     3
+            1684 CALL                     1
+            1692 CALL                     1
+            1700 POP_TOP
+
+3170        1702 LOAD_FAST               23 (item)
+            1704 LOAD_ATTR               71 (NULL|self + setForeground)
+            1724 LOAD_GLOBAL             67 (NULL + QBrush)
+            1734 LOAD_GLOBAL             69 (NULL + QColor)
+            1744 LOAD_CONST              30 (255)
+            1746 LOAD_CONST              30 (255)
+            1748 LOAD_CONST              30 (255)
+            1750 CALL                     3
+            1758 CALL                     1
+            1766 CALL                     1
+            1774 POP_TOP
+
+3171        1776 LOAD_FAST                0 (self)
+            1778 LOAD_ATTR                4 (pressure_grid)
+            1798 LOAD_ATTR               73 (NULL|self + setItem)
+            1818 LOAD_FAST               19 (r)
+            1820 LOAD_FAST               20 (c)
+            1822 LOAD_FAST               23 (item)
+            1824 CALL                     3
+            1832 POP_TOP
+            1834 EXTENDED_ARG             1
+            1836 JUMP_BACKWARD          270 (to 1298)
+
+3160     >> 1838 END_FOR
+            1840 EXTENDED_ARG             1
+            1842 JUMP_BACKWARD          291 (to 1262)
+
+3159     >> 1844 END_FOR
+
+3172        1846 RETURN_CONST             4 (None)
+
+3175     >> 1848 LOAD_GLOBAL             75 (NULL + getattr)
+            1858 LOAD_FAST                0 (self)
+            1860 LOAD_CONST              31 ('current_pressure_table_type')
+            1862 LOAD_CONST              32 ('Base Shift')
+            1864 CALL                     3
+            1872 STORE_FAST              28 (table_type)
+
+3176        1874 LOAD_GLOBAL             15 (NULL + hasattr)
+            1884 LOAD_FAST                0 (self)
+            1886 LOAD_CONST              33 ('pres_mode_combo')
+            1888 CALL                     2
+            1896 POP_JUMP_IF_FALSE       26 (to 1950)
+            1898 LOAD_FAST                0 (self)
+            1900 LOAD_ATTR               76 (pres_mode_combo)
+            1920 LOAD_ATTR               19 (NULL|self + currentText)
+            1940 CALL                     0
+            1948 JUMP_FORWARD            11 (to 1972)
+
+3177     >> 1950 LOAD_FAST                0 (self)
+            1952 LOAD_ATTR               78 (current_pressure_pattern)
+
+3176     >> 1972 STORE_FAST              29 (mode)
+
+3178        1974 LOAD_FAST               29 (mode)
+            1976 POP_JUMP_IF_TRUE         2 (to 1982)
+
+3179        1978 LOAD_CONST              34 ('Normal')
+            1980 STORE_FAST              29 (mode)
+
+3180     >> 1982 LOAD_FAST                0 (self)
+            1984 LOAD_ATTR               80 (pressure_intent_per_mode)
+            2004 LOAD_ATTR               83 (NULL|self + get)
+            2024 LOAD_FAST               29 (mode)
+            2026 LOAD_CONST              35 ('Daily')
+            2028 CALL                     2
+            2036 STORE_FAST              30 (intent)
+
+3181        2038 LOAD_GLOBAL             15 (NULL + hasattr)
+            2048 LOAD_FAST                0 (self)
+            2050 LOAD_CONST               5 ('pressure_unit_combo')
+            2052 CALL                     2
+            2060 POP_JUMP_IF_FALSE       26 (to 2114)
+            2062 LOAD_FAST                0 (self)
+            2064 LOAD_ATTR               16 (pressure_unit_combo)
+            2084 LOAD_ATTR               19 (NULL|self + currentText)
+            2104 CALL                     0
+            2112 JUMP_FORWARD             1 (to 2116)
+         >> 2114 LOAD_CONST               6 ('PSI')
+         >> 2116 STORE_FAST               6 (unit)
+
+3182        2118 LOAD_FAST                6 (unit)
+            2120 LOAD_CONST               8 ('kPa')
+            2122 COMPARE_OP              40 (==)
+            2126 POP_JUMP_IF_FALSE        6 (to 2140)
+            2128 LOAD_GLOBAL             20 (PSI_TO_KPA)
+            2138 JUMP_FORWARD             1 (to 2142)
+         >> 2140 LOAD_CONST              21 (1.0)
+         >> 2142 STORE_FAST               7 (scale)
+
+3185        2144 LOAD_CONST               4 (None)
+            2146 STORE_FAST               1 (data)
+
+3186        2148 LOAD_CONST               4 (None)
+            2150 STORE_FAST              31 (row_labels)
+
+3187        2152 LOAD_CONST               4 (None)
+            2154 STORE_FAST              32 (col_labels)
+
+3188        2156 LOAD_GLOBAL             84 (MAX_PRESSURE_PSI)
+            2166 STORE_FAST              33 (cap_psi)
+
+3189        2168 LOAD_CONST               3 ('')
+            2170 STORE_FAST              34 (header_extra)
+
+3191        2172 LOAD_FAST               28 (table_type)
+            2174 LOAD_CONST              32 ('Base Shift')
+            2176 COMPARE_OP              40 (==)
+            2180 EXTENDED_ARG             1
+            2182 POP_JUMP_IF_FALSE      339 (to 2862)
+
+3192        2184 LOAD_FAST                0 (self)
+            2186 LOAD_ATTR               86 (pressure_per_shift)
+            2206 POP_JUMP_IF_TRUE        82 (to 2372)
+
+3193        2208 LOAD_FAST                0 (self)
+            2210 LOAD_ATTR                4 (pressure_grid)
+            2230 LOAD_ATTR                7 (NULL|self + setVisible)
+            2250 LOAD_CONST               1 (False)
+            2252 CALL                     1
+            2260 POP_TOP
+
+3194        2262 LOAD_FAST                0 (self)
+            2264 LOAD_ATTR                8 (pressure_placeholder)
+            2284 LOAD_ATTR                7 (NULL|self + setVisible)
+            2304 LOAD_CONST               2 (True)
+            2306 CALL                     1
+            2314 POP_TOP
+
+3195        2316 LOAD_FAST                0 (self)
+            2318 LOAD_ATTR               10 (pressure_title)
+            2338 LOAD_ATTR               13 (NULL|self + setText)
+            2358 LOAD_CONST               3 ('')
+            2360 CALL                     1
+            2368 POP_TOP
+
+3196        2370 RETURN_CONST             4 (None)
+
+3197     >> 2372 LOAD_FAST                0 (self)
+            2374 LOAD_ATTR               88 (current_pressure_shift)
+            2394 STORE_FAST              35 (shift)
+
+3198        2396 LOAD_FAST               29 (mode)
+            2398 LOAD_FAST                0 (self)
+            2400 LOAD_ATTR               86 (pressure_per_shift)
+            2420 CONTAINS_OP              1
+            2422 POP_JUMP_IF_TRUE        17 (to 2458)
+
+3199        2424 LOAD_FAST               35 (shift)
+            2426 LOAD_FAST                0 (self)
+            2428 LOAD_ATTR               86 (pressure_per_shift)
+            2448 LOAD_FAST               29 (mode)
+            2450 BINARY_SUBSCR
+            2454 CONTAINS_OP              1
+            2456 POP_JUMP_IF_FALSE      116 (to 2690)
+
+3200     >> 2458 LOAD_FAST                0 (self)
+            2460 LOAD_ATTR               10 (pressure_title)
+            2480 LOAD_ATTR               13 (NULL|self + setText)
+            2500 LOAD_CONST              36 ('(no data for ')
+            2502 LOAD_FAST               29 (mode)
+            2504 FORMAT_VALUE             0
+            2506 LOAD_CONST              37 (' / ')
+            2508 LOAD_FAST               35 (shift)
+            2510 FORMAT_VALUE             0
+            2512 LOAD_CONST              19 (')')
+            2514 BUILD_STRING             5
+            2516 CALL                     1
+            2524 POP_TOP
+
+3201        2526 LOAD_FAST                0 (self)
+            2528 LOAD_ATTR                4 (pressure_grid)
+            2548 LOAD_ATTR               25 (NULL|self + setRowCount)
+            2568 LOAD_CONST              20 (0)
+            2570 CALL                     1
+            2578 POP_TOP
+
+3202        2580 LOAD_FAST                0 (self)
+            2582 LOAD_ATTR                4 (pressure_grid)
+            2602 LOAD_ATTR                7 (NULL|self + setVisible)
+            2622 LOAD_CONST               2 (True)
+            2624 CALL                     1
+            2632 POP_TOP
+
+3203        2634 LOAD_FAST                0 (self)
+            2636 LOAD_ATTR                8 (pressure_placeholder)
+            2656 LOAD_ATTR                7 (NULL|self + setVisible)
+            2676 LOAD_CONST               1 (False)
+            2678 CALL                     1
+            2686 POP_TOP
+
+3204        2688 RETURN_CONST             4 (None)
+
+3205     >> 2690 LOAD_FAST                0 (self)
+            2692 LOAD_ATTR               86 (pressure_per_shift)
+            2712 LOAD_FAST               29 (mode)
+            2714 BINARY_SUBSCR
+            2718 LOAD_FAST               35 (shift)
+            2720 BINARY_SUBSCR
+            2724 STORE_FAST               1 (data)
+
+3206        2726 LOAD_GLOBAL             90 (PRESSURE_TEMP_ROWS)
+            2736 GET_ITER
+            2738 LOAD_FAST_AND_CLEAR     19 (r)
+            2740 SWAP                     2
+            2742 BUILD_LIST               0
+            2744 SWAP                     2
+         >> 2746 FOR_ITER                 7 (to 2764)
+            2750 STORE_FAST              19 (r)
+            2752 LOAD_FAST               19 (r)
+            2754 FORMAT_VALUE             0
+            2756 LOAD_CONST              38 ('°F')
+            2758 BUILD_STRING             2
+            2760 LIST_APPEND              2
+            2762 JUMP_BACKWARD            9 (to 2746)
+         >> 2764 END_FOR
+            2766 STORE_FAST              31 (row_labels)
+            2768 STORE_FAST              19 (r)
+
+3207        2770 LOAD_FAST                0 (self)
+            2772 LOAD_ATTR               92 (pressure_torque_cols)
+            2792 GET_ITER
+            2794 LOAD_FAST_AND_CLEAR     24 (t)
+            2796 SWAP                     2
+            2798 BUILD_LIST               0
+            2800 SWAP                     2
+         >> 2802 FOR_ITER                13 (to 2832)
+            2806 STORE_FAST              24 (t)
+            2808 LOAD_GLOBAL             95 (NULL + str)
+            2818 LOAD_FAST               24 (t)
+            2820 CALL                     1
+            2828 LIST_APPEND              2
+            2830 JUMP_BACKWARD           15 (to 2802)
+         >> 2832 END_FOR
+            2834 STORE_FAST              32 (col_labels)
+            2836 STORE_FAST              24 (t)
+
+3208        2838 LOAD_GLOBAL             84 (MAX_PRESSURE_PSI)
+            2848 STORE_FAST              33 (cap_psi)
+
+3209        2850 LOAD_FAST               35 (shift)
+            2852 FORMAT_VALUE             0
+            2854 LOAD_CONST              39 (' Base Shift Pressure')
+            2856 BUILD_STRING             2
+            2858 STORE_FAST              34 (header_extra)
+            2860 JUMP_FORWARD           231 (to 3324)
+
+3211     >> 2862 LOAD_FAST               28 (table_type)
+            2864 LOAD_CONST              40 ('TCC Apply')
+            2866 COMPARE_OP              40 (==)
+            2870 POP_JUMP_IF_FALSE      226 (to 3324)
+
+3213        2872 LOAD_GLOBAL             15 (NULL + hasattr)
+            2882 LOAD_FAST                0 (self)
+            2884 LOAD_CONST              41 ('tcc_era_combo')
+            2886 CALL                     2
+            2894 POP_JUMP_IF_FALSE       26 (to 2948)
+            2896 LOAD_FAST                0 (self)
+            2898 LOAD_ATTR               96 (tcc_era_combo)
+            2918 LOAD_ATTR               19 (NULL|self + currentText)
+            2938 CALL                     0
+            2946 JUMP_FORWARD             1 (to 2950)
+         >> 2948 LOAD_CONST              42 ('2015+')
+         >> 2950 STORE_FAST              36 (era)
+
+3214        2952 LOAD_GLOBAL             98 (TCC_RAMP_ERAS)
+            2962 LOAD_ATTR               83 (NULL|self + get)
+            2982 LOAD_FAST               36 (era)
+            2984 LOAD_GLOBAL             98 (TCC_RAMP_ERAS)
+            2994 LOAD_CONST              42 ('2015+')
+            2996 BINARY_SUBSCR
+            3000 CALL                     2
+            3008 STORE_FAST              37 (era_cfg)
+
+3216        3010 LOAD_GLOBAL            100 (PressureEngine)
+            3020 LOAD_ATTR              103 (NULL|self + tcc_apply_pressure_ramp)
+            3040 LOAD_FAST               30 (intent)
+            3042 LOAD_FAST               36 (era)
+            3044 LOAD_FAST                0 (self)
+            3046 LOAD_ATTR              104 (max_tq)
+            3066 CALL                     3
+            3074 STORE_FAST               1 (data)
+
+3217        3076 LOAD_FAST                1 (data)
+            3078 LOAD_FAST                0 (self)
+            3080 STORE_ATTR              53 (_tcc_ramp_current)
+
+3218        3090 LOAD_FAST               36 (era)
+            3092 LOAD_FAST                0 (self)
+            3094 STORE_ATTR              54 (_tcc_ramp_era)
+
+3219        3104 LOAD_FAST               37 (era_cfg)
+            3106 LOAD_CONST              43 ('row_axis')
+            3108 BINARY_SUBSCR
+            3112 LOAD_CONST              44 ('torque')
+            3114 COMPARE_OP              40 (==)
+            3118 POP_JUMP_IF_FALSE       23 (to 3166)
+
+3220        3120 LOAD_FAST               37 (era_cfg)
+            3122 LOAD_CONST              45 ('torque_rows')
+            3124 BINARY_SUBSCR
+            3128 GET_ITER
+            3130 LOAD_FAST_AND_CLEAR     19 (r)
+            3132 SWAP                     2
+            3134 BUILD_LIST               0
+            3136 SWAP                     2
+         >> 3138 FOR_ITER                 6 (to 3154)
+            3142 STORE_FAST              19 (r)
+            3144 LOAD_FAST               19 (r)
+            3146 LOAD_CONST              46 ('.1f')
+            3148 FORMAT_VALUE             4 (with format)
+            3150 LIST_APPEND              2
+            3152 JUMP_BACKWARD            8 (to 3138)
+         >> 3154 END_FOR
+            3156 STORE_FAST              31 (row_labels)
+            3158 STORE_FAST              19 (r)
+
+3221        3160 LOAD_CONST              47 ('Torque (lb·ft)')
+            3162 STORE_FAST              38 (row_axis_lbl)
+            3164 JUMP_FORWARD            21 (to 3208)
+
+3223     >> 3166 LOAD_FAST               37 (era_cfg)
+            3168 LOAD_CONST              48 ('rpm_rows')
+            3170 BINARY_SUBSCR
+            3174 GET_ITER
+            3176 LOAD_FAST_AND_CLEAR     19 (r)
+            3178 SWAP                     2
+            3180 BUILD_LIST               0
+            3182 SWAP                     2
+         >> 3184 FOR_ITER                 5 (to 3198)
+            3188 STORE_FAST              19 (r)
+            3190 LOAD_FAST               19 (r)
+            3192 FORMAT_VALUE             0
+            3194 LIST_APPEND              2
+            3196 JUMP_BACKWARD            7 (to 3184)
+         >> 3198 END_FOR
+            3200 STORE_FAST              31 (row_labels)
+            3202 STORE_FAST              19 (r)
+
+3224        3204 LOAD_CONST              49 ('Engine RPM')
+            3206 STORE_FAST              38 (row_axis_lbl)
+
+3225     >> 3208 LOAD_FAST               37 (era_cfg)
+            3210 LOAD_CONST              50 ('slip_cols')
+            3212 BINARY_SUBSCR
+            3216 GET_ITER
+            3218 LOAD_FAST_AND_CLEAR     39 (s)
+            3220 SWAP                     2
+            3222 BUILD_LIST               0
+            3224 SWAP                     2
+         >> 3226 FOR_ITER                13 (to 3256)
+            3230 STORE_FAST              39 (s)
+            3232 LOAD_GLOBAL             95 (NULL + str)
+            3242 LOAD_FAST               39 (s)
+            3244 CALL                     1
+            3252 LIST_APPEND              2
+            3254 JUMP_BACKWARD           15 (to 3226)
+         >> 3256 END_FOR
+            3258 STORE_FAST              32 (col_labels)
+            3260 STORE_FAST              39 (s)
+
+3226        3262 LOAD_FAST               37 (era_cfg)
+            3264 LOAD_ATTR               83 (NULL|self + get)
+            3284 LOAD_CONST              51 ('max_psi')
+            3286 LOAD_GLOBAL            110 (MAX_TCC_APPLY_PSI)
+            3296 CALL                     2
+            3304 STORE_FAST              33 (cap_psi)
+
+3227        3306 LOAD_CONST              52 ('TCC Apply Pressure Ramp [')
+            3308 LOAD_FAST               36 (era)
+            3310 FORMAT_VALUE             0
+            3312 LOAD_CONST              53 (', ')
+            3314 LOAD_FAST               38 (row_axis_lbl)
+            3316 FORMAT_VALUE             0
+            3318 LOAD_CONST              54 (' × Slip RPM Error]')
+            3320 BUILD_STRING             5
+            3322 STORE_FAST              34 (header_extra)
+
+3229     >> 3324 LOAD_FAST                1 (data)
+            3326 POP_JUMP_IF_NOT_NONE     1 (to 3330)
+
+3230        3328 RETURN_CONST             4 (None)
+
+3231     >> 3330 LOAD_FAST                0 (self)
+            3332 LOAD_ATTR                4 (pressure_grid)
+            3352 LOAD_ATTR                7 (NULL|self + setVisible)
+            3372 LOAD_CONST               2 (True)
+            3374 CALL                     1
+            3382 POP_TOP
+
+3232        3384 LOAD_FAST                0 (self)
+            3386 LOAD_ATTR                8 (pressure_placeholder)
+            3406 LOAD_ATTR                7 (NULL|self + setVisible)
+            3426 LOAD_CONST               1 (False)
+            3428 CALL                     1
+            3436 POP_TOP
+
+3234        3438 LOAD_FAST               33 (cap_psi)
+            3440 LOAD_FAST                7 (scale)
+            3442 BINARY_OP                5 (*)
+            3446 STORE_FAST              40 (cap_unit)
+
+3235        3448 LOAD_FAST                0 (self)
+            3450 LOAD_ATTR               10 (pressure_title)
+            3470 LOAD_ATTR               13 (NULL|self + setText)
+
+3236        3490 LOAD_FAST               29 (mode)
+            3492 FORMAT_VALUE             0
+            3494 LOAD_CONST              55 (' — ')
+            3496 LOAD_FAST               34 (header_extra)
+            3498 FORMAT_VALUE             0
+            3500 LOAD_CONST              18 (' (')
+            3502 LOAD_FAST                6 (unit)
+            3504 FORMAT_VALUE             0
+            3506 LOAD_CONST              56 (')   [Intent: ')
+
+3237        3508 LOAD_FAST               30 (intent)
+            3510 FORMAT_VALUE             0
+            3512 LOAD_CONST              57 ('  |  Cap: ')
+            3514 LOAD_FAST               40 (cap_unit)
+            3516 LOAD_CONST              14 ('.0f')
+            3518 FORMAT_VALUE             4 (with format)
+            3520 LOAD_CONST              16 (']')
+
+3236        3522 BUILD_STRING            10
+
+3235        3524 CALL                     1
+            3532 POP_TOP
+
+3240        3534 LOAD_FAST                0 (self)
+            3536 LOAD_ATTR                4 (pressure_grid)
+            3556 LOAD_ATTR               25 (NULL|self + setRowCount)
+            3576 LOAD_GLOBAL             27 (NULL + len)
+            3586 LOAD_FAST                1 (data)
+            3588 CALL                     1
+            3596 CALL                     1
+            3604 POP_TOP
+
+3241        3606 LOAD_FAST                0 (self)
+            3608 LOAD_ATTR                4 (pressure_grid)
+            3628 LOAD_ATTR               29 (NULL|self + setColumnCount)
+            3648 LOAD_FAST                1 (data)
+            3650 POP_JUMP_IF_FALSE       14 (to 3680)
+            3652 LOAD_GLOBAL             27 (NULL + len)
+            3662 LOAD_FAST                1 (data)
+            3664 LOAD_CONST              20 (0)
+            3666 BINARY_SUBSCR
+            3670 CALL                     1
+            3678 JUMP_FORWARD             1 (to 3682)
+         >> 3680 LOAD_CONST              20 (0)
+         >> 3682 CALL                     1
+            3690 POP_TOP
+
+3242        3692 LOAD_FAST                0 (self)
+            3694 LOAD_ATTR                4 (pressure_grid)
+            3714 LOAD_ATTR               31 (NULL|self + setHorizontalHeaderLabels)
+            3734 LOAD_FAST               32 (col_labels)
+            3736 CALL                     1
+            3744 POP_TOP
+
+3243        3746 LOAD_FAST                0 (self)
+            3748 LOAD_ATTR                4 (pressure_grid)
+            3768 LOAD_ATTR               33 (NULL|self + setVerticalHeaderLabels)
+            3788 LOAD_FAST               31 (row_labels)
+            3790 CALL                     1
+            3798 POP_TOP
+
+3244        3800 LOAD_FAST                0 (self)
+            3802 LOAD_ATTR                4 (pressure_grid)
+            3822 LOAD_ATTR               35 (NULL|self + horizontalHeader)
+            3842 CALL                     0
+            3850 LOAD_ATTR               37 (NULL|self + setSectionResizeMode)
+
+3245        3870 LOAD_GLOBAL             38 (QHeaderView)
+            3880 LOAD_ATTR               40 (ResizeMode)
+            3900 LOAD_ATTR               42 (Stretch)
+
+3244        3920 CALL                     1
+            3928 POP_TOP
+
+3247        3930 LOAD_FAST                1 (data)
+            3932 GET_ITER
+            3934 LOAD_FAST_AND_CLEAR     12 (row)
+            3936 LOAD_FAST_AND_CLEAR     13 (v)
+            3938 SWAP                     3
+            3940 BUILD_LIST               0
+            3942 SWAP                     2
+         >> 3944 FOR_ITER                14 (to 3976)
+            3948 STORE_FAST              12 (row)
+            3950 LOAD_FAST               12 (row)
+            3952 GET_ITER
+         >> 3954 FOR_ITER                 7 (to 3972)
+            3958 STORE_FAST              13 (v)
+            3960 LOAD_FAST               13 (v)
+            3962 LOAD_FAST                7 (scale)
+            3964 BINARY_OP                5 (*)
+            3968 LIST_APPEND              3
+            3970 JUMP_BACKWARD            9 (to 3954)
+         >> 3972 END_FOR
+            3974 JUMP_BACKWARD           16 (to 3944)
+         >> 3976 END_FOR
+            3978 SWAP                     3
+            3980 STORE_FAST              13 (v)
+            3982 STORE_FAST              12 (row)
+            3984 COPY                     1
+            3986 POP_JUMP_IF_TRUE         3 (to 3994)
+            3988 POP_TOP
+            3990 LOAD_CONST              20 (0)
+            3992 BUILD_LIST               1
+         >> 3994 STORE_FAST              14 (flat)
+
+3248        3996 LOAD_GLOBAL             45 (NULL + min)
+            4006 LOAD_FAST               14 (flat)
+            4008 CALL                     1
+            4016 LOAD_GLOBAL             47 (NULL + max)
+            4026 LOAD_FAST               14 (flat)
+            4028 CALL                     1
+            4036 STORE_FAST              16 (hi)
+            4038 STORE_FAST              15 (lo)
+
+3249        4040 LOAD_FAST               16 (hi)
+            4042 LOAD_FAST               15 (lo)
+            4044 COMPARE_OP              68 (>)
+            4048 POP_JUMP_IF_FALSE        5 (to 4060)
+            4050 LOAD_FAST               16 (hi)
+            4052 LOAD_FAST               15 (lo)
+            4054 BINARY_OP               10 (-)
+            4058 JUMP_FORWARD             1 (to 4062)
+         >> 4060 LOAD_CONST              21 (1.0)
+         >> 4062 STORE_FAST              17 (rng)
+
+3250        4064 LOAD_GLOBAL             49 (NULL + enumerate)
+            4074 LOAD_FAST                1 (data)
+            4076 CALL                     1
+            4084 GET_ITER
+         >> 4086 FOR_ITER               230 (to 4550)
+            4090 UNPACK_SEQUENCE          2
+            4094 STORE_FAST              19 (r)
+            4096 STORE_FAST              12 (row)
+
+3251        4098 LOAD_GLOBAL             49 (NULL + enumerate)
+            4108 LOAD_FAST               12 (row)
+            4110 CALL                     1
+            4118 GET_ITER
+         >> 4120 FOR_ITER               211 (to 4546)
+            4124 UNPACK_SEQUENCE          2
+            4128 STORE_FAST              20 (c)
+            4130 STORE_FAST              21 (val)
+
+3252        4132 LOAD_FAST               21 (val)
+            4134 LOAD_FAST                7 (scale)
+            4136 BINARY_OP                5 (*)
+            4140 STORE_FAST              22 (disp)
+
+3253        4142 LOAD_GLOBAL             51 (NULL + QTableWidgetItem)
+            4152 LOAD_FAST               22 (disp)
+            4154 LOAD_CONST              46 ('.1f')
+            4156 FORMAT_VALUE             4 (with format)
+            4158 CALL                     1
+            4166 STORE_FAST              23 (item)
+
+3254        4168 LOAD_FAST               23 (item)
+            4170 LOAD_ATTR               55 (NULL|self + setTextAlignment)
+            4190 LOAD_GLOBAL             56 (Qt)
+            4200 LOAD_ATTR               58 (AlignmentFlag)
+            4220 LOAD_ATTR               60 (AlignCenter)
+            4240 CALL                     1
+            4248 POP_TOP
+
+3255        4250 LOAD_FAST               22 (disp)
+            4252 LOAD_FAST               15 (lo)
+            4254 BINARY_OP               10 (-)
+            4258 LOAD_FAST               17 (rng)
+            4260 BINARY_OP               11 (/)
+            4264 STORE_FAST              24 (t)
+
+3256        4266 LOAD_GLOBAL             63 (NULL + int)
+            4276 LOAD_CONST              28 (50)
+            4278 LOAD_CONST              26 (200)
+            4280 LOAD_FAST               24 (t)
+            4282 BINARY_OP                5 (*)
+            4286 BINARY_OP                0 (+)
+            4290 CALL                     1
+            4298 STORE_FAST              25 (r_ch)
+            4300 LOAD_CONST              29 (60)
+            4302 STORE_FAST              26 (g_ch)
+            4304 LOAD_GLOBAL             63 (NULL + int)
+            4314 LOAD_CONST              26 (200)
+            4316 LOAD_CONST              27 (150)
+            4318 LOAD_FAST               24 (t)
+            4320 BINARY_OP                5 (*)
+            4324 BINARY_OP               10 (-)
+            4328 CALL                     1
+            4336 STORE_FAST              27 (b_ch)
+
+3257        4338 LOAD_FAST               23 (item)
+            4340 LOAD_ATTR               65 (NULL|self + setBackground)
+            4360 LOAD_GLOBAL             67 (NULL + QBrush)
+            4370 LOAD_GLOBAL             69 (NULL + QColor)
+            4380 LOAD_FAST               25 (r_ch)
+            4382 LOAD_FAST               26 (g_ch)
+            4384 LOAD_FAST               27 (b_ch)
+            4386 CALL                     3
+            4394 CALL                     1
+            4402 CALL                     1
+            4410 POP_TOP
+
+3258        4412 LOAD_FAST               23 (item)
+            4414 LOAD_ATTR               71 (NULL|self + setForeground)
+            4434 LOAD_GLOBAL             67 (NULL + QBrush)
+            4444 LOAD_GLOBAL             69 (NULL + QColor)
+            4454 LOAD_CONST              30 (255)
+            4456 LOAD_CONST              30 (255)
+            4458 LOAD_CONST              30 (255)
+            4460 CALL                     3
+            4468 CALL                     1
+            4476 CALL                     1
+            4484 POP_TOP
+
+3259        4486 LOAD_FAST                0 (self)
+            4488 LOAD_ATTR                4 (pressure_grid)
+            4508 LOAD_ATTR               73 (NULL|self + setItem)
+            4528 LOAD_FAST               19 (r)
+            4530 LOAD_FAST               20 (c)
+            4532 LOAD_FAST               23 (item)
+            4534 CALL                     3
+            4542 POP_TOP
+            4544 JUMP_BACKWARD          213 (to 4120)
+
+3251     >> 4546 END_FOR
+            4548 JUMP_BACKWARD          232 (to 4086)
+
+3250     >> 4550 END_FOR
+            4552 RETURN_CONST             4 (None)
+         >> 4554 SWAP                     2
+            4556 POP_TOP
+
+3155        4558 SWAP                     3
+            4560 STORE_FAST              13 (v)
+            4562 STORE_FAST              12 (row)
+            4564 RERAISE                  0
+         >> 4566 SWAP                     2
+            4568 POP_TOP
+
+3206        4570 SWAP                     2
+            4572 STORE_FAST              19 (r)
+            4574 RERAISE                  0
+         >> 4576 SWAP                     2
+            4578 POP_TOP
+
+3207        4580 SWAP                     2
+            4582 STORE_FAST              24 (t)
+            4584 RERAISE                  0
+         >> 4586 SWAP                     2
+            4588 POP_TOP
+
+3220        4590 SWAP                     2
+            4592 STORE_FAST              19 (r)
+            4594 RERAISE                  0
+         >> 4596 SWAP                     2
+            4598 POP_TOP
+
+3223        4600 SWAP                     2
+            4602 STORE_FAST              19 (r)
+            4604 RERAISE                  0
+         >> 4606 SWAP                     2
+            4608 POP_TOP
+
+3225        4610 SWAP                     2
+            4612 STORE_FAST              39 (s)
+            4614 RERAISE                  0
+         >> 4616 SWAP                     2
+            4618 POP_TOP
+
+3247        4620 SWAP                     3
+            4622 STORE_FAST              13 (v)
+            4624 STORE_FAST              12 (row)
+            4626 RERAISE                  0
+ExceptionTable:
+  1098 to 1134 -> 4554 [3]
+  2742 to 2764 -> 4566 [2]
+  2798 to 2832 -> 4576 [2]
+  3134 to 3154 -> 4586 [2]
+  3180 to 3198 -> 4596 [2]
+  3222 to 3256 -> 4606 [2]
+  3940 to 3976 -> 4616 [3]

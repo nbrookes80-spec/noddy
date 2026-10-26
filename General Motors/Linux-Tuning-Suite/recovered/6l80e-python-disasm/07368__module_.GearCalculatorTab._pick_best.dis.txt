@@ -1,0 +1,142 @@
+               0 MAKE_CELL                2 (target_top)
+               2 MAKE_CELL                3 (target_cruise_rpm)
+
+7368           4 RESUME                   0
+
+7370           6 LOAD_FAST                1 (rows_data)
+               8 POP_JUMP_IF_TRUE         1 (to 12)
+
+7371          10 RETURN_CONST             1 (None)
+
+7372     >>   12 LOAD_FAST                0 (self)
+              14 LOAD_ATTR                0 (prio_top)
+              34 LOAD_ATTR                3 (NULL|self + isChecked)
+              54 CALL                     0
+              62 POP_JUMP_IF_FALSE       59 (to 182)
+
+7374          64 LOAD_FAST                1 (rows_data)
+              66 GET_ITER
+              68 LOAD_FAST_AND_CLEAR      4 (r)
+              70 SWAP                     2
+              72 BUILD_LIST               0
+              74 SWAP                     2
+         >>   76 FOR_ITER                16 (to 112)
+              80 STORE_FAST               4 (r)
+              82 LOAD_FAST                4 (r)
+              84 LOAD_CONST               2 (1)
+              86 BINARY_SUBSCR
+              90 LOAD_DEREF               2 (target_top)
+              92 LOAD_CONST               3 (0.95)
+              94 BINARY_OP                5 (*)
+              98 COMPARE_OP              92 (>=)
+             102 POP_JUMP_IF_TRUE         1 (to 106)
+             104 JUMP_BACKWARD           15 (to 76)
+         >>  106 LOAD_FAST                4 (r)
+             108 LIST_APPEND              2
+             110 JUMP_BACKWARD           18 (to 76)
+         >>  112 END_FOR
+             114 STORE_FAST               5 (viable)
+             116 STORE_FAST               4 (r)
+
+7375         118 LOAD_FAST                5 (viable)
+             120 POP_JUMP_IF_FALSE       16 (to 154)
+
+7376         122 LOAD_GLOBAL              5 (NULL + min)
+             132 LOAD_FAST                5 (viable)
+             134 LOAD_CLOSURE             2 (target_top)
+             136 BUILD_TUPLE              1
+             138 LOAD_CONST               4 (<code object <lambda> at 0x73ab02a13870, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7376>)
+             140 MAKE_FUNCTION            8 (closure)
+             142 KW_NAMES                 5 (('key',))
+             144 CALL                     2
+             152 RETURN_VALUE
+
+7378     >>  154 LOAD_GLOBAL              7 (NULL + max)
+             164 LOAD_FAST                1 (rows_data)
+             166 LOAD_CONST               6 (<code object <lambda> at 0x73ab02bfea70, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7378>)
+             168 MAKE_FUNCTION            0
+             170 KW_NAMES                 5 (('key',))
+             172 CALL                     2
+             180 RETURN_VALUE
+
+7379     >>  182 LOAD_FAST                0 (self)
+             184 LOAD_ATTR                8 (prio_accel)
+             204 LOAD_ATTR                3 (NULL|self + isChecked)
+             224 CALL                     0
+             232 POP_JUMP_IF_FALSE       63 (to 360)
+
+7381         234 LOAD_FAST                1 (rows_data)
+             236 GET_ITER
+             238 LOAD_FAST_AND_CLEAR      4 (r)
+             240 SWAP                     2
+             242 BUILD_LIST               0
+             244 SWAP                     2
+         >>  246 FOR_ITER                22 (to 294)
+             250 STORE_FAST               4 (r)
+             252 LOAD_CONST               7 (2500)
+             254 LOAD_FAST                4 (r)
+             256 LOAD_CONST               8 (3)
+             258 BINARY_SUBSCR
+             262 SWAP                     2
+             264 COPY                     2
+             266 COMPARE_OP              26 (<=)
+             270 POP_JUMP_IF_FALSE        6 (to 284)
+             272 LOAD_CONST               9 (6000)
+             274 COMPARE_OP              26 (<=)
+             278 POP_JUMP_IF_TRUE         1 (to 282)
+             280 JUMP_BACKWARD           18 (to 246)
+         >>  282 JUMP_FORWARD             2 (to 288)
+         >>  284 POP_TOP
+             286 JUMP_FORWARD             2 (to 292)
+         >>  288 LOAD_FAST                4 (r)
+             290 LIST_APPEND              2
+         >>  292 JUMP_BACKWARD           24 (to 246)
+         >>  294 END_FOR
+             296 STORE_FAST               5 (viable)
+             298 STORE_FAST               4 (r)
+
+7382         300 LOAD_FAST                5 (viable)
+             302 POP_JUMP_IF_FALSE       14 (to 332)
+
+7383         304 LOAD_GLOBAL              7 (NULL + max)
+             314 LOAD_FAST                5 (viable)
+             316 LOAD_CONST              10 (<code object <lambda> at 0x73ab02bfeb40, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7383>)
+             318 MAKE_FUNCTION            0
+             320 KW_NAMES                 5 (('key',))
+             322 CALL                     2
+             330 RETURN_VALUE
+
+7384     >>  332 LOAD_GLOBAL              7 (NULL + max)
+             342 LOAD_FAST                1 (rows_data)
+             344 LOAD_CONST              11 (<code object <lambda> at 0x73ab02bfec10, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7384>)
+             346 MAKE_FUNCTION            0
+             348 KW_NAMES                 5 (('key',))
+             350 CALL                     2
+             358 RETURN_VALUE
+
+7386     >>  360 LOAD_GLOBAL              5 (NULL + min)
+             370 LOAD_FAST                1 (rows_data)
+             372 LOAD_CLOSURE             3 (target_cruise_rpm)
+             374 BUILD_TUPLE              1
+             376 LOAD_CONST              12 (<code object <lambda> at 0x73ab02a13960, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7386>)
+             378 MAKE_FUNCTION            8 (closure)
+             380 KW_NAMES                 5 (('key',))
+             382 CALL                     2
+             390 RETURN_VALUE
+         >>  392 SWAP                     2
+             394 POP_TOP
+
+7374         396 SWAP                     2
+             398 STORE_FAST               4 (r)
+             400 RERAISE                  0
+         >>  402 SWAP                     2
+             404 POP_TOP
+
+7381         406 SWAP                     2
+             408 STORE_FAST               4 (r)
+             410 RERAISE                  0
+ExceptionTable:
+  72 to 102 -> 392 [2]
+  106 to 112 -> 392 [2]
+  242 to 278 -> 402 [2]
+  282 to 294 -> 402 [2]

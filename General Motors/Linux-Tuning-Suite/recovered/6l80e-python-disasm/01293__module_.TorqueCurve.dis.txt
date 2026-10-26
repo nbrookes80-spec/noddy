@@ -1,0 +1,102 @@
+1293           0 RESUME                   0
+               2 LOAD_NAME                0 (__name__)
+               4 STORE_NAME               1 (__module__)
+               6 LOAD_CONST               0 ('TorqueCurve')
+               8 STORE_NAME               2 (__qualname__)
+
+1294          10 LOAD_CONST               1 ('Stores RPM-indexed HP/TQ pairs and provides interpolated lookups.\n\n    Storage: sorted list of (rpm, hp, tq) tuples. RPM strictly increasing.\n    Empty curve falls back to flat RWHP scalar mode.\n    ')
+              12 STORE_NAME               3 (__doc__)
+
+1300          14 LOAD_CONST              16 ((None, None))
+              16 LOAD_CONST               3 (<code object __init__ at 0x73ab03545e90, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1300>)
+              18 MAKE_FUNCTION            1 (defaults)
+              20 STORE_NAME               4 (__init__)
+
+1313          22 LOAD_NAME                5 (property)
+
+1314          24 LOAD_CONST               4 (<code object is_empty at 0x73ab02bcae30, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1313>)
+              26 MAKE_FUNCTION            0
+
+1313          28 CALL                     0
+
+1314          36 STORE_NAME               6 (is_empty)
+
+1317          38 LOAD_NAME                5 (property)
+
+1318          40 LOAD_CONST               5 (<code object peak_hp at 0x30b40da0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1317>)
+              42 MAKE_FUNCTION            0
+
+1317          44 CALL                     0
+
+1318          52 STORE_NAME               7 (peak_hp)
+
+1333          54 LOAD_NAME                5 (property)
+
+1334          56 LOAD_CONST               6 (<code object peak_tq at 0x30c04990, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1333>)
+              58 MAKE_FUNCTION            0
+
+1333          60 CALL                     0
+
+1334          68 STORE_NAME               8 (peak_tq)
+
+1348          70 LOAD_NAME                5 (property)
+
+1349          72 LOAD_CONST               7 (<code object peak_hp_rpm at 0x30c04bb0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1348>)
+              74 MAKE_FUNCTION            0
+
+1348          76 CALL                     0
+
+1349          84 STORE_NAME               9 (peak_hp_rpm)
+
+1364          86 LOAD_NAME                5 (property)
+
+1365          88 LOAD_CONST               8 (<code object peak_tq_rpm at 0x30c04de0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1364>)
+              90 MAKE_FUNCTION            0
+
+1364          92 CALL                     0
+
+1365         100 STORE_NAME              10 (peak_tq_rpm)
+
+1380         102 LOAD_NAME                5 (property)
+
+1381         104 LOAD_CONST               9 (<code object rpm_range at 0x73ab03537a60, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1380>)
+             106 MAKE_FUNCTION            0
+
+1380         108 CALL                     0
+
+1381         116 STORE_NAME              11 (rpm_range)
+
+1386         118 LOAD_CONST              10 (<code object hp_at at 0x30bf73b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1386>)
+             120 MAKE_FUNCTION            0
+             122 STORE_NAME              12 (hp_at)
+
+1410         124 LOAD_CONST              11 (<code object tq_at at 0x30bb4030, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1410>)
+             126 MAKE_FUNCTION            0
+             128 STORE_NAME              13 (tq_at)
+
+1432         130 LOAD_CONST              12 (<code object avg_hp at 0x73ab034a6f50, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1432>)
+             132 MAKE_FUNCTION            0
+             134 STORE_NAME              14 (avg_hp)
+
+1447         136 LOAD_CONST              13 (<code object to_dict at 0x73ab02b7fab0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1447>)
+             138 MAKE_FUNCTION            0
+             140 STORE_NAME              15 (to_dict)
+
+1451         142 LOAD_NAME               16 (classmethod)
+
+1452         144 LOAD_CONST              14 (<code object from_dict at 0x73ab03537b90, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1451>)
+             146 MAKE_FUNCTION            0
+
+1451         148 CALL                     0
+
+1452         156 STORE_NAME              17 (from_dict)
+
+1457         158 LOAD_NAME               16 (classmethod)
+
+1458         160 LOAD_CONST              15 (<code object from_csv at 0x30c05260, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1457>)
+             162 MAKE_FUNCTION            0
+
+1457         164 CALL                     0
+
+1458         172 STORE_NAME              18 (from_csv)
+             174 RETURN_CONST             2 (None)

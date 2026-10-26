@@ -1,0 +1,51 @@
+7263           0 RESUME                   0
+
+7265           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (tire_in)
+              24 LOAD_ATTR                3 (NULL|self + blockSignals)
+              44 LOAD_CONST               1 (True)
+              46 CALL                     1
+              54 POP_TOP
+
+7266          56 LOAD_FAST                0 (self)
+              58 LOAD_ATTR                4 (redline_in)
+              78 LOAD_ATTR                3 (NULL|self + blockSignals)
+              98 LOAD_CONST               1 (True)
+             100 CALL                     1
+             108 POP_TOP
+
+7267         110 LOAD_FAST                0 (self)
+             112 LOAD_ATTR                0 (tire_in)
+             132 LOAD_ATTR                7 (NULL|self + setValue)
+             152 LOAD_FAST                2 (tire_dia)
+             154 CALL                     1
+             162 POP_TOP
+
+7268         164 LOAD_FAST                0 (self)
+             166 LOAD_ATTR                4 (redline_in)
+             186 LOAD_ATTR                7 (NULL|self + setValue)
+             206 LOAD_GLOBAL              9 (NULL + int)
+             216 LOAD_FAST                3 (redline_rpm)
+             218 CALL                     1
+             226 CALL                     1
+             234 POP_TOP
+
+7269         236 LOAD_FAST                0 (self)
+             238 LOAD_ATTR                0 (tire_in)
+             258 LOAD_ATTR                3 (NULL|self + blockSignals)
+             278 LOAD_CONST               2 (False)
+             280 CALL                     1
+             288 POP_TOP
+
+7270         290 LOAD_FAST                0 (self)
+             292 LOAD_ATTR                4 (redline_in)
+             312 LOAD_ATTR                3 (NULL|self + blockSignals)
+             332 LOAD_CONST               2 (False)
+             334 CALL                     1
+             342 POP_TOP
+
+7271         344 LOAD_FAST                0 (self)
+             346 LOAD_ATTR               11 (NULL|self + _refresh)
+             366 CALL                     0
+             374 POP_TOP
+             376 RETURN_CONST             3 (None)

@@ -1,0 +1,54 @@
+               0 COPY_FREE_VARS           1
+
+6985           2 RESUME                   0
+
+6986           4 LOAD_GLOBAL              0 (super)
+              14 LOAD_DEREF               1 (__class__)
+              16 LOAD_FAST                0 (self)
+              18 LOAD_SUPER_ATTR          5 (NULL|self + __init__)
+              22 CALL                     0
+              30 POP_TOP
+
+6987          32 BUILD_LIST               0
+              34 LOAD_FAST                0 (self)
+              36 STORE_ATTR               2 (ratios)
+
+6988          46 LOAD_CONST               1 (3.42)
+              48 LOAD_FAST                0 (self)
+              50 STORE_ATTR               3 (axle)
+
+6989          60 LOAD_CONST               2 (30.0)
+              62 LOAD_FAST                0 (self)
+              64 STORE_ATTR               4 (tire_dia)
+
+6990          74 LOAD_CONST               3 (6500)
+              76 LOAD_FAST                0 (self)
+              78 STORE_ATTR               5 (redline_rpm)
+
+6991          88 LOAD_CONST               4 (600)
+              90 LOAD_FAST                0 (self)
+              92 STORE_ATTR               6 (idle_rpm)
+
+6992         102 LOAD_CONST               5 (70)
+             104 LOAD_FAST                0 (self)
+             106 STORE_ATTR               7 (cruise_mph)
+
+6993         116 LOAD_CONST               6 (150)
+             118 LOAD_FAST                0 (self)
+             120 STORE_ATTR               8 (target_top_mph)
+
+6994         130 LOAD_CONST               7 ('MPH')
+             132 LOAD_FAST                0 (self)
+             134 STORE_ATTR               9 (unit_label)
+
+6995         144 LOAD_CONST               8 (1.0)
+             146 LOAD_FAST                0 (self)
+             148 STORE_ATTR              10 (unit_scale)
+
+6996         158 LOAD_FAST                0 (self)
+             160 LOAD_ATTR               23 (NULL|self + setMinimumSize)
+             180 LOAD_CONST               9 (500)
+             182 LOAD_CONST              10 (300)
+             184 CALL                     2
+             192 POP_TOP
+             194 RETURN_CONST             0 (None)

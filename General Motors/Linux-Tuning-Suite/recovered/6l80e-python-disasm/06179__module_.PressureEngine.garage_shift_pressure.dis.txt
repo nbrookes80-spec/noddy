@@ -1,0 +1,71 @@
+6179           0 RESUME                   0
+
+6189           2 LOAD_GLOBAL              0 (GARAGE_SHIFT_INTENTS)
+              12 LOAD_ATTR                3 (NULL|self + get)
+              32 LOAD_FAST                0 (intent_name)
+
+6190          34 LOAD_GLOBAL              0 (GARAGE_SHIFT_INTENTS)
+              44 LOAD_CONST               1 ('Daily')
+              46 BINARY_SUBSCR
+
+6189          50 CALL                     2
+              58 STORE_FAST               1 (intent)
+
+6191          60 BUILD_MAP                0
+              62 STORE_FAST               2 (result)
+
+6192          64 LOAD_CONST               2 (('PD', 'PR', 'ND', 'NR'))
+              66 GET_ITER
+         >>   68 FOR_ITER                85 (to 242)
+              72 STORE_FAST               3 (direction)
+
+6193          74 LOAD_FAST                1 (intent)
+              76 LOAD_FAST                3 (direction)
+              78 BINARY_SUBSCR
+              82 STORE_FAST               4 (base_psi)
+
+6194          84 BUILD_LIST               0
+              86 STORE_FAST               5 (row)
+
+6195          88 LOAD_GLOBAL              4 (PRESSURE_TEMP_ROWS)
+              98 GET_ITER
+         >>  100 FOR_ITER                62 (to 228)
+             104 STORE_FAST               6 (temp)
+
+6196         106 LOAD_GLOBAL              6 (GARAGE_SHIFT_TEMP_MULT)
+             116 LOAD_ATTR                3 (NULL|self + get)
+             136 LOAD_FAST                6 (temp)
+             138 LOAD_CONST               3 (1.0)
+             140 CALL                     2
+             148 STORE_FAST               7 (mult)
+
+6197         150 LOAD_FAST                4 (base_psi)
+             152 LOAD_FAST                7 (mult)
+             154 BINARY_OP                5 (*)
+             158 STORE_FAST               8 (psi)
+
+6198         160 LOAD_GLOBAL              9 (NULL + min)
+             170 LOAD_FAST                8 (psi)
+             172 LOAD_GLOBAL             10 (MAX_GARAGE_SHIFT_PSI)
+             182 CALL                     2
+             190 STORE_FAST               8 (psi)
+
+6199         192 LOAD_FAST                5 (row)
+             194 LOAD_ATTR               13 (NULL|self + append)
+             214 LOAD_FAST                8 (psi)
+             216 CALL                     1
+             224 POP_TOP
+             226 JUMP_BACKWARD           64 (to 100)
+
+6195     >>  228 END_FOR
+
+6200         230 LOAD_FAST                5 (row)
+             232 LOAD_FAST                2 (result)
+             234 LOAD_FAST                3 (direction)
+             236 STORE_SUBSCR
+             240 JUMP_BACKWARD           87 (to 68)
+
+6192     >>  242 END_FOR
+
+6201         244 LOAD_FAST                2 (result)
+             246 RETURN_VALUE

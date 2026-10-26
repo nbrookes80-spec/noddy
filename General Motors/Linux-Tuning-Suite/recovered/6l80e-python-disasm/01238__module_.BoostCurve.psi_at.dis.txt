@@ -1,0 +1,120 @@
+1238           0 RESUME                   0
+
+1244           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (is_empty)
+              24 POP_JUMP_IF_FALSE        1 (to 28)
+
+1245          26 RETURN_CONST             1 (0.0)
+
+1246     >>   28 LOAD_GLOBAL              3 (NULL + float)
+              38 LOAD_FAST                1 (rpm)
+              40 CALL                     1
+              48 STORE_FAST               1 (rpm)
+
+1247          50 LOAD_FAST                1 (rpm)
+              52 LOAD_FAST                0 (self)
+              54 LOAD_ATTR                4 (spool_rpm)
+              74 COMPARE_OP               2 (<)
+              78 POP_JUMP_IF_FALSE       40 (to 160)
+
+1249          80 LOAD_GLOBAL              7 (NULL + max)
+              90 LOAD_CONST               1 (0.0)
+              92 LOAD_FAST                1 (rpm)
+              94 CALL                     2
+             102 LOAD_GLOBAL              7 (NULL + max)
+             112 LOAD_CONST               2 (1.0)
+             114 LOAD_FAST                0 (self)
+             116 LOAD_ATTR                4 (spool_rpm)
+             136 CALL                     2
+             144 BINARY_OP               11 (/)
+             148 STORE_FAST               2 (t)
+
+1250         150 LOAD_CONST               3 (0.5)
+             152 LOAD_FAST                2 (t)
+             154 BINARY_OP                5 (*)
+             158 RETURN_VALUE
+
+1251     >>  160 LOAD_FAST                1 (rpm)
+             162 LOAD_FAST                0 (self)
+             164 LOAD_ATTR                8 (peak_rpm)
+             184 COMPARE_OP               2 (<)
+             188 POP_JUMP_IF_FALSE       89 (to 368)
+
+1253         190 LOAD_FAST                1 (rpm)
+             192 LOAD_FAST                0 (self)
+             194 LOAD_ATTR                4 (spool_rpm)
+             214 BINARY_OP               10 (-)
+             218 LOAD_GLOBAL              7 (NULL + max)
+             228 LOAD_CONST               2 (1.0)
+             230 LOAD_FAST                0 (self)
+             232 LOAD_ATTR                8 (peak_rpm)
+             252 LOAD_FAST                0 (self)
+             254 LOAD_ATTR                4 (spool_rpm)
+             274 BINARY_OP               10 (-)
+             278 CALL                     2
+             286 BINARY_OP               11 (/)
+             290 STORE_FAST               2 (t)
+
+1254         292 LOAD_CONST               4 (3)
+             294 LOAD_FAST                2 (t)
+             296 LOAD_CONST               5 (2)
+             298 BINARY_OP                8 (**)
+             302 BINARY_OP                5 (*)
+             306 LOAD_CONST               5 (2)
+             308 LOAD_FAST                2 (t)
+             310 LOAD_CONST               4 (3)
+             312 BINARY_OP                8 (**)
+             316 BINARY_OP                5 (*)
+             320 BINARY_OP               10 (-)
+             324 STORE_FAST               3 (t_smooth)
+
+1255         326 LOAD_CONST               3 (0.5)
+             328 LOAD_FAST                0 (self)
+             330 LOAD_ATTR               10 (peak_psi)
+             350 LOAD_CONST               3 (0.5)
+             352 BINARY_OP               10 (-)
+             356 LOAD_FAST                3 (t_smooth)
+             358 BINARY_OP                5 (*)
+             362 BINARY_OP                0 (+)
+             366 RETURN_VALUE
+
+1258     >>  368 LOAD_GLOBAL              7 (NULL + max)
+             378 LOAD_FAST                0 (self)
+             380 LOAD_ATTR                8 (peak_rpm)
+             400 LOAD_CONST               6 (1000)
+             402 BINARY_OP                0 (+)
+             406 LOAD_CONST               7 (6500)
+             408 CALL                     2
+             416 STORE_FAST               4 (ref_high)
+
+1259         418 LOAD_FAST                1 (rpm)
+             420 LOAD_FAST                4 (ref_high)
+             422 COMPARE_OP              92 (>=)
+             426 POP_JUMP_IF_FALSE       12 (to 452)
+
+1260         428 LOAD_FAST                0 (self)
+             430 LOAD_ATTR               12 (redline_psi)
+             450 RETURN_VALUE
+
+1261     >>  452 LOAD_FAST                1 (rpm)
+             454 LOAD_FAST                0 (self)
+             456 LOAD_ATTR                8 (peak_rpm)
+             476 BINARY_OP               10 (-)
+             480 LOAD_FAST                4 (ref_high)
+             482 LOAD_FAST                0 (self)
+             484 LOAD_ATTR                8 (peak_rpm)
+             504 BINARY_OP               10 (-)
+             508 BINARY_OP               11 (/)
+             512 STORE_FAST               2 (t)
+
+1262         514 LOAD_FAST                0 (self)
+             516 LOAD_ATTR               10 (peak_psi)
+             536 LOAD_FAST                0 (self)
+             538 LOAD_ATTR               12 (redline_psi)
+             558 LOAD_FAST                0 (self)
+             560 LOAD_ATTR               10 (peak_psi)
+             580 BINARY_OP               10 (-)
+             584 LOAD_FAST                2 (t)
+             586 BINARY_OP                5 (*)
+             590 BINARY_OP                0 (+)
+             594 RETURN_VALUE

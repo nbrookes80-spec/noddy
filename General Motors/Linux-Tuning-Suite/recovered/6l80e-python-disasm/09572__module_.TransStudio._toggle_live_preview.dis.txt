@@ -1,0 +1,34 @@
+9572           0 RESUME                   0
+
+9573           2 LOAD_FAST                1 (enabled)
+               4 LOAD_FAST                0 (self)
+               6 STORE_ATTR               0 (live_preview_enabled)
+
+9574          16 LOAD_FAST                1 (enabled)
+              18 POP_JUMP_IF_FALSE       59 (to 138)
+
+9575          20 LOAD_FAST                0 (self)
+              22 LOAD_ATTR                3 (NULL|self + statusBar)
+              42 CALL                     0
+              50 LOAD_ATTR                5 (NULL|self + showMessage)
+              70 LOAD_CONST               1 ('Live preview ON — auto-recalc on changes')
+              72 LOAD_CONST               2 (3000)
+              74 CALL                     2
+              82 POP_TOP
+
+9576          84 LOAD_FAST                0 (self)
+              86 LOAD_ATTR                6 (_live_timer)
+             106 LOAD_ATTR                9 (NULL|self + start)
+             126 CALL                     0
+             134 POP_TOP
+             136 RETURN_CONST             0 (None)
+
+9578     >>  138 LOAD_FAST                0 (self)
+             140 LOAD_ATTR                3 (NULL|self + statusBar)
+             160 CALL                     0
+             168 LOAD_ATTR                5 (NULL|self + showMessage)
+             188 LOAD_CONST               3 ('Live preview OFF — manual Calculate required')
+             190 LOAD_CONST               2 (3000)
+             192 CALL                     2
+             200 POP_TOP
+             202 RETURN_CONST             0 (None)

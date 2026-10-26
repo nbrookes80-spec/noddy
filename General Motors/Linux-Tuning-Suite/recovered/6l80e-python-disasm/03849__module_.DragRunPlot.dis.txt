@@ -1,0 +1,28 @@
+               0 MAKE_CELL                0 (__class__)
+
+3849           2 RESUME                   0
+               4 LOAD_NAME                0 (__name__)
+               6 STORE_NAME               1 (__module__)
+               8 LOAD_CONST               0 ('DragRunPlot')
+              10 STORE_NAME               2 (__qualname__)
+
+3850          12 LOAD_CONST               1 ('QPainter widget — velocity vs time with shift markers + RPM trace overlay.')
+              14 STORE_NAME               3 (__doc__)
+
+3852          16 LOAD_CLOSURE             0 (__class__)
+              18 BUILD_TUPLE              1
+              20 LOAD_CONST               2 (<code object __init__ at 0x73ab02a34cb0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3852>)
+              22 MAKE_FUNCTION            8 (closure)
+              24 STORE_NAME               4 (__init__)
+
+3858          26 LOAD_CONST               3 (<code object set_results at 0x73ab02bcbe30, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3858>)
+              28 MAKE_FUNCTION            0
+              30 STORE_NAME               5 (set_results)
+
+3862          32 LOAD_CONST               4 (<code object paintEvent at 0x30c26530, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3862>)
+              34 MAKE_FUNCTION            0
+              36 STORE_NAME               6 (paintEvent)
+              38 LOAD_CLOSURE             0 (__class__)
+              40 COPY                     1
+              42 STORE_NAME               7 (__classcell__)
+              44 RETURN_VALUE

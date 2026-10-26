@@ -1,0 +1,126 @@
+5805           0 RESUME                   0
+               2 LOAD_NAME                0 (__name__)
+               4 STORE_NAME               1 (__module__)
+               6 LOAD_CONST               0 ('PressureEngine')
+               8 STORE_NAME               2 (__qualname__)
+
+5806          10 LOAD_CONST               1 ('Pure-logic generator for Base Shift Pressure tables.\n    Output: 2D list [temp_idx][torque_idx] → PSI.\n\n    Model:\n      1. Hot-side base curve: psi(tq) = base + (peak - base) * (tq/tq_max)^curve\n      2. Cold preload (additive, saturates with torque):\n         cold_factor = max(0, (68 - temp) / 90)        # 1.0 at -22°F, 0 at 68°F\n         cold_add    = cold_preload * cold_factor * (1 - 0.82 * t_norm)\n      3. Hot-side temp comp (intent-scaled, only > 68°F):\n         hot_dev_pct = clamp((temp-68)/(257-68), 0, 1) * 0.18\n         hot_mult    = 1 + hot_dev_pct * hot_scale\n      4. Per-shift multiplier on base+peak\n      5. Cap at MAX_PRESSURE_PSI (296 stock; raise if user has lifted Max Pressure)\n    ')
+              12 STORE_NAME               3 (__doc__)
+
+5821          14 LOAD_NAME                4 (staticmethod)
+
+5822          16 LOAD_CONST               2 (<code object torque_cols at 0x73ab02a4d8f0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5821>)
+              18 MAKE_FUNCTION            0
+
+5821          20 CALL                     0
+
+5822          28 STORE_NAME               5 (torque_cols)
+
+5826          30 LOAD_NAME                4 (staticmethod)
+
+5827          32 NOP
+
+5828          34 NOP
+
+5827          36 LOAD_CONST              15 (('1-2', None))
+              38 LOAD_CONST               4 (<code object base_shift_pressure at 0x30c36df0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5826>)
+              40 MAKE_FUNCTION            1 (defaults)
+
+5826          42 CALL                     0
+
+5827          50 STORE_NAME               6 (base_shift_pressure)
+
+5874          52 LOAD_NAME                4 (staticmethod)
+
+5875          54 LOAD_CONST              16 ((None,))
+              56 LOAD_CONST               5 (<code object tcc_apply_pressure at 0x30c37e20, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5874>)
+              58 MAKE_FUNCTION            1 (defaults)
+
+5874          60 CALL                     0
+
+5875          68 STORE_NAME               7 (tcc_apply_pressure)
+
+5918          70 LOAD_NAME                4 (staticmethod)
+
+5919          72 LOAD_CONST              17 ((400,))
+              74 LOAD_CONST               6 (<code object tcc_apply_pressure_ramp at 0x30c38390, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5918>)
+              76 MAKE_FUNCTION            1 (defaults)
+
+5918          78 CALL                     0
+
+5919          86 STORE_NAME               8 (tcc_apply_pressure_ramp)
+
+5955          88 LOAD_NAME                4 (staticmethod)
+
+5956          90 LOAD_CONST               7 (<code object _tcc_ramp_07_14 at 0x30c39330, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5955>)
+              92 MAKE_FUNCTION            0
+
+5955          94 CALL                     0
+
+5956         102 STORE_NAME               9 (_tcc_ramp_07_14)
+
+6046         104 LOAD_NAME                4 (staticmethod)
+
+6047         106 LOAD_CONST               8 (<code object _tcc_ramp_15_plus at 0x30c39ad0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6046>)
+             108 MAKE_FUNCTION            0
+
+6046         110 CALL                     0
+
+6047         118 STORE_NAME              10 (_tcc_ramp_15_plus)
+
+6071         120 LOAD_NAME                4 (staticmethod)
+
+6072         122 LOAD_CONST              18 ((148,))
+             124 LOAD_CONST               9 (<code object _tcc_ramp_shudder_fix at 0x30c47010, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6071>)
+             126 MAKE_FUNCTION            1 (defaults)
+
+6071         128 CALL                     0
+
+6072         136 STORE_NAME              11 (_tcc_ramp_shudder_fix)
+
+6135         138 LOAD_NAME                4 (staticmethod)
+
+6136         140 LOAD_CONST              16 ((None,))
+             142 LOAD_CONST              10 (<code object coast_pressure at 0x30c47890, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6135>)
+             144 MAKE_FUNCTION            1 (defaults)
+
+6135         146 CALL                     0
+
+6136         154 STORE_NAME              12 (coast_pressure)
+
+6179         156 LOAD_NAME                4 (staticmethod)
+
+6180         158 LOAD_CONST              11 (<code object garage_shift_pressure at 0x73ab03527830, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6179>)
+             160 MAKE_FUNCTION            0
+
+6179         162 CALL                     0
+
+6180         170 STORE_NAME              13 (garage_shift_pressure)
+
+6206         172 LOAD_NAME                4 (staticmethod)
+
+6207         174 LOAD_CONST              12 (<code object base_shift_pressure_4spd at 0x30b61940, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6206>)
+             176 MAKE_FUNCTION            0
+
+6206         178 CALL                     0
+
+6207         186 STORE_NAME              14 (base_shift_pressure_4spd)
+
+6242         188 LOAD_NAME                4 (staticmethod)
+
+6243         190 LOAD_CONST              13 (<code object brake_shift_pressure_4spd at 0x30c47dc0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6242>)
+             192 MAKE_FUNCTION            0
+
+6242         194 CALL                     0
+
+6243         202 STORE_NAME              15 (brake_shift_pressure_4spd)
+
+6284         204 LOAD_NAME                4 (staticmethod)
+
+6285         206 LOAD_CONST              14 (<code object force_motor_current at 0x30c48080, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6284>)
+             208 MAKE_FUNCTION            0
+
+6284         210 CALL                     0
+
+6285         218 STORE_NAME              16 (force_motor_current)
+             220 RETURN_CONST             3 (None)

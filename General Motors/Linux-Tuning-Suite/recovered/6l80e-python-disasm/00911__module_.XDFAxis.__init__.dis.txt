@@ -1,0 +1,42 @@
+911           0 RESUME                   0
+
+912           2 LOAD_CONST               1 ('')
+              4 LOAD_FAST                0 (self)
+              6 STORE_ATTR               0 (axis_id)
+
+913          16 LOAD_CONST               2 (0)
+             18 LOAD_FAST                0 (self)
+             20 STORE_ATTR               1 (address)
+
+914          30 LOAD_CONST               3 (16)
+             32 LOAD_FAST                0 (self)
+             34 STORE_ATTR               2 (size_bits)
+
+915          44 LOAD_CONST               2 (0)
+             46 LOAD_FAST                0 (self)
+             48 STORE_ATTR               3 (stride_bits)
+
+916          58 LOAD_CONST               4 (1)
+             60 LOAD_FAST                0 (self)
+             62 STORE_ATTR               4 (row_count)
+
+917          72 LOAD_CONST               4 (1)
+             74 LOAD_FAST                0 (self)
+             76 STORE_ATTR               5 (col_count)
+
+918          86 LOAD_CONST               5 (False)
+             88 LOAD_FAST                0 (self)
+             90 STORE_ATTR               6 (signed)
+
+919         100 LOAD_CONST               5 (False)
+            102 LOAD_FAST                0 (self)
+            104 STORE_ATTR               7 (little_endian)
+
+920         114 LOAD_CONST               6 ('X')
+            116 LOAD_FAST                0 (self)
+            118 STORE_ATTR               8 (math_eq)
+
+921         128 LOAD_CONST               1 ('')
+            130 LOAD_FAST                0 (self)
+            132 STORE_ATTR               9 (label_units)
+            142 RETURN_CONST             0 (None)

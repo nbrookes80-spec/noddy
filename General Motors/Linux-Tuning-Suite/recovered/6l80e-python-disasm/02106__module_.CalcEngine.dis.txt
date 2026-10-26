@@ -1,0 +1,73 @@
+2106           0 RESUME                   0
+               2 LOAD_NAME                0 (__name__)
+               4 STORE_NAME               1 (__module__)
+               6 LOAD_CONST               0 ('CalcEngine')
+               8 STORE_NAME               2 (__qualname__)
+
+2107          10 LOAD_CONST               1 ('\n    Pure shift point calculator. Takes a config dict, returns numpy-like\n    nested-list tables. UI binds inputs to this; logic is testable in isolation.\n    ')
+              12 STORE_NAME               3 (__doc__)
+
+2112          14 LOAD_NAME                4 (staticmethod)
+
+2113          16 LOAD_CONST               2 (<code object mph at 0x73ab02bcb730, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2112>)
+              18 MAKE_FUNCTION            0
+
+2112          20 CALL                     0
+
+2113          28 STORE_NAME               5 (mph)
+
+2118          30 LOAD_NAME                4 (staticmethod)
+
+2119          32 LOAD_CONST               3 (<code object stall_slip at 0x73ab02a1c810, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2118>)
+              34 MAKE_FUNCTION            0
+
+2118          36 CALL                     0
+
+2119          44 STORE_NAME               6 (stall_slip)
+
+2123          46 LOAD_NAME                4 (staticmethod)
+
+2124          48 LOAD_CONST               4 (<code object base_slope at 0x73ab02a40620, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2123>)
+              50 MAKE_FUNCTION            0
+
+2123          52 CALL                     0
+
+2124          60 STORE_NAME               7 (base_slope)
+
+2129          62 LOAD_NAME                4 (staticmethod)
+
+2130          64 LOAD_CONST               5 (<code object upshift_slope at 0x73ab02a3c200, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2129>)
+              66 MAKE_FUNCTION            0
+
+2129          68 CALL                     0
+
+2130          76 STORE_NAME               8 (upshift_slope)
+
+2144          78 LOAD_NAME                4 (staticmethod)
+
+2145          80 LOAD_CONST               6 (<code object downshift_slope at 0x73ab02bd8ff0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2144>)
+              82 MAKE_FUNCTION            0
+
+2144          84 CALL                     0
+
+2145          92 STORE_NAME               9 (downshift_slope)
+
+2160          94 LOAD_NAME                4 (staticmethod)
+
+2161          96 LOAD_CONST              10 ((False,))
+              98 LOAD_CONST               7 (<code object vss_calibration at 0x73ab02a3c3d0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2160>)
+             100 MAKE_FUNCTION            1 (defaults)
+
+2160         102 CALL                     0
+
+2161         110 STORE_NAME              10 (vss_calibration)
+
+2209         112 LOAD_NAME                4 (staticmethod)
+
+2210         114 LOAD_CONST               8 (<code object calculate at 0x30c0d3f0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2209>)
+             116 MAKE_FUNCTION            0
+
+2209         118 CALL                     0
+
+2210         126 STORE_NAME              11 (calculate)
+             128 RETURN_CONST             9 (None)

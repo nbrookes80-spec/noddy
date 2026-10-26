@@ -1,0 +1,84 @@
+9405           0 RESUME                   0
+
+9409           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (torque_curve)
+              24 POP_JUMP_IF_NONE        22 (to 70)
+              26 LOAD_FAST                0 (self)
+              28 LOAD_ATTR                0 (torque_curve)
+              48 LOAD_ATTR                2 (is_empty)
+              68 POP_JUMP_IF_FALSE       24 (to 118)
+
+9410     >>   70 LOAD_GLOBAL              5 (NULL + QMessageBox)
+              80 LOAD_ATTR                6 (information)
+             100 LOAD_FAST                0 (self)
+             102 LOAD_CONST               2 ('Load Torque Curve First')
+
+9411         104 LOAD_CONST               3 ('Performance Simulator needs a torque curve to predict acceleration.\n\nOpen Tools → Torque Curve and either:\n  • Pick a preset (LS3 / LT4 / LBZ / etc.)\n  • Import a dyno CSV (RPM, HP, [TQ] columns)\nThen re-open Performance Simulator.')
+
+9410         106 CALL                     3
+             114 POP_TOP
+
+9416         116 RETURN_CONST             1 (None)
+
+9418     >>  118 LOAD_FAST                0 (self)
+             120 LOAD_ATTR                9 (NULL|self + _gather_config)
+             140 CALL                     0
+             148 STORE_FAST               1 (sim_cfg)
+
+9422         150 BUILD_LIST               0
+             152 STORE_FAST               2 (shift_points)
+
+9423         154 LOAD_GLOBAL             11 (NULL + hasattr)
+             164 LOAD_FAST                0 (self)
+             166 LOAD_CONST               4 ('_last_result')
+             168 CALL                     2
+             176 POP_JUMP_IF_FALSE       82 (to 342)
+             178 LOAD_FAST                0 (self)
+             180 LOAD_ATTR               12 (_last_result)
+             200 POP_JUMP_IF_NONE        70 (to 342)
+
+9424         202 LOAD_FAST                0 (self)
+             204 LOAD_ATTR               12 (_last_result)
+             224 LOAD_ATTR               15 (NULL|self + get)
+             244 LOAD_CONST               5 ('upshift')
+             246 BUILD_LIST               0
+             248 CALL                     2
+             256 STORE_FAST               3 (up)
+
+9425         258 LOAD_FAST                3 (up)
+             260 GET_ITER
+         >>  262 FOR_ITER                37 (to 340)
+             266 STORE_FAST               4 (row)
+
+9426         268 LOAD_GLOBAL             17 (NULL + len)
+             278 LOAD_FAST                4 (row)
+             280 CALL                     1
+             288 LOAD_CONST               6 (16)
+             290 COMPARE_OP              68 (>)
+             294 POP_JUMP_IF_TRUE         1 (to 298)
+             296 JUMP_BACKWARD           18 (to 262)
+
+9427     >>  298 LOAD_FAST                2 (shift_points)
+             300 LOAD_ATTR               19 (NULL|self + append)
+             320 LOAD_FAST                4 (row)
+             322 LOAD_CONST               6 (16)
+             324 BINARY_SUBSCR
+             328 CALL                     1
+             336 POP_TOP
+             338 JUMP_BACKWARD           39 (to 262)
+
+9425     >>  340 END_FOR
+
+9428     >>  342 LOAD_GLOBAL             21 (NULL + PerfSimDialog)
+             352 LOAD_FAST                0 (self)
+             354 LOAD_FAST                1 (sim_cfg)
+             356 LOAD_FAST                2 (shift_points)
+             358 KW_NAMES                 7 (('shift_points_mph',))
+             360 CALL                     3
+             368 STORE_FAST               5 (dlg)
+
+9429         370 LOAD_FAST                5 (dlg)
+             372 LOAD_ATTR               23 (NULL|self + exec)
+             392 CALL                     0
+             400 POP_TOP
+             402 RETURN_CONST             1 (None)

@@ -1,0 +1,23 @@
+3491           0 RESUME                   0
+
+3492           2 LOAD_GLOBAL              1 (NULL + len)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_ATTR                3 (NULL|self + _current_table_list)
+              34 CALL                     0
+              42 CALL                     1
+              50 STORE_FAST               1 (n)
+
+3493          52 LOAD_FAST                0 (self)
+              54 LOAD_ATTR                4 (table_idx)
+              74 LOAD_CONST               1 (1)
+              76 BINARY_OP                0 (+)
+              80 LOAD_FAST                1 (n)
+              82 BINARY_OP                6 (%)
+              86 LOAD_FAST                0 (self)
+              88 STORE_ATTR               2 (table_idx)
+
+3494          98 LOAD_FAST                0 (self)
+             100 LOAD_ATTR                7 (NULL|self + _refresh_shift_table)
+             120 CALL                     0
+             128 POP_TOP
+             130 RETURN_CONST             0 (None)

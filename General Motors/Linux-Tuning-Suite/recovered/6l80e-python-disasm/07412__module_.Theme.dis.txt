@@ -1,0 +1,97 @@
+7412           0 RESUME                   0
+               2 LOAD_NAME                0 (__name__)
+               4 STORE_NAME               1 (__module__)
+               6 LOAD_CONST               0 ('Theme')
+               8 STORE_NAME               2 (__qualname__)
+
+7413          10 LOAD_CONST               1 ('Theme manager. Static-only; tracks current_name in class attr.')
+              12 STORE_NAME               3 (__doc__)
+
+7414          14 LOAD_CONST               2 ('Dark')
+              16 STORE_NAME               4 (current_name)
+
+7418          18 LOAD_CONST               3 ('#252525')
+
+7419          20 LOAD_CONST               4 ('#e0e0e0')
+
+7420          22 LOAD_CONST               5 ('#1e1e1e')
+
+7421          24 LOAD_CONST               6 ('#2a2a2a')
+
+7422          26 LOAD_CONST               7 ('#353535')
+
+7423          28 LOAD_CONST               4 ('#e0e0e0')
+
+7424          30 LOAD_CONST               4 ('#e0e0e0')
+
+7425          32 LOAD_CONST               8 ('#2864A0')
+
+7426          34 LOAD_CONST               9 ('#ffffff')
+
+7427          36 LOAD_CONST              10 ('#303030')
+
+7428          38 LOAD_CONST              11 ('#404040')
+
+7429          40 LOAD_CONST              12 ('#555')
+
+7417          42 LOAD_CONST              13 (('window', 'window_text', 'base', 'alt_base', 'button', 'button_text', 'text', 'highlight', 'highlight_text', 'tab_bg', 'tab_active', 'groupbox_border'))
+              44 BUILD_CONST_KEY_MAP     12
+
+7432          46 LOAD_CONST              14 ('#f2f2f2')
+
+7433          48 LOAD_CONST              15 ('#1a1a1a')
+
+7434          50 LOAD_CONST               9 ('#ffffff')
+
+7435          52 LOAD_CONST              16 ('#eef2f6')
+
+7436          54 LOAD_CONST               4 ('#e0e0e0')
+
+7437          56 LOAD_CONST              15 ('#1a1a1a')
+
+7438          58 LOAD_CONST              15 ('#1a1a1a')
+
+7439          60 LOAD_CONST              17 ('#3D7DC4')
+
+7440          62 LOAD_CONST               9 ('#ffffff')
+
+7441          64 LOAD_CONST              18 ('#dadada')
+
+7442          66 LOAD_CONST               9 ('#ffffff')
+
+7443          68 LOAD_CONST              19 ('#a0a0a0')
+
+7431          70 LOAD_CONST              13 (('window', 'window_text', 'base', 'alt_base', 'button', 'button_text', 'text', 'highlight', 'highlight_text', 'tab_bg', 'tab_active', 'groupbox_border'))
+              72 BUILD_CONST_KEY_MAP     12
+
+7416          74 LOAD_CONST              20 (('Dark', 'Light'))
+              76 BUILD_CONST_KEY_MAP      2
+              78 STORE_NAME               5 (_PALETTES)
+
+7447          80 LOAD_NAME                6 (classmethod)
+
+7448          82 LOAD_CONST              21 (<code object apply at 0x30c44180, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7447>)
+              84 MAKE_FUNCTION            0
+
+7447          86 CALL                     0
+
+7448          94 STORE_NAME               7 (apply)
+
+7494          96 LOAD_NAME                6 (classmethod)
+
+7495          98 LOAD_CONST              22 (<code object bg_color at 0x73ab02a4e430, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7494>)
+             100 MAKE_FUNCTION            0
+
+7494         102 CALL                     0
+
+7495         110 STORE_NAME               8 (bg_color)
+
+7499         112 LOAD_NAME                6 (classmethod)
+
+7500         114 LOAD_CONST              23 (<code object text_color at 0x73ab02a4e550, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7499>)
+             116 MAKE_FUNCTION            0
+
+7499         118 CALL                     0
+
+7500         126 STORE_NAME               9 (text_color)
+             128 RETURN_CONST            24 (None)

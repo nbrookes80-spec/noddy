@@ -1,0 +1,70 @@
+1432           0 RESUME                   0
+
+1435           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (is_empty)
+              24 POP_JUMP_IF_TRUE         5 (to 36)
+              26 LOAD_FAST                2 (rpm_hi)
+              28 LOAD_FAST                1 (rpm_lo)
+              30 COMPARE_OP              26 (<=)
+              34 POP_JUMP_IF_FALSE        1 (to 38)
+
+1436     >>   36 RETURN_CONST             1 (0.0)
+
+1438     >>   38 LOAD_CONST               2 (16)
+              40 STORE_FAST               3 (n)
+
+1439          42 LOAD_FAST                2 (rpm_hi)
+              44 LOAD_FAST                1 (rpm_lo)
+              46 BINARY_OP               10 (-)
+              50 LOAD_FAST                3 (n)
+              52 BINARY_OP               11 (/)
+              56 STORE_FAST               4 (step)
+
+1440          58 LOAD_CONST               1 (0.0)
+              60 STORE_FAST               5 (total)
+
+1441          62 LOAD_GLOBAL              3 (NULL + range)
+              72 LOAD_FAST                3 (n)
+              74 CALL                     1
+              82 GET_ITER
+         >>   84 FOR_ITER                59 (to 206)
+              88 STORE_FAST               6 (i)
+
+1442          90 LOAD_FAST                1 (rpm_lo)
+              92 LOAD_FAST                6 (i)
+              94 LOAD_FAST                4 (step)
+              96 BINARY_OP                5 (*)
+             100 BINARY_OP                0 (+)
+             104 STORE_FAST               7 (r1)
+
+1443         106 LOAD_FAST                7 (r1)
+             108 LOAD_FAST                4 (step)
+             110 BINARY_OP                0 (+)
+             114 STORE_FAST               8 (r2)
+
+1444         116 LOAD_FAST                5 (total)
+             118 LOAD_CONST               3 (0.5)
+             120 LOAD_FAST                0 (self)
+             122 LOAD_ATTR                5 (NULL|self + hp_at)
+             142 LOAD_FAST                7 (r1)
+             144 CALL                     1
+             152 LOAD_FAST                0 (self)
+             154 LOAD_ATTR                5 (NULL|self + hp_at)
+             174 LOAD_FAST                8 (r2)
+             176 CALL                     1
+             184 BINARY_OP                0 (+)
+             188 BINARY_OP                5 (*)
+             192 LOAD_FAST                4 (step)
+             194 BINARY_OP                5 (*)
+             198 BINARY_OP               13 (+=)
+             202 STORE_FAST               5 (total)
+             204 JUMP_BACKWARD           61 (to 84)
+
+1441     >>  206 END_FOR
+
+1445         208 LOAD_FAST                5 (total)
+             210 LOAD_FAST                2 (rpm_hi)
+             212 LOAD_FAST                1 (rpm_lo)
+             214 BINARY_OP               10 (-)
+             218 BINARY_OP               11 (/)
+             222 RETURN_VALUE

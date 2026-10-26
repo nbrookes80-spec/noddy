@@ -1,0 +1,60 @@
+7251           0 RESUME                   0
+
+7253           2 LOAD_FAST                1 (trans_name)
+               4 LOAD_FAST                0 (self)
+               6 STORE_ATTR               0 (current_trans_name)
+
+7254          16 LOAD_FAST                2 (ratios)
+              18 COPY                     1
+              20 POP_JUMP_IF_TRUE         2 (to 26)
+              22 POP_TOP
+              24 BUILD_LIST               0
+         >>   26 LOAD_FAST                0 (self)
+              28 STORE_ATTR               1 (current_trans_ratios)
+
+7255          38 LOAD_FAST                2 (ratios)
+              40 POP_JUMP_IF_FALSE       70 (to 182)
+
+7256          42 LOAD_CONST               1 (' | ')
+              44 LOAD_ATTR                5 (NULL|self + join)
+              64 LOAD_CONST               2 (<code object <genexpr> at 0x73ab02a135a0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7256>)
+              66 MAKE_FUNCTION            0
+              68 LOAD_FAST                2 (ratios)
+              70 GET_ITER
+              72 CALL                     0
+              80 CALL                     1
+              88 STORE_FAST               3 (ratios_str)
+
+7257          90 LOAD_FAST                0 (self)
+              92 LOAD_ATTR                6 (trans_lbl)
+             112 LOAD_ATTR                9 (NULL|self + setText)
+
+7258         132 LOAD_CONST               3 ('<b>')
+             134 LOAD_FAST                1 (trans_name)
+             136 FORMAT_VALUE             0
+             138 LOAD_CONST               4 ('</b>: ')
+             140 LOAD_GLOBAL             11 (NULL + len)
+             150 LOAD_FAST                2 (ratios)
+             152 CALL                     1
+             160 FORMAT_VALUE             0
+             162 LOAD_CONST               5 ('-spd<br>')
+             164 LOAD_FAST                3 (ratios_str)
+             166 FORMAT_VALUE             0
+             168 BUILD_STRING             6
+
+7257         170 CALL                     1
+             178 POP_TOP
+             180 JUMP_FORWARD            27 (to 236)
+
+7260     >>  182 LOAD_FAST                0 (self)
+             184 LOAD_ATTR                6 (trans_lbl)
+             204 LOAD_ATTR                9 (NULL|self + setText)
+             224 LOAD_CONST               6 ('(no trans selected)')
+             226 CALL                     1
+             234 POP_TOP
+
+7261     >>  236 LOAD_FAST                0 (self)
+             238 LOAD_ATTR               13 (NULL|self + _refresh)
+             258 CALL                     0
+             266 POP_TOP
+             268 RETURN_CONST             7 (None)

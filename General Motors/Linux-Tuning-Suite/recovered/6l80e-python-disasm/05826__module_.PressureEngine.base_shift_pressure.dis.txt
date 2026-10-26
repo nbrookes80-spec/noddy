@@ -1,0 +1,175 @@
+5826           0 RESUME                   0
+
+5837           2 LOAD_GLOBAL              0 (PRESSURE_INTENTS)
+              12 LOAD_ATTR                3 (NULL|self + get)
+              32 LOAD_FAST                0 (intent_name)
+              34 LOAD_GLOBAL              0 (PRESSURE_INTENTS)
+              44 LOAD_CONST               1 ('Daily')
+              46 BINARY_SUBSCR
+              50 CALL                     2
+              58 STORE_FAST               4 (intent)
+
+5838          60 LOAD_GLOBAL              4 (SHIFT_PRESSURE_MULT)
+              70 LOAD_ATTR                3 (NULL|self + get)
+              90 LOAD_FAST                2 (shift_name)
+              92 LOAD_CONST               2 (1.0)
+              94 CALL                     2
+             102 STORE_FAST               5 (shift_mult)
+
+5839         104 LOAD_FAST                3 (max_pressure_psi)
+             106 POP_JUMP_IF_NONE         2 (to 112)
+             108 LOAD_FAST                3 (max_pressure_psi)
+             110 JUMP_FORWARD             5 (to 122)
+         >>  112 LOAD_GLOBAL              6 (MAX_PRESSURE_PSI)
+         >>  122 STORE_FAST               6 (cap)
+
+5841         124 LOAD_FAST                4 (intent)
+             126 LOAD_CONST               3 ('base_psi')
+             128 BINARY_SUBSCR
+             132 LOAD_FAST                5 (shift_mult)
+             134 BINARY_OP                5 (*)
+             138 STORE_FAST               7 (base)
+
+5842         140 LOAD_FAST                4 (intent)
+             142 LOAD_CONST               4 ('max_psi')
+             144 BINARY_SUBSCR
+             148 LOAD_FAST                5 (shift_mult)
+             150 BINARY_OP                5 (*)
+             154 STORE_FAST               8 (peak)
+
+5843         156 LOAD_FAST                4 (intent)
+             158 LOAD_CONST               5 ('cold_preload')
+             160 BINARY_SUBSCR
+             164 LOAD_FAST                5 (shift_mult)
+             166 BINARY_OP                5 (*)
+             170 STORE_FAST               9 (cold_preload)
+
+5844         172 LOAD_FAST                4 (intent)
+             174 LOAD_CONST               6 ('hot_scale')
+             176 BINARY_SUBSCR
+             180 STORE_FAST              10 (hot_scale)
+
+5845         182 LOAD_FAST                4 (intent)
+             184 LOAD_CONST               7 ('torque_curve')
+             186 BINARY_SUBSCR
+             190 STORE_FAST              11 (curve)
+
+5847         192 LOAD_GLOBAL              8 (PressureEngine)
+             202 LOAD_ATTR               11 (NULL|self + torque_cols)
+             222 LOAD_FAST                1 (max_torque)
+             224 CALL                     1
+             232 STORE_FAST              12 (torque_cols)
+
+5848         234 BUILD_LIST               0
+             236 STORE_FAST              13 (rows)
+
+5849         238 LOAD_GLOBAL             12 (PRESSURE_TEMP_ROWS)
+             248 GET_ITER
+         >>  250 FOR_ITER               188 (to 630)
+             254 STORE_FAST              14 (temp)
+
+5851         256 LOAD_GLOBAL             14 (COLD_PRELOAD_FACTOR)
+             266 LOAD_ATTR                3 (NULL|self + get)
+             286 LOAD_FAST               14 (temp)
+             288 LOAD_CONST               8 (0.0)
+             290 CALL                     2
+             298 STORE_FAST              15 (cold_factor)
+
+5853         300 LOAD_GLOBAL             17 (NULL + max)
+             310 LOAD_CONST               8 (0.0)
+             312 LOAD_GLOBAL             19 (NULL + min)
+             322 LOAD_CONST               2 (1.0)
+             324 LOAD_FAST               14 (temp)
+             326 LOAD_CONST               9 (68)
+             328 BINARY_OP               10 (-)
+             332 LOAD_CONST              10 (189)
+             334 BINARY_OP               11 (/)
+             338 CALL                     2
+             346 CALL                     2
+             354 LOAD_CONST              11 (0.18)
+             356 BINARY_OP                5 (*)
+             360 STORE_FAST              16 (hot_dev)
+
+5854         362 LOAD_CONST               2 (1.0)
+             364 LOAD_FAST               16 (hot_dev)
+             366 LOAD_FAST               10 (hot_scale)
+             368 BINARY_OP                5 (*)
+             372 BINARY_OP                0 (+)
+             376 STORE_FAST              17 (hot_mult)
+
+5856         378 BUILD_LIST               0
+             380 STORE_FAST              18 (row)
+
+5857         382 LOAD_FAST               12 (torque_cols)
+             384 GET_ITER
+         >>  386 FOR_ITER               101 (to 592)
+             390 STORE_FAST              19 (tq)
+
+5858         392 LOAD_GLOBAL             19 (NULL + min)
+             402 LOAD_CONST               2 (1.0)
+             404 LOAD_FAST               19 (tq)
+             406 LOAD_GLOBAL             17 (NULL + max)
+             416 LOAD_CONST               2 (1.0)
+             418 LOAD_GLOBAL             21 (NULL + float)
+             428 LOAD_FAST                1 (max_torque)
+             430 CALL                     1
+             438 CALL                     2
+             446 BINARY_OP               11 (/)
+             450 CALL                     2
+             458 STORE_FAST              20 (t_norm)
+
+5860         460 LOAD_FAST                7 (base)
+             462 LOAD_FAST                8 (peak)
+             464 LOAD_FAST                7 (base)
+             466 BINARY_OP               10 (-)
+             470 LOAD_FAST               20 (t_norm)
+             472 LOAD_FAST               11 (curve)
+             474 BINARY_OP                8 (**)
+             478 BINARY_OP                5 (*)
+             482 BINARY_OP                0 (+)
+             486 STORE_FAST              21 (torque_psi)
+
+5862         488 LOAD_FAST                9 (cold_preload)
+             490 LOAD_FAST               15 (cold_factor)
+             492 BINARY_OP                5 (*)
+             496 LOAD_CONST               2 (1.0)
+             498 LOAD_CONST              12 (0.82)
+             500 LOAD_FAST               20 (t_norm)
+             502 BINARY_OP                5 (*)
+             506 BINARY_OP               10 (-)
+             510 BINARY_OP                5 (*)
+             514 STORE_FAST              22 (cold_add)
+
+5864         516 LOAD_FAST               21 (torque_psi)
+             518 LOAD_FAST               22 (cold_add)
+             520 BINARY_OP                0 (+)
+             524 LOAD_FAST               17 (hot_mult)
+             526 BINARY_OP                5 (*)
+             530 STORE_FAST              23 (psi)
+
+5866         532 LOAD_GLOBAL             19 (NULL + min)
+             542 LOAD_FAST               23 (psi)
+             544 LOAD_FAST                6 (cap)
+             546 CALL                     2
+             554 STORE_FAST              23 (psi)
+
+5867         556 LOAD_FAST               18 (row)
+             558 LOAD_ATTR               23 (NULL|self + append)
+             578 LOAD_FAST               23 (psi)
+             580 CALL                     1
+             588 POP_TOP
+             590 JUMP_BACKWARD          103 (to 386)
+
+5857     >>  592 END_FOR
+
+5868         594 LOAD_FAST               13 (rows)
+             596 LOAD_ATTR               23 (NULL|self + append)
+             616 LOAD_FAST               18 (row)
+             618 CALL                     1
+             626 POP_TOP
+             628 JUMP_BACKWARD          190 (to 250)
+
+5849     >>  630 END_FOR
+
+5869         632 LOAD_FAST               13 (rows)
+             634 RETURN_VALUE

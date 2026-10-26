@@ -1,0 +1,115 @@
+4702           0 RESUME                   0
+
+4703           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (tbl)
+              24 LOAD_ATTR                3 (NULL|self + rowCount)
+              44 CALL                     0
+              52 STORE_FAST               1 (r)
+
+4704          54 LOAD_FAST                0 (self)
+              56 LOAD_ATTR                0 (tbl)
+              76 LOAD_ATTR                5 (NULL|self + insertRow)
+              96 LOAD_FAST                1 (r)
+              98 CALL                     1
+             106 POP_TOP
+
+4706         108 LOAD_FAST                1 (r)
+             110 LOAD_CONST               1 (0)
+             112 COMPARE_OP              68 (>)
+             116 POP_JUMP_IF_FALSE      106 (to 330)
+
+4707         118 NOP
+
+4708         120 LOAD_GLOBAL              7 (NULL + int)
+             130 LOAD_FAST                0 (self)
+             132 LOAD_ATTR                0 (tbl)
+             152 LOAD_ATTR                9 (NULL|self + item)
+             172 LOAD_FAST                1 (r)
+             174 LOAD_CONST               2 (1)
+             176 BINARY_OP               10 (-)
+             180 LOAD_CONST               1 (0)
+             182 CALL                     2
+             190 LOAD_ATTR               11 (NULL|self + text)
+             210 CALL                     0
+             218 CALL                     1
+             226 STORE_FAST               2 (last_rpm)
+
+4709         228 LOAD_FAST                0 (self)
+             230 LOAD_ATTR                0 (tbl)
+             250 LOAD_ATTR               13 (NULL|self + setItem)
+             270 LOAD_FAST                1 (r)
+             272 LOAD_CONST               1 (0)
+             274 LOAD_GLOBAL             15 (NULL + QTableWidgetItem)
+             284 LOAD_GLOBAL             17 (NULL + str)
+             294 LOAD_FAST                2 (last_rpm)
+             296 LOAD_CONST               3 (500)
+             298 BINARY_OP                0 (+)
+             302 CALL                     1
+             310 CALL                     1
+             318 CALL                     3
+             326 POP_TOP
+             328 JUMP_FORWARD            38 (to 406)
+
+4713     >>  330 LOAD_FAST                0 (self)
+             332 LOAD_ATTR                0 (tbl)
+             352 LOAD_ATTR               13 (NULL|self + setItem)
+             372 LOAD_FAST                1 (r)
+             374 LOAD_CONST               1 (0)
+             376 LOAD_GLOBAL             15 (NULL + QTableWidgetItem)
+             386 LOAD_CONST               5 ('1500')
+             388 CALL                     1
+             396 CALL                     3
+             404 POP_TOP
+
+4714     >>  406 LOAD_FAST                0 (self)
+             408 LOAD_ATTR                0 (tbl)
+             428 LOAD_ATTR               13 (NULL|self + setItem)
+             448 LOAD_FAST                1 (r)
+             450 LOAD_CONST               2 (1)
+             452 LOAD_GLOBAL             15 (NULL + QTableWidgetItem)
+             462 LOAD_CONST               4 ('0')
+             464 CALL                     1
+             472 CALL                     3
+             480 POP_TOP
+
+4715         482 LOAD_FAST                0 (self)
+             484 LOAD_ATTR                0 (tbl)
+             504 LOAD_ATTR               13 (NULL|self + setItem)
+             524 LOAD_FAST                1 (r)
+             526 LOAD_CONST               6 (2)
+             528 LOAD_GLOBAL             15 (NULL + QTableWidgetItem)
+             538 LOAD_CONST               4 ('0')
+             540 CALL                     1
+             548 CALL                     3
+             556 POP_TOP
+             558 RETURN_CONST             0 (None)
+         >>  560 PUSH_EXC_INFO
+
+4710         562 LOAD_GLOBAL             18 (ValueError)
+             572 LOAD_GLOBAL             20 (AttributeError)
+             582 BUILD_TUPLE              2
+             584 CHECK_EXC_MATCH
+             586 POP_JUMP_IF_FALSE       41 (to 670)
+             588 POP_TOP
+
+4711         590 LOAD_FAST                0 (self)
+             592 LOAD_ATTR                0 (tbl)
+             612 LOAD_ATTR               13 (NULL|self + setItem)
+             632 LOAD_FAST                1 (r)
+             634 LOAD_CONST               1 (0)
+             636 LOAD_GLOBAL             15 (NULL + QTableWidgetItem)
+             646 LOAD_CONST               4 ('0')
+             648 CALL                     1
+             656 CALL                     3
+             664 POP_TOP
+             666 POP_EXCEPT
+             668 JUMP_BACKWARD          132 (to 406)
+
+4710     >>  670 RERAISE                  0
+         >>  672 COPY                     3
+             674 POP_EXCEPT
+             676 RERAISE                  1
+ExceptionTable:
+  120 to 326 -> 560 [0]
+  560 to 664 -> 672 [1] lasti
+  670 to 670 -> 672 [1] lasti

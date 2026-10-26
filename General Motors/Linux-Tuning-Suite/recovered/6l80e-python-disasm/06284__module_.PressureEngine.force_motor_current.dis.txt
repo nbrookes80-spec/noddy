@@ -1,0 +1,104 @@
+6284           0 RESUME                   0
+
+6288           2 BUILD_LIST               0
+               4 STORE_FAST               0 (out)
+
+6289           6 LOAD_GLOBAL              1 (NULL + enumerate)
+              16 LOAD_GLOBAL              2 (FORCE_MOTOR_TEMP_ROWS)
+              26 CALL                     1
+              34 GET_ITER
+         >>   36 FOR_ITER               168 (to 376)
+              40 UNPACK_SEQUENCE          2
+              44 STORE_FAST               1 (i)
+              46 STORE_FAST               2 (temp)
+
+6290          48 LOAD_FAST                2 (temp)
+              50 LOAD_CONST               1 (-40)
+              52 BINARY_OP               10 (-)
+              56 LOAD_CONST               2 (346)
+              58 BINARY_OP               11 (/)
+              62 STORE_FAST               3 (temp_norm)
+
+6291          64 BUILD_LIST               0
+              66 STORE_FAST               4 (row)
+
+6292          68 LOAD_GLOBAL              4 (FORCE_MOTOR_PSI_COLS)
+              78 GET_ITER
+         >>   80 FOR_ITER               127 (to 338)
+              84 STORE_FAST               5 (psi)
+
+6293          86 LOAD_FAST                5 (psi)
+              88 LOAD_GLOBAL              4 (FORCE_MOTOR_PSI_COLS)
+              98 LOAD_CONST               3 (-1)
+             100 BINARY_SUBSCR
+             104 BINARY_OP               11 (/)
+             108 STORE_FAST               6 (psi_norm)
+
+6294         110 LOAD_GLOBAL              6 (FORCE_MOTOR_MAX_MA)
+             120 LOAD_GLOBAL              6 (FORCE_MOTOR_MAX_MA)
+             130 LOAD_GLOBAL              8 (FORCE_MOTOR_MIN_MA)
+             140 BINARY_OP               10 (-)
+             144 LOAD_FAST                6 (psi_norm)
+             146 BINARY_OP                5 (*)
+             150 BINARY_OP               10 (-)
+             154 STORE_FAST               7 (base_ma)
+
+6295         156 LOAD_CONST               4 (4.0)
+             158 LOAD_FAST                6 (psi_norm)
+             160 BINARY_OP                5 (*)
+             164 LOAD_CONST               5 (1.0)
+             166 LOAD_FAST                6 (psi_norm)
+             168 BINARY_OP               10 (-)
+             172 BINARY_OP                5 (*)
+             176 STORE_FAST               8 (mid_factor)
+
+6296         178 LOAD_CONST               5 (1.0)
+             180 LOAD_FAST                3 (temp_norm)
+             182 BINARY_OP               10 (-)
+             186 LOAD_CONST               6 (30)
+             188 BINARY_OP                5 (*)
+             192 LOAD_FAST                3 (temp_norm)
+             194 LOAD_CONST               7 (50)
+             196 BINARY_OP                5 (*)
+             200 BINARY_OP               10 (-)
+             204 STORE_FAST               9 (temp_adjust)
+
+6297         206 LOAD_FAST                7 (base_ma)
+             208 LOAD_FAST                9 (temp_adjust)
+             210 LOAD_FAST                8 (mid_factor)
+             212 BINARY_OP                5 (*)
+             216 BINARY_OP                0 (+)
+             220 STORE_FAST              10 (ma)
+
+6298         222 LOAD_GLOBAL             11 (NULL + max)
+             232 LOAD_GLOBAL              8 (FORCE_MOTOR_MIN_MA)
+             242 LOAD_GLOBAL             13 (NULL + min)
+             252 LOAD_GLOBAL              6 (FORCE_MOTOR_MAX_MA)
+             262 LOAD_FAST               10 (ma)
+             264 CALL                     2
+             272 CALL                     2
+             280 STORE_FAST              10 (ma)
+
+6299         282 LOAD_FAST                4 (row)
+             284 LOAD_ATTR               15 (NULL|self + append)
+             304 LOAD_GLOBAL             17 (NULL + round)
+             314 LOAD_FAST               10 (ma)
+             316 LOAD_CONST               8 (0)
+             318 CALL                     2
+             326 CALL                     1
+             334 POP_TOP
+             336 JUMP_BACKWARD          129 (to 80)
+
+6292     >>  338 END_FOR
+
+6300         340 LOAD_FAST                0 (out)
+             342 LOAD_ATTR               15 (NULL|self + append)
+             362 LOAD_FAST                4 (row)
+             364 CALL                     1
+             372 POP_TOP
+             374 JUMP_BACKWARD          170 (to 36)
+
+6289     >>  376 END_FOR
+
+6301         378 LOAD_FAST                0 (out)
+             380 RETURN_VALUE

@@ -1,0 +1,6 @@
+3482           0 RESUME                   0
+
+3484           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                1 (NULL|self + _build_table_list)
+              24 CALL                     0
+              32 RETURN_VALUE

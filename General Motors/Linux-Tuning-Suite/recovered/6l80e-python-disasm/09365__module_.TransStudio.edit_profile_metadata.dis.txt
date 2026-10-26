@@ -1,0 +1,52 @@
+9365           0 RESUME                   0
+
+9367           2 LOAD_GLOBAL              1 (NULL + ProfileMetadataDialog)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_FAST                0 (self)
+              16 LOAD_ATTR                2 (profile_metadata)
+              36 CALL                     2
+              44 STORE_FAST               1 (dlg)
+
+9368          46 LOAD_FAST                1 (dlg)
+              48 LOAD_ATTR                5 (NULL|self + exec)
+              68 CALL                     0
+              76 POP_JUMP_IF_FALSE       89 (to 256)
+
+9369          78 LOAD_FAST                1 (dlg)
+              80 LOAD_ATTR                7 (NULL|self + get_metadata)
+             100 CALL                     0
+             108 LOAD_FAST                0 (self)
+             110 STORE_ATTR               1 (profile_metadata)
+
+9370         120 LOAD_GLOBAL              9 (NULL + len)
+             130 LOAD_FAST                0 (self)
+             132 LOAD_ATTR                2 (profile_metadata)
+             152 CALL                     1
+             160 STORE_FAST               2 (count)
+
+9371         162 LOAD_FAST                0 (self)
+             164 LOAD_ATTR               11 (NULL|self + statusBar)
+             184 CALL                     0
+             192 LOAD_ATTR               13 (NULL|self + showMessage)
+
+9372         212 LOAD_CONST               1 ('Profile metadata updated (')
+             214 LOAD_FAST                2 (count)
+             216 FORMAT_VALUE             0
+             218 LOAD_CONST               2 (' field')
+             220 LOAD_FAST                2 (count)
+             222 LOAD_CONST               3 (1)
+             224 COMPARE_OP              55 (!=)
+             228 POP_JUMP_IF_FALSE        2 (to 234)
+             230 LOAD_CONST               4 ('s')
+             232 JUMP_FORWARD             1 (to 236)
+         >>  234 LOAD_CONST               5 ('')
+         >>  236 FORMAT_VALUE             0
+             238 LOAD_CONST               6 (')')
+             240 BUILD_STRING             5
+             242 LOAD_CONST               7 (4000)
+
+9371         244 CALL                     2
+             252 POP_TOP
+             254 RETURN_CONST             8 (None)
+
+9368     >>  256 RETURN_CONST             8 (None)

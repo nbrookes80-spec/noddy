@@ -1,0 +1,146 @@
+5184           0 RESUME                   0
+
+5188           2 NOP
+
+5189           4 LOAD_CONST               1 (0)
+               6 LOAD_CONST               2 (('minimize',))
+               8 IMPORT_NAME              0 (scipy.optimize)
+              10 IMPORT_FROM              1 (minimize)
+              12 STORE_FAST               5 (minimize)
+              14 POP_TOP
+
+5193          16 LOAD_GLOBAL              5 (NULL + len)
+              26 LOAD_FAST                1 (x0)
+              28 CALL                     1
+              36 STORE_FAST               6 (n)
+
+5194          38 LOAD_GLOBAL              7 (NULL + list)
+              48 LOAD_FAST                1 (x0)
+              50 CALL                     1
+              58 STORE_FAST               7 (x0_arr)
+
+5195          60 LOAD_GLOBAL              7 (NULL + list)
+              70 LOAD_FAST                7 (x0_arr)
+              72 CALL                     1
+              80 BUILD_LIST               1
+              82 STORE_FAST               8 (simplex_init)
+
+5196          84 LOAD_GLOBAL              9 (NULL + range)
+              94 LOAD_FAST                6 (n)
+              96 CALL                     1
+             104 GET_ITER
+         >>  106 FOR_ITER                53 (to 216)
+             110 STORE_FAST               9 (i)
+
+5197         112 LOAD_GLOBAL              7 (NULL + list)
+             122 LOAD_FAST                7 (x0_arr)
+             124 CALL                     1
+             132 STORE_FAST              10 (row)
+
+5198         134 LOAD_FAST               10 (row)
+             136 LOAD_FAST                9 (i)
+             138 COPY                     2
+             140 COPY                     2
+             142 BINARY_SUBSCR
+             146 LOAD_FAST               10 (row)
+             148 LOAD_FAST                9 (i)
+             150 BINARY_SUBSCR
+             154 LOAD_CONST               1 (0)
+             156 COMPARE_OP              55 (!=)
+             160 POP_JUMP_IF_FALSE        2 (to 166)
+             162 LOAD_FAST                4 (init_step)
+             164 JUMP_FORWARD             1 (to 168)
+         >>  166 LOAD_CONST               3 (0.05)
+         >>  168 BINARY_OP               13 (+=)
+             172 SWAP                     3
+             174 SWAP                     2
+             176 STORE_SUBSCR
+
+5199         180 LOAD_FAST                8 (simplex_init)
+             182 LOAD_ATTR               11 (NULL|self + append)
+             202 LOAD_FAST               10 (row)
+             204 CALL                     1
+             212 POP_TOP
+             214 JUMP_BACKWARD           55 (to 106)
+
+5196     >>  216 END_FOR
+
+5200         218 PUSH_NULL
+             220 LOAD_FAST                5 (minimize)
+
+5201         222 LOAD_FAST                0 (f)
+             224 LOAD_FAST                7 (x0_arr)
+             226 LOAD_CONST               4 ('Nelder-Mead')
+
+5203         228 LOAD_FAST                3 (tol)
+             230 LOAD_FAST                3 (tol)
+             232 LOAD_FAST                2 (max_iter)
+
+5204         234 LOAD_FAST                8 (simplex_init)
+             236 LOAD_CONST               5 (True)
+
+5202         238 LOAD_CONST               6 (('xatol', 'fatol', 'maxiter', 'initial_simplex', 'adaptive'))
+             240 BUILD_CONST_KEY_MAP      5
+
+5200         242 KW_NAMES                 7 (('method', 'options'))
+             244 CALL                     4
+             252 STORE_FAST              11 (result)
+
+5207         254 LOAD_FAST               11 (result)
+             256 LOAD_ATTR               12 (x)
+             276 GET_ITER
+             278 LOAD_FAST_AND_CLEAR     12 (v)
+             280 SWAP                     2
+             282 BUILD_LIST               0
+             284 SWAP                     2
+         >>  286 FOR_ITER                13 (to 316)
+             290 STORE_FAST              12 (v)
+             292 LOAD_GLOBAL             15 (NULL + float)
+             302 LOAD_FAST               12 (v)
+             304 CALL                     1
+             312 LIST_APPEND              2
+             314 JUMP_BACKWARD           15 (to 286)
+         >>  316 END_FOR
+             318 SWAP                     2
+             320 STORE_FAST              12 (v)
+             322 LOAD_GLOBAL             15 (NULL + float)
+             332 LOAD_FAST               11 (result)
+             334 LOAD_ATTR               16 (fun)
+             354 CALL                     1
+             362 BUILD_TUPLE              2
+             364 RETURN_VALUE
+         >>  366 SWAP                     2
+             368 POP_TOP
+             370 SWAP                     2
+             372 STORE_FAST              12 (v)
+             374 RERAISE                  0
+         >>  376 PUSH_EXC_INFO
+
+5208         378 LOAD_GLOBAL             18 (ImportError)
+             388 CHECK_EXC_MATCH
+             390 POP_JUMP_IF_FALSE        3 (to 398)
+             392 POP_TOP
+
+5209         394 POP_EXCEPT
+             396 JUMP_FORWARD             4 (to 406)
+
+5208     >>  398 RERAISE                  0
+         >>  400 COPY                     3
+             402 POP_EXCEPT
+             404 RERAISE                  1
+
+5212     >>  406 LOAD_GLOBAL             21 (NULL + _nelder_mead_pure)
+             416 LOAD_FAST                0 (f)
+             418 LOAD_FAST                1 (x0)
+             420 LOAD_FAST                2 (max_iter)
+             422 LOAD_FAST                3 (tol)
+             424 LOAD_FAST                4 (init_step)
+             426 CALL                     5
+             434 RETURN_VALUE
+ExceptionTable:
+  4 to 280 -> 376 [0]
+  282 to 316 -> 366 [2]
+  318 to 362 -> 376 [0]
+  366 to 374 -> 376 [0]
+  376 to 392 -> 400 [1] lasti
+  398 to 398 -> 400 [1] lasti

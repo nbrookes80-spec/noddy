@@ -1,0 +1,778 @@
+               0 MAKE_CELL                0 (self)
+
+7596           2 RESUME                   0
+
+7598           4 LOAD_DEREF               0 (self)
+               6 LOAD_ATTR                1 (NULL|self + menuBar)
+              26 CALL                     0
+              34 STORE_FAST               1 (mb)
+
+7601          36 LOAD_FAST                1 (mb)
+              38 LOAD_ATTR                3 (NULL|self + addMenu)
+              58 LOAD_CONST               1 ('&File')
+              60 CALL                     1
+              68 STORE_FAST               2 (m_file)
+
+7602          70 LOAD_GLOBAL              5 (NULL + QAction)
+              80 LOAD_CONST               2 ('&Load Profile…')
+              82 LOAD_DEREF               0 (self)
+              84 CALL                     2
+              92 STORE_FAST               3 (a_load)
+
+7603          94 LOAD_FAST                3 (a_load)
+              96 LOAD_ATTR                7 (NULL|self + setShortcut)
+             116 LOAD_CONST               3 ('Ctrl+O')
+             118 CALL                     1
+             126 POP_TOP
+
+7604         128 LOAD_FAST                3 (a_load)
+             130 LOAD_ATTR                8 (triggered)
+             150 LOAD_ATTR               11 (NULL|self + connect)
+             170 LOAD_DEREF               0 (self)
+             172 LOAD_ATTR               12 (load_profile)
+             192 CALL                     1
+             200 POP_TOP
+
+7605         202 LOAD_FAST                2 (m_file)
+             204 LOAD_ATTR               15 (NULL|self + addAction)
+             224 LOAD_FAST                3 (a_load)
+             226 CALL                     1
+             234 POP_TOP
+
+7607         236 LOAD_GLOBAL              5 (NULL + QAction)
+             246 LOAD_CONST               4 ('&Save Profile…')
+             248 LOAD_DEREF               0 (self)
+             250 CALL                     2
+             258 STORE_FAST               4 (a_save)
+
+7608         260 LOAD_FAST                4 (a_save)
+             262 LOAD_ATTR                7 (NULL|self + setShortcut)
+             282 LOAD_CONST               5 ('Ctrl+S')
+             284 CALL                     1
+             292 POP_TOP
+
+7609         294 LOAD_FAST                4 (a_save)
+             296 LOAD_ATTR                8 (triggered)
+             316 LOAD_ATTR               11 (NULL|self + connect)
+             336 LOAD_DEREF               0 (self)
+             338 LOAD_ATTR               16 (save_profile)
+             358 CALL                     1
+             366 POP_TOP
+
+7610         368 LOAD_FAST                2 (m_file)
+             370 LOAD_ATTR               15 (NULL|self + addAction)
+             390 LOAD_FAST                4 (a_save)
+             392 CALL                     1
+             400 POP_TOP
+
+7612         402 LOAD_GLOBAL              5 (NULL + QAction)
+             412 LOAD_CONST               6 ('Export &PDF Report…')
+             414 LOAD_DEREF               0 (self)
+             416 CALL                     2
+             424 STORE_FAST               5 (a_pdf)
+
+7613         426 LOAD_FAST                5 (a_pdf)
+             428 LOAD_ATTR                7 (NULL|self + setShortcut)
+             448 LOAD_CONST               7 ('Ctrl+P')
+             450 CALL                     1
+             458 POP_TOP
+
+7614         460 LOAD_FAST                5 (a_pdf)
+             462 LOAD_ATTR               19 (NULL|self + setToolTip)
+             482 LOAD_CONST               8 ('Generate a single PDF containing all profile settings, shift tables, pressure tables, and validation warnings.')
+             484 CALL                     1
+             492 POP_TOP
+
+7616         494 LOAD_FAST                5 (a_pdf)
+             496 LOAD_ATTR                8 (triggered)
+             516 LOAD_ATTR               11 (NULL|self + connect)
+             536 LOAD_DEREF               0 (self)
+             538 LOAD_ATTR               20 (export_pdf_report)
+             558 CALL                     1
+             566 POP_TOP
+
+7617         568 LOAD_FAST                2 (m_file)
+             570 LOAD_ATTR               15 (NULL|self + addAction)
+             590 LOAD_FAST                5 (a_pdf)
+             592 CALL                     1
+             600 POP_TOP
+
+7619         602 LOAD_GLOBAL              5 (NULL + QAction)
+             612 LOAD_CONST               9 ('Profile &Metadata…')
+             614 LOAD_DEREF               0 (self)
+             616 CALL                     2
+             624 STORE_FAST               6 (a_meta)
+
+7620         626 LOAD_FAST                6 (a_meta)
+             628 LOAD_ATTR               19 (NULL|self + setToolTip)
+             648 LOAD_CONST              10 ('Edit vehicle/tuner info embedded in saved profiles')
+             650 CALL                     1
+             658 POP_TOP
+
+7621         660 LOAD_FAST                6 (a_meta)
+             662 LOAD_ATTR                8 (triggered)
+             682 LOAD_ATTR               11 (NULL|self + connect)
+             702 LOAD_DEREF               0 (self)
+             704 LOAD_ATTR               22 (edit_profile_metadata)
+             724 CALL                     1
+             732 POP_TOP
+
+7622         734 LOAD_FAST                2 (m_file)
+             736 LOAD_ATTR               15 (NULL|self + addAction)
+             756 LOAD_FAST                6 (a_meta)
+             758 CALL                     1
+             766 POP_TOP
+
+7623         768 LOAD_FAST                2 (m_file)
+             770 LOAD_ATTR               25 (NULL|self + addSeparator)
+             790 CALL                     0
+             798 POP_TOP
+
+7626         800 LOAD_FAST                2 (m_file)
+             802 LOAD_ATTR                3 (NULL|self + addMenu)
+             822 LOAD_CONST              11 ('Load &Preset')
+             824 CALL                     1
+             832 STORE_FAST               7 (m_preset)
+
+7627         834 LOAD_GLOBAL             26 (STARTER_PROFILES)
+             844 LOAD_ATTR               29 (NULL|self + keys)
+             864 CALL                     0
+             872 GET_ITER
+         >>  874 FOR_ITER                63 (to 1004)
+             878 STORE_FAST               8 (name)
+
+7628         880 LOAD_GLOBAL              5 (NULL + QAction)
+             890 LOAD_FAST                8 (name)
+             892 LOAD_DEREF               0 (self)
+             894 CALL                     2
+             902 STORE_FAST               9 (a)
+
+7629         904 LOAD_FAST                9 (a)
+             906 LOAD_ATTR                8 (triggered)
+             926 LOAD_ATTR               11 (NULL|self + connect)
+             946 LOAD_FAST                8 (name)
+             948 BUILD_TUPLE              1
+             950 LOAD_CLOSURE             0 (self)
+             952 BUILD_TUPLE              1
+             954 LOAD_CONST              12 (<code object <lambda> at 0x73ab02a13c30, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7629>)
+             956 MAKE_FUNCTION            9 (defaults, closure)
+             958 CALL                     1
+             966 POP_TOP
+
+7630         968 LOAD_FAST                7 (m_preset)
+             970 LOAD_ATTR               15 (NULL|self + addAction)
+             990 LOAD_FAST                9 (a)
+             992 CALL                     1
+            1000 POP_TOP
+            1002 JUMP_BACKWARD           65 (to 874)
+
+7627     >> 1004 END_FOR
+
+7631        1006 LOAD_FAST                2 (m_file)
+            1008 LOAD_ATTR               25 (NULL|self + addSeparator)
+            1028 CALL                     0
+            1036 POP_TOP
+
+7633        1038 LOAD_GLOBAL              5 (NULL + QAction)
+            1048 LOAD_CONST              13 ('E&xit')
+            1050 LOAD_DEREF               0 (self)
+            1052 CALL                     2
+            1060 STORE_FAST              10 (a_exit)
+
+7634        1062 LOAD_FAST               10 (a_exit)
+            1064 LOAD_ATTR                7 (NULL|self + setShortcut)
+            1084 LOAD_CONST              14 ('Ctrl+Q')
+            1086 CALL                     1
+            1094 POP_TOP
+
+7635        1096 LOAD_FAST               10 (a_exit)
+            1098 LOAD_ATTR                8 (triggered)
+            1118 LOAD_ATTR               11 (NULL|self + connect)
+            1138 LOAD_DEREF               0 (self)
+            1140 LOAD_ATTR               30 (close)
+            1160 CALL                     1
+            1168 POP_TOP
+
+7636        1170 LOAD_FAST                2 (m_file)
+            1172 LOAD_ATTR               15 (NULL|self + addAction)
+            1192 LOAD_FAST               10 (a_exit)
+            1194 CALL                     1
+            1202 POP_TOP
+
+7639        1204 LOAD_FAST                1 (mb)
+            1206 LOAD_ATTR                3 (NULL|self + addMenu)
+            1226 LOAD_CONST              15 ('&Setup')
+            1228 CALL                     1
+            1236 STORE_FAST              11 (m_setup)
+
+7640        1238 LOAD_GLOBAL             33 (NULL + enumerate)
+            1248 BUILD_LIST               0
+            1250 LOAD_CONST              16 ((('&Basics (Trans + Drivetrain)', 'Ctrl+1'), ('&Engine + Converter', 'Ctrl+2'), ('Shift &Curve + Spreads + Lead', 'Ctrl+3')))
+            1252 LIST_EXTEND              1
+            1254 CALL                     1
+            1262 GET_ITER
+         >> 1264 FOR_ITER                86 (to 1440)
+            1268 UNPACK_SEQUENCE          2
+            1272 STORE_FAST              12 (idx)
+            1274 UNPACK_SEQUENCE          2
+            1278 STORE_FAST              13 (label)
+            1280 STORE_FAST              14 (key)
+
+7645        1282 LOAD_GLOBAL              5 (NULL + QAction)
+            1292 LOAD_FAST               13 (label)
+            1294 LOAD_DEREF               0 (self)
+            1296 CALL                     2
+            1304 STORE_FAST               9 (a)
+
+7646        1306 LOAD_FAST                9 (a)
+            1308 LOAD_ATTR                7 (NULL|self + setShortcut)
+            1328 LOAD_FAST               14 (key)
+            1330 CALL                     1
+            1338 POP_TOP
+
+7647        1340 LOAD_FAST                9 (a)
+            1342 LOAD_ATTR                8 (triggered)
+            1362 LOAD_ATTR               11 (NULL|self + connect)
+            1382 LOAD_FAST               12 (idx)
+            1384 BUILD_TUPLE              1
+            1386 LOAD_CLOSURE             0 (self)
+            1388 BUILD_TUPLE              1
+            1390 LOAD_CONST              17 (<code object <lambda> at 0x73ab02a65030, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7647>)
+            1392 MAKE_FUNCTION            9 (defaults, closure)
+            1394 CALL                     1
+            1402 POP_TOP
+
+7648        1404 LOAD_FAST               11 (m_setup)
+            1406 LOAD_ATTR               15 (NULL|self + addAction)
+            1426 LOAD_FAST                9 (a)
+            1428 CALL                     1
+            1436 POP_TOP
+            1438 JUMP_BACKWARD           88 (to 1264)
+
+7640     >> 1440 END_FOR
+
+7651        1442 LOAD_FAST                1 (mb)
+            1444 LOAD_ATTR                3 (NULL|self + addMenu)
+            1464 LOAD_CONST              18 ('&Tools')
+            1466 CALL                     1
+            1474 STORE_FAST              15 (m_tools)
+
+7652        1476 LOAD_GLOBAL              5 (NULL + QAction)
+            1486 LOAD_CONST              19 ('Edit Shift &Delays…')
+            1488 LOAD_DEREF               0 (self)
+            1490 CALL                     2
+            1498 STORE_FAST              16 (a_delays)
+
+7653        1500 LOAD_FAST               16 (a_delays)
+            1502 LOAD_ATTR                8 (triggered)
+            1522 LOAD_ATTR               11 (NULL|self + connect)
+            1542 LOAD_DEREF               0 (self)
+            1544 LOAD_ATTR               34 (edit_delays)
+            1564 CALL                     1
+            1572 POP_TOP
+
+7654        1574 LOAD_FAST               15 (m_tools)
+            1576 LOAD_ATTR               15 (NULL|self + addAction)
+            1596 LOAD_FAST               16 (a_delays)
+            1598 CALL                     1
+            1606 POP_TOP
+
+7656        1608 LOAD_GLOBAL              5 (NULL + QAction)
+            1618 LOAD_CONST              20 ('&Lockup Config…')
+            1620 LOAD_DEREF               0 (self)
+            1622 CALL                     2
+            1630 STORE_FAST              17 (a_lockup)
+
+7657        1632 LOAD_FAST               17 (a_lockup)
+            1634 LOAD_ATTR                8 (triggered)
+            1654 LOAD_ATTR               11 (NULL|self + connect)
+            1674 LOAD_DEREF               0 (self)
+            1676 LOAD_ATTR               36 (edit_lockup_config)
+            1696 CALL                     1
+            1704 POP_TOP
+
+7658        1706 LOAD_FAST               15 (m_tools)
+            1708 LOAD_ATTR               15 (NULL|self + addAction)
+            1728 LOAD_FAST               17 (a_lockup)
+            1730 CALL                     1
+            1738 POP_TOP
+
+7660        1740 LOAD_GLOBAL              5 (NULL + QAction)
+            1750 LOAD_CONST              21 ('Multi-&Mode Tables Setup…')
+            1752 LOAD_DEREF               0 (self)
+            1754 CALL                     2
+            1762 STORE_FAST              18 (a_perf)
+
+7661        1764 LOAD_FAST               18 (a_perf)
+            1766 LOAD_ATTR                8 (triggered)
+            1786 LOAD_ATTR               11 (NULL|self + connect)
+            1806 LOAD_DEREF               0 (self)
+            1808 LOAD_ATTR               38 (edit_mode_overrides)
+            1828 CALL                     1
+            1836 POP_TOP
+
+7662        1838 LOAD_FAST               15 (m_tools)
+            1840 LOAD_ATTR               15 (NULL|self + addAction)
+            1860 LOAD_FAST               18 (a_perf)
+            1862 CALL                     1
+            1870 POP_TOP
+
+7664        1872 LOAD_GLOBAL              5 (NULL + QAction)
+            1882 LOAD_CONST              22 ('Reverse-&Import Table…')
+            1884 LOAD_DEREF               0 (self)
+            1886 CALL                     2
+            1894 STORE_FAST              19 (a_import)
+
+7665        1896 LOAD_FAST               19 (a_import)
+            1898 LOAD_ATTR                8 (triggered)
+            1918 LOAD_ATTR               11 (NULL|self + connect)
+            1938 LOAD_DEREF               0 (self)
+            1940 LOAD_ATTR               40 (reverse_import_table)
+            1960 CALL                     1
+            1968 POP_TOP
+
+7666        1970 LOAD_FAST               15 (m_tools)
+            1972 LOAD_ATTR               15 (NULL|self + addAction)
+            1992 LOAD_FAST               19 (a_import)
+            1994 CALL                     1
+            2002 POP_TOP
+
+7668        2004 LOAD_GLOBAL              5 (NULL + QAction)
+            2014 LOAD_CONST              23 ('&Torque Curve…')
+            2016 LOAD_DEREF               0 (self)
+            2018 CALL                     2
+            2026 STORE_FAST              20 (a_curve)
+
+7669        2028 LOAD_FAST               20 (a_curve)
+            2030 LOAD_ATTR               19 (NULL|self + setToolTip)
+            2050 LOAD_CONST              24 ('Load HP/TQ vs RPM curve for accurate Time-mode WOT lead')
+            2052 CALL                     1
+            2060 POP_TOP
+
+7670        2062 LOAD_FAST               20 (a_curve)
+            2064 LOAD_ATTR                8 (triggered)
+            2084 LOAD_ATTR               11 (NULL|self + connect)
+            2104 LOAD_DEREF               0 (self)
+            2106 LOAD_ATTR               42 (edit_torque_curve)
+            2126 CALL                     1
+            2134 POP_TOP
+
+7671        2136 LOAD_FAST               15 (m_tools)
+            2138 LOAD_ATTR               15 (NULL|self + addAction)
+            2158 LOAD_FAST               20 (a_curve)
+            2160 CALL                     1
+            2168 POP_TOP
+
+7673        2170 LOAD_GLOBAL              5 (NULL + QAction)
+            2180 LOAD_CONST              25 ('&Performance Simulator…')
+            2182 LOAD_DEREF               0 (self)
+            2184 CALL                     2
+            2192 STORE_FAST              21 (a_perfsim)
+
+7674        2194 LOAD_FAST               21 (a_perfsim)
+            2196 LOAD_ATTR                7 (NULL|self + setShortcut)
+            2216 LOAD_CONST              26 ('F7')
+            2218 CALL                     1
+            2226 POP_TOP
+
+7675        2228 LOAD_FAST               21 (a_perfsim)
+            2230 LOAD_ATTR               19 (NULL|self + setToolTip)
+
+7676        2250 LOAD_CONST              27 ('0-60 / 0-100 / 1/4 mile prediction + shift point timing analysis.\nRequires a loaded torque curve (Tools → Torque Curve).')
+
+7675        2252 CALL                     1
+            2260 POP_TOP
+
+7679        2262 LOAD_FAST               21 (a_perfsim)
+            2264 LOAD_ATTR                8 (triggered)
+            2284 LOAD_ATTR               11 (NULL|self + connect)
+            2304 LOAD_DEREF               0 (self)
+            2306 LOAD_ATTR               44 (open_perf_sim)
+            2326 CALL                     1
+            2334 POP_TOP
+
+7680        2336 LOAD_FAST               15 (m_tools)
+            2338 LOAD_ATTR               15 (NULL|self + addAction)
+            2358 LOAD_FAST               21 (a_perfsim)
+            2360 CALL                     1
+            2368 POP_TOP
+
+7683        2370 LOAD_GLOBAL              5 (NULL + QAction)
+            2380 LOAD_CONST              28 ('&BIN / XDF Reader…')
+            2382 LOAD_DEREF               0 (self)
+            2384 CALL                     2
+            2392 STORE_FAST              22 (a_binxdf)
+
+7684        2394 LOAD_FAST               22 (a_binxdf)
+            2396 LOAD_ATTR                7 (NULL|self + setShortcut)
+            2416 LOAD_CONST              29 ('Ctrl+B')
+            2418 CALL                     1
+            2426 POP_TOP
+
+7685        2428 LOAD_FAST               22 (a_binxdf)
+            2430 LOAD_ATTR               19 (NULL|self + setToolTip)
+
+7686        2450 LOAD_CONST              30 ('Open a TunerPro XDF definition and a raw .BIN flash dump to read\ncurrent calibration values from your stock or modified tune.\nFoundation for diff-style review against generated tables.')
+
+7685        2452 CALL                     1
+            2460 POP_TOP
+
+7690        2462 LOAD_FAST               22 (a_binxdf)
+            2464 LOAD_ATTR                8 (triggered)
+            2484 LOAD_ATTR               11 (NULL|self + connect)
+            2504 LOAD_DEREF               0 (self)
+            2506 LOAD_ATTR               46 (open_bin_xdf_dialog)
+            2526 CALL                     1
+            2534 POP_TOP
+
+7691        2536 LOAD_FAST               15 (m_tools)
+            2538 LOAD_ATTR               15 (NULL|self + addAction)
+            2558 LOAD_FAST               22 (a_binxdf)
+            2560 CALL                     1
+            2568 POP_TOP
+
+7693        2570 LOAD_FAST               15 (m_tools)
+            2572 LOAD_ATTR               25 (NULL|self + addSeparator)
+            2592 CALL                     0
+            2600 POP_TOP
+
+7694        2602 LOAD_GLOBAL              5 (NULL + QAction)
+            2612 LOAD_CONST              31 ('&Calculate All Tables')
+            2614 LOAD_DEREF               0 (self)
+            2616 CALL                     2
+            2624 STORE_FAST              23 (a_calc)
+
+7695        2626 LOAD_FAST               23 (a_calc)
+            2628 LOAD_ATTR                7 (NULL|self + setShortcut)
+            2648 LOAD_CONST              32 ('F5')
+            2650 CALL                     1
+            2658 POP_TOP
+
+7696        2660 LOAD_FAST               23 (a_calc)
+            2662 LOAD_ATTR                8 (triggered)
+            2682 LOAD_ATTR               11 (NULL|self + connect)
+            2702 LOAD_DEREF               0 (self)
+            2704 LOAD_ATTR               48 (calculate)
+            2724 CALL                     1
+            2732 POP_TOP
+
+7697        2734 LOAD_FAST               15 (m_tools)
+            2736 LOAD_ATTR               15 (NULL|self + addAction)
+            2756 LOAD_FAST               23 (a_calc)
+            2758 CALL                     1
+            2766 POP_TOP
+
+7699        2768 LOAD_GLOBAL              5 (NULL + QAction)
+            2778 LOAD_CONST              33 ('&Export Tables…')
+            2780 LOAD_DEREF               0 (self)
+            2782 CALL                     2
+            2790 STORE_FAST              24 (a_export)
+
+7700        2792 LOAD_FAST               24 (a_export)
+            2794 LOAD_ATTR                7 (NULL|self + setShortcut)
+            2814 LOAD_CONST              34 ('F6')
+            2816 CALL                     1
+            2824 POP_TOP
+
+7701        2826 LOAD_FAST               24 (a_export)
+            2828 LOAD_ATTR                8 (triggered)
+            2848 LOAD_ATTR               11 (NULL|self + connect)
+            2868 LOAD_DEREF               0 (self)
+            2870 LOAD_ATTR               50 (export)
+            2890 CALL                     1
+            2898 POP_TOP
+
+7702        2900 LOAD_FAST               15 (m_tools)
+            2902 LOAD_ATTR               15 (NULL|self + addAction)
+            2922 LOAD_FAST               24 (a_export)
+            2924 CALL                     1
+            2932 POP_TOP
+
+7705        2934 LOAD_FAST                1 (mb)
+            2936 LOAD_ATTR                3 (NULL|self + addMenu)
+            2956 LOAD_CONST              35 ('&Options')
+            2958 CALL                     1
+            2966 STORE_FAST              25 (m_opt)
+
+7706        2968 LOAD_GLOBAL              5 (NULL + QAction)
+            2978 LOAD_CONST              36 ('&Metric Units (KPH / mm)')
+            2980 LOAD_DEREF               0 (self)
+            2982 LOAD_CONST              37 (True)
+            2984 KW_NAMES                38 (('checkable',))
+            2986 CALL                     3
+            2994 LOAD_DEREF               0 (self)
+            2996 STORE_ATTR              26 (act_metric)
+
+7707        3006 LOAD_DEREF               0 (self)
+            3008 LOAD_ATTR               52 (act_metric)
+            3028 LOAD_ATTR               54 (toggled)
+            3048 LOAD_ATTR               11 (NULL|self + connect)
+            3068 LOAD_DEREF               0 (self)
+            3070 LOAD_ATTR               56 (_toggle_metric)
+            3090 CALL                     1
+            3098 POP_TOP
+
+7708        3100 LOAD_FAST               25 (m_opt)
+            3102 LOAD_ATTR               15 (NULL|self + addAction)
+            3122 LOAD_DEREF               0 (self)
+            3124 LOAD_ATTR               52 (act_metric)
+            3144 CALL                     1
+            3152 POP_TOP
+
+7710        3154 LOAD_GLOBAL              5 (NULL + QAction)
+            3164 LOAD_CONST              39 ('Generate &Multi-Mode Tables')
+            3166 LOAD_DEREF               0 (self)
+
+7711        3168 LOAD_CONST              37 (True)
+
+7710        3170 KW_NAMES                38 (('checkable',))
+            3172 CALL                     3
+            3180 LOAD_DEREF               0 (self)
+            3182 STORE_ATTR              29 (act_dual)
+
+7712        3192 LOAD_DEREF               0 (self)
+            3194 LOAD_ATTR               58 (act_dual)
+            3214 LOAD_ATTR               54 (toggled)
+            3234 LOAD_ATTR               11 (NULL|self + connect)
+            3254 LOAD_DEREF               0 (self)
+            3256 LOAD_ATTR               60 (_toggle_dual_mode)
+            3276 CALL                     1
+            3284 POP_TOP
+
+7713        3286 LOAD_FAST               25 (m_opt)
+            3288 LOAD_ATTR               15 (NULL|self + addAction)
+            3308 LOAD_DEREF               0 (self)
+            3310 LOAD_ATTR               58 (act_dual)
+            3330 CALL                     1
+            3338 POP_TOP
+
+7715        3340 LOAD_GLOBAL              5 (NULL + QAction)
+            3350 LOAD_CONST              40 ('&Live Preview (auto-recalc on edit)')
+            3352 LOAD_DEREF               0 (self)
+
+7716        3354 LOAD_CONST              37 (True)
+
+7715        3356 KW_NAMES                38 (('checkable',))
+            3358 CALL                     3
+            3366 LOAD_DEREF               0 (self)
+            3368 STORE_ATTR              31 (act_live)
+
+7717        3378 LOAD_DEREF               0 (self)
+            3380 LOAD_ATTR               62 (act_live)
+            3400 LOAD_ATTR                7 (NULL|self + setShortcut)
+            3420 LOAD_CONST              41 ('Ctrl+L')
+            3422 CALL                     1
+            3430 POP_TOP
+
+7718        3432 LOAD_DEREF               0 (self)
+            3434 LOAD_ATTR               62 (act_live)
+            3454 LOAD_ATTR               54 (toggled)
+            3474 LOAD_ATTR               11 (NULL|self + connect)
+            3494 LOAD_DEREF               0 (self)
+            3496 LOAD_ATTR               64 (_toggle_live_preview)
+            3516 CALL                     1
+            3524 POP_TOP
+
+7719        3526 LOAD_FAST               25 (m_opt)
+            3528 LOAD_ATTR               15 (NULL|self + addAction)
+            3548 LOAD_DEREF               0 (self)
+            3550 LOAD_ATTR               62 (act_live)
+            3570 CALL                     1
+            3578 POP_TOP
+
+7721        3580 LOAD_FAST               25 (m_opt)
+            3582 LOAD_ATTR               25 (NULL|self + addSeparator)
+            3602 CALL                     0
+            3610 POP_TOP
+
+7724        3612 LOAD_FAST                1 (mb)
+            3614 LOAD_ATTR                3 (NULL|self + addMenu)
+            3634 LOAD_CONST              42 ('&View')
+            3636 CALL                     1
+            3644 STORE_FAST              26 (m_view)
+
+7725        3646 LOAD_CONST              43 (0)
+            3648 LOAD_CONST              44 (('QActionGroup',))
+            3650 IMPORT_NAME             33 (PyQt6.QtGui)
+            3652 IMPORT_FROM             34 (QActionGroup)
+            3654 STORE_FAST              27 (QActionGroup)
+            3656 POP_TOP
+
+7726        3658 PUSH_NULL
+            3660 LOAD_FAST               27 (QActionGroup)
+            3662 LOAD_DEREF               0 (self)
+            3664 CALL                     1
+            3672 STORE_FAST              28 (theme_group)
+
+7727        3674 LOAD_FAST               28 (theme_group)
+            3676 LOAD_ATTR               71 (NULL|self + setExclusive)
+            3696 LOAD_CONST              37 (True)
+            3698 CALL                     1
+            3706 POP_TOP
+
+7728        3708 BUILD_MAP                0
+            3710 LOAD_DEREF               0 (self)
+            3712 STORE_ATTR              36 (_theme_actions)
+
+7729        3722 LOAD_CONST              45 (('Dark', 'Light'))
+            3724 GET_ITER
+         >> 3726 FOR_ITER               131 (to 3992)
+            3730 STORE_FAST              29 (tname)
+
+7730        3732 LOAD_GLOBAL              5 (NULL + QAction)
+            3742 LOAD_FAST               29 (tname)
+            3744 LOAD_DEREF               0 (self)
+            3746 LOAD_CONST              37 (True)
+            3748 KW_NAMES                38 (('checkable',))
+            3750 CALL                     3
+            3758 STORE_FAST              30 (a_t)
+
+7731        3760 LOAD_FAST               30 (a_t)
+            3762 LOAD_ATTR               75 (NULL|self + setChecked)
+            3782 LOAD_GLOBAL             76 (Theme)
+            3792 LOAD_ATTR               78 (current_name)
+            3812 LOAD_FAST               29 (tname)
+            3814 COMPARE_OP              40 (==)
+            3818 CALL                     1
+            3826 POP_TOP
+
+7732        3828 LOAD_FAST               30 (a_t)
+            3830 LOAD_ATTR                8 (triggered)
+            3850 LOAD_ATTR               11 (NULL|self + connect)
+            3870 LOAD_FAST               29 (tname)
+            3872 BUILD_TUPLE              1
+            3874 LOAD_CLOSURE             0 (self)
+            3876 BUILD_TUPLE              1
+            3878 LOAD_CONST              46 (<code object <lambda> at 0x73ab02a13e10, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7732>)
+            3880 MAKE_FUNCTION            9 (defaults, closure)
+            3882 CALL                     1
+            3890 POP_TOP
+
+7733        3892 LOAD_FAST               28 (theme_group)
+            3894 LOAD_ATTR               15 (NULL|self + addAction)
+            3914 LOAD_FAST               30 (a_t)
+            3916 CALL                     1
+            3924 POP_TOP
+
+7734        3926 LOAD_FAST               26 (m_view)
+            3928 LOAD_ATTR               15 (NULL|self + addAction)
+            3948 LOAD_FAST               30 (a_t)
+            3950 CALL                     1
+            3958 POP_TOP
+
+7735        3960 LOAD_FAST               30 (a_t)
+            3962 LOAD_DEREF               0 (self)
+            3964 LOAD_ATTR               72 (_theme_actions)
+            3984 LOAD_FAST               29 (tname)
+            3986 STORE_SUBSCR
+            3990 JUMP_BACKWARD          133 (to 3726)
+
+7729     >> 3992 END_FOR
+
+7737        3994 LOAD_GLOBAL              5 (NULL + QAction)
+            4004 LOAD_CONST              47 ('Generate &HTML Report…')
+            4006 LOAD_DEREF               0 (self)
+            4008 CALL                     2
+            4016 STORE_FAST              31 (a_report)
+
+7738        4018 LOAD_FAST               31 (a_report)
+            4020 LOAD_ATTR                8 (triggered)
+            4040 LOAD_ATTR               11 (NULL|self + connect)
+            4060 LOAD_DEREF               0 (self)
+            4062 LOAD_ATTR               80 (generate_html_report)
+            4082 CALL                     1
+            4090 POP_TOP
+
+7739        4092 LOAD_FAST               25 (m_opt)
+            4094 LOAD_ATTR               15 (NULL|self + addAction)
+            4114 LOAD_FAST               31 (a_report)
+            4116 CALL                     1
+            4124 POP_TOP
+
+7741        4126 LOAD_GLOBAL              5 (NULL + QAction)
+            4136 LOAD_CONST              48 ('Generate &PDF Tune Sheet…')
+            4138 LOAD_DEREF               0 (self)
+            4140 CALL                     2
+            4148 STORE_FAST               5 (a_pdf)
+
+7742        4150 LOAD_FAST                5 (a_pdf)
+            4152 LOAD_ATTR               19 (NULL|self + setToolTip)
+
+7743        4172 LOAD_CONST              49 ('Generate a professional PDF tune sheet for sharing with customers.\nIncludes all tables + config + performance prediction.\nRequires reportlab (pip install reportlab).')
+
+7742        4174 CALL                     1
+            4182 POP_TOP
+
+7747        4184 LOAD_FAST                5 (a_pdf)
+            4186 LOAD_ATTR                8 (triggered)
+            4206 LOAD_ATTR               11 (NULL|self + connect)
+            4226 LOAD_DEREF               0 (self)
+            4228 LOAD_ATTR               82 (generate_pdf_report)
+            4248 CALL                     1
+            4256 POP_TOP
+
+7748        4258 LOAD_FAST               25 (m_opt)
+            4260 LOAD_ATTR               15 (NULL|self + addAction)
+            4280 LOAD_FAST                5 (a_pdf)
+            4282 CALL                     1
+            4290 POP_TOP
+
+7750        4292 LOAD_GLOBAL              5 (NULL + QAction)
+            4302 LOAD_CONST              50 ('&Compare with Profile…')
+            4304 LOAD_DEREF               0 (self)
+            4306 CALL                     2
+            4314 STORE_FAST              32 (a_compare)
+
+7751        4316 LOAD_FAST               32 (a_compare)
+            4318 LOAD_ATTR                8 (triggered)
+            4338 LOAD_ATTR               11 (NULL|self + connect)
+            4358 LOAD_DEREF               0 (self)
+            4360 LOAD_ATTR               84 (compare_profiles)
+            4380 CALL                     1
+            4388 POP_TOP
+
+7752        4390 LOAD_FAST               25 (m_opt)
+            4392 LOAD_ATTR               15 (NULL|self + addAction)
+            4412 LOAD_FAST               32 (a_compare)
+            4414 CALL                     1
+            4422 POP_TOP
+
+7754        4424 LOAD_FAST               25 (m_opt)
+            4426 LOAD_ATTR               25 (NULL|self + addSeparator)
+            4446 CALL                     0
+            4454 POP_TOP
+
+7755        4456 LOAD_GLOBAL              5 (NULL + QAction)
+            4466 LOAD_CONST              51 ('Import &Log CSV…')
+            4468 LOAD_DEREF               0 (self)
+            4470 CALL                     2
+            4478 STORE_FAST              33 (a_log)
+
+7756        4480 LOAD_FAST               33 (a_log)
+            4482 LOAD_ATTR                7 (NULL|self + setShortcut)
+            4502 LOAD_CONST              52 ('F8')
+            4504 CALL                     1
+            4512 POP_TOP
+
+7757        4514 LOAD_FAST               33 (a_log)
+            4516 LOAD_ATTR               19 (NULL|self + setToolTip)
+
+7758        4536 LOAD_CONST              53 ('Import VCM Scanner / EFILive CSV log, compare measured shift\npoints and slip% against predictions, identify deltas.')
+
+7757        4538 CALL                     1
+            4546 POP_TOP
+
+7761        4548 LOAD_FAST               33 (a_log)
+            4550 LOAD_ATTR                8 (triggered)
+            4570 LOAD_ATTR               11 (NULL|self + connect)
+            4590 LOAD_DEREF               0 (self)
+            4592 LOAD_ATTR               86 (import_log_csv)
+            4612 CALL                     1
+            4620 POP_TOP
+
+7762        4622 LOAD_FAST               25 (m_opt)
+            4624 LOAD_ATTR               15 (NULL|self + addAction)
+            4644 LOAD_FAST               33 (a_log)
+            4646 CALL                     1
+            4654 POP_TOP
+            4656 RETURN_CONST            54 (None)

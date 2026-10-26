@@ -1,0 +1,21 @@
+9945           0 RETURN_GENERATOR
+               2 POP_TOP
+               4 RESUME                   0
+               6 LOAD_FAST                0 (.0)
+         >>    8 FOR_ITER                10 (to 32)
+              12 STORE_FAST               1 (w)
+              14 LOAD_CONST               0 ('<li>')
+              16 LOAD_FAST                1 (w)
+              18 FORMAT_VALUE             0
+              20 LOAD_CONST               1 ('</li>')
+              22 BUILD_STRING             3
+              24 YIELD_VALUE              1
+              26 RESUME                   1
+              28 POP_TOP
+              30 JUMP_BACKWARD           12 (to 8)
+         >>   32 END_FOR
+              34 RETURN_CONST             2 (None)
+         >>   36 CALL_INTRINSIC_1         3 (INTRINSIC_STOPITERATION_ERROR)
+              38 RERAISE                  1
+ExceptionTable:
+  4 to 34 -> 36 [0] lasti

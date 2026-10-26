@@ -1,0 +1,25 @@
+2123           0 RESUME                   0
+
+2126           2 LOAD_GLOBAL              1 (NULL + max)
+              12 LOAD_CONST               1 (0.0)
+              14 LOAD_GLOBAL              3 (NULL + min)
+              24 LOAD_CONST               2 (100.0)
+              26 LOAD_FAST                0 (tps_pct)
+              28 LOAD_FAST                1 (offset)
+              30 BINARY_OP               10 (-)
+              34 CALL                     2
+              42 CALL                     2
+              50 LOAD_CONST               2 (100.0)
+              52 BINARY_OP               11 (/)
+              56 STORE_FAST               3 (x)
+
+2127          58 LOAD_GLOBAL              1 (NULL + max)
+              68 LOAD_CONST               1 (0.0)
+              70 LOAD_GLOBAL              3 (NULL + min)
+              80 LOAD_CONST               3 (1.0)
+              82 LOAD_FAST                3 (x)
+              84 LOAD_FAST                2 (factor)
+              86 BINARY_OP                8 (**)
+              90 CALL                     2
+              98 CALL                     2
+             106 RETURN_VALUE

@@ -1,0 +1,25 @@
+1183           0 RESUME                   0
+
+1184           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (xdf)
+              24 POP_JUMP_IF_NOT_NONE     1 (to 28)
+
+1185          26 RETURN_CONST             0 (None)
+
+1186     >>   28 LOAD_FAST                0 (self)
+              30 LOAD_ATTR                0 (xdf)
+              50 LOAD_ATTR                3 (NULL|self + find)
+              70 LOAD_FAST                1 (title_substr)
+              72 CALL                     1
+              80 STORE_FAST               2 (p)
+
+1187          82 LOAD_FAST                2 (p)
+              84 POP_JUMP_IF_FALSE       27 (to 140)
+              86 LOAD_FAST                2 (p)
+              88 LOAD_ATTR                5 (NULL|self + read)
+             108 LOAD_FAST                0 (self)
+             110 LOAD_ATTR                6 (data)
+             130 CALL                     1
+             138 RETURN_VALUE
+         >>  140 LOAD_CONST               0 (None)
+             142 RETURN_VALUE

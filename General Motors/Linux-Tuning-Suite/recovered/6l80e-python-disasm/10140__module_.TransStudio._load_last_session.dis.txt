@@ -1,0 +1,262 @@
+10140           0 RESUME                   0
+
+10144           2 LOAD_GLOBAL              0 (os)
+               12 LOAD_ATTR                2 (path)
+               32 LOAD_ATTR                5 (NULL|self + exists)
+               52 LOAD_FAST                0 (self)
+               54 LOAD_ATTR                6 (_autosave_path)
+               74 CALL                     1
+               82 POP_JUMP_IF_TRUE         1 (to 86)
+
+10145          84 RETURN_CONST             1 (None)
+
+10146     >>   86 NOP
+
+10147          88 LOAD_GLOBAL              9 (NULL + open)
+               98 LOAD_FAST                0 (self)
+              100 LOAD_ATTR                6 (_autosave_path)
+              120 CALL                     1
+              128 BEFORE_WITH
+              130 STORE_FAST               1 (f)
+
+10148         132 LOAD_GLOBAL             11 (NULL + json)
+              142 LOAD_ATTR               12 (load)
+              162 LOAD_FAST                1 (f)
+              164 CALL                     1
+              172 STORE_FAST               2 (cfg)
+
+10147         174 LOAD_CONST               1 (None)
+              176 LOAD_CONST               1 (None)
+              178 LOAD_CONST               1 (None)
+              180 CALL                     2
+              188 POP_TOP
+
+10171     >>  190 NOP
+
+10172         192 LOAD_FAST                0 (self)
+              194 LOAD_ATTR               31 (NULL|self + _apply_loaded_config)
+              214 LOAD_FAST_CHECK          2 (cfg)
+              216 CALL                     1
+              224 POP_TOP
+
+10173         226 LOAD_FAST                0 (self)
+              228 LOAD_ATTR               21 (NULL|self + statusBar)
+              248 CALL                     0
+              256 LOAD_ATTR               23 (NULL|self + showMessage)
+              276 LOAD_CONST              12 ('Restored previous session')
+              278 LOAD_CONST              11 (4000)
+              280 CALL                     2
+              288 POP_TOP
+              290 RETURN_CONST             1 (None)
+
+10147     >>  292 PUSH_EXC_INFO
+              294 WITH_EXCEPT_START
+              296 POP_JUMP_IF_TRUE         1 (to 300)
+              298 RERAISE                  2
+          >>  300 POP_TOP
+              302 POP_EXCEPT
+              304 POP_TOP
+              306 POP_TOP
+              308 JUMP_BACKWARD           60 (to 190)
+          >>  310 COPY                     3
+              312 POP_EXCEPT
+              314 RERAISE                  1
+          >>  316 PUSH_EXC_INFO
+
+10149         318 LOAD_GLOBAL             10 (json)
+              328 LOAD_ATTR               14 (JSONDecodeError)
+              348 CHECK_EXC_MATCH
+              350 POP_JUMP_IF_FALSE      233 (to 818)
+              352 STORE_FAST               3 (e)
+
+10151         354 NOP
+
+10152         356 LOAD_FAST                0 (self)
+              358 LOAD_ATTR                6 (_autosave_path)
+              378 LOAD_CONST               2 ('.bad')
+              380 BINARY_OP                0 (+)
+              384 STORE_FAST               4 (bad_path)
+
+10154         386 LOAD_GLOBAL              0 (os)
+              396 LOAD_ATTR                2 (path)
+              416 LOAD_ATTR                5 (NULL|self + exists)
+              436 LOAD_FAST                4 (bad_path)
+              438 CALL                     1
+              446 POP_JUMP_IF_FALSE       21 (to 490)
+
+10155         448 LOAD_GLOBAL              1 (NULL + os)
+              458 LOAD_ATTR               16 (remove)
+              478 LOAD_FAST                4 (bad_path)
+              480 CALL                     1
+              488 POP_TOP
+
+10156     >>  490 LOAD_GLOBAL              1 (NULL + os)
+              500 LOAD_ATTR               18 (rename)
+              520 LOAD_FAST                0 (self)
+              522 LOAD_ATTR                6 (_autosave_path)
+              542 LOAD_FAST                4 (bad_path)
+              544 CALL                     2
+              552 POP_TOP
+
+10157         554 LOAD_FAST                0 (self)
+              556 LOAD_ATTR               21 (NULL|self + statusBar)
+              576 CALL                     0
+              584 LOAD_ATTR               23 (NULL|self + showMessage)
+
+10158         604 LOAD_CONST               3 ('Auto-save file was corrupt (JSON error: ')
+              606 LOAD_FAST                3 (e)
+              608 LOAD_ATTR               24 (msg)
+              628 FORMAT_VALUE             0
+              630 LOAD_CONST               4 (' at line ')
+
+10159         632 LOAD_FAST                3 (e)
+              634 LOAD_ATTR               26 (lineno)
+              654 FORMAT_VALUE             0
+              656 LOAD_CONST               5 ('). Backed up to ')
+              658 LOAD_FAST                4 (bad_path)
+              660 FORMAT_VALUE             0
+              662 LOAD_CONST               6 (' and starting fresh.')
+
+10158         664 BUILD_STRING             7
+
+10160         666 LOAD_CONST               7 (8000)
+
+10157         668 CALL                     2
+              676 POP_TOP
+              678 JUMP_FORWARD            60 (to 800)
+          >>  680 PUSH_EXC_INFO
+
+10162         682 LOAD_GLOBAL             28 (OSError)
+              692 CHECK_EXC_MATCH
+              694 POP_JUMP_IF_FALSE       48 (to 792)
+              696 STORE_FAST               5 (oe)
+
+10163         698 LOAD_FAST                0 (self)
+              700 LOAD_ATTR               21 (NULL|self + statusBar)
+              720 CALL                     0
+              728 LOAD_ATTR               23 (NULL|self + showMessage)
+
+10164         748 LOAD_CONST               8 ('Auto-load failed: ')
+              750 LOAD_FAST                3 (e)
+              752 FORMAT_VALUE             0
+              754 LOAD_CONST               9 ('. Could not back up: ')
+              756 LOAD_FAST                5 (oe)
+              758 FORMAT_VALUE             0
+              760 BUILD_STRING             4
+              762 LOAD_CONST              10 (6000)
+
+10163         764 CALL                     2
+              772 POP_TOP
+              774 POP_EXCEPT
+              776 LOAD_CONST               1 (None)
+              778 STORE_FAST               5 (oe)
+              780 DELETE_FAST              5 (oe)
+              782 JUMP_FORWARD             8 (to 800)
+          >>  784 LOAD_CONST               1 (None)
+              786 STORE_FAST               5 (oe)
+              788 DELETE_FAST              5 (oe)
+              790 RERAISE                  1
+
+10162     >>  792 RERAISE                  0
+          >>  794 COPY                     3
+              796 POP_EXCEPT
+              798 RERAISE                  1
+
+10166     >>  800 POP_EXCEPT
+              802 LOAD_CONST               1 (None)
+              804 STORE_FAST               3 (e)
+              806 DELETE_FAST              3 (e)
+              808 RETURN_CONST             1 (None)
+          >>  810 LOAD_CONST               1 (None)
+              812 STORE_FAST               3 (e)
+              814 DELETE_FAST              3 (e)
+              816 RERAISE                  1
+
+10167     >>  818 LOAD_GLOBAL             28 (OSError)
+              828 CHECK_EXC_MATCH
+              830 POP_JUMP_IF_FALSE       45 (to 922)
+              832 STORE_FAST               3 (e)
+
+10168         834 LOAD_FAST                0 (self)
+              836 LOAD_ATTR               21 (NULL|self + statusBar)
+              856 CALL                     0
+              864 LOAD_ATTR               23 (NULL|self + showMessage)
+              884 LOAD_CONST               8 ('Auto-load failed: ')
+              886 LOAD_FAST                3 (e)
+              888 FORMAT_VALUE             0
+              890 BUILD_STRING             2
+              892 LOAD_CONST              11 (4000)
+              894 CALL                     2
+              902 POP_TOP
+
+10169         904 POP_EXCEPT
+              906 LOAD_CONST               1 (None)
+              908 STORE_FAST               3 (e)
+              910 DELETE_FAST              3 (e)
+              912 RETURN_CONST             1 (None)
+          >>  914 LOAD_CONST               1 (None)
+              916 STORE_FAST               3 (e)
+              918 DELETE_FAST              3 (e)
+              920 RERAISE                  1
+
+10167     >>  922 RERAISE                  0
+          >>  924 COPY                     3
+              926 POP_EXCEPT
+              928 RERAISE                  1
+          >>  930 PUSH_EXC_INFO
+
+10174         932 LOAD_GLOBAL             32 (Exception)
+              942 CHECK_EXC_MATCH
+              944 POP_JUMP_IF_FALSE       46 (to 1038)
+              946 STORE_FAST               3 (e)
+
+10177         948 LOAD_FAST                0 (self)
+              950 LOAD_ATTR               21 (NULL|self + statusBar)
+              970 CALL                     0
+              978 LOAD_ATTR               23 (NULL|self + showMessage)
+
+10178         998 LOAD_CONST              13 ('Auto-load partial: ')
+             1000 LOAD_FAST                3 (e)
+             1002 FORMAT_VALUE             0
+             1004 LOAD_CONST              14 ('. Some settings may be at defaults.')
+             1006 BUILD_STRING             3
+
+10179        1008 LOAD_CONST              10 (6000)
+
+10177        1010 CALL                     2
+             1018 POP_TOP
+             1020 POP_EXCEPT
+             1022 LOAD_CONST               1 (None)
+             1024 STORE_FAST               3 (e)
+             1026 DELETE_FAST              3 (e)
+             1028 RETURN_CONST             1 (None)
+          >> 1030 LOAD_CONST               1 (None)
+             1032 STORE_FAST               3 (e)
+             1034 DELETE_FAST              3 (e)
+             1036 RERAISE                  1
+
+10174     >> 1038 RERAISE                  0
+          >> 1040 COPY                     3
+             1042 POP_EXCEPT
+             1044 RERAISE                  1
+ExceptionTable:
+  88 to 128 -> 316 [0]
+  130 to 172 -> 292 [1] lasti
+  174 to 188 -> 316 [0]
+  192 to 288 -> 930 [0]
+  292 to 300 -> 310 [3] lasti
+  302 to 314 -> 316 [0]
+  316 to 352 -> 924 [1] lasti
+  356 to 676 -> 680 [1]
+  678 to 678 -> 810 [1] lasti
+  680 to 696 -> 794 [2] lasti
+  698 to 772 -> 784 [2] lasti
+  774 to 782 -> 810 [1] lasti
+  784 to 792 -> 794 [2] lasti
+  794 to 798 -> 810 [1] lasti
+  810 to 832 -> 924 [1] lasti
+  834 to 902 -> 914 [1] lasti
+  914 to 922 -> 924 [1] lasti
+  930 to 946 -> 1040 [1] lasti
+  948 to 1018 -> 1030 [1] lasti
+  1030 to 1038 -> 1040 [1] lasti

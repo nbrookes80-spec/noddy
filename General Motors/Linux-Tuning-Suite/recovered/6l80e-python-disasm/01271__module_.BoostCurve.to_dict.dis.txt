@@ -1,0 +1,20 @@
+1271           0 RESUME                   0
+
+1273           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (spool_rpm)
+
+1274          24 LOAD_FAST                0 (self)
+              26 LOAD_ATTR                2 (peak_psi)
+
+1275          46 LOAD_FAST                0 (self)
+              48 LOAD_ATTR                4 (peak_rpm)
+
+1276          68 LOAD_FAST                0 (self)
+              70 LOAD_ATTR                6 (redline_psi)
+
+1277          90 LOAD_FAST                0 (self)
+              92 LOAD_ATTR                8 (torque_per_psi_pct)
+
+1272         112 LOAD_CONST               1 (('spool_rpm', 'peak_psi', 'peak_rpm', 'redline_psi', 'torque_per_psi_pct'))
+             114 BUILD_CONST_KEY_MAP      5
+             116 RETURN_VALUE

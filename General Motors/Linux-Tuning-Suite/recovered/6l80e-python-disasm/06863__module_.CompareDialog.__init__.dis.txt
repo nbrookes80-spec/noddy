@@ -1,0 +1,142 @@
+               0 COPY_FREE_VARS           1
+
+6863           2 RESUME                   0
+
+6864           4 LOAD_GLOBAL              0 (super)
+              14 LOAD_DEREF              13 (__class__)
+              16 LOAD_FAST                0 (self)
+              18 LOAD_SUPER_ATTR          5 (NULL|self + __init__)
+              22 LOAD_FAST                1 (parent)
+              24 CALL                     1
+              32 POP_TOP
+
+6865          34 LOAD_FAST                0 (self)
+              36 LOAD_ATTR                5 (NULL|self + setWindowTitle)
+              56 LOAD_CONST               1 ('Tune Comparison — vs ')
+              58 LOAD_FAST                4 (compared_name)
+              60 FORMAT_VALUE             0
+              62 BUILD_STRING             2
+              64 CALL                     1
+              72 POP_TOP
+
+6866          74 LOAD_FAST                0 (self)
+              76 LOAD_ATTR                7 (NULL|self + resize)
+              96 LOAD_CONST               2 (1300)
+              98 LOAD_CONST               3 (700)
+             100 CALL                     2
+             108 POP_TOP
+
+6867         110 LOAD_FAST                2 (current_res)
+             112 LOAD_FAST                0 (self)
+             114 STORE_ATTR               4 (cur)
+
+6868         124 LOAD_FAST                3 (compared_res)
+             126 LOAD_FAST                0 (self)
+             128 STORE_ATTR               5 (cmp)
+
+6870         138 LOAD_GLOBAL             13 (NULL + QVBoxLayout)
+             148 LOAD_FAST                0 (self)
+             150 CALL                     1
+             158 STORE_FAST               5 (layout)
+
+6871         160 LOAD_FAST                5 (layout)
+             162 LOAD_ATTR               15 (NULL|self + addWidget)
+             182 LOAD_GLOBAL             17 (NULL + QLabel)
+
+6872         192 LOAD_CONST               4 ('Cell-level delta: Compared (')
+             194 LOAD_FAST                4 (compared_name)
+             196 FORMAT_VALUE             0
+             198 LOAD_CONST               5 (') − Current.\nRed = compared is HIGHER (shifts later); Green = compared is LOWER (shifts earlier).')
+             200 BUILD_STRING             3
+
+6871         202 CALL                     1
+             210 CALL                     1
+             218 POP_TOP
+
+6878         220 LOAD_GLOBAL             19 (NULL + QTabWidget)
+             230 CALL                     0
+             238 STORE_FAST               6 (tabs)
+
+6879         240 LOAD_CONST               6 ((('Upshift Δ', 'upshift'), ('Downshift Δ', 'downshift'), ('TCC Lock Δ', 'tcc_lock'), ('TCC Unlock Δ', 'tcc_unlock')))
+             242 GET_ITER
+         >>  244 FOR_ITER                58 (to 364)
+             248 UNPACK_SEQUENCE          2
+             252 STORE_FAST               7 (name)
+             254 STORE_FAST               8 (key)
+
+6883         256 LOAD_GLOBAL             21 (NULL + QTableWidget)
+             266 CALL                     0
+             274 STORE_FAST               9 (grid)
+
+6884         276 LOAD_FAST                0 (self)
+             278 LOAD_ATTR               23 (NULL|self + _fill_diff)
+             298 LOAD_FAST                9 (grid)
+             300 LOAD_FAST                2 (current_res)
+             302 LOAD_FAST                8 (key)
+             304 BINARY_SUBSCR
+             308 LOAD_FAST                3 (compared_res)
+             310 LOAD_FAST                8 (key)
+             312 BINARY_SUBSCR
+             316 CALL                     3
+             324 POP_TOP
+
+6885         326 LOAD_FAST                6 (tabs)
+             328 LOAD_ATTR               25 (NULL|self + addTab)
+             348 LOAD_FAST                9 (grid)
+             350 LOAD_FAST                7 (name)
+             352 CALL                     2
+             360 POP_TOP
+             362 JUMP_BACKWARD           60 (to 244)
+
+6879     >>  364 END_FOR
+
+6886         366 LOAD_FAST                5 (layout)
+             368 LOAD_ATTR               15 (NULL|self + addWidget)
+             388 LOAD_FAST                6 (tabs)
+             390 LOAD_CONST               7 (1)
+             392 CALL                     2
+             400 POP_TOP
+
+6889         402 LOAD_FAST                0 (self)
+             404 LOAD_ATTR               27 (NULL|self + _compute_summary)
+             424 CALL                     0
+             432 STORE_FAST              10 (summary)
+
+6890         434 LOAD_GLOBAL             17 (NULL + QLabel)
+             444 LOAD_FAST               10 (summary)
+             446 CALL                     1
+             454 STORE_FAST              11 (lbl)
+
+6891         456 LOAD_FAST               11 (lbl)
+             458 LOAD_ATTR               29 (NULL|self + setStyleSheet)
+
+6892         478 LOAD_CONST               8 ('QLabel { background: #1e1e1e; color: #e0e0e0; padding: 8px; font-family: Consolas; border: 1px solid #555; }')
+
+6891         480 CALL                     1
+             488 POP_TOP
+
+6895         490 LOAD_FAST                5 (layout)
+             492 LOAD_ATTR               15 (NULL|self + addWidget)
+             512 LOAD_FAST               11 (lbl)
+             514 CALL                     1
+             522 POP_TOP
+
+6897         524 LOAD_GLOBAL             31 (NULL + QPushButton)
+             534 LOAD_CONST               9 ('Close')
+             536 CALL                     1
+             544 STORE_FAST              12 (btn)
+
+6898         546 LOAD_FAST               12 (btn)
+             548 LOAD_ATTR               32 (clicked)
+             568 LOAD_ATTR               35 (NULL|self + connect)
+             588 LOAD_FAST                0 (self)
+             590 LOAD_ATTR               36 (accept)
+             610 CALL                     1
+             618 POP_TOP
+
+6899         620 LOAD_FAST                5 (layout)
+             622 LOAD_ATTR               15 (NULL|self + addWidget)
+             642 LOAD_FAST               12 (btn)
+             644 CALL                     1
+             652 POP_TOP
+             654 RETURN_CONST             0 (None)

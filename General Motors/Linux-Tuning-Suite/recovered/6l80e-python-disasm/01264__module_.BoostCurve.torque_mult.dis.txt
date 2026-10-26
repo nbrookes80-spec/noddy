@@ -1,0 +1,20 @@
+1264           0 RESUME                   0
+
+1267           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (is_empty)
+              24 POP_JUMP_IF_FALSE        1 (to 28)
+
+1268          26 RETURN_CONST             1 (1.0)
+
+1269     >>   28 LOAD_CONST               1 (1.0)
+              30 LOAD_FAST                0 (self)
+              32 LOAD_ATTR                3 (NULL|self + psi_at)
+              52 LOAD_FAST                1 (rpm)
+              54 CALL                     1
+              62 LOAD_FAST                0 (self)
+              64 LOAD_ATTR                4 (torque_per_psi_pct)
+              84 LOAD_CONST               2 (100.0)
+              86 BINARY_OP               11 (/)
+              90 BINARY_OP                5 (*)
+              94 BINARY_OP                0 (+)
+              98 RETURN_VALUE

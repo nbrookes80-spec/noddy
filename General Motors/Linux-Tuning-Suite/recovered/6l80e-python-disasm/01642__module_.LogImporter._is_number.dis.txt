@@ -1,0 +1,30 @@
+1642           0 RESUME                   0
+
+1644           2 NOP
+
+1645           4 LOAD_GLOBAL              1 (NULL + float)
+              14 LOAD_FAST                0 (s)
+              16 CALL                     1
+              24 POP_TOP
+
+1646          26 RETURN_CONST             1 (True)
+         >>   28 PUSH_EXC_INFO
+
+1647          30 LOAD_GLOBAL              2 (ValueError)
+              40 LOAD_GLOBAL              4 (TypeError)
+              50 BUILD_TUPLE              2
+              52 CHECK_EXC_MATCH
+              54 POP_JUMP_IF_FALSE        3 (to 62)
+              56 POP_TOP
+
+1648          58 POP_EXCEPT
+              60 RETURN_CONST             2 (False)
+
+1647     >>   62 RERAISE                  0
+         >>   64 COPY                     3
+              66 POP_EXCEPT
+              68 RERAISE                  1
+ExceptionTable:
+  4 to 24 -> 28 [0]
+  28 to 56 -> 64 [1] lasti
+  62 to 62 -> 64 [1] lasti

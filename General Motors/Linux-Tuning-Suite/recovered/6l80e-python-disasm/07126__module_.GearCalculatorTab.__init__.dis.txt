@@ -1,0 +1,560 @@
+               0 COPY_FREE_VARS           1
+
+7126           2 RESUME                   0
+
+7127           4 LOAD_GLOBAL              0 (super)
+              14 LOAD_DEREF              13 (__class__)
+              16 LOAD_FAST                0 (self)
+              18 LOAD_SUPER_ATTR          5 (NULL|self + __init__)
+              22 CALL                     0
+              30 POP_TOP
+
+7128          32 LOAD_FAST                1 (apply_axle_callback)
+              34 LOAD_FAST                0 (self)
+              36 STORE_ATTR               2 (apply_axle_callback)
+
+7129          46 BUILD_LIST               0
+              48 LOAD_FAST                0 (self)
+              50 STORE_ATTR               3 (current_trans_ratios)
+
+7130          60 LOAD_CONST               1 ('')
+              62 LOAD_FAST                0 (self)
+              64 STORE_ATTR               4 (current_trans_name)
+
+7132          74 LOAD_GLOBAL             11 (NULL + QVBoxLayout)
+              84 LOAD_FAST                0 (self)
+              86 CALL                     1
+              94 STORE_FAST               2 (root)
+
+7133          96 LOAD_FAST                2 (root)
+              98 LOAD_ATTR               13 (NULL|self + setContentsMargins)
+             118 LOAD_CONST               2 (6)
+             120 LOAD_CONST               2 (6)
+             122 LOAD_CONST               2 (6)
+             124 LOAD_CONST               2 (6)
+             126 CALL                     4
+             134 POP_TOP
+
+7134         136 LOAD_FAST                2 (root)
+             138 LOAD_ATTR               15 (NULL|self + setSpacing)
+             158 LOAD_CONST               2 (6)
+             160 CALL                     1
+             168 POP_TOP
+
+7137         170 LOAD_GLOBAL             17 (NULL + QHBoxLayout)
+             180 CALL                     0
+             188 STORE_FAST               3 (top_row)
+
+7138         190 LOAD_FAST                3 (top_row)
+             192 LOAD_ATTR               15 (NULL|self + setSpacing)
+             212 LOAD_CONST               3 (8)
+             214 CALL                     1
+             222 POP_TOP
+
+7141         224 LOAD_GLOBAL             19 (NULL + QGroupBox)
+             234 LOAD_CONST               4 ('Inputs')
+             236 CALL                     1
+             244 STORE_FAST               4 (inp_gb)
+
+7142         246 LOAD_FAST                4 (inp_gb)
+             248 LOAD_ATTR               21 (NULL|self + setMaximumWidth)
+             268 LOAD_CONST               5 (280)
+             270 CALL                     1
+             278 POP_TOP
+
+7143         280 LOAD_GLOBAL             23 (NULL + QFormLayout)
+             290 CALL                     0
+             298 STORE_FAST               5 (inp_form)
+
+7144         300 LOAD_FAST                5 (inp_form)
+             302 LOAD_ATTR               15 (NULL|self + setSpacing)
+             322 LOAD_CONST               6 (4)
+             324 CALL                     1
+             332 POP_TOP
+
+7146         334 LOAD_FAST                0 (self)
+             336 LOAD_ATTR               25 (NULL|self + _dsb)
+             356 LOAD_CONST               7 (30.0)
+             358 LOAD_CONST               8 (18.0)
+             360 LOAD_CONST               9 (50.0)
+             362 LOAD_CONST              10 (0.25)
+             364 CALL                     4
+             372 LOAD_FAST                0 (self)
+             374 STORE_ATTR              13 (tire_in)
+
+7147         384 LOAD_FAST                5 (inp_form)
+             386 LOAD_ATTR               29 (NULL|self + addRow)
+             406 LOAD_CONST              11 ('Tire Diameter (in):')
+             408 LOAD_FAST                0 (self)
+             410 LOAD_ATTR               26 (tire_in)
+             430 CALL                     2
+             438 POP_TOP
+
+7148         440 LOAD_FAST                0 (self)
+             442 LOAD_ATTR               31 (NULL|self + _isb)
+             462 LOAD_CONST              12 (6500)
+             464 LOAD_CONST              13 (4500)
+             466 LOAD_CONST              14 (9000)
+             468 LOAD_CONST              15 (100)
+             470 CALL                     4
+             478 LOAD_FAST                0 (self)
+             480 STORE_ATTR              16 (redline_in)
+
+7149         490 LOAD_FAST                5 (inp_form)
+             492 LOAD_ATTR               29 (NULL|self + addRow)
+             512 LOAD_CONST              16 ('Redline RPM:')
+             514 LOAD_FAST                0 (self)
+             516 LOAD_ATTR               32 (redline_in)
+             536 CALL                     2
+             544 POP_TOP
+
+7150         546 LOAD_FAST                0 (self)
+             548 LOAD_ATTR               31 (NULL|self + _isb)
+             568 LOAD_CONST              17 (600)
+             570 LOAD_CONST              18 (400)
+             572 LOAD_CONST              19 (1500)
+             574 LOAD_CONST              20 (25)
+             576 CALL                     4
+             584 LOAD_FAST                0 (self)
+             586 STORE_ATTR              17 (idle_in)
+
+7151         596 LOAD_FAST                5 (inp_form)
+             598 LOAD_ATTR               29 (NULL|self + addRow)
+             618 LOAD_CONST              21 ('Idle RPM:')
+             620 LOAD_FAST                0 (self)
+             622 LOAD_ATTR               34 (idle_in)
+             642 CALL                     2
+             650 POP_TOP
+
+7152         652 LOAD_FAST                0 (self)
+             654 LOAD_ATTR               25 (NULL|self + _dsb)
+             674 LOAD_CONST              22 (70.0)
+             676 LOAD_CONST               7 (30.0)
+             678 LOAD_CONST              23 (120.0)
+             680 LOAD_CONST              24 (1.0)
+             682 CALL                     4
+             690 LOAD_FAST                0 (self)
+             692 STORE_ATTR              18 (cruise_in)
+
+7153         702 LOAD_FAST                5 (inp_form)
+             704 LOAD_ATTR               29 (NULL|self + addRow)
+             724 LOAD_CONST              25 ('Cruise Speed (MPH):')
+             726 LOAD_FAST                0 (self)
+             728 LOAD_ATTR               36 (cruise_in)
+             748 CALL                     2
+             756 POP_TOP
+
+7154         758 LOAD_FAST                0 (self)
+             760 LOAD_ATTR               25 (NULL|self + _dsb)
+             780 LOAD_CONST              26 (150.0)
+             782 LOAD_CONST              27 (80.0)
+             784 LOAD_CONST              28 (250.0)
+             786 LOAD_CONST              29 (5.0)
+             788 CALL                     4
+             796 LOAD_FAST                0 (self)
+             798 STORE_ATTR              19 (target_top_in)
+
+7155         808 LOAD_FAST                5 (inp_form)
+             810 LOAD_ATTR               29 (NULL|self + addRow)
+             830 LOAD_CONST              30 ('Target Top MPH:')
+             832 LOAD_FAST                0 (self)
+             834 LOAD_ATTR               38 (target_top_in)
+             854 CALL                     2
+             862 POP_TOP
+
+7156         864 LOAD_FAST                0 (self)
+             866 LOAD_ATTR               31 (NULL|self + _isb)
+             886 LOAD_CONST              31 (2000)
+             888 LOAD_CONST              32 (1200)
+             890 LOAD_CONST              33 (3500)
+             892 LOAD_CONST              34 (50)
+             894 CALL                     4
+             902 LOAD_FAST                0 (self)
+             904 STORE_ATTR              20 (target_cruise_rpm_in)
+
+7157         914 LOAD_FAST                5 (inp_form)
+             916 LOAD_ATTR               29 (NULL|self + addRow)
+             936 LOAD_CONST              35 ('Target Cruise RPM:')
+             938 LOAD_FAST                0 (self)
+             940 LOAD_ATTR               40 (target_cruise_rpm_in)
+             960 CALL                     2
+             968 POP_TOP
+
+7160         970 LOAD_GLOBAL             17 (NULL + QHBoxLayout)
+             980 CALL                     0
+             988 STORE_FAST               6 (prio_layout)
+
+7161         990 LOAD_GLOBAL             43 (NULL + QRadioButton)
+            1000 LOAD_CONST              36 ('Top MPH')
+            1002 CALL                     1
+            1010 LOAD_FAST                0 (self)
+            1012 STORE_ATTR              22 (prio_top)
+
+7162        1022 LOAD_GLOBAL             43 (NULL + QRadioButton)
+            1032 LOAD_CONST              37 ('0-60')
+            1034 CALL                     1
+            1042 LOAD_FAST                0 (self)
+            1044 STORE_ATTR              23 (prio_accel)
+
+7163        1054 LOAD_GLOBAL             43 (NULL + QRadioButton)
+            1064 LOAD_CONST              38 ('Economy')
+            1066 CALL                     1
+            1074 LOAD_FAST                0 (self)
+            1076 STORE_ATTR              24 (prio_econ)
+
+7164        1086 LOAD_FAST                0 (self)
+            1088 LOAD_ATTR               44 (prio_top)
+            1108 LOAD_ATTR               51 (NULL|self + setChecked)
+            1128 LOAD_CONST              39 (True)
+            1130 CALL                     1
+            1138 POP_TOP
+
+7165        1140 LOAD_FAST                6 (prio_layout)
+            1142 LOAD_ATTR               53 (NULL|self + addWidget)
+            1162 LOAD_FAST                0 (self)
+            1164 LOAD_ATTR               44 (prio_top)
+            1184 CALL                     1
+            1192 POP_TOP
+
+7166        1194 LOAD_FAST                6 (prio_layout)
+            1196 LOAD_ATTR               53 (NULL|self + addWidget)
+            1216 LOAD_FAST                0 (self)
+            1218 LOAD_ATTR               46 (prio_accel)
+            1238 CALL                     1
+            1246 POP_TOP
+
+7167        1248 LOAD_FAST                6 (prio_layout)
+            1250 LOAD_ATTR               53 (NULL|self + addWidget)
+            1270 LOAD_FAST                0 (self)
+            1272 LOAD_ATTR               48 (prio_econ)
+            1292 CALL                     1
+            1300 POP_TOP
+
+7168        1302 LOAD_FAST                5 (inp_form)
+            1304 LOAD_ATTR               29 (NULL|self + addRow)
+            1324 LOAD_CONST              40 ('Priority:')
+            1326 LOAD_FAST                6 (prio_layout)
+            1328 CALL                     2
+            1336 POP_TOP
+
+7171        1338 LOAD_FAST                0 (self)
+            1340 LOAD_ATTR               26 (tire_in)
+            1360 LOAD_FAST                0 (self)
+            1362 LOAD_ATTR               32 (redline_in)
+            1382 LOAD_FAST                0 (self)
+            1384 LOAD_ATTR               34 (idle_in)
+
+7172        1404 LOAD_FAST                0 (self)
+            1406 LOAD_ATTR               36 (cruise_in)
+            1426 LOAD_FAST                0 (self)
+            1428 LOAD_ATTR               38 (target_top_in)
+            1448 LOAD_FAST                0 (self)
+            1450 LOAD_ATTR               40 (target_cruise_rpm_in)
+
+7171        1470 BUILD_TUPLE              6
+            1472 GET_ITER
+         >> 1474 FOR_ITER                39 (to 1556)
+            1478 STORE_FAST               7 (w)
+
+7173        1480 LOAD_FAST                7 (w)
+            1482 LOAD_ATTR               54 (valueChanged)
+            1502 LOAD_ATTR               57 (NULL|self + connect)
+            1522 LOAD_FAST                0 (self)
+            1524 LOAD_ATTR               58 (_refresh)
+            1544 CALL                     1
+            1552 POP_TOP
+            1554 JUMP_BACKWARD           41 (to 1474)
+
+7171     >> 1556 END_FOR
+
+7174        1558 LOAD_FAST                0 (self)
+            1560 LOAD_ATTR               44 (prio_top)
+            1580 LOAD_FAST                0 (self)
+            1582 LOAD_ATTR               46 (prio_accel)
+            1602 LOAD_FAST                0 (self)
+            1604 LOAD_ATTR               48 (prio_econ)
+            1624 BUILD_TUPLE              3
+            1626 GET_ITER
+         >> 1628 FOR_ITER                39 (to 1710)
+            1632 STORE_FAST               8 (rb)
+
+7175        1634 LOAD_FAST                8 (rb)
+            1636 LOAD_ATTR               60 (toggled)
+            1656 LOAD_ATTR               57 (NULL|self + connect)
+            1676 LOAD_FAST                0 (self)
+            1678 LOAD_ATTR               58 (_refresh)
+            1698 CALL                     1
+            1706 POP_TOP
+            1708 JUMP_BACKWARD           41 (to 1628)
+
+7174     >> 1710 END_FOR
+
+7178        1712 LOAD_GLOBAL             63 (NULL + QLabel)
+            1722 LOAD_CONST              41 ('(no trans selected)')
+            1724 CALL                     1
+            1732 LOAD_FAST                0 (self)
+            1734 STORE_ATTR              32 (trans_lbl)
+
+7179        1744 LOAD_FAST                0 (self)
+            1746 LOAD_ATTR               64 (trans_lbl)
+            1766 LOAD_ATTR               67 (NULL|self + setTextFormat)
+            1786 LOAD_GLOBAL             68 (Qt)
+            1796 LOAD_ATTR               70 (TextFormat)
+            1816 LOAD_ATTR               72 (RichText)
+            1836 CALL                     1
+            1844 POP_TOP
+
+7180        1846 LOAD_FAST                0 (self)
+            1848 LOAD_ATTR               64 (trans_lbl)
+            1868 LOAD_ATTR               75 (NULL|self + setStyleSheet)
+            1888 LOAD_CONST              42 ('color: #6cc; padding: 4px;')
+            1890 CALL                     1
+            1898 POP_TOP
+
+7181        1900 LOAD_FAST                0 (self)
+            1902 LOAD_ATTR               64 (trans_lbl)
+            1922 LOAD_ATTR               77 (NULL|self + setWordWrap)
+            1942 LOAD_CONST              39 (True)
+            1944 CALL                     1
+            1952 POP_TOP
+
+7182        1954 LOAD_FAST                5 (inp_form)
+            1956 LOAD_ATTR               29 (NULL|self + addRow)
+            1976 LOAD_FAST                0 (self)
+            1978 LOAD_ATTR               64 (trans_lbl)
+            1998 CALL                     1
+            2006 POP_TOP
+
+7185        2008 LOAD_GLOBAL             63 (NULL + QLabel)
+            2018 LOAD_CONST               1 ('')
+            2020 CALL                     1
+            2028 LOAD_FAST                0 (self)
+            2030 STORE_ATTR              39 (recommend_lbl)
+
+7186        2040 LOAD_FAST                0 (self)
+            2042 LOAD_ATTR               78 (recommend_lbl)
+            2062 LOAD_ATTR               67 (NULL|self + setTextFormat)
+            2082 LOAD_GLOBAL             68 (Qt)
+            2092 LOAD_ATTR               70 (TextFormat)
+            2112 LOAD_ATTR               72 (RichText)
+            2132 CALL                     1
+            2140 POP_TOP
+
+7187        2142 LOAD_FAST                0 (self)
+            2144 LOAD_ATTR               78 (recommend_lbl)
+            2164 LOAD_ATTR               75 (NULL|self + setStyleSheet)
+
+7188        2184 LOAD_CONST              43 ('color: #fff; background: #2864A0; padding: 6px; border-radius: 4px; font-weight: bold;')
+
+7187        2186 CALL                     1
+            2194 POP_TOP
+
+7190        2196 LOAD_FAST                0 (self)
+            2198 LOAD_ATTR               78 (recommend_lbl)
+            2218 LOAD_ATTR               77 (NULL|self + setWordWrap)
+            2238 LOAD_CONST              39 (True)
+            2240 CALL                     1
+            2248 POP_TOP
+
+7191        2250 LOAD_FAST                5 (inp_form)
+            2252 LOAD_ATTR               29 (NULL|self + addRow)
+            2272 LOAD_FAST                0 (self)
+            2274 LOAD_ATTR               78 (recommend_lbl)
+            2294 CALL                     1
+            2302 POP_TOP
+
+7194        2304 LOAD_GLOBAL             81 (NULL + QPushButton)
+            2314 LOAD_CONST              44 ('Apply Recommended Axle Ratio')
+            2316 CALL                     1
+            2324 LOAD_FAST                0 (self)
+            2326 STORE_ATTR              41 (apply_btn)
+
+7195        2336 LOAD_FAST                0 (self)
+            2338 LOAD_ATTR               82 (apply_btn)
+            2358 LOAD_ATTR               85 (NULL|self + setMinimumHeight)
+            2378 LOAD_CONST              45 (28)
+            2380 CALL                     1
+            2388 POP_TOP
+
+7196        2390 LOAD_FAST                0 (self)
+            2392 LOAD_ATTR               82 (apply_btn)
+            2412 LOAD_ATTR               87 (NULL|self + setToolTip)
+
+7197        2432 LOAD_CONST              46 ('Sets the axle ratio on the Basics tab and triggers a recalc.')
+
+7196        2434 CALL                     1
+            2442 POP_TOP
+
+7198        2444 LOAD_FAST                0 (self)
+            2446 LOAD_ATTR               82 (apply_btn)
+            2466 LOAD_ATTR               88 (clicked)
+            2486 LOAD_ATTR               57 (NULL|self + connect)
+            2506 LOAD_FAST                0 (self)
+            2508 LOAD_ATTR               90 (_on_apply)
+            2528 CALL                     1
+            2536 POP_TOP
+
+7199        2538 LOAD_FAST                5 (inp_form)
+            2540 LOAD_ATTR               29 (NULL|self + addRow)
+            2560 LOAD_FAST                0 (self)
+            2562 LOAD_ATTR               82 (apply_btn)
+            2582 CALL                     1
+            2590 POP_TOP
+
+7201        2592 LOAD_FAST                4 (inp_gb)
+            2594 LOAD_ATTR               93 (NULL|self + setLayout)
+            2614 LOAD_FAST                5 (inp_form)
+            2616 CALL                     1
+            2624 POP_TOP
+
+7202        2626 LOAD_FAST                3 (top_row)
+            2628 LOAD_ATTR               53 (NULL|self + addWidget)
+            2648 LOAD_FAST                4 (inp_gb)
+            2650 CALL                     1
+            2658 POP_TOP
+
+7205        2660 LOAD_GLOBAL             19 (NULL + QGroupBox)
+            2670 LOAD_CONST              47 ('Axle Ratio Comparison')
+            2672 CALL                     1
+            2680 STORE_FAST               9 (tbl_gb)
+
+7206        2682 LOAD_GLOBAL             11 (NULL + QVBoxLayout)
+            2692 CALL                     0
+            2700 STORE_FAST              10 (tbl_layout)
+
+7207        2702 LOAD_GLOBAL             95 (NULL + QTableWidget)
+            2712 CALL                     0
+            2720 LOAD_FAST                0 (self)
+            2722 STORE_ATTR              48 (table)
+
+7208        2732 LOAD_FAST                0 (self)
+            2734 LOAD_ATTR               96 (table)
+            2754 LOAD_ATTR               99 (NULL|self + setEditTriggers)
+            2774 LOAD_GLOBAL             94 (QTableWidget)
+            2784 LOAD_ATTR              100 (EditTrigger)
+            2804 LOAD_ATTR              102 (NoEditTriggers)
+            2824 CALL                     1
+            2832 POP_TOP
+
+7209        2834 LOAD_FAST                0 (self)
+            2836 LOAD_ATTR               96 (table)
+            2856 LOAD_ATTR              105 (NULL|self + setSelectionBehavior)
+            2876 LOAD_GLOBAL             94 (QTableWidget)
+            2886 LOAD_ATTR              106 (SelectionBehavior)
+            2906 LOAD_ATTR              108 (SelectRows)
+            2926 CALL                     1
+            2934 POP_TOP
+
+7210        2936 LOAD_FAST                0 (self)
+            2938 LOAD_ATTR               96 (table)
+            2958 LOAD_ATTR              111 (NULL|self + setSelectionMode)
+            2978 LOAD_GLOBAL             94 (QTableWidget)
+            2988 LOAD_ATTR              112 (SelectionMode)
+            3008 LOAD_ATTR              114 (SingleSelection)
+            3028 CALL                     1
+            3036 POP_TOP
+
+7211        3038 LOAD_FAST                0 (self)
+            3040 LOAD_ATTR               96 (table)
+            3060 LOAD_ATTR               75 (NULL|self + setStyleSheet)
+
+7212        3080 LOAD_CONST              48 ('QTableWidget { background: #1e1e1e; color: #fff; gridline-color: #444; selection-background-color: #C32626; }QHeaderView::section { background: #303030; color: #fff; padding: 2px 6px; border: 1px solid #555; font-weight: bold; }')
+
+7211        3082 CALL                     1
+            3090 POP_TOP
+
+7216        3092 LOAD_FAST                0 (self)
+            3094 LOAD_ATTR               96 (table)
+            3114 LOAD_ATTR              117 (NULL|self + setSizePolicy)
+            3134 LOAD_GLOBAL            118 (QSizePolicy)
+            3144 LOAD_ATTR              120 (Policy)
+            3164 LOAD_ATTR              122 (Expanding)
+
+7217        3184 LOAD_GLOBAL            118 (QSizePolicy)
+            3194 LOAD_ATTR              120 (Policy)
+            3214 LOAD_ATTR              122 (Expanding)
+
+7216        3234 CALL                     2
+            3242 POP_TOP
+
+7218        3244 LOAD_FAST                0 (self)
+            3246 LOAD_ATTR               96 (table)
+            3266 LOAD_ATTR               85 (NULL|self + setMinimumHeight)
+            3286 LOAD_CONST               5 (280)
+            3288 CALL                     1
+            3296 POP_TOP
+
+7219        3298 LOAD_FAST                0 (self)
+            3300 LOAD_ATTR               96 (table)
+            3320 LOAD_ATTR              124 (itemSelectionChanged)
+            3340 LOAD_ATTR               57 (NULL|self + connect)
+            3360 LOAD_FAST                0 (self)
+            3362 LOAD_ATTR              126 (_on_table_selection)
+            3382 CALL                     1
+            3390 POP_TOP
+
+7220        3392 LOAD_FAST               10 (tbl_layout)
+            3394 LOAD_ATTR               53 (NULL|self + addWidget)
+            3414 LOAD_FAST                0 (self)
+            3416 LOAD_ATTR               96 (table)
+            3436 CALL                     1
+            3444 POP_TOP
+
+7221        3446 LOAD_FAST                9 (tbl_gb)
+            3448 LOAD_ATTR               93 (NULL|self + setLayout)
+            3468 LOAD_FAST               10 (tbl_layout)
+            3470 CALL                     1
+            3478 POP_TOP
+
+7222        3480 LOAD_FAST                3 (top_row)
+            3482 LOAD_ATTR               53 (NULL|self + addWidget)
+            3502 LOAD_FAST                9 (tbl_gb)
+            3504 LOAD_CONST              49 (1)
+            3506 CALL                     2
+            3514 POP_TOP
+
+7224        3516 LOAD_FAST                2 (root)
+            3518 LOAD_ATTR              129 (NULL|self + addLayout)
+            3538 LOAD_FAST                3 (top_row)
+            3540 CALL                     1
+            3548 POP_TOP
+
+7227        3550 LOAD_GLOBAL             19 (NULL + QGroupBox)
+            3560 LOAD_CONST              50 ('MPH vs. RPM Ladder Plot')
+            3562 CALL                     1
+            3570 STORE_FAST              11 (plot_gb)
+
+7228        3572 LOAD_GLOBAL             11 (NULL + QVBoxLayout)
+            3582 CALL                     0
+            3590 STORE_FAST              12 (plot_layout)
+
+7229        3592 LOAD_GLOBAL            131 (NULL + GearCalculatorPlot)
+            3602 CALL                     0
+            3610 LOAD_FAST                0 (self)
+            3612 STORE_ATTR              66 (plot)
+
+7230        3622 LOAD_FAST               12 (plot_layout)
+            3624 LOAD_ATTR               53 (NULL|self + addWidget)
+            3644 LOAD_FAST                0 (self)
+            3646 LOAD_ATTR              132 (plot)
+            3666 LOAD_CONST              49 (1)
+            3668 CALL                     2
+            3676 POP_TOP
+
+7231        3678 LOAD_FAST               11 (plot_gb)
+            3680 LOAD_ATTR               93 (NULL|self + setLayout)
+            3700 LOAD_FAST               12 (plot_layout)
+            3702 CALL                     1
+            3710 POP_TOP
+
+7232        3712 LOAD_FAST                2 (root)
+            3714 LOAD_ATTR               53 (NULL|self + addWidget)
+            3734 LOAD_FAST               11 (plot_gb)
+            3736 LOAD_CONST              49 (1)
+            3738 CALL                     2
+            3746 POP_TOP
+
+7234        3748 LOAD_CONST               0 (None)
+            3750 LOAD_FAST                0 (self)
+            3752 STORE_ATTR              67 (selected_axle)
+            3762 RETURN_CONST             0 (None)

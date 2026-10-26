@@ -1,0 +1,26 @@
+8558           0 RESUME                   0
+
+8560           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (tire_preset)
+              24 LOAD_ATTR                3 (NULL|self + currentText)
+              44 CALL                     0
+              52 STORE_FAST               1 (name)
+
+8561          54 LOAD_GLOBAL              4 (TIRE_PRESETS)
+              64 LOAD_ATTR                7 (NULL|self + get)
+              84 LOAD_FAST                1 (name)
+              86 CALL                     1
+              94 STORE_FAST               2 (dia)
+
+8562          96 LOAD_FAST                2 (dia)
+              98 POP_JUMP_IF_NOT_NONE     1 (to 102)
+
+8563         100 RETURN_CONST             1 (None)
+
+8564     >>  102 LOAD_FAST                0 (self)
+             104 LOAD_ATTR                8 (tire)
+             124 LOAD_ATTR               11 (NULL|self + setValue)
+             144 LOAD_FAST                2 (dia)
+             146 CALL                     1
+             154 POP_TOP
+             156 RETURN_CONST             1 (None)

@@ -1,0 +1,25 @@
+               0 MAKE_CELL                0 (__class__)
+
+4324           2 RESUME                   0
+               4 LOAD_NAME                0 (__name__)
+               6 STORE_NAME               1 (__module__)
+               8 LOAD_CONST               0 ('PerfSimDialog')
+              10 STORE_NAME               2 (__qualname__)
+
+4325          12 LOAD_CONST               1 ('Performance simulator combining drag-run prediction (#9) and\n    shift-point timing analysis (#6).')
+              14 STORE_NAME               3 (__doc__)
+
+4328          16 LOAD_CONST               4 ((None,))
+              18 LOAD_CLOSURE             0 (__class__)
+              20 BUILD_TUPLE              1
+              22 LOAD_CONST               2 (<code object __init__ at 0x30c2e600, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4328>)
+              24 MAKE_FUNCTION            9 (defaults, closure)
+              26 STORE_NAME               4 (__init__)
+
+4472          28 LOAD_CONST               3 (<code object _run at 0x30c2ffd0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4472>)
+              30 MAKE_FUNCTION            0
+              32 STORE_NAME               5 (_run)
+              34 LOAD_CLOSURE             0 (__class__)
+              36 COPY                     1
+              38 STORE_NAME               6 (__classcell__)
+              40 RETURN_VALUE

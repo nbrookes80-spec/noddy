@@ -1,0 +1,312 @@
+9287           0 RESUME                   0
+
+9288           2 LOAD_GLOBAL              1 (NULL + hasattr)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_CONST               1 ('_last_result')
+              16 CALL                     2
+              24 POP_JUMP_IF_FALSE       12 (to 50)
+              26 LOAD_FAST                0 (self)
+              28 LOAD_ATTR                2 (_last_result)
+              48 POP_JUMP_IF_NOT_NONE    24 (to 98)
+
+9289     >>   50 LOAD_GLOBAL              5 (NULL + QMessageBox)
+              60 LOAD_ATTR                6 (information)
+              80 LOAD_FAST                0 (self)
+              82 LOAD_CONST               2 ('Calculate first')
+
+9290          84 LOAD_CONST               3 ('Run Calculate before exporting.')
+
+9289          86 CALL                     3
+              94 POP_TOP
+
+9291          96 RETURN_CONST             0 (None)
+
+9295     >>   98 LOAD_CONST               4 (<code object grab at 0x30c73f60, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 9295>)
+             100 MAKE_FUNCTION            0
+             102 STORE_FAST               1 (grab)
+
+9308         104 BUILD_MAP                0
+             106 STORE_FAST               2 (mode_tables)
+
+9311         108 PUSH_NULL
+             110 LOAD_FAST                1 (grab)
+             112 LOAD_FAST                0 (self)
+             114 LOAD_ATTR                8 (grid_up)
+             134 CALL                     1
+
+9312         142 PUSH_NULL
+             144 LOAD_FAST                1 (grab)
+             146 LOAD_FAST                0 (self)
+             148 LOAD_ATTR               10 (grid_dn)
+             168 CALL                     1
+
+9313         176 PUSH_NULL
+             178 LOAD_FAST                1 (grab)
+             180 LOAD_FAST                0 (self)
+             182 LOAD_ATTR               12 (grid_lock)
+             202 CALL                     1
+
+9314         210 PUSH_NULL
+             212 LOAD_FAST                1 (grab)
+             214 LOAD_FAST                0 (self)
+             216 LOAD_ATTR               14 (grid_unlock)
+             236 CALL                     1
+
+9315         244 LOAD_FAST                0 (self)
+             246 LOAD_ATTR                2 (_last_result)
+
+9310         266 LOAD_CONST               5 (('upshift', 'downshift', 'tcc_lock', 'tcc_unlock', 'result'))
+             268 BUILD_CONST_KEY_MAP      5
+             270 LOAD_FAST                2 (mode_tables)
+             272 LOAD_CONST               6 ('Normal')
+             274 STORE_SUBSCR
+
+9318         278 LOAD_FAST                0 (self)
+             280 LOAD_ATTR               16 (_last_results_modes)
+             300 LOAD_ATTR               19 (NULL|self + items)
+             320 CALL                     0
+             328 GET_ITER
+         >>  330 FOR_ITER               102 (to 538)
+             334 UNPACK_SEQUENCE          2
+             338 STORE_FAST               3 (mname)
+             340 STORE_FAST               4 (mres)
+
+9319         342 LOAD_FAST                3 (mname)
+             344 LOAD_CONST               6 ('Normal')
+             346 COMPARE_OP              40 (==)
+             350 POP_JUMP_IF_FALSE        1 (to 354)
+
+9320         352 JUMP_BACKWARD           12 (to 330)
+
+9322     >>  354 LOAD_FAST                4 (mres)
+             356 LOAD_CONST               7 ('upshift')
+             358 BINARY_SUBSCR
+             362 GET_ITER
+             364 LOAD_FAST_AND_CLEAR      5 (row)
+             366 SWAP                     2
+             368 BUILD_LIST               0
+             370 SWAP                     2
+         >>  372 FOR_ITER                 7 (to 390)
+             376 STORE_FAST               5 (row)
+             378 LOAD_FAST                5 (row)
+             380 LOAD_CONST               0 (None)
+             382 LOAD_CONST               0 (None)
+             384 BINARY_SLICE
+             386 LIST_APPEND              2
+             388 JUMP_BACKWARD            9 (to 372)
+         >>  390 END_FOR
+             392 SWAP                     2
+             394 STORE_FAST               5 (row)
+
+9323         396 LOAD_FAST                4 (mres)
+             398 LOAD_CONST               8 ('downshift')
+             400 BINARY_SUBSCR
+             404 GET_ITER
+             406 LOAD_FAST_AND_CLEAR      5 (row)
+             408 SWAP                     2
+             410 BUILD_LIST               0
+             412 SWAP                     2
+         >>  414 FOR_ITER                 7 (to 432)
+             418 STORE_FAST               5 (row)
+             420 LOAD_FAST                5 (row)
+             422 LOAD_CONST               0 (None)
+             424 LOAD_CONST               0 (None)
+             426 BINARY_SLICE
+             428 LIST_APPEND              2
+             430 JUMP_BACKWARD            9 (to 414)
+         >>  432 END_FOR
+             434 SWAP                     2
+             436 STORE_FAST               5 (row)
+
+9324         438 LOAD_FAST                4 (mres)
+             440 LOAD_CONST               9 ('tcc_lock')
+             442 BINARY_SUBSCR
+             446 GET_ITER
+             448 LOAD_FAST_AND_CLEAR      5 (row)
+             450 SWAP                     2
+             452 BUILD_LIST               0
+             454 SWAP                     2
+         >>  456 FOR_ITER                 7 (to 474)
+             460 STORE_FAST               5 (row)
+             462 LOAD_FAST                5 (row)
+             464 LOAD_CONST               0 (None)
+             466 LOAD_CONST               0 (None)
+             468 BINARY_SLICE
+             470 LIST_APPEND              2
+             472 JUMP_BACKWARD            9 (to 456)
+         >>  474 END_FOR
+             476 SWAP                     2
+             478 STORE_FAST               5 (row)
+
+9325         480 LOAD_FAST                4 (mres)
+             482 LOAD_CONST              10 ('tcc_unlock')
+             484 BINARY_SUBSCR
+             488 GET_ITER
+             490 LOAD_FAST_AND_CLEAR      5 (row)
+             492 SWAP                     2
+             494 BUILD_LIST               0
+             496 SWAP                     2
+         >>  498 FOR_ITER                 7 (to 516)
+             502 STORE_FAST               5 (row)
+             504 LOAD_FAST                5 (row)
+             506 LOAD_CONST               0 (None)
+             508 LOAD_CONST               0 (None)
+             510 BINARY_SLICE
+             512 LIST_APPEND              2
+             514 JUMP_BACKWARD            9 (to 498)
+         >>  516 END_FOR
+             518 SWAP                     2
+             520 STORE_FAST               5 (row)
+
+9326         522 LOAD_FAST                4 (mres)
+
+9321         524 LOAD_CONST               5 (('upshift', 'downshift', 'tcc_lock', 'tcc_unlock', 'result'))
+             526 BUILD_CONST_KEY_MAP      5
+             528 LOAD_FAST                2 (mode_tables)
+             530 LOAD_FAST                3 (mname)
+             532 STORE_SUBSCR
+             536 JUMP_BACKWARD          104 (to 330)
+
+9318     >>  538 END_FOR
+
+9330         540 LOAD_FAST                0 (self)
+             542 LOAD_ATTR               20 (tire)
+             562 LOAD_ATTR               23 (NULL|self + value)
+             582 CALL                     0
+
+9331         590 LOAD_FAST                0 (self)
+             592 LOAD_ATTR               24 (axle)
+             612 LOAD_ATTR               23 (NULL|self + value)
+             632 CALL                     0
+
+9332         640 LOAD_FAST                0 (self)
+             642 LOAD_ATTR               26 (vss_count)
+             662 LOAD_ATTR               23 (NULL|self + value)
+             682 CALL                     0
+
+9333         690 LOAD_FAST                0 (self)
+             692 LOAD_ATTR                2 (_last_result)
+             712 LOAD_CONST              11 ('n_gears')
+             714 BINARY_SUBSCR
+
+9334         718 LOAD_FAST                0 (self)
+             720 LOAD_ATTR               28 (metric)
+
+9335         740 LOAD_FAST                0 (self)
+             742 LOAD_ATTR               30 (trans)
+             762 LOAD_ATTR               33 (NULL|self + currentText)
+             782 CALL                     0
+
+9329         790 LOAD_CONST              12 (('tire', 'axle', 'vss_count', 'n_gears', 'metric', 'trans_name'))
+             792 BUILD_CONST_KEY_MAP      6
+             794 STORE_FAST               6 (drivetrain)
+
+9337         796 LOAD_GLOBAL             35 (NULL + ExportDialog)
+
+9338         806 LOAD_FAST                0 (self)
+             808 LOAD_FAST                2 (mode_tables)
+             810 LOAD_FAST                0 (self)
+             812 LOAD_ATTR                2 (_last_result)
+             832 LOAD_FAST                6 (drivetrain)
+
+9339         834 LOAD_GLOBAL             37 (NULL + getattr)
+             844 LOAD_FAST                0 (self)
+             846 LOAD_CONST              13 ('_pressure_per_shift')
+             848 BUILD_MAP                0
+             850 CALL                     3
+
+9340         858 LOAD_GLOBAL             37 (NULL + getattr)
+             868 LOAD_FAST                0 (self)
+             870 LOAD_CONST              14 ('_pressure_torque_cols')
+             872 BUILD_LIST               0
+             874 CALL                     3
+
+9341         882 LOAD_GLOBAL             37 (NULL + getattr)
+             892 LOAD_FAST                0 (self)
+             894 LOAD_CONST              15 ('_pressure_mode_intents')
+             896 BUILD_MAP                0
+             898 CALL                     3
+
+9342         906 LOAD_GLOBAL             37 (NULL + getattr)
+             916 LOAD_FAST                0 (self)
+             918 LOAD_CONST              16 ('_tcc_apply_tables')
+             920 BUILD_MAP                0
+             922 CALL                     3
+
+9343         930 LOAD_GLOBAL             37 (NULL + getattr)
+             940 LOAD_FAST                0 (self)
+             942 LOAD_CONST              17 ('_coast_tables')
+             944 BUILD_MAP                0
+             946 CALL                     3
+
+9344         954 LOAD_GLOBAL             37 (NULL + getattr)
+             964 LOAD_FAST                0 (self)
+             966 LOAD_CONST              18 ('_garage_tables')
+             968 BUILD_MAP                0
+             970 CALL                     3
+
+9345         978 LOAD_GLOBAL             38 (TRANS_DB)
+             988 LOAD_FAST                0 (self)
+             990 LOAD_ATTR               30 (trans)
+            1010 LOAD_ATTR               33 (NULL|self + currentText)
+            1030 CALL                     0
+            1038 BINARY_SUBSCR
+            1042 LOAD_ATTR               41 (NULL|self + get)
+            1062 LOAD_CONST              19 ('torque')
+            1064 LOAD_CONST              20 (400)
+            1066 CALL                     2
+
+9346        1074 LOAD_GLOBAL             37 (NULL + getattr)
+            1084 LOAD_FAST                0 (self)
+            1086 LOAD_CONST              21 ('_pressure_4spd')
+            1088 BUILD_MAP                0
+            1090 CALL                     3
+
+9347        1098 LOAD_GLOBAL             37 (NULL + getattr)
+            1108 LOAD_FAST                0 (self)
+            1110 LOAD_CONST              22 ('_shift_time_4spd')
+            1112 BUILD_MAP                0
+            1114 CALL                     3
+
+9348        1122 LOAD_GLOBAL             37 (NULL + getattr)
+            1132 LOAD_FAST                0 (self)
+            1134 LOAD_CONST              23 ('_tcc_duty_4spd')
+            1136 LOAD_CONST               0 (None)
+            1138 CALL                     3
+
+9337        1146 KW_NAMES                24 (('pressure_per_shift', 'pressure_torque_cols', 'pressure_mode_intents', 'tcc_apply_tables', 'coast_tables', 'garage_tables', 'max_tq', 'pressure_4spd', 'shift_time_4spd', 'tcc_duty_4spd'))
+            1148 CALL                    14
+
+9349        1156 LOAD_ATTR               43 (NULL|self + exec)
+            1176 CALL                     0
+            1184 POP_TOP
+            1186 RETURN_CONST             0 (None)
+         >> 1188 SWAP                     2
+            1190 POP_TOP
+
+9322        1192 SWAP                     2
+            1194 STORE_FAST               5 (row)
+            1196 RERAISE                  0
+         >> 1198 SWAP                     2
+            1200 POP_TOP
+
+9323        1202 SWAP                     2
+            1204 STORE_FAST               5 (row)
+            1206 RERAISE                  0
+         >> 1208 SWAP                     2
+            1210 POP_TOP
+
+9324        1212 SWAP                     2
+            1214 STORE_FAST               5 (row)
+            1216 RERAISE                  0
+         >> 1218 SWAP                     2
+            1220 POP_TOP
+
+9325        1222 SWAP                     2
+            1224 STORE_FAST               5 (row)
+            1226 RERAISE                  0
+ExceptionTable:
+  368 to 390 -> 1188 [3]
+  410 to 432 -> 1198 [4]
+  452 to 474 -> 1208 [5]
+  494 to 516 -> 1218 [6]

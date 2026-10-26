@@ -1,0 +1,117 @@
+6606           0 RESUME                   0
+
+6608           2 LOAD_CONST               1 (True)
+               4 LOAD_FAST                0 (self)
+               6 STORE_ATTR               0 (is_4spd)
+
+6609          16 LOAD_FAST                1 (pressure_tbls)
+              18 COPY                     1
+              20 POP_JUMP_IF_TRUE         2 (to 26)
+              22 POP_TOP
+              24 BUILD_MAP                0
+         >>   26 LOAD_FAST                0 (self)
+              28 STORE_ATTR               1 (pressure_4spd)
+
+6610          38 LOAD_FAST                4 (brake_shift_tbls)
+              40 COPY                     1
+              42 POP_JUMP_IF_TRUE         2 (to 48)
+              44 POP_TOP
+              46 BUILD_MAP                0
+         >>   48 LOAD_FAST                0 (self)
+              50 STORE_ATTR               2 (brake_shift_4spd)
+
+6611          60 LOAD_FAST                2 (shift_time_tbls)
+              62 COPY                     1
+              64 POP_JUMP_IF_TRUE         2 (to 70)
+              66 POP_TOP
+              68 BUILD_MAP                0
+         >>   70 LOAD_FAST                0 (self)
+              72 STORE_ATTR               3 (shift_time_4spd)
+
+6612          82 LOAD_FAST                3 (tcc_duty_tbl)
+              84 LOAD_FAST                0 (self)
+              86 STORE_ATTR               4 (tcc_duty_4spd)
+
+6613          96 LOAD_FAST                5 (force_motor_tbl)
+              98 LOAD_FAST                0 (self)
+             100 STORE_ATTR               5 (force_motor_current)
+
+6615         110 BUILD_MAP                0
+             112 LOAD_FAST                0 (self)
+             114 STORE_ATTR               6 (pressure_tables)
+
+6616         124 BUILD_MAP                0
+             126 LOAD_FAST                0 (self)
+             128 STORE_ATTR               7 (tcc_apply_tables)
+
+6617         138 BUILD_MAP                0
+             140 LOAD_FAST                0 (self)
+             142 STORE_ATTR               8 (mode_intents)
+
+6618         152 LOAD_FAST                0 (self)
+             154 LOAD_ATTR               19 (NULL|self + _configure_table_combo)
+             174 CALL                     0
+             182 POP_TOP
+
+6619         184 LOAD_FAST                0 (self)
+             186 LOAD_ATTR               21 (NULL|self + _refresh_mode_combo)
+             206 CALL                     0
+             214 POP_TOP
+
+6620         216 LOAD_FAST                0 (self)
+             218 LOAD_ATTR               23 (NULL|self + _populate_intent_combo)
+             238 CALL                     0
+             246 POP_TOP
+
+6621         248 LOAD_FAST                0 (self)
+             250 LOAD_ATTR                2 (pressure_4spd)
+             270 POP_JUMP_IF_TRUE        48 (to 368)
+             272 LOAD_FAST                0 (self)
+             274 LOAD_ATTR                6 (shift_time_4spd)
+             294 POP_JUMP_IF_TRUE        36 (to 368)
+
+6622         296 LOAD_FAST                0 (self)
+             298 LOAD_ATTR                8 (tcc_duty_4spd)
+             318 POP_JUMP_IF_NOT_NONE    24 (to 368)
+
+6623         320 LOAD_FAST                0 (self)
+             322 LOAD_ATTR                4 (brake_shift_4spd)
+             342 POP_JUMP_IF_TRUE        12 (to 368)
+             344 LOAD_FAST                0 (self)
+             346 LOAD_ATTR               10 (force_motor_current)
+             366 POP_JUMP_IF_FALSE       55 (to 478)
+
+6624     >>  368 LOAD_FAST                0 (self)
+             370 LOAD_ATTR               24 (grid)
+             390 LOAD_ATTR               27 (NULL|self + setVisible)
+             410 LOAD_CONST               1 (True)
+             412 CALL                     1
+             420 POP_TOP
+
+6625         422 LOAD_FAST                0 (self)
+             424 LOAD_ATTR               28 (empty_label)
+             444 LOAD_ATTR               27 (NULL|self + setVisible)
+             464 LOAD_CONST               2 (False)
+             466 CALL                     1
+             474 POP_TOP
+             476 JUMP_FORWARD            54 (to 586)
+
+6627     >>  478 LOAD_FAST                0 (self)
+             480 LOAD_ATTR               24 (grid)
+             500 LOAD_ATTR               27 (NULL|self + setVisible)
+             520 LOAD_CONST               2 (False)
+             522 CALL                     1
+             530 POP_TOP
+
+6628         532 LOAD_FAST                0 (self)
+             534 LOAD_ATTR               28 (empty_label)
+             554 LOAD_ATTR               27 (NULL|self + setVisible)
+             574 LOAD_CONST               1 (True)
+             576 CALL                     1
+             584 POP_TOP
+
+6629     >>  586 LOAD_FAST                0 (self)
+             588 LOAD_ATTR               31 (NULL|self + _refresh)
+             608 CALL                     0
+             616 POP_TOP
+             618 RETURN_CONST             0 (None)

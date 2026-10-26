@@ -1,0 +1,144 @@
+4159           0 RESUME                   0
+
+4162           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                1 (NULL|self + _restore_ui)
+              24 CALL                     0
+              32 POP_TOP
+
+4163          34 LOAD_FAST                1 (log)
+              36 LOAD_FAST                0 (self)
+              38 STORE_ATTR               1 (log)
+
+4165          48 LOAD_FAST                1 (log)
+              50 LOAD_ATTR                4 (is_empty)
+              70 POP_JUMP_IF_FALSE       51 (to 174)
+
+4166          72 LOAD_GLOBAL              7 (NULL + QMessageBox)
+              82 LOAD_ATTR                8 (warning)
+             102 LOAD_FAST                0 (self)
+             104 LOAD_CONST               1 ('Empty Log')
+
+4167         106 LOAD_CONST               2 ('No data rows found. Check that the CSV has at least a header row and one data row.')
+
+4166         108 CALL                     3
+             116 POP_TOP
+
+4169         118 LOAD_FAST                0 (self)
+             120 LOAD_ATTR               10 (file_label)
+             140 LOAD_ATTR               13 (NULL|self + setText)
+             160 LOAD_CONST               3 ('(empty log)')
+             162 CALL                     1
+             170 POP_TOP
+
+4170         172 RETURN_CONST             4 (None)
+
+4172     >>  174 LOAD_FAST                0 (self)
+             176 LOAD_ATTR               10 (file_label)
+             196 LOAD_ATTR               13 (NULL|self + setText)
+
+4173         216 LOAD_FAST                2 (path)
+             218 LOAD_ATTR               15 (NULL|self + split)
+             238 LOAD_CONST               5 ('/')
+             240 CALL                     1
+             248 LOAD_CONST               6 (-1)
+             250 BINARY_SUBSCR
+             254 FORMAT_VALUE             0
+             256 LOAD_CONST               7 (' — ')
+             258 LOAD_FAST                1 (log)
+             260 LOAD_ATTR               16 (n_samples)
+             280 FORMAT_VALUE             0
+             282 LOAD_CONST               8 (' samples, ~')
+
+4174         284 LOAD_FAST                1 (log)
+             286 LOAD_ATTR               18 (sample_rate)
+             306 LOAD_CONST               9 ('.1f')
+             308 FORMAT_VALUE             4 (with format)
+             310 LOAD_CONST              10 (' Hz')
+
+4173         312 BUILD_STRING             6
+
+4172         314 CALL                     1
+             322 POP_TOP
+
+4177         324 LOAD_FAST                1 (log)
+             326 LOAD_ATTR               21 (NULL|self + detected_columns)
+             346 CALL                     0
+             354 STORE_FAST               3 (cols)
+
+4178         356 LOAD_FAST                3 (cols)
+             358 POP_JUMP_IF_FALSE       50 (to 460)
+
+4179         360 LOAD_FAST                0 (self)
+             362 LOAD_ATTR               22 (col_label)
+             382 LOAD_ATTR               13 (NULL|self + setText)
+             402 LOAD_CONST              11 ('\n')
+             404 LOAD_ATTR               25 (NULL|self + join)
+             424 LOAD_CONST              12 (<code object <genexpr> at 0x73ab02a64330, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4179>)
+             426 MAKE_FUNCTION            0
+
+4180         428 LOAD_FAST                3 (cols)
+
+4179         430 GET_ITER
+             432 CALL                     0
+             440 CALL                     1
+             448 CALL                     1
+             456 POP_TOP
+             458 JUMP_FORWARD            27 (to 514)
+
+4183     >>  460 LOAD_FAST                0 (self)
+             462 LOAD_ATTR               22 (col_label)
+             482 LOAD_ATTR               13 (NULL|self + setText)
+             502 LOAD_CONST              13 ('(no recognized columns detected)')
+             504 CALL                     1
+             512 POP_TOP
+
+4186     >>  514 NOP
+
+4187         516 LOAD_FAST                1 (log)
+             518 LOAD_ATTR               27 (NULL|self + analyze)
+             538 LOAD_FAST                0 (self)
+             540 LOAD_ATTR               28 (sim_cfg)
+             560 CALL                     1
+             568 STORE_FAST               4 (analysis)
+
+4188         570 LOAD_FAST                0 (self)
+             572 LOAD_ATTR               31 (NULL|self + _populate_comparison)
+             592 LOAD_FAST                4 (analysis)
+             594 CALL                     1
+             602 POP_TOP
+             604 RETURN_CONST             4 (None)
+         >>  606 PUSH_EXC_INFO
+
+4189         608 LOAD_GLOBAL             32 (Exception)
+             618 CHECK_EXC_MATCH
+             620 POP_JUMP_IF_FALSE       42 (to 706)
+             622 STORE_FAST               5 (e)
+
+4190         624 LOAD_GLOBAL              7 (NULL + QMessageBox)
+             634 LOAD_ATTR                8 (warning)
+             654 LOAD_FAST                0 (self)
+             656 LOAD_CONST              14 ('Analysis Error')
+             658 LOAD_GLOBAL             35 (NULL + str)
+             668 LOAD_FAST                5 (e)
+             670 CALL                     1
+             678 CALL                     3
+             686 POP_TOP
+             688 POP_EXCEPT
+             690 LOAD_CONST               4 (None)
+             692 STORE_FAST               5 (e)
+             694 DELETE_FAST              5 (e)
+             696 RETURN_CONST             4 (None)
+         >>  698 LOAD_CONST               4 (None)
+             700 STORE_FAST               5 (e)
+             702 DELETE_FAST              5 (e)
+             704 RERAISE                  1
+
+4189     >>  706 RERAISE                  0
+         >>  708 COPY                     3
+             710 POP_EXCEPT
+             712 RERAISE                  1
+ExceptionTable:
+  516 to 602 -> 606 [0]
+  606 to 622 -> 708 [1] lasti
+  624 to 686 -> 698 [1] lasti
+  698 to 706 -> 708 [1] lasti

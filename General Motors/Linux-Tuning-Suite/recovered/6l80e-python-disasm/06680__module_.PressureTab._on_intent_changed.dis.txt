@@ -1,0 +1,38 @@
+6680           0 RESUME                   0
+
+6683           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (_suppress_intent_change)
+              24 POP_JUMP_IF_TRUE         2 (to 30)
+              26 LOAD_FAST                1 (new_intent)
+              28 POP_JUMP_IF_TRUE         1 (to 32)
+
+6684     >>   30 RETURN_CONST             1 (None)
+
+6685     >>   32 LOAD_FAST                0 (self)
+              34 LOAD_ATTR                2 (mode_combo)
+              54 LOAD_ATTR                5 (NULL|self + currentText)
+              74 CALL                     0
+              82 STORE_FAST               2 (mode)
+
+6686          84 LOAD_FAST                2 (mode)
+              86 POP_JUMP_IF_FALSE        5 (to 98)
+              88 LOAD_FAST                2 (mode)
+              90 LOAD_CONST               2 ('(single table)')
+              92 COMPARE_OP              40 (==)
+              96 POP_JUMP_IF_FALSE        1 (to 100)
+
+6687     >>   98 RETURN_CONST             1 (None)
+
+6688     >>  100 LOAD_FAST                0 (self)
+             102 LOAD_ATTR                6 (_intent_override_cb)
+             122 POP_JUMP_IF_FALSE       19 (to 162)
+
+6689         124 LOAD_FAST                0 (self)
+             126 LOAD_ATTR                7 (NULL|self + _intent_override_cb)
+             146 LOAD_FAST                2 (mode)
+             148 LOAD_FAST                1 (new_intent)
+             150 CALL                     2
+             158 POP_TOP
+             160 RETURN_CONST             1 (None)
+
+6688     >>  162 RETURN_CONST             1 (None)

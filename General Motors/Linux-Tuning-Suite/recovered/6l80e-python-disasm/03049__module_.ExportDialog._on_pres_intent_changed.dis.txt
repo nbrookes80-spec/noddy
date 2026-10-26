@@ -1,0 +1,177 @@
+3049           0 RESUME                   0
+
+3053           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (_suppress_pres_combo_signals)
+              24 POP_JUMP_IF_TRUE         2 (to 30)
+              26 LOAD_FAST                1 (intent)
+              28 POP_JUMP_IF_TRUE         1 (to 32)
+
+3054     >>   30 RETURN_CONST             1 (None)
+
+3055     >>   32 LOAD_FAST                1 (intent)
+              34 LOAD_CONST               2 ('(single table)')
+              36 COMPARE_OP              40 (==)
+              40 POP_JUMP_IF_FALSE        1 (to 44)
+
+3056          42 RETURN_CONST             1 (None)
+
+3057     >>   44 LOAD_FAST                0 (self)
+              46 LOAD_ATTR                2 (pres_mode_combo)
+              66 LOAD_ATTR                5 (NULL|self + currentText)
+              86 CALL                     0
+              94 STORE_FAST               2 (mode)
+
+3058          96 LOAD_FAST                2 (mode)
+              98 POP_JUMP_IF_TRUE         1 (to 102)
+
+3059         100 RETURN_CONST             1 (None)
+
+3061     >>  102 LOAD_FAST                1 (intent)
+             104 LOAD_FAST                0 (self)
+             106 LOAD_ATTR                6 (pressure_intent_per_mode)
+             126 LOAD_FAST                2 (mode)
+             128 STORE_SUBSCR
+
+3064         132 LOAD_FAST                0 (self)
+             134 LOAD_ATTR                8 (pres_table_combo)
+             154 LOAD_ATTR                5 (NULL|self + currentText)
+             174 CALL                     0
+             182 STORE_FAST               3 (table_type)
+
+3065         184 LOAD_FAST                0 (self)
+             186 LOAD_ATTR               10 (is_4spd)
+             206 POP_JUMP_IF_FALSE       95 (to 398)
+
+3066         208 LOAD_CONST               3 ('Base Shift Pressure')
+             210 LOAD_FAST                3 (table_type)
+             212 CONTAINS_OP              0
+             214 POP_JUMP_IF_FALSE       44 (to 304)
+
+3067         216 LOAD_FAST                1 (intent)
+             218 LOAD_GLOBAL             12 (PRESSURE_INTENTS_4SPD)
+             228 CONTAINS_OP              0
+             230 EXTENDED_ARG             1
+             232 POP_JUMP_IF_FALSE      264 (to 762)
+
+3069         234 LOAD_GLOBAL             14 (PressureEngine)
+             244 LOAD_ATTR               17 (NULL|self + base_shift_pressure_4spd)
+             264 LOAD_FAST                1 (intent)
+             266 CALL                     1
+
+3068         274 LOAD_FAST                0 (self)
+             276 LOAD_ATTR               18 (pressure_4spd)
+             296 LOAD_FAST                2 (mode)
+             298 STORE_SUBSCR
+             302 JUMP_FORWARD           229 (to 762)
+
+3070     >>  304 LOAD_CONST               4 ('Desired Shift Time')
+             306 LOAD_FAST                3 (table_type)
+             308 CONTAINS_OP              0
+             310 POP_JUMP_IF_FALSE      225 (to 762)
+
+3071         312 LOAD_FAST                1 (intent)
+             314 LOAD_GLOBAL             20 (SHIFT_TIME_INTENTS_4SPD)
+             324 CONTAINS_OP              0
+             326 POP_JUMP_IF_FALSE      217 (to 762)
+
+3073         328 LOAD_GLOBAL             22 (ShiftTimeEngine)
+             338 LOAD_ATTR               25 (NULL|self + desired_shift_time_4spd)
+             358 LOAD_FAST                1 (intent)
+             360 CALL                     1
+
+3072         368 LOAD_FAST                0 (self)
+             370 LOAD_ATTR               26 (shift_time_4spd)
+             390 LOAD_FAST                2 (mode)
+             392 STORE_SUBSCR
+             396 JUMP_FORWARD           182 (to 762)
+
+3075     >>  398 LOAD_FAST                0 (self)
+             400 LOAD_ATTR               28 (max_tq)
+             420 STORE_FAST               4 (max_tq)
+
+3076         422 LOAD_GLOBAL             31 (NULL + list)
+             432 LOAD_FAST                0 (self)
+             434 LOAD_ATTR               32 (pressure_per_shift)
+             454 LOAD_ATTR               35 (NULL|self + get)
+
+3077         474 LOAD_FAST                2 (mode)
+             476 LOAD_FAST                0 (self)
+             478 LOAD_ATTR               32 (pressure_per_shift)
+             498 LOAD_ATTR               35 (NULL|self + get)
+             518 LOAD_CONST               5 ('Normal')
+             520 BUILD_MAP                0
+             522 CALL                     2
+
+3076         530 CALL                     2
+             538 CALL                     1
+             546 COPY                     1
+             548 POP_JUMP_IF_TRUE        37 (to 624)
+             550 POP_TOP
+
+3078         552 LOAD_GLOBAL             37 (NULL + get_pattern_shifts)
+             562 LOAD_FAST                0 (self)
+             564 LOAD_ATTR               38 (dt)
+             584 LOAD_ATTR               35 (NULL|self + get)
+             604 LOAD_CONST               6 ('n_gears')
+             606 LOAD_CONST               7 (6)
+             608 CALL                     2
+             616 CALL                     1
+
+3076     >>  624 STORE_FAST               5 (shifts)
+
+3079         626 LOAD_CONST               8 ('Base Shift')
+             628 LOAD_FAST                3 (table_type)
+             630 COMPARE_OP              40 (==)
+             634 POP_JUMP_IF_TRUE         4 (to 644)
+             636 LOAD_CONST               3 ('Base Shift Pressure')
+             638 LOAD_FAST                3 (table_type)
+             640 CONTAINS_OP              0
+             642 POP_JUMP_IF_FALSE       59 (to 762)
+
+3080     >>  644 LOAD_FAST                1 (intent)
+             646 LOAD_GLOBAL             40 (PRESSURE_INTENTS)
+             656 CONTAINS_OP              0
+             658 POP_JUMP_IF_FALSE       51 (to 762)
+
+3083         660 LOAD_FAST                5 (shifts)
+
+3081         662 GET_ITER
+             664 LOAD_FAST_AND_CLEAR      6 (sh)
+             666 SWAP                     2
+             668 BUILD_MAP                0
+             670 SWAP                     2
+         >>  672 FOR_ITER                26 (to 728)
+
+3083         676 STORE_FAST               6 (sh)
+
+3082         678 LOAD_FAST                6 (sh)
+             680 LOAD_GLOBAL             14 (PressureEngine)
+             690 LOAD_ATTR               43 (NULL|self + base_shift_pressure)
+             710 LOAD_FAST                1 (intent)
+             712 LOAD_FAST                4 (max_tq)
+             714 LOAD_FAST                6 (sh)
+             716 CALL                     3
+             724 MAP_ADD                  2
+             726 JUMP_BACKWARD           28 (to 672)
+
+3081     >>  728 END_FOR
+             730 SWAP                     2
+             732 STORE_FAST               6 (sh)
+             734 LOAD_FAST                0 (self)
+             736 LOAD_ATTR               32 (pressure_per_shift)
+             756 LOAD_FAST                2 (mode)
+             758 STORE_SUBSCR
+
+3087     >>  762 LOAD_FAST                0 (self)
+             764 LOAD_ATTR               45 (NULL|self + _refresh_pressure_table)
+             784 CALL                     0
+             792 POP_TOP
+             794 RETURN_CONST             1 (None)
+         >>  796 SWAP                     2
+             798 POP_TOP
+
+3081         800 SWAP                     2
+             802 STORE_FAST               6 (sh)
+             804 RERAISE                  0
+ExceptionTable:
+  668 to 728 -> 796 [2]

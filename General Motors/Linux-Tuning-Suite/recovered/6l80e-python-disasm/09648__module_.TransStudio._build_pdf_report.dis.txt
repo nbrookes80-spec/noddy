@@ -1,0 +1,1300 @@
+               0 MAKE_CELL               37 (PageBreak)
+               2 MAKE_CELL               38 (Paragraph)
+               4 MAKE_CELL               39 (Table)
+               6 MAKE_CELL               40 (TableStyle)
+               8 MAKE_CELL               41 (rl)
+              10 MAKE_CELL               42 (story)
+              12 MAKE_CELL               43 (styles)
+
+9648          14 RESUME                   0
+
+9656          16 LOAD_CONST               1 (0)
+              18 LOAD_CONST               2 (('datetime',))
+              20 IMPORT_NAME              0 (datetime)
+              22 IMPORT_FROM              0 (datetime)
+              24 STORE_FAST               2 (datetime)
+              26 POP_TOP
+
+9657          28 LOAD_CONST               1 (0)
+              30 LOAD_CONST               3 (('letter', 'landscape'))
+              32 IMPORT_NAME              1 (reportlab.lib.pagesizes)
+              34 IMPORT_FROM              2 (letter)
+              36 STORE_FAST               3 (letter)
+              38 IMPORT_FROM              3 (landscape)
+              40 STORE_FAST               4 (landscape)
+              42 POP_TOP
+
+9658          44 LOAD_CONST               1 (0)
+              46 LOAD_CONST               4 (('colors',))
+              48 IMPORT_NAME              4 (reportlab.lib)
+              50 IMPORT_FROM              5 (colors)
+              52 STORE_DEREF             41 (rl)
+              54 POP_TOP
+
+9659          56 LOAD_CONST               1 (0)
+              58 LOAD_CONST               5 (('getSampleStyleSheet', 'ParagraphStyle'))
+              60 IMPORT_NAME              6 (reportlab.lib.styles)
+              62 IMPORT_FROM              7 (getSampleStyleSheet)
+              64 STORE_FAST               5 (getSampleStyleSheet)
+              66 IMPORT_FROM              8 (ParagraphStyle)
+              68 STORE_FAST               6 (ParagraphStyle)
+              70 POP_TOP
+
+9660          72 LOAD_CONST               1 (0)
+              74 LOAD_CONST               6 (('inch',))
+              76 IMPORT_NAME              9 (reportlab.lib.units)
+              78 IMPORT_FROM             10 (inch)
+              80 STORE_FAST               7 (inch)
+              82 POP_TOP
+
+9661          84 LOAD_CONST               1 (0)
+              86 LOAD_CONST               7 (('SimpleDocTemplate', 'Paragraph', 'Spacer', 'Table', 'TableStyle', 'PageBreak'))
+              88 IMPORT_NAME             11 (reportlab.platypus)
+              90 IMPORT_FROM             12 (SimpleDocTemplate)
+              92 STORE_FAST               8 (SimpleDocTemplate)
+              94 IMPORT_FROM             13 (Paragraph)
+              96 STORE_DEREF             38 (Paragraph)
+              98 IMPORT_FROM             14 (Spacer)
+             100 STORE_FAST               9 (Spacer)
+             102 IMPORT_FROM             15 (Table)
+             104 STORE_DEREF             39 (Table)
+             106 IMPORT_FROM             16 (TableStyle)
+             108 STORE_DEREF             40 (TableStyle)
+             110 IMPORT_FROM             17 (PageBreak)
+             112 STORE_DEREF             37 (PageBreak)
+             114 POP_TOP
+
+9663         116 LOAD_CONST               1 (0)
+             118 LOAD_CONST               8 (('TA_LEFT', 'TA_CENTER'))
+             120 IMPORT_NAME             18 (reportlab.lib.enums)
+             122 IMPORT_FROM             19 (TA_LEFT)
+             124 STORE_FAST              10 (TA_LEFT)
+             126 IMPORT_FROM             20 (TA_CENTER)
+             128 STORE_FAST              11 (TA_CENTER)
+             130 POP_TOP
+
+9665         132 LOAD_FAST                0 (self)
+             134 LOAD_ATTR               42 (_last_cfg)
+             154 STORE_FAST              12 (cfg)
+
+9666         156 LOAD_FAST                0 (self)
+             158 LOAD_ATTR               44 (_last_result)
+             178 STORE_FAST              13 (res)
+
+9667         180 LOAD_GLOBAL             47 (NULL + getattr)
+             190 LOAD_FAST                0 (self)
+             192 LOAD_CONST               9 ('profile_metadata')
+             194 BUILD_MAP                0
+             196 CALL                     3
+             204 COPY                     1
+             206 POP_JUMP_IF_TRUE         2 (to 212)
+             208 POP_TOP
+             210 BUILD_MAP                0
+         >>  212 STORE_FAST              14 (meta)
+
+9668         214 LOAD_FAST               13 (res)
+             216 LOAD_CONST              10 ('n_gears')
+             218 BINARY_SUBSCR
+             222 STORE_FAST              15 (n)
+
+9669         224 LOAD_FAST               15 (n)
+             226 LOAD_CONST              11 (1)
+             228 BINARY_OP               10 (-)
+             232 STORE_FAST              16 (n_shifts)
+
+9672         234 PUSH_NULL
+             236 LOAD_FAST                8 (SimpleDocTemplate)
+             238 LOAD_FAST                1 (path)
+             240 PUSH_NULL
+             242 LOAD_FAST                4 (landscape)
+             244 LOAD_FAST                3 (letter)
+             246 CALL                     1
+
+9673         254 LOAD_CONST              12 (0.4)
+             256 LOAD_FAST                7 (inch)
+             258 BINARY_OP                5 (*)
+             262 LOAD_CONST              12 (0.4)
+             264 LOAD_FAST                7 (inch)
+             266 BINARY_OP                5 (*)
+
+9674         270 LOAD_CONST              12 (0.4)
+             272 LOAD_FAST                7 (inch)
+             274 BINARY_OP                5 (*)
+             278 LOAD_CONST              12 (0.4)
+             280 LOAD_FAST                7 (inch)
+             282 BINARY_OP                5 (*)
+
+9672         286 KW_NAMES                13 (('pagesize', 'leftMargin', 'rightMargin', 'topMargin', 'bottomMargin'))
+             288 CALL                     6
+             296 STORE_FAST              17 (doc)
+
+9675         298 BUILD_LIST               0
+             300 STORE_DEREF             42 (story)
+
+9676         302 PUSH_NULL
+             304 LOAD_FAST                5 (getSampleStyleSheet)
+             306 CALL                     0
+             314 STORE_DEREF             43 (styles)
+
+9677         316 LOAD_DEREF              43 (styles)
+             318 LOAD_ATTR               49 (NULL|self + add)
+             338 PUSH_NULL
+             340 LOAD_FAST                6 (ParagraphStyle)
+             342 LOAD_CONST              14 ('Title2')
+             344 LOAD_DEREF              43 (styles)
+             346 LOAD_CONST              15 ('Title')
+             348 BINARY_SUBSCR
+
+9678         352 LOAD_CONST              16 (22)
+             354 LOAD_CONST              17 (8)
+             356 LOAD_FAST               10 (TA_LEFT)
+
+9677         358 KW_NAMES                18 (('parent', 'fontSize', 'spaceAfter', 'alignment'))
+             360 CALL                     5
+             368 CALL                     1
+             376 POP_TOP
+
+9679         378 LOAD_DEREF              43 (styles)
+             380 LOAD_ATTR               49 (NULL|self + add)
+             400 PUSH_NULL
+             402 LOAD_FAST                6 (ParagraphStyle)
+             404 LOAD_CONST              19 ('H2')
+             406 LOAD_DEREF              43 (styles)
+             408 LOAD_CONST              20 ('Heading2')
+             410 BINARY_SUBSCR
+
+9680         414 LOAD_CONST              21 (14)
+             416 LOAD_CONST              22 (12)
+             418 LOAD_CONST              23 (6)
+
+9679         420 KW_NAMES                24 (('parent', 'fontSize', 'spaceBefore', 'spaceAfter'))
+             422 CALL                     5
+             430 CALL                     1
+             438 POP_TOP
+
+9681         440 LOAD_DEREF              43 (styles)
+             442 LOAD_ATTR               49 (NULL|self + add)
+             462 PUSH_NULL
+             464 LOAD_FAST                6 (ParagraphStyle)
+             466 LOAD_CONST              25 ('Mono')
+             468 LOAD_DEREF              43 (styles)
+             470 LOAD_CONST              26 ('BodyText')
+             472 BINARY_SUBSCR
+
+9682         476 LOAD_CONST              27 ('Courier')
+             478 LOAD_CONST              17 (8)
+
+9681         480 KW_NAMES                28 (('parent', 'fontName', 'fontSize'))
+             482 CALL                     4
+             490 CALL                     1
+             498 POP_TOP
+
+9685         500 LOAD_CONST              29 ('Transmission Calibration Tune Sheet')
+             502 STORE_FAST              18 (title)
+
+9686         504 LOAD_FAST               14 (meta)
+             506 LOAD_ATTR               51 (NULL|self + get)
+             526 LOAD_CONST              30 ('vehicle_name')
+             528 CALL                     1
+             536 POP_JUMP_IF_FALSE        8 (to 554)
+
+9687         538 LOAD_FAST               14 (meta)
+             540 LOAD_CONST              30 ('vehicle_name')
+             542 BINARY_SUBSCR
+             546 LOAD_CONST              31 (' — Tune Sheet')
+             548 BINARY_OP                0 (+)
+             552 STORE_FAST              18 (title)
+
+9688     >>  554 LOAD_DEREF              42 (story)
+             556 LOAD_ATTR               53 (NULL|self + append)
+             576 PUSH_NULL
+             578 LOAD_DEREF              38 (Paragraph)
+             580 LOAD_FAST               18 (title)
+             582 LOAD_DEREF              43 (styles)
+             584 LOAD_CONST              14 ('Title2')
+             586 BINARY_SUBSCR
+             590 CALL                     2
+             598 CALL                     1
+             606 POP_TOP
+
+9692         608 LOAD_CONST              32 ('Trans:')
+             610 LOAD_FAST                0 (self)
+             612 LOAD_ATTR               54 (trans)
+             632 LOAD_ATTR               57 (NULL|self + currentText)
+             652 CALL                     0
+             660 BUILD_LIST               2
+
+9693         662 LOAD_CONST              33 ('Tuner:')
+             664 LOAD_FAST               14 (meta)
+             666 LOAD_ATTR               51 (NULL|self + get)
+             686 LOAD_CONST              34 ('tuner_name')
+             688 LOAD_CONST              35 ('—')
+             690 CALL                     2
+             698 BUILD_LIST               2
+
+9694         700 LOAD_CONST              36 ('Customer:')
+             702 LOAD_FAST               14 (meta)
+             704 LOAD_ATTR               51 (NULL|self + get)
+             724 LOAD_CONST              37 ('customer')
+             726 LOAD_CONST              35 ('—')
+             728 CALL                     2
+             736 BUILD_LIST               2
+
+9695         738 LOAD_CONST              38 ('Vehicle:')
+             740 LOAD_FAST               14 (meta)
+             742 LOAD_ATTR               51 (NULL|self + get)
+             762 LOAD_CONST              30 ('vehicle_name')
+             764 LOAD_CONST              35 ('—')
+             766 CALL                     2
+             774 BUILD_LIST               2
+
+9696         776 LOAD_CONST              39 ('Build Date:')
+             778 LOAD_FAST               14 (meta)
+             780 LOAD_ATTR               51 (NULL|self + get)
+             800 LOAD_CONST              40 ('build_date')
+
+9697         802 LOAD_FAST                2 (datetime)
+             804 LOAD_ATTR               59 (NULL|self + now)
+             824 CALL                     0
+             832 LOAD_ATTR               61 (NULL|self + strftime)
+             852 LOAD_CONST              41 ('%Y-%m-%d')
+             854 CALL                     1
+
+9696         862 CALL                     2
+             870 BUILD_LIST               2
+
+9698         872 LOAD_CONST              42 ('Generated:')
+             874 LOAD_FAST                2 (datetime)
+             876 LOAD_ATTR               59 (NULL|self + now)
+             896 CALL                     0
+             904 LOAD_ATTR               61 (NULL|self + strftime)
+             924 LOAD_CONST              43 ('%Y-%m-%d %H:%M')
+             926 CALL                     1
+             934 BUILD_LIST               2
+
+9691         936 BUILD_LIST               6
+             938 STORE_FAST              19 (meta_rows)
+
+9700         940 PUSH_NULL
+             942 LOAD_DEREF              39 (Table)
+             944 LOAD_FAST               19 (meta_rows)
+             946 LOAD_CONST              44 (1.5)
+             948 LOAD_FAST                7 (inch)
+             950 BINARY_OP                5 (*)
+             954 LOAD_CONST              45 (4)
+             956 LOAD_FAST                7 (inch)
+             958 BINARY_OP                5 (*)
+             962 BUILD_LIST               2
+             964 KW_NAMES                46 (('colWidths',))
+             966 CALL                     2
+             974 STORE_FAST              20 (t)
+
+9701         976 LOAD_FAST               20 (t)
+             978 LOAD_ATTR               63 (NULL|self + setStyle)
+             998 PUSH_NULL
+            1000 LOAD_DEREF              40 (TableStyle)
+            1002 BUILD_LIST               0
+            1004 LOAD_CONST              47 ((('FONTSIZE', (0, 0), (-1, -1), 9), ('FONT', (0, 0), (0, -1), 'Helvetica-Bold'), ('ALIGN', (0, 0), (-1, -1), 'LEFT'), ('VALIGN', (0, 0), (-1, -1), 'TOP'), ('BOTTOMPADDING', (0, 0), (-1, -1), 2)))
+            1006 LIST_EXTEND              1
+            1008 CALL                     1
+            1016 CALL                     1
+            1024 POP_TOP
+
+9708        1026 LOAD_DEREF              42 (story)
+            1028 LOAD_ATTR               53 (NULL|self + append)
+            1048 LOAD_FAST               20 (t)
+            1050 CALL                     1
+            1058 POP_TOP
+
+9709        1060 LOAD_DEREF              42 (story)
+            1062 LOAD_ATTR               53 (NULL|self + append)
+            1082 PUSH_NULL
+            1084 LOAD_FAST                9 (Spacer)
+            1086 LOAD_CONST              11 (1)
+            1088 LOAD_CONST              22 (12)
+            1090 CALL                     2
+            1098 CALL                     1
+            1106 POP_TOP
+
+9712        1108 LOAD_DEREF              42 (story)
+            1110 LOAD_ATTR               53 (NULL|self + append)
+            1130 PUSH_NULL
+            1132 LOAD_DEREF              38 (Paragraph)
+            1134 LOAD_CONST              48 ('Configuration')
+            1136 LOAD_DEREF              43 (styles)
+            1138 LOAD_CONST              19 ('H2')
+            1140 BINARY_SUBSCR
+            1144 CALL                     2
+            1152 CALL                     1
+            1160 POP_TOP
+
+9714        1162 LOAD_CONST              49 ('Drivetrain')
+
+9715        1164 LOAD_FAST               12 (cfg)
+            1166 LOAD_CONST              50 ('tire_dia')
+            1168 BINARY_SUBSCR
+            1172 LOAD_CONST              51 ('.1f')
+            1174 FORMAT_VALUE             4 (with format)
+            1176 LOAD_CONST              52 ('″ tire × ')
+            1178 LOAD_FAST               12 (cfg)
+            1180 LOAD_CONST              53 ('axle')
+            1182 BINARY_SUBSCR
+            1186 LOAD_CONST              54 ('.2f')
+            1188 FORMAT_VALUE             4 (with format)
+            1190 LOAD_CONST              55 (' axle × ')
+
+9716        1192 LOAD_FAST               12 (cfg)
+            1194 LOAD_CONST              56 ('chain')
+            1196 BINARY_SUBSCR
+            1200 LOAD_CONST              54 ('.2f')
+            1202 FORMAT_VALUE             4 (with format)
+            1204 LOAD_CONST              57 (' t-case')
+
+9715        1206 BUILD_STRING             6
+
+9714        1208 BUILD_LIST               2
+
+9717        1210 LOAD_CONST              58 ('Weight / RWHP')
+            1212 LOAD_FAST               12 (cfg)
+            1214 LOAD_CONST              59 ('weight')
+            1216 BINARY_SUBSCR
+            1220 LOAD_CONST              60 ('.0f')
+            1222 FORMAT_VALUE             4 (with format)
+            1224 LOAD_CONST              61 (' lb / ')
+            1226 LOAD_FAST               12 (cfg)
+            1228 LOAD_CONST              62 ('rwhp')
+            1230 BINARY_SUBSCR
+            1234 LOAD_CONST              60 ('.0f')
+            1236 FORMAT_VALUE             4 (with format)
+            1238 LOAD_CONST              63 (' HP')
+            1240 BUILD_STRING             4
+            1242 BUILD_LIST               2
+
+9718        1244 LOAD_CONST              64 ('RPM')
+
+9719        1246 LOAD_CONST              65 ('Idle ')
+            1248 LOAD_FAST               12 (cfg)
+            1250 LOAD_CONST              66 ('idle_rpm')
+            1252 BINARY_SUBSCR
+            1256 LOAD_CONST              60 ('.0f')
+            1258 FORMAT_VALUE             4 (with format)
+            1260 LOAD_CONST              67 (' | Stall ')
+
+9720        1262 LOAD_FAST               12 (cfg)
+            1264 LOAD_CONST              68 ('stall_rpm')
+            1266 BINARY_SUBSCR
+            1270 LOAD_CONST              60 ('.0f')
+            1272 FORMAT_VALUE             4 (with format)
+            1274 LOAD_CONST              69 (' | Shift ')
+
+9721        1276 LOAD_FAST               12 (cfg)
+            1278 LOAD_CONST              70 ('shift_rpm')
+            1280 BINARY_SUBSCR
+            1284 LOAD_CONST              60 ('.0f')
+            1286 FORMAT_VALUE             4 (with format)
+            1288 LOAD_CONST              71 (' | Down ')
+
+9722        1290 LOAD_FAST               12 (cfg)
+            1292 LOAD_CONST              72 ('downshift_rpm')
+            1294 BINARY_SUBSCR
+            1298 LOAD_CONST              60 ('.0f')
+            1300 FORMAT_VALUE             4 (with format)
+            1302 LOAD_CONST              73 (' | Min TCC ')
+
+9723        1304 LOAD_FAST               12 (cfg)
+            1306 LOAD_CONST              74 ('min_tcc_rpm')
+            1308 BINARY_SUBSCR
+            1312 LOAD_CONST              60 ('.0f')
+            1314 FORMAT_VALUE             4 (with format)
+
+9719        1316 BUILD_STRING            10
+
+9718        1318 BUILD_LIST               2
+
+9724        1320 LOAD_CONST              75 ('TPS Curve')
+
+9725        1322 LOAD_CONST              76 ('Offset ')
+            1324 LOAD_FAST               12 (cfg)
+            1326 LOAD_CONST              77 ('tps_offset')
+            1328 BINARY_SUBSCR
+            1332 LOAD_CONST              51 ('.1f')
+            1334 FORMAT_VALUE             4 (with format)
+            1336 LOAD_CONST              78 (' | Factor ')
+
+9726        1338 LOAD_FAST               12 (cfg)
+            1340 LOAD_CONST              79 ('tps_factor')
+            1342 BINARY_SUBSCR
+            1346 LOAD_CONST              54 ('.2f')
+            1348 FORMAT_VALUE             4 (with format)
+            1350 LOAD_CONST              80 (' | Up Firm ')
+
+9727        1352 LOAD_FAST               12 (cfg)
+            1354 LOAD_CONST              81 ('up_firmness')
+            1356 BINARY_SUBSCR
+            1360 LOAD_CONST              51 ('.1f')
+            1362 FORMAT_VALUE             4 (with format)
+            1364 LOAD_CONST              82 (' | Down Firm ')
+
+9728        1366 LOAD_FAST               12 (cfg)
+            1368 LOAD_CONST              83 ('down_firmness')
+            1370 BINARY_SUBSCR
+            1374 LOAD_CONST              51 ('.1f')
+            1376 FORMAT_VALUE             4 (with format)
+
+9725        1378 BUILD_STRING             8
+
+9724        1380 BUILD_LIST               2
+
+9729        1382 LOAD_CONST              84 ('Spreads (MPH)')
+
+9730        1384 LOAD_CONST              85 ('Up>Dn ')
+            1386 LOAD_FAST               12 (cfg)
+            1388 LOAD_CONST              86 ('spread_up')
+            1390 BINARY_SUBSCR
+            1394 LOAD_CONST              51 ('.1f')
+            1396 FORMAT_VALUE             4 (with format)
+            1398 LOAD_CONST              87 (' | Lock>Unlk ')
+
+9731        1400 LOAD_FAST               12 (cfg)
+            1402 LOAD_CONST              88 ('spread_lock')
+            1404 BINARY_SUBSCR
+            1408 LOAD_CONST              51 ('.1f')
+            1410 FORMAT_VALUE             4 (with format)
+            1412 LOAD_CONST              89 (' | Up>Lk ')
+
+9732        1414 LOAD_FAST               12 (cfg)
+            1416 LOAD_CONST              90 ('spread_lock_up')
+            1418 BINARY_SUBSCR
+            1422 LOAD_CONST              51 ('.1f')
+            1424 FORMAT_VALUE             4 (with format)
+            1426 LOAD_CONST              91 (' | Unlk>Dn ')
+
+9733        1428 LOAD_FAST               12 (cfg)
+            1430 LOAD_CONST              92 ('spread_unlock_dn')
+            1432 BINARY_SUBSCR
+            1436 LOAD_CONST              51 ('.1f')
+            1438 FORMAT_VALUE             4 (with format)
+
+9730        1440 BUILD_STRING             8
+
+9729        1442 BUILD_LIST               2
+
+9734        1444 LOAD_CONST              93 ('WOT Lead')
+
+9735        1446 LOAD_FAST               12 (cfg)
+            1448 LOAD_CONST              94 ('lead_mode')
+            1450 BINARY_SUBSCR
+            1454 LOAD_ATTR               65 (NULL|self + upper)
+            1474 CALL                     0
+            1482 FORMAT_VALUE             0
+            1484 LOAD_CONST              95 (' mode, value ')
+            1486 LOAD_FAST               12 (cfg)
+            1488 LOAD_CONST              96 ('lead_value')
+            1490 BINARY_SUBSCR
+            1494 LOAD_CONST              54 ('.2f')
+            1496 FORMAT_VALUE             4 (with format)
+            1498 LOAD_CONST              97 (', down time ')
+
+9736        1500 LOAD_FAST               12 (cfg)
+            1502 LOAD_CONST              98 ('down_time')
+            1504 BINARY_SUBSCR
+            1508 LOAD_CONST              54 ('.2f')
+            1510 FORMAT_VALUE             4 (with format)
+            1512 LOAD_CONST              99 ('s')
+
+9735        1514 BUILD_STRING             6
+
+9734        1516 BUILD_LIST               2
+
+9737        1518 LOAD_CONST             100 ('TCC Gates')
+
+9738        1520 LOAD_CONST             101 ('Min gear ')
+            1522 LOAD_FAST               12 (cfg)
+            1524 LOAD_CONST             102 ('min_tcc_gear')
+            1526 BINARY_SUBSCR
+            1530 FORMAT_VALUE             0
+            1532 LOAD_CONST             103 (' | Accel gear ')
+
+9739        1534 LOAD_FAST               12 (cfg)
+            1536 LOAD_CONST             104 ('accel_lock_gear')
+            1538 BINARY_SUBSCR
+            1542 FORMAT_VALUE             0
+            1544 LOAD_CONST             105 (' | WOT gear ')
+
+9740        1546 LOAD_FAST               12 (cfg)
+            1548 LOAD_CONST             106 ('wot_lock_gear')
+            1550 BINARY_SUBSCR
+            1554 FORMAT_VALUE             0
+
+9738        1556 BUILD_STRING             6
+
+9737        1558 BUILD_LIST               2
+
+9713        1560 BUILD_LIST               7
+            1562 STORE_FAST              21 (cfg_rows)
+
+9742        1564 LOAD_FAST               14 (meta)
+            1566 LOAD_ATTR               51 (NULL|self + get)
+            1586 LOAD_CONST             107 ('notes')
+            1588 CALL                     1
+            1596 POP_JUMP_IF_FALSE       22 (to 1642)
+
+9743        1598 LOAD_FAST               21 (cfg_rows)
+            1600 LOAD_ATTR               53 (NULL|self + append)
+            1620 LOAD_CONST             108 ('Notes')
+            1622 LOAD_FAST               14 (meta)
+            1624 LOAD_CONST             107 ('notes')
+            1626 BINARY_SUBSCR
+            1630 BUILD_LIST               2
+            1632 CALL                     1
+            1640 POP_TOP
+
+9744     >> 1642 PUSH_NULL
+            1644 LOAD_DEREF              39 (Table)
+            1646 LOAD_FAST               21 (cfg_rows)
+            1648 LOAD_CONST             109 (1.3)
+            1650 LOAD_FAST                7 (inch)
+            1652 BINARY_OP                5 (*)
+            1656 LOAD_CONST             110 (9)
+            1658 LOAD_FAST                7 (inch)
+            1660 BINARY_OP                5 (*)
+            1664 BUILD_LIST               2
+            1666 KW_NAMES                46 (('colWidths',))
+            1668 CALL                     2
+            1676 STORE_FAST              22 (ct)
+
+9745        1678 LOAD_FAST               22 (ct)
+            1680 LOAD_ATTR               63 (NULL|self + setStyle)
+            1700 PUSH_NULL
+            1702 LOAD_DEREF              40 (TableStyle)
+
+9746        1704 LOAD_CONST             111 (('FONTSIZE', (0, 0), (-1, -1), 8))
+
+9747        1706 LOAD_CONST             112 (('FONT', (0, 0), (0, -1), 'Helvetica-Bold'))
+
+9748        1708 LOAD_CONST             113 ('BACKGROUND')
+            1710 LOAD_CONST             114 ((0, 0))
+            1712 LOAD_CONST             115 ((0, -1))
+            1714 LOAD_DEREF              41 (rl)
+            1716 LOAD_ATTR               67 (NULL|self + HexColor)
+            1736 LOAD_CONST             116 ('#e8e8e8')
+            1738 CALL                     1
+            1746 BUILD_TUPLE              4
+
+9749        1748 LOAD_CONST             117 (('VALIGN', (0, 0), (-1, -1), 'TOP'))
+
+9750        1750 LOAD_CONST             118 (('BOTTOMPADDING', (0, 0), (-1, -1), 3))
+
+9751        1752 LOAD_CONST             119 (('TOPPADDING', (0, 0), (-1, -1), 3))
+
+9752        1754 LOAD_CONST             120 ('INNERGRID')
+            1756 LOAD_CONST             114 ((0, 0))
+            1758 LOAD_CONST             121 ((-1, -1))
+            1760 LOAD_CONST             122 (0.5)
+            1762 LOAD_DEREF              41 (rl)
+            1764 LOAD_ATTR               68 (grey)
+            1784 BUILD_TUPLE              5
+
+9753        1786 LOAD_CONST             123 ('BOX')
+            1788 LOAD_CONST             114 ((0, 0))
+            1790 LOAD_CONST             121 ((-1, -1))
+            1792 LOAD_CONST             122 (0.5)
+            1794 LOAD_DEREF              41 (rl)
+            1796 LOAD_ATTR               68 (grey)
+            1816 BUILD_TUPLE              5
+
+9745        1818 BUILD_LIST               8
+            1820 CALL                     1
+            1828 CALL                     1
+            1836 POP_TOP
+
+9755        1838 LOAD_DEREF              42 (story)
+            1840 LOAD_ATTR               53 (NULL|self + append)
+            1860 LOAD_FAST               22 (ct)
+            1862 CALL                     1
+            1870 POP_TOP
+
+9758        1872 LOAD_CONST             177 ((False,))
+            1874 LOAD_CLOSURE            37 (PageBreak)
+            1876 LOAD_CLOSURE            38 (Paragraph)
+            1878 LOAD_CLOSURE            39 (Table)
+            1880 LOAD_CLOSURE            40 (TableStyle)
+            1882 LOAD_CLOSURE            41 (rl)
+            1884 LOAD_CLOSURE            42 (story)
+            1886 LOAD_CLOSURE            43 (styles)
+            1888 BUILD_TUPLE              7
+            1890 LOAD_CONST             124 (<code object shift_table at 0x30c7abc0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 9758>)
+            1892 MAKE_FUNCTION            9 (defaults, closure)
+            1894 STORE_FAST              23 (shift_table)
+
+9791        1896 PUSH_NULL
+            1898 LOAD_FAST               23 (shift_table)
+            1900 LOAD_CONST             125 ('Upshift (MPH)')
+            1902 LOAD_FAST               13 (res)
+            1904 LOAD_CONST             126 ('upshift')
+            1906 BINARY_SUBSCR
+
+9792        1910 LOAD_GLOBAL             71 (NULL + range)
+            1920 LOAD_FAST               16 (n_shifts)
+            1922 CALL                     1
+            1930 GET_ITER
+            1932 LOAD_FAST_AND_CLEAR     24 (i)
+            1934 SWAP                     2
+            1936 BUILD_LIST               0
+            1938 SWAP                     2
+         >> 1940 FOR_ITER                15 (to 1974)
+            1944 STORE_FAST              24 (i)
+            1946 LOAD_FAST               24 (i)
+            1948 LOAD_CONST              11 (1)
+            1950 BINARY_OP                0 (+)
+            1954 FORMAT_VALUE             0
+            1956 LOAD_CONST             127 ('→')
+            1958 LOAD_FAST               24 (i)
+            1960 LOAD_CONST             128 (2)
+            1962 BINARY_OP                0 (+)
+            1966 FORMAT_VALUE             0
+            1968 BUILD_STRING             3
+            1970 LIST_APPEND              2
+            1972 JUMP_BACKWARD           17 (to 1940)
+         >> 1974 END_FOR
+            1976 SWAP                     2
+            1978 STORE_FAST              24 (i)
+
+9791        1980 CALL                     3
+            1988 POP_TOP
+
+9793        1990 PUSH_NULL
+            1992 LOAD_FAST               23 (shift_table)
+            1994 LOAD_CONST             129 ('Downshift (MPH)')
+            1996 LOAD_FAST               13 (res)
+            1998 LOAD_CONST             130 ('downshift')
+            2000 BINARY_SUBSCR
+
+9794        2004 LOAD_GLOBAL             71 (NULL + range)
+            2014 LOAD_FAST               16 (n_shifts)
+            2016 CALL                     1
+            2024 GET_ITER
+            2026 LOAD_FAST_AND_CLEAR     24 (i)
+            2028 SWAP                     2
+            2030 BUILD_LIST               0
+            2032 SWAP                     2
+         >> 2034 FOR_ITER                15 (to 2068)
+            2038 STORE_FAST              24 (i)
+            2040 LOAD_FAST               24 (i)
+            2042 LOAD_CONST             128 (2)
+            2044 BINARY_OP                0 (+)
+            2048 FORMAT_VALUE             0
+            2050 LOAD_CONST             127 ('→')
+            2052 LOAD_FAST               24 (i)
+            2054 LOAD_CONST              11 (1)
+            2056 BINARY_OP                0 (+)
+            2060 FORMAT_VALUE             0
+            2062 BUILD_STRING             3
+            2064 LIST_APPEND              2
+            2066 JUMP_BACKWARD           17 (to 2034)
+         >> 2068 END_FOR
+            2070 SWAP                     2
+            2072 STORE_FAST              24 (i)
+
+9793        2074 CALL                     3
+            2082 POP_TOP
+
+9795        2084 PUSH_NULL
+            2086 LOAD_FAST               23 (shift_table)
+            2088 LOAD_CONST             131 ('TCC Lock (MPH)')
+            2090 LOAD_FAST               13 (res)
+            2092 LOAD_CONST             132 ('tcc_lock')
+            2094 BINARY_SUBSCR
+
+9796        2098 LOAD_GLOBAL             71 (NULL + range)
+            2108 LOAD_FAST               15 (n)
+            2110 CALL                     1
+            2118 GET_ITER
+            2120 LOAD_FAST_AND_CLEAR     24 (i)
+            2122 SWAP                     2
+            2124 BUILD_LIST               0
+            2126 SWAP                     2
+         >> 2128 FOR_ITER                10 (to 2152)
+            2132 STORE_FAST              24 (i)
+            2134 LOAD_CONST             133 ('Gear ')
+            2136 LOAD_FAST               24 (i)
+            2138 LOAD_CONST              11 (1)
+            2140 BINARY_OP                0 (+)
+            2144 FORMAT_VALUE             0
+            2146 BUILD_STRING             2
+            2148 LIST_APPEND              2
+            2150 JUMP_BACKWARD           12 (to 2128)
+         >> 2152 END_FOR
+            2154 SWAP                     2
+            2156 STORE_FAST              24 (i)
+            2158 LOAD_CONST             134 (True)
+
+9795        2160 KW_NAMES               135 (('is_tcc',))
+            2162 CALL                     4
+            2170 POP_TOP
+
+9797        2172 PUSH_NULL
+            2174 LOAD_FAST               23 (shift_table)
+            2176 LOAD_CONST             136 ('TCC Unlock (MPH)')
+            2178 LOAD_FAST               13 (res)
+            2180 LOAD_CONST             137 ('tcc_unlock')
+            2182 BINARY_SUBSCR
+
+9798        2186 LOAD_GLOBAL             71 (NULL + range)
+            2196 LOAD_FAST               15 (n)
+            2198 CALL                     1
+            2206 GET_ITER
+            2208 LOAD_FAST_AND_CLEAR     24 (i)
+            2210 SWAP                     2
+            2212 BUILD_LIST               0
+            2214 SWAP                     2
+         >> 2216 FOR_ITER                10 (to 2240)
+            2220 STORE_FAST              24 (i)
+            2222 LOAD_CONST             133 ('Gear ')
+            2224 LOAD_FAST               24 (i)
+            2226 LOAD_CONST              11 (1)
+            2228 BINARY_OP                0 (+)
+            2232 FORMAT_VALUE             0
+            2234 BUILD_STRING             2
+            2236 LIST_APPEND              2
+            2238 JUMP_BACKWARD           12 (to 2216)
+         >> 2240 END_FOR
+            2242 SWAP                     2
+            2244 STORE_FAST              24 (i)
+            2246 LOAD_CONST             134 (True)
+
+9797        2248 KW_NAMES               135 (('is_tcc',))
+            2250 CALL                     4
+            2258 POP_TOP
+
+9801        2260 LOAD_DEREF              42 (story)
+            2262 LOAD_ATTR               53 (NULL|self + append)
+            2282 PUSH_NULL
+            2284 LOAD_DEREF              37 (PageBreak)
+            2286 CALL                     0
+            2294 CALL                     1
+            2302 POP_TOP
+
+9802        2304 LOAD_DEREF              42 (story)
+            2306 LOAD_ATTR               53 (NULL|self + append)
+            2326 PUSH_NULL
+            2328 LOAD_DEREF              38 (Paragraph)
+            2330 LOAD_CONST             138 ('WOT Summary')
+            2332 LOAD_DEREF              43 (styles)
+            2334 LOAD_CONST              19 ('H2')
+            2336 BINARY_SUBSCR
+            2340 CALL                     2
+            2348 CALL                     1
+            2356 POP_TOP
+
+9803        2358 BUILD_LIST               0
+            2360 LOAD_CONST             139 (('Gear', 'Min MPH', 'Redline MPH', 'WOT MPH (slip)', 'Upshift @ WOT', 'Downshift @ WOT', 'Shift RPM'))
+            2362 LIST_EXTEND              1
+            2364 BUILD_LIST               1
+            2366 STORE_FAST              25 (sum_rows)
+
+9805        2368 LOAD_FAST               13 (res)
+            2370 LOAD_ATTR               51 (NULL|self + get)
+            2390 LOAD_CONST             140 ('rpm_targets')
+            2392 BUILD_LIST               0
+            2394 CALL                     2
+            2402 STORE_FAST              26 (rpm_targets)
+
+9806        2404 LOAD_GLOBAL             71 (NULL + range)
+            2414 LOAD_FAST               15 (n)
+            2416 CALL                     1
+            2424 GET_ITER
+         >> 2426 FOR_ITER               105 (to 2640)
+            2430 STORE_FAST              27 (g)
+
+9808        2432 LOAD_FAST               27 (g)
+            2434 LOAD_CONST              11 (1)
+            2436 BINARY_OP                0 (+)
+            2440 FORMAT_VALUE             0
+
+9809        2442 LOAD_FAST               13 (res)
+            2444 LOAD_CONST             141 ('min_speed')
+            2446 BINARY_SUBSCR
+            2450 LOAD_FAST               27 (g)
+            2452 BINARY_SUBSCR
+            2456 LOAD_CONST              51 ('.1f')
+            2458 FORMAT_VALUE             4 (with format)
+
+9810        2460 LOAD_FAST               13 (res)
+            2462 LOAD_CONST             142 ('speed_summary')
+            2464 BINARY_SUBSCR
+            2468 LOAD_FAST               27 (g)
+            2470 BINARY_SUBSCR
+            2474 LOAD_CONST               1 (0)
+            2476 BINARY_SUBSCR
+            2480 LOAD_CONST              51 ('.1f')
+            2482 FORMAT_VALUE             4 (with format)
+
+9811        2484 LOAD_FAST               13 (res)
+            2486 LOAD_CONST             142 ('speed_summary')
+            2488 BINARY_SUBSCR
+            2492 LOAD_FAST               27 (g)
+            2494 BINARY_SUBSCR
+            2498 LOAD_CONST              11 (1)
+            2500 BINARY_SUBSCR
+            2504 LOAD_CONST              51 ('.1f')
+            2506 FORMAT_VALUE             4 (with format)
+
+9812        2508 LOAD_FAST               13 (res)
+            2510 LOAD_CONST             142 ('speed_summary')
+            2512 BINARY_SUBSCR
+            2516 LOAD_FAST               27 (g)
+            2518 BINARY_SUBSCR
+            2522 LOAD_CONST             128 (2)
+            2524 BINARY_SUBSCR
+            2528 LOAD_CONST              51 ('.1f')
+            2530 FORMAT_VALUE             4 (with format)
+
+9813        2532 LOAD_FAST               13 (res)
+            2534 LOAD_CONST             142 ('speed_summary')
+            2536 BINARY_SUBSCR
+            2540 LOAD_FAST               27 (g)
+            2542 BINARY_SUBSCR
+            2546 LOAD_CONST             143 (3)
+            2548 BINARY_SUBSCR
+            2552 LOAD_CONST              51 ('.1f')
+            2554 FORMAT_VALUE             4 (with format)
+
+9814        2556 LOAD_FAST               27 (g)
+            2558 LOAD_GLOBAL             73 (NULL + len)
+            2568 LOAD_FAST               26 (rpm_targets)
+            2570 CALL                     1
+            2578 COMPARE_OP               2 (<)
+            2582 POP_JUMP_IF_FALSE        7 (to 2598)
+            2584 LOAD_FAST               26 (rpm_targets)
+            2586 LOAD_FAST               27 (g)
+            2588 BINARY_SUBSCR
+            2592 LOAD_CONST              60 ('.0f')
+            2594 FORMAT_VALUE             4 (with format)
+            2596 JUMP_FORWARD             1 (to 2600)
+         >> 2598 LOAD_CONST              35 ('—')
+
+9807     >> 2600 BUILD_LIST               7
+            2602 STORE_FAST              28 (row)
+
+9816        2604 LOAD_FAST               25 (sum_rows)
+            2606 LOAD_ATTR               53 (NULL|self + append)
+            2626 LOAD_FAST               28 (row)
+            2628 CALL                     1
+            2636 POP_TOP
+            2638 JUMP_BACKWARD          107 (to 2426)
+
+9806     >> 2640 END_FOR
+
+9817        2642 PUSH_NULL
+            2644 LOAD_DEREF              39 (Table)
+            2646 LOAD_FAST               25 (sum_rows)
+            2648 LOAD_CONST              11 (1)
+            2650 KW_NAMES               144 (('repeatRows',))
+            2652 CALL                     2
+            2660 STORE_FAST              20 (t)
+
+9818        2662 LOAD_FAST               20 (t)
+            2664 LOAD_ATTR               63 (NULL|self + setStyle)
+            2684 PUSH_NULL
+            2686 LOAD_DEREF              40 (TableStyle)
+
+9819        2688 LOAD_CONST             111 (('FONTSIZE', (0, 0), (-1, -1), 8))
+
+9820        2690 LOAD_CONST             145 (('FONT', (0, 0), (-1, 0), 'Helvetica-Bold'))
+
+9821        2692 LOAD_CONST             113 ('BACKGROUND')
+            2694 LOAD_CONST             114 ((0, 0))
+            2696 LOAD_CONST             146 ((-1, 0))
+            2698 LOAD_DEREF              41 (rl)
+            2700 LOAD_ATTR               67 (NULL|self + HexColor)
+            2720 LOAD_CONST             147 ('#404060')
+            2722 CALL                     1
+            2730 BUILD_TUPLE              4
+
+9822        2732 LOAD_CONST             148 ('TEXTCOLOR')
+            2734 LOAD_CONST             114 ((0, 0))
+            2736 LOAD_CONST             146 ((-1, 0))
+            2738 LOAD_DEREF              41 (rl)
+            2740 LOAD_ATTR               74 (white)
+            2760 BUILD_TUPLE              4
+
+9823        2762 LOAD_CONST             149 (('ALIGN', (0, 0), (-1, -1), 'CENTER'))
+
+9824        2764 LOAD_CONST             120 ('INNERGRID')
+            2766 LOAD_CONST             114 ((0, 0))
+            2768 LOAD_CONST             121 ((-1, -1))
+            2770 LOAD_CONST             122 (0.5)
+            2772 LOAD_DEREF              41 (rl)
+            2774 LOAD_ATTR               68 (grey)
+            2794 BUILD_TUPLE              5
+
+9825        2796 LOAD_CONST             123 ('BOX')
+            2798 LOAD_CONST             114 ((0, 0))
+            2800 LOAD_CONST             121 ((-1, -1))
+            2802 LOAD_CONST             122 (0.5)
+            2804 LOAD_DEREF              41 (rl)
+            2806 LOAD_ATTR               68 (grey)
+            2826 BUILD_TUPLE              5
+
+9826        2828 LOAD_CONST             119 (('TOPPADDING', (0, 0), (-1, -1), 3))
+
+9827        2830 LOAD_CONST             118 (('BOTTOMPADDING', (0, 0), (-1, -1), 3))
+
+9818        2832 BUILD_LIST               9
+            2834 CALL                     1
+            2842 CALL                     1
+            2850 POP_TOP
+
+9829        2852 LOAD_DEREF              42 (story)
+            2854 LOAD_ATTR               53 (NULL|self + append)
+            2874 LOAD_FAST               20 (t)
+            2876 CALL                     1
+            2884 POP_TOP
+
+9832        2886 LOAD_GLOBAL             77 (NULL + hasattr)
+            2896 LOAD_FAST                0 (self)
+            2898 LOAD_CONST             150 ('torque_curve')
+            2900 CALL                     2
+            2908 EXTENDED_ARG             1
+            2910 POP_JUMP_IF_FALSE      440 (to 3792)
+            2912 LOAD_FAST                0 (self)
+            2914 LOAD_ATTR               78 (torque_curve)
+            2934 LOAD_ATTR               80 (is_empty)
+            2954 EXTENDED_ARG             1
+            2956 POP_JUMP_IF_TRUE       417 (to 3792)
+
+9833        2958 LOAD_FAST                0 (self)
+            2960 LOAD_ATTR               83 (NULL|self + _gather_config)
+            2980 CALL                     0
+            2988 STORE_FAST              29 (sim_cfg)
+
+9834        2990 BUILD_LIST               0
+            2992 STORE_FAST              30 (shift_points)
+
+9835        2994 LOAD_FAST               13 (res)
+            2996 LOAD_ATTR               51 (NULL|self + get)
+            3016 LOAD_CONST             126 ('upshift')
+            3018 BUILD_LIST               0
+            3020 CALL                     2
+            3028 GET_ITER
+         >> 3030 FOR_ITER                37 (to 3108)
+            3034 STORE_FAST              28 (row)
+
+9836        3036 LOAD_GLOBAL             73 (NULL + len)
+            3046 LOAD_FAST               28 (row)
+            3048 CALL                     1
+            3056 LOAD_CONST             151 (16)
+            3058 COMPARE_OP              68 (>)
+            3062 POP_JUMP_IF_TRUE         1 (to 3066)
+            3064 JUMP_BACKWARD           18 (to 3030)
+
+9837     >> 3066 LOAD_FAST               30 (shift_points)
+            3068 LOAD_ATTR               53 (NULL|self + append)
+            3088 LOAD_FAST               28 (row)
+            3090 LOAD_CONST             151 (16)
+            3092 BINARY_SUBSCR
+            3096 CALL                     1
+            3104 POP_TOP
+            3106 JUMP_BACKWARD           39 (to 3030)
+
+9835     >> 3108 END_FOR
+
+9838        3110 NOP
+
+9839        3112 LOAD_GLOBAL             85 (NULL + DragSimulator)
+            3122 LOAD_FAST               29 (sim_cfg)
+            3124 LOAD_FAST               30 (shift_points)
+            3126 KW_NAMES               152 (('shift_points_mph',))
+            3128 CALL                     2
+            3136 STORE_FAST              31 (sim)
+
+9840        3138 LOAD_FAST               31 (sim)
+            3140 LOAD_ATTR               87 (NULL|self + simulate)
+            3160 CALL                     0
+            3168 STORE_FAST              32 (sr)
+
+9841        3170 LOAD_FAST               32 (sr)
+            3172 EXTENDED_ARG             1
+            3174 POP_JUMP_IF_NONE       308 (to 3792)
+
+9842        3176 LOAD_DEREF              42 (story)
+            3178 LOAD_ATTR               53 (NULL|self + append)
+            3198 PUSH_NULL
+            3200 LOAD_FAST                9 (Spacer)
+            3202 LOAD_CONST              11 (1)
+            3204 LOAD_CONST              22 (12)
+            3206 CALL                     2
+            3214 CALL                     1
+            3222 POP_TOP
+
+9843        3224 LOAD_DEREF              42 (story)
+            3226 LOAD_ATTR               53 (NULL|self + append)
+            3246 PUSH_NULL
+            3248 LOAD_DEREF              38 (Paragraph)
+            3250 LOAD_CONST             154 ('Performance Prediction (infinite-traction simulation)')
+
+9845        3252 LOAD_DEREF              43 (styles)
+            3254 LOAD_CONST              19 ('H2')
+            3256 BINARY_SUBSCR
+
+9843        3260 CALL                     2
+            3268 CALL                     1
+            3276 POP_TOP
+
+9846        3278 LOAD_CONST             155 (<code object f at 0x73ab02a1eb10, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 9846>)
+            3280 MAKE_FUNCTION            0
+            3282 STORE_FAST              33 (f)
+
+9847        3284 LOAD_CONST             156 (<code object fmph at 0x73ab02a1ebf0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 9847>)
+            3286 MAKE_FUNCTION            0
+            3288 STORE_FAST              34 (fmph)
+
+9849        3290 LOAD_CONST             157 ('0-30')
+            3292 PUSH_NULL
+            3294 LOAD_FAST               33 (f)
+            3296 LOAD_FAST               32 (sr)
+            3298 LOAD_CONST             158 ('t_0_30')
+            3300 BINARY_SUBSCR
+            3304 CALL                     1
+            3312 BUILD_LIST               2
+
+9850        3314 LOAD_CONST             159 ('0-60')
+            3316 PUSH_NULL
+            3318 LOAD_FAST               33 (f)
+            3320 LOAD_FAST               32 (sr)
+            3322 LOAD_CONST             160 ('t_0_60')
+            3324 BINARY_SUBSCR
+            3328 CALL                     1
+            3336 BUILD_LIST               2
+
+9851        3338 LOAD_CONST             161 ('0-100')
+            3340 PUSH_NULL
+            3342 LOAD_FAST               33 (f)
+            3344 LOAD_FAST               32 (sr)
+            3346 LOAD_CONST             162 ('t_0_100')
+            3348 BINARY_SUBSCR
+            3352 CALL                     1
+            3360 BUILD_LIST               2
+
+9852        3362 LOAD_CONST             163 ('1/8 mile')
+            3364 PUSH_NULL
+            3366 LOAD_FAST               33 (f)
+            3368 LOAD_FAST               32 (sr)
+            3370 LOAD_CONST             164 ('t_eighth')
+            3372 BINARY_SUBSCR
+            3376 CALL                     1
+            3384 FORMAT_VALUE             0
+            3386 LOAD_CONST             165 ('  @  ')
+
+9853        3388 PUSH_NULL
+            3390 LOAD_FAST               34 (fmph)
+            3392 LOAD_FAST               32 (sr)
+            3394 LOAD_CONST             166 ('v_eighth')
+            3396 BINARY_SUBSCR
+            3400 CALL                     1
+            3408 FORMAT_VALUE             0
+
+9852        3410 BUILD_STRING             3
+            3412 BUILD_LIST               2
+
+9854        3414 LOAD_CONST             167 ('1/4 mile')
+            3416 PUSH_NULL
+            3418 LOAD_FAST               33 (f)
+            3420 LOAD_FAST               32 (sr)
+            3422 LOAD_CONST             168 ('t_quarter')
+            3424 BINARY_SUBSCR
+            3428 CALL                     1
+            3436 FORMAT_VALUE             0
+            3438 LOAD_CONST             165 ('  @  ')
+
+9855        3440 PUSH_NULL
+            3442 LOAD_FAST               34 (fmph)
+            3444 LOAD_FAST               32 (sr)
+            3446 LOAD_CONST             169 ('v_quarter')
+            3448 BINARY_SUBSCR
+            3452 CALL                     1
+            3460 FORMAT_VALUE             0
+
+9854        3462 BUILD_STRING             3
+            3464 BUILD_LIST               2
+
+9848        3466 BUILD_LIST               5
+            3468 STORE_FAST              35 (perf_rows)
+
+9857        3470 PUSH_NULL
+            3472 LOAD_DEREF              39 (Table)
+            3474 LOAD_FAST               35 (perf_rows)
+            3476 LOAD_CONST              44 (1.5)
+            3478 LOAD_FAST                7 (inch)
+            3480 BINARY_OP                5 (*)
+            3484 LOAD_CONST             143 (3)
+            3486 LOAD_FAST                7 (inch)
+            3488 BINARY_OP                5 (*)
+            3492 BUILD_LIST               2
+            3494 KW_NAMES                46 (('colWidths',))
+            3496 CALL                     2
+            3504 STORE_FAST              36 (pt)
+
+9858        3506 LOAD_FAST               36 (pt)
+            3508 LOAD_ATTR               63 (NULL|self + setStyle)
+            3528 PUSH_NULL
+            3530 LOAD_DEREF              40 (TableStyle)
+
+9859        3532 LOAD_CONST             170 (('FONTSIZE', (0, 0), (-1, -1), 9))
+
+9860        3534 LOAD_CONST             112 (('FONT', (0, 0), (0, -1), 'Helvetica-Bold'))
+
+9861        3536 LOAD_CONST             113 ('BACKGROUND')
+            3538 LOAD_CONST             114 ((0, 0))
+            3540 LOAD_CONST             115 ((0, -1))
+            3542 LOAD_DEREF              41 (rl)
+            3544 LOAD_ATTR               67 (NULL|self + HexColor)
+            3564 LOAD_CONST             116 ('#e8e8e8')
+            3566 CALL                     1
+            3574 BUILD_TUPLE              4
+
+9862        3576 LOAD_CONST             120 ('INNERGRID')
+            3578 LOAD_CONST             114 ((0, 0))
+            3580 LOAD_CONST             121 ((-1, -1))
+            3582 LOAD_CONST             171 (0.25)
+            3584 LOAD_DEREF              41 (rl)
+            3586 LOAD_ATTR               68 (grey)
+            3606 BUILD_TUPLE              5
+
+9863        3608 LOAD_CONST             123 ('BOX')
+            3610 LOAD_CONST             114 ((0, 0))
+            3612 LOAD_CONST             121 ((-1, -1))
+            3614 LOAD_CONST             122 (0.5)
+            3616 LOAD_DEREF              41 (rl)
+            3618 LOAD_ATTR               68 (grey)
+            3638 BUILD_TUPLE              5
+
+9864        3640 LOAD_CONST             119 (('TOPPADDING', (0, 0), (-1, -1), 3))
+
+9865        3642 LOAD_CONST             118 (('BOTTOMPADDING', (0, 0), (-1, -1), 3))
+
+9858        3644 BUILD_LIST               7
+            3646 CALL                     1
+            3654 CALL                     1
+            3662 POP_TOP
+
+9867        3664 LOAD_DEREF              42 (story)
+            3666 LOAD_ATTR               53 (NULL|self + append)
+            3686 LOAD_FAST               36 (pt)
+            3688 CALL                     1
+            3696 POP_TOP
+
+9868        3698 LOAD_DEREF              42 (story)
+            3700 LOAD_ATTR               53 (NULL|self + append)
+            3720 PUSH_NULL
+            3722 LOAD_DEREF              38 (Paragraph)
+
+9869        3724 LOAD_CONST             172 ('<i>Note: simulator assumes infinite tire grip — real-world 0-60 typically 0.2-0.5s slower for high-HP gas builds.</i>')
+
+9872        3726 PUSH_NULL
+            3728 LOAD_FAST                6 (ParagraphStyle)
+            3730 LOAD_CONST             173 ('Note')
+            3732 LOAD_DEREF              43 (styles)
+            3734 LOAD_CONST              26 ('BodyText')
+            3736 BINARY_SUBSCR
+
+9873        3740 LOAD_CONST              17 (8)
+            3742 LOAD_DEREF              41 (rl)
+            3744 LOAD_ATTR               68 (grey)
+
+9872        3764 KW_NAMES               174 (('parent', 'fontSize', 'textColor'))
+            3766 CALL                     4
+
+9868        3774 CALL                     2
+            3782 CALL                     1
+            3790 POP_TOP
+
+9878     >> 3792 LOAD_DEREF              42 (story)
+            3794 LOAD_ATTR               53 (NULL|self + append)
+            3814 PUSH_NULL
+            3816 LOAD_FAST                9 (Spacer)
+            3818 LOAD_CONST              11 (1)
+            3820 LOAD_CONST              22 (12)
+            3822 CALL                     2
+            3830 CALL                     1
+            3838 POP_TOP
+
+9879        3840 LOAD_DEREF              42 (story)
+            3842 LOAD_ATTR               53 (NULL|self + append)
+            3862 PUSH_NULL
+            3864 LOAD_DEREF              38 (Paragraph)
+
+9880        3866 LOAD_CONST             175 ("<font size='7' color='#888'>Generated by Ewalt's Auto Tuning Transmission Calibration Studio · ")
+
+9882        3868 LOAD_FAST                2 (datetime)
+            3870 LOAD_ATTR               59 (NULL|self + now)
+            3890 CALL                     0
+            3898 LOAD_ATTR               61 (NULL|self + strftime)
+            3918 LOAD_CONST              43 ('%Y-%m-%d %H:%M')
+            3920 CALL                     1
+            3928 FORMAT_VALUE             0
+            3930 LOAD_CONST             176 ('</font>')
+
+9880        3932 BUILD_STRING             3
+
+9883        3934 LOAD_DEREF              43 (styles)
+            3936 LOAD_CONST              26 ('BodyText')
+            3938 BINARY_SUBSCR
+
+9879        3942 CALL                     2
+            3950 CALL                     1
+            3958 POP_TOP
+
+9885        3960 LOAD_FAST               17 (doc)
+            3962 LOAD_ATTR               91 (NULL|self + build)
+            3982 LOAD_DEREF              42 (story)
+            3984 CALL                     1
+            3992 POP_TOP
+            3994 RETURN_CONST           153 (None)
+         >> 3996 SWAP                     2
+            3998 POP_TOP
+
+9792        4000 SWAP                     2
+            4002 STORE_FAST              24 (i)
+            4004 RERAISE                  0
+         >> 4006 SWAP                     2
+            4008 POP_TOP
+
+9794        4010 SWAP                     2
+            4012 STORE_FAST              24 (i)
+            4014 RERAISE                  0
+         >> 4016 SWAP                     2
+            4018 POP_TOP
+
+9796        4020 SWAP                     2
+            4022 STORE_FAST              24 (i)
+            4024 RERAISE                  0
+         >> 4026 SWAP                     2
+            4028 POP_TOP
+
+9798        4030 SWAP                     2
+            4032 STORE_FAST              24 (i)
+            4034 RERAISE                  0
+         >> 4036 PUSH_EXC_INFO
+
+9874        4038 LOAD_GLOBAL             88 (Exception)
+            4048 CHECK_EXC_MATCH
+            4050 POP_JUMP_IF_FALSE        3 (to 4058)
+            4052 POP_TOP
+
+9875        4054 POP_EXCEPT
+            4056 JUMP_BACKWARD          133 (to 3792)
+
+9874     >> 4058 RERAISE                  0
+         >> 4060 COPY                     3
+            4062 POP_EXCEPT
+            4064 RERAISE                  1
+ExceptionTable:
+  1936 to 1974 -> 3996 [6]
+  2030 to 2068 -> 4006 [6]
+  2124 to 2152 -> 4016 [6]
+  2212 to 2240 -> 4026 [6]
+  3112 to 3790 -> 4036 [0]
+  4036 to 4052 -> 4060 [1] lasti
+  4058 to 4058 -> 4060 [1] lasti

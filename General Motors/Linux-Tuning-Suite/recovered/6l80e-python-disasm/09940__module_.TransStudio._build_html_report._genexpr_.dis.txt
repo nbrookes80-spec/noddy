@@ -1,0 +1,28 @@
+9940           0 RETURN_GENERATOR
+               2 POP_TOP
+               4 RESUME                   0
+               6 LOAD_FAST                0 (.0)
+         >>    8 FOR_ITER                16 (to 44)
+
+9941          12 UNPACK_SEQUENCE          2
+              16 STORE_FAST               1 (k)
+              18 STORE_FAST               2 (v)
+              20 LOAD_CONST               0 ('<tr><th>')
+              22 LOAD_FAST                1 (k)
+              24 FORMAT_VALUE             0
+              26 LOAD_CONST               1 ('</th><td>')
+              28 LOAD_FAST                2 (v)
+              30 FORMAT_VALUE             0
+              32 LOAD_CONST               2 ('</td></tr>')
+              34 BUILD_STRING             5
+              36 YIELD_VALUE              1
+              38 RESUME                   1
+              40 POP_TOP
+              42 JUMP_BACKWARD           18 (to 8)
+
+9940     >>   44 END_FOR
+              46 RETURN_CONST             3 (None)
+         >>   48 CALL_INTRINSIC_1         3 (INTRINSIC_STOPITERATION_ERROR)
+              50 RERAISE                  1
+ExceptionTable:
+  4 to 46 -> 48 [0] lasti

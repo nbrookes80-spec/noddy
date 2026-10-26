@@ -1,0 +1,243 @@
+               0 COPY_FREE_VARS           1
+
+5488           2 RESUME                   0
+
+5489           4 LOAD_GLOBAL              0 (super)
+              14 LOAD_DEREF              10 (__class__)
+              16 LOAD_FAST                0 (self)
+              18 LOAD_SUPER_ATTR          5 (NULL|self + __init__)
+              22 LOAD_FAST                1 (parent)
+              24 CALL                     1
+              32 POP_TOP
+
+5490          34 LOAD_FAST                0 (self)
+              36 LOAD_ATTR                5 (NULL|self + setWindowTitle)
+              56 LOAD_CONST               1 ('Reverse Import — Solve Params from Table')
+              58 CALL                     1
+              66 POP_TOP
+
+5491          68 LOAD_FAST                0 (self)
+              70 LOAD_ATTR                7 (NULL|self + resize)
+              90 LOAD_CONST               2 (700)
+              92 LOAD_CONST               3 (600)
+              94 CALL                     2
+             102 POP_TOP
+
+5492         104 LOAD_GLOBAL              9 (NULL + dict)
+             114 LOAD_FAST                2 (current_cfg)
+             116 CALL                     1
+             124 LOAD_FAST                0 (self)
+             126 STORE_ATTR               5 (cfg)
+
+5493         136 LOAD_CONST               0 (None)
+             138 LOAD_FAST                0 (self)
+             140 STORE_ATTR               6 (result)
+
+5495         150 LOAD_GLOBAL             15 (NULL + QVBoxLayout)
+             160 LOAD_FAST                0 (self)
+             162 CALL                     1
+             170 STORE_FAST               3 (layout)
+
+5496         172 LOAD_FAST                3 (layout)
+             174 LOAD_ATTR               17 (NULL|self + addWidget)
+             194 LOAD_GLOBAL             19 (NULL + QLabel)
+
+5497         204 LOAD_CONST               4 ('Paste an UPSHIFT table (17 columns × N-1 rows, tab- or space-\ndelimited). The solver will find the Factor / Offset / Up Firmness\n/ WOT Shift RPM that best match the table for the currently-\nselected trans and drivetrain.\n\nCurrently set: {} | Tire {}" | Axle {}')
+
+5501         206 LOAD_ATTR               21 (NULL|self + format)
+
+5502         226 LOAD_GLOBAL             23 (NULL + hasattr)
+             236 LOAD_FAST                1 (parent)
+             238 LOAD_CONST               5 ('trans')
+             240 CALL                     2
+             248 POP_JUMP_IF_FALSE       26 (to 302)
+             250 LOAD_FAST                1 (parent)
+             252 LOAD_ATTR               24 (trans)
+             272 LOAD_ATTR               27 (NULL|self + currentText)
+             292 CALL                     0
+             300 JUMP_FORWARD             1 (to 304)
+         >>  302 LOAD_CONST               6 ('?')
+
+5503     >>  304 LOAD_FAST                0 (self)
+             306 LOAD_ATTR               10 (cfg)
+             326 LOAD_ATTR               29 (NULL|self + get)
+             346 LOAD_CONST               7 ('tire_dia')
+             348 LOAD_CONST               6 ('?')
+             350 CALL                     2
+
+5504         358 LOAD_FAST                0 (self)
+             360 LOAD_ATTR               10 (cfg)
+             380 LOAD_ATTR               29 (NULL|self + get)
+             400 LOAD_CONST               8 ('axle')
+             402 LOAD_CONST               6 ('?')
+             404 CALL                     2
+
+5501         412 CALL                     3
+
+5496         420 CALL                     1
+             428 CALL                     1
+             436 POP_TOP
+
+5508         438 LOAD_GLOBAL             31 (NULL + QTextEdit)
+             448 CALL                     0
+             456 LOAD_FAST                0 (self)
+             458 STORE_ATTR              16 (input)
+
+5509         468 LOAD_FAST                0 (self)
+             470 LOAD_ATTR               32 (input)
+             490 LOAD_ATTR               35 (NULL|self + setFont)
+             510 LOAD_GLOBAL             37 (NULL + QFont)
+             520 LOAD_CONST               9 ('Consolas')
+             522 LOAD_CONST              10 (9)
+             524 CALL                     2
+             532 CALL                     1
+             540 POP_TOP
+
+5510         542 LOAD_FAST                0 (self)
+             544 LOAD_ATTR               32 (input)
+             564 LOAD_ATTR               39 (NULL|self + setPlaceholderText)
+             584 LOAD_CONST              11 ('Paste table here...')
+             586 CALL                     1
+             594 POP_TOP
+
+5511         596 LOAD_FAST                3 (layout)
+             598 LOAD_ATTR               17 (NULL|self + addWidget)
+             618 LOAD_FAST                0 (self)
+             620 LOAD_ATTR               32 (input)
+             640 CALL                     1
+             648 POP_TOP
+
+5513         650 LOAD_GLOBAL             41 (NULL + QHBoxLayout)
+             660 CALL                     0
+             668 STORE_FAST               4 (btn_row)
+
+5514         670 LOAD_GLOBAL             43 (NULL + QPushButton)
+             680 LOAD_CONST              12 ('Solve')
+             682 CALL                     1
+             690 STORE_FAST               5 (solve_btn)
+
+5515         692 LOAD_FAST                5 (solve_btn)
+             694 LOAD_ATTR               44 (clicked)
+             714 LOAD_ATTR               47 (NULL|self + connect)
+             734 LOAD_FAST                0 (self)
+             736 LOAD_ATTR               48 (_solve)
+             756 CALL                     1
+             764 POP_TOP
+
+5516         766 LOAD_GLOBAL             43 (NULL + QPushButton)
+             776 LOAD_CONST              13 ('Clear')
+             778 CALL                     1
+             786 STORE_FAST               6 (clear_btn)
+
+5517         788 LOAD_FAST                6 (clear_btn)
+             790 LOAD_ATTR               44 (clicked)
+             810 LOAD_ATTR               47 (NULL|self + connect)
+             830 LOAD_FAST                0 (self)
+             832 LOAD_ATTR               32 (input)
+             852 LOAD_ATTR               50 (clear)
+             872 CALL                     1
+             880 POP_TOP
+
+5518         882 LOAD_FAST                4 (btn_row)
+             884 LOAD_ATTR               17 (NULL|self + addWidget)
+             904 LOAD_FAST                5 (solve_btn)
+             906 CALL                     1
+             914 POP_TOP
+
+5519         916 LOAD_FAST                4 (btn_row)
+             918 LOAD_ATTR               17 (NULL|self + addWidget)
+             938 LOAD_FAST                6 (clear_btn)
+             940 CALL                     1
+             948 POP_TOP
+
+5520         950 LOAD_FAST                4 (btn_row)
+             952 LOAD_ATTR               53 (NULL|self + addStretch)
+             972 CALL                     0
+             980 POP_TOP
+
+5521         982 LOAD_FAST                3 (layout)
+             984 LOAD_ATTR               55 (NULL|self + addLayout)
+            1004 LOAD_FAST                4 (btn_row)
+            1006 CALL                     1
+            1014 POP_TOP
+
+5523        1016 LOAD_GLOBAL             19 (NULL + QLabel)
+            1026 LOAD_CONST              14 ('')
+            1028 CALL                     1
+            1036 LOAD_FAST                0 (self)
+            1038 STORE_ATTR              28 (output)
+
+5524        1048 LOAD_FAST                0 (self)
+            1050 LOAD_ATTR               56 (output)
+            1070 LOAD_ATTR               59 (NULL|self + setStyleSheet)
+            1090 LOAD_CONST              15 ('background: #1e1e1e; color: #fff; padding: 8px; border: 1px solid #555; font-family: Consolas;')
+            1092 CALL                     1
+            1100 POP_TOP
+
+5526        1102 LOAD_FAST                0 (self)
+            1104 LOAD_ATTR               56 (output)
+            1124 LOAD_ATTR               61 (NULL|self + setWordWrap)
+            1144 LOAD_CONST              16 (True)
+            1146 CALL                     1
+            1154 POP_TOP
+
+5527        1156 LOAD_FAST                3 (layout)
+            1158 LOAD_ATTR               17 (NULL|self + addWidget)
+            1178 LOAD_FAST                0 (self)
+            1180 LOAD_ATTR               56 (output)
+            1200 CALL                     1
+            1208 POP_TOP
+
+5529        1210 LOAD_GLOBAL             41 (NULL + QHBoxLayout)
+            1220 CALL                     0
+            1228 STORE_FAST               7 (bottom_row)
+
+5530        1230 LOAD_FAST                7 (bottom_row)
+            1232 LOAD_ATTR               53 (NULL|self + addStretch)
+            1252 CALL                     0
+            1260 POP_TOP
+
+5531        1262 LOAD_GLOBAL             43 (NULL + QPushButton)
+            1272 LOAD_CONST              17 ('Apply to Main UI')
+            1274 CALL                     1
+            1282 STORE_FAST               8 (apply)
+
+5532        1284 LOAD_FAST                8 (apply)
+            1286 LOAD_ATTR               44 (clicked)
+            1306 LOAD_ATTR               47 (NULL|self + connect)
+            1326 LOAD_FAST                0 (self)
+            1328 LOAD_ATTR               62 (accept)
+            1348 CALL                     1
+            1356 POP_TOP
+
+5533        1358 LOAD_GLOBAL             43 (NULL + QPushButton)
+            1368 LOAD_CONST              18 ('Close')
+            1370 CALL                     1
+            1378 STORE_FAST               9 (close)
+
+5534        1380 LOAD_FAST                9 (close)
+            1382 LOAD_ATTR               44 (clicked)
+            1402 LOAD_ATTR               47 (NULL|self + connect)
+            1422 LOAD_FAST                0 (self)
+            1424 LOAD_ATTR               64 (reject)
+            1444 CALL                     1
+            1452 POP_TOP
+
+5535        1454 LOAD_FAST                7 (bottom_row)
+            1456 LOAD_ATTR               17 (NULL|self + addWidget)
+            1476 LOAD_FAST                8 (apply)
+            1478 CALL                     1
+            1486 POP_TOP
+
+5536        1488 LOAD_FAST                7 (bottom_row)
+            1490 LOAD_ATTR               17 (NULL|self + addWidget)
+            1510 LOAD_FAST                9 (close)
+            1512 CALL                     1
+            1520 POP_TOP
+
+5537        1522 LOAD_FAST                3 (layout)
+            1524 LOAD_ATTR               55 (NULL|self + addLayout)
+            1544 LOAD_FAST                7 (bottom_row)
+            1546 CALL                     1
+            1554 POP_TOP
+            1556 RETURN_CONST             0 (None)

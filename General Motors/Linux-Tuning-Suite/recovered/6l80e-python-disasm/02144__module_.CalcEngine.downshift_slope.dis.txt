@@ -1,0 +1,36 @@
+2144           0 RESUME                   0
+
+2156           2 LOAD_GLOBAL              1 (NULL + max)
+              12 LOAD_CONST               1 (0.0)
+              14 LOAD_GLOBAL              3 (NULL + min)
+              24 LOAD_CONST               2 (100.0)
+              26 LOAD_FAST                0 (tps_pct)
+              28 LOAD_FAST                1 (offset)
+              30 BINARY_OP               10 (-)
+              34 CALL                     2
+              42 CALL                     2
+              50 LOAD_CONST               2 (100.0)
+              52 BINARY_OP               11 (/)
+              56 STORE_FAST               4 (x)
+
+2157          58 LOAD_FAST                2 (factor)
+              60 LOAD_CONST               3 (0.1)
+              62 BINARY_OP                0 (+)
+              66 LOAD_CONST               4 (10.0)
+              68 LOAD_FAST                3 (downf)
+              70 BINARY_OP               10 (-)
+              74 LOAD_CONST               5 (5.0)
+              76 BINARY_OP               11 (/)
+              80 BINARY_OP                0 (+)
+              84 STORE_FAST               5 (exp)
+
+2158          86 LOAD_GLOBAL              1 (NULL + max)
+              96 LOAD_CONST               1 (0.0)
+              98 LOAD_GLOBAL              3 (NULL + min)
+             108 LOAD_CONST               6 (1.0)
+             110 LOAD_FAST                4 (x)
+             112 LOAD_FAST                5 (exp)
+             114 BINARY_OP                8 (**)
+             118 CALL                     2
+             126 CALL                     2
+             134 RETURN_VALUE

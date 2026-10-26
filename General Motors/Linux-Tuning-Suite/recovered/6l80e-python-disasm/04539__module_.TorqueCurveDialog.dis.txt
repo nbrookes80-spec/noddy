@@ -1,0 +1,102 @@
+               0 MAKE_CELL                0 (__class__)
+
+4539           2 RESUME                   0
+               4 LOAD_NAME                0 (__name__)
+               6 STORE_NAME               1 (__module__)
+               8 LOAD_CONST               0 ('TorqueCurveDialog')
+              10 STORE_NAME               2 (__qualname__)
+
+4540          12 LOAD_CONST               1 ('Edit/import a HP/TQ vs RPM curve.\n\n    Supports:\n      - CSV import (1-3 cols: RPM[, HP[, TQ]])\n      - Manual entry via editable table\n      - Quick presets (LS3, LT4, LBZ, etc.) — built-in starting points\n      - Auto-fill TQ from HP (or vice-versa) using TQ = HP × 5252 / RPM\n    ')
+              14 STORE_NAME               3 (__doc__)
+
+4551          16 LOAD_CONST               2 (None)
+
+4552          18 BUILD_LIST               0
+              20 LOAD_CONST               3 (((1500, 80, 280), (2500, 165, 347), (3500, 270, 405), (4500, 360, 420), (5500, 425, 405), (6300, 430, 358)))
+              22 LIST_EXTEND              1
+
+4556          24 BUILD_LIST               0
+              26 LOAD_CONST               4 (((1500, 90, 315), (2500, 180, 378), (3500, 285, 428), (4500, 375, 437), (5700, 455, 419), (6500, 460, 372)))
+              28 LIST_EXTEND              1
+
+4560          30 BUILD_LIST               0
+              32 LOAD_CONST               5 (((1500, 130, 455), (2500, 230, 484), (3500, 360, 540), (4500, 470, 549), (5500, 545, 520), (6200, 556, 471)))
+              34 LIST_EXTEND              1
+
+4564          36 BUILD_LIST               0
+              38 LOAD_CONST               6 (((1500, 140, 490), (2500, 270, 567), (3500, 415, 622), (4500, 540, 630), (5800, 645, 584), (6600, 650, 517)))
+              40 LIST_EXTEND              1
+
+4568          42 BUILD_LIST               0
+              44 LOAD_CONST               7 (((1200, 75, 328), (1600, 170, 558), (2000, 240, 630), (2400, 305, 667), (2800, 350, 656), (3200, 360, 591)))
+              46 LIST_EXTEND              1
+
+4572          48 BUILD_LIST               0
+              50 LOAD_CONST               8 (((1200, 90, 394), (1600, 200, 656), (2000, 290, 762), (2400, 365, 800), (2800, 425, 797), (3200, 445, 730)))
+              52 LIST_EXTEND              1
+
+4576          54 BUILD_LIST               0
+              56 LOAD_CONST               9 (((1500, 60, 210), (2500, 130, 273), (3500, 215, 322), (4500, 280, 327), (5400, 315, 306), (6000, 305, 267)))
+              58 LIST_EXTEND              1
+
+4580          60 BUILD_LIST               0
+              62 LOAD_CONST              10 (((1500, 100, 350), (3000, 200, 350), (4500, 300, 350), (6000, 400, 350)))
+              64 LIST_EXTEND              1
+
+4550          66 LOAD_CONST              11 (('(Manual entry)', 'LS3 stock (~430 HP)', 'LT1 stock (~460 HP)', 'LSA Supercharged (~556 HP)', 'LT4 / ZL1 (~650 HP)', 'LBZ Duramax (~360 HP)', 'L5P Duramax (~445 HP)', '5.3L Truck stock (~315 HP)', 'Custom flat torque test'))
+              68 BUILD_CONST_KEY_MAP      9
+              70 STORE_NAME               4 (PRESETS)
+
+4586          72 LOAD_CLOSURE             0 (__class__)
+              74 BUILD_TUPLE              1
+              76 LOAD_CONST              12 (<code object __init__ at 0x30c316f0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4586>)
+              78 MAKE_FUNCTION            8 (closure)
+              80 STORE_NAME               5 (__init__)
+
+4664          82 LOAD_CONST              13 (<code object _load_curve_into_table at 0x30c075e0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4664>)
+              84 MAKE_FUNCTION            0
+              86 STORE_NAME               6 (_load_curve_into_table)
+
+4671          88 LOAD_CONST              14 (<code object _apply_preset at 0x73ab034abe10, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4671>)
+              90 MAKE_FUNCTION            0
+              92 STORE_NAME               7 (_apply_preset)
+
+4679          94 LOAD_CONST              15 (<code object _import_csv at 0x30bf7d60, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4679>)
+              96 MAKE_FUNCTION            0
+              98 STORE_NAME               8 (_import_csv)
+
+4702         100 LOAD_CONST              16 (<code object _add_row at 0x30bebc20, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4702>)
+             102 MAKE_FUNCTION            0
+             104 STORE_NAME               9 (_add_row)
+
+4717         106 LOAD_CONST              17 (<code object _del_row at 0x73ab035272f0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4717>)
+             108 MAKE_FUNCTION            0
+             110 STORE_NAME              10 (_del_row)
+
+4723         112 LOAD_CONST              18 (<code object _autofill_tq at 0x30c32340, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4723>)
+             114 MAKE_FUNCTION            0
+             116 STORE_NAME              11 (_autofill_tq)
+
+4735         118 LOAD_CONST              19 (<code object _clear at 0x73ab02a34f30, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4735>)
+             120 MAKE_FUNCTION            0
+             122 STORE_NAME              12 (_clear)
+
+4740         124 LOAD_CONST              20 (<code object _sync_curve_from_table at 0x30b9a1e0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4740>)
+             126 MAKE_FUNCTION            0
+             128 STORE_NAME              13 (_sync_curve_from_table)
+
+4754         130 LOAD_CONST              21 (<code object _update_summary at 0x30c32ac0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4754>)
+             132 MAKE_FUNCTION            0
+             134 STORE_NAME              14 (_update_summary)
+
+4771         136 LOAD_CONST              22 (<code object _sync_curve_from_table_silent at 0x30b6db10, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4771>)
+             138 MAKE_FUNCTION            0
+             140 STORE_NAME              15 (_sync_curve_from_table_silent)
+
+4785         142 LOAD_CONST              23 (<code object get_curve at 0x73ab02a64530, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4785>)
+             144 MAKE_FUNCTION            0
+             146 STORE_NAME              16 (get_curve)
+             148 LOAD_CLOSURE             0 (__class__)
+             150 COPY                     1
+             152 STORE_NAME              17 (__classcell__)
+             154 RETURN_VALUE

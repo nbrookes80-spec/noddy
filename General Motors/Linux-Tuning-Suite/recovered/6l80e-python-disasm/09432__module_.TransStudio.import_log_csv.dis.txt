@@ -1,0 +1,41 @@
+9432           0 RESUME                   0
+
+9434           2 LOAD_GLOBAL              1 (NULL + hasattr)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_CONST               1 ('_last_result')
+              16 CALL                     2
+              24 POP_JUMP_IF_FALSE       12 (to 50)
+              26 LOAD_FAST                0 (self)
+              28 LOAD_ATTR                2 (_last_result)
+              48 POP_JUMP_IF_NOT_NONE    24 (to 98)
+
+9435     >>   50 LOAD_GLOBAL              5 (NULL + QMessageBox)
+              60 LOAD_ATTR                6 (information)
+              80 LOAD_FAST                0 (self)
+              82 LOAD_CONST               3 ('Calculate First')
+
+9436          84 LOAD_CONST               4 ('Run Calculate (F5) before importing logs so we have predicted values to compare against.')
+
+9435          86 CALL                     3
+              94 POP_TOP
+
+9438          96 RETURN_CONST             2 (None)
+
+9439     >>   98 LOAD_FAST                0 (self)
+             100 LOAD_ATTR                9 (NULL|self + _gather_config)
+             120 CALL                     0
+             128 STORE_FAST               1 (sim_cfg)
+
+9440         130 LOAD_GLOBAL             11 (NULL + LogImportDialog)
+             140 LOAD_FAST                0 (self)
+             142 LOAD_FAST                1 (sim_cfg)
+             144 LOAD_FAST                0 (self)
+             146 LOAD_ATTR                2 (_last_result)
+             166 CALL                     3
+             174 STORE_FAST               2 (dlg)
+
+9441         176 LOAD_FAST                2 (dlg)
+             178 LOAD_ATTR               13 (NULL|self + exec)
+             198 CALL                     0
+             206 POP_TOP
+             208 RETURN_CONST             2 (None)

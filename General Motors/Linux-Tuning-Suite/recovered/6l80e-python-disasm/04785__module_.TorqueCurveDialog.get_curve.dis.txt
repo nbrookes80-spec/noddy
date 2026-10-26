@@ -1,0 +1,10 @@
+4785           0 RESUME                   0
+
+4786           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                1 (NULL|self + _sync_curve_from_table)
+              24 CALL                     0
+              32 POP_TOP
+
+4787          34 LOAD_FAST                0 (self)
+              36 LOAD_ATTR                2 (curve)
+              56 RETURN_VALUE

@@ -1,0 +1,32 @@
+               0 MAKE_CELL                1 (sep)
+               2 MAKE_CELL                5 (fmt)
+
+3660           4 RESUME                   0
+
+3661           6 LOAD_FAST                0 (self)
+               8 LOAD_ATTR                1 (NULL|self + _build_current_table)
+              28 CALL                     0
+              36 UNPACK_SEQUENCE          3
+              40 STORE_FAST               2 (name)
+              42 STORE_FAST               3 (data)
+              44 STORE_FAST               4 (is_rpm)
+
+3662          46 LOAD_FAST                4 (is_rpm)
+              48 POP_JUMP_IF_FALSE        2 (to 54)
+              50 LOAD_CONST               1 ('{:.0f}')
+              52 JUMP_FORWARD             1 (to 56)
+         >>   54 LOAD_CONST               2 ('{:.1f}')
+         >>   56 STORE_DEREF              5 (fmt)
+
+3663          58 LOAD_CONST               3 ('\n')
+              60 LOAD_ATTR                3 (NULL|self + join)
+              80 LOAD_CLOSURE             5 (fmt)
+              82 LOAD_CLOSURE             1 (sep)
+              84 BUILD_TUPLE              2
+              86 LOAD_CONST               4 (<code object <genexpr> at 0x73ab02a4c5d0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3663>)
+              88 MAKE_FUNCTION            8 (closure)
+              90 LOAD_FAST                3 (data)
+              92 GET_ITER
+              94 CALL                     0
+             102 CALL                     1
+             110 RETURN_VALUE

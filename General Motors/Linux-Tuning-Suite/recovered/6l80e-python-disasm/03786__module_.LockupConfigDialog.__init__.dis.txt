@@ -1,0 +1,212 @@
+               0 COPY_FREE_VARS           1
+
+3786           2 RESUME                   0
+
+3787           4 LOAD_GLOBAL              0 (super)
+              14 LOAD_DEREF               7 (__class__)
+              16 LOAD_FAST                0 (self)
+              18 LOAD_SUPER_ATTR          5 (NULL|self + __init__)
+              22 LOAD_FAST                1 (parent)
+              24 CALL                     1
+              32 POP_TOP
+
+3788          34 LOAD_FAST                0 (self)
+              36 LOAD_ATTR                5 (NULL|self + setWindowTitle)
+              56 LOAD_CONST               1 ('Lockup Config')
+              58 CALL                     1
+              66 POP_TOP
+
+3789          68 LOAD_FAST                0 (self)
+              70 LOAD_ATTR                7 (NULL|self + resize)
+              90 LOAD_CONST               2 (380)
+              92 LOAD_CONST               3 (260)
+              94 CALL                     2
+             102 POP_TOP
+
+3790         104 LOAD_GLOBAL              9 (NULL + dict)
+             114 LOAD_FAST                2 (flags)
+             116 CALL                     1
+             124 LOAD_FAST                0 (self)
+             126 STORE_ATTR               5 (flags)
+
+3792         136 LOAD_GLOBAL             13 (NULL + QVBoxLayout)
+             146 LOAD_FAST                0 (self)
+             148 CALL                     1
+             156 STORE_FAST               3 (layout)
+
+3793         158 LOAD_FAST                3 (layout)
+             160 LOAD_ATTR               15 (NULL|self + addWidget)
+             180 LOAD_GLOBAL             17 (NULL + QLabel)
+
+3794         190 LOAD_CONST               4 ('Advanced TCC behavior options. These add constraints on top of\nthe Min/Accel/WOT gear gates set in the Torque Converter group.')
+
+3793         192 CALL                     1
+             200 CALL                     1
+             208 POP_TOP
+
+3798         210 LOAD_GLOBAL             19 (NULL + QCheckBox)
+
+3799         220 LOAD_CONST               5 ('Stall Lock Logic — force lock above 66% of stall RPM\n(prevents excessive slip with high-stall converters)')
+
+3798         222 CALL                     1
+             230 LOAD_FAST                0 (self)
+             232 STORE_ATTR              10 (stall_lock)
+
+3802         242 LOAD_GLOBAL             19 (NULL + QCheckBox)
+
+3803         252 LOAD_CONST               6 ("Init Lock Logic — TCC must lock above the upshift into this gear\n(matches BC's InitLock; aggressive but smooth)")
+
+3802         254 CALL                     1
+             262 LOAD_FAST                0 (self)
+             264 STORE_ATTR              11 (init_lock)
+
+3806         274 LOAD_GLOBAL             19 (NULL + QCheckBox)
+
+3807         284 LOAD_CONST               7 ('4L60E: Allow WOT 4th Lockup\n(GM disables stock — enable for street tuning, NOT towing)')
+
+3806         286 CALL                     1
+             294 LOAD_FAST                0 (self)
+             296 STORE_ATTR              12 (wot_4th_4l60)
+
+3810         306 LOAD_GLOBAL             19 (NULL + QCheckBox)
+
+3811         316 LOAD_CONST               8 ('6L80/90: Disable 2nd Gear Coast-Down TCC\n(reduces cruise lockup hunting)')
+
+3810         318 CALL                     1
+             326 LOAD_FAST                0 (self)
+             328 STORE_ATTR              13 (no_2ct_6l)
+
+3815         338 LOAD_FAST                0 (self)
+             340 LOAD_ATTR               20 (stall_lock)
+             360 LOAD_ATTR               29 (NULL|self + setChecked)
+             380 LOAD_FAST                0 (self)
+             382 LOAD_ATTR               10 (flags)
+             402 LOAD_ATTR               31 (NULL|self + get)
+             422 LOAD_CONST               9 ('stall_lock')
+             424 LOAD_CONST              10 (False)
+             426 CALL                     2
+             434 CALL                     1
+             442 POP_TOP
+
+3816         444 LOAD_FAST                0 (self)
+             446 LOAD_ATTR               22 (init_lock)
+             466 LOAD_ATTR               29 (NULL|self + setChecked)
+             486 LOAD_FAST                0 (self)
+             488 LOAD_ATTR               10 (flags)
+             508 LOAD_ATTR               31 (NULL|self + get)
+             528 LOAD_CONST              11 ('init_lock')
+             530 LOAD_CONST              10 (False)
+             532 CALL                     2
+             540 CALL                     1
+             548 POP_TOP
+
+3817         550 LOAD_FAST                0 (self)
+             552 LOAD_ATTR               24 (wot_4th_4l60)
+             572 LOAD_ATTR               29 (NULL|self + setChecked)
+             592 LOAD_FAST                0 (self)
+             594 LOAD_ATTR               10 (flags)
+             614 LOAD_ATTR               31 (NULL|self + get)
+             634 LOAD_CONST              12 ('wot_4th_4l60')
+             636 LOAD_CONST              10 (False)
+             638 CALL                     2
+             646 CALL                     1
+             654 POP_TOP
+
+3818         656 LOAD_FAST                0 (self)
+             658 LOAD_ATTR               26 (no_2ct_6l)
+             678 LOAD_ATTR               29 (NULL|self + setChecked)
+             698 LOAD_FAST                0 (self)
+             700 LOAD_ATTR               10 (flags)
+             720 LOAD_ATTR               31 (NULL|self + get)
+             740 LOAD_CONST              13 ('no_2ct_6l')
+             742 LOAD_CONST              10 (False)
+             744 CALL                     2
+             752 CALL                     1
+             760 POP_TOP
+
+3820         762 LOAD_FAST                3 (layout)
+             764 LOAD_ATTR               15 (NULL|self + addWidget)
+             784 LOAD_FAST                0 (self)
+             786 LOAD_ATTR               20 (stall_lock)
+             806 CALL                     1
+             814 POP_TOP
+
+3821         816 LOAD_FAST                3 (layout)
+             818 LOAD_ATTR               15 (NULL|self + addWidget)
+             838 LOAD_FAST                0 (self)
+             840 LOAD_ATTR               22 (init_lock)
+             860 CALL                     1
+             868 POP_TOP
+
+3822         870 LOAD_FAST                3 (layout)
+             872 LOAD_ATTR               15 (NULL|self + addWidget)
+             892 LOAD_FAST                0 (self)
+             894 LOAD_ATTR               24 (wot_4th_4l60)
+             914 CALL                     1
+             922 POP_TOP
+
+3823         924 LOAD_FAST                3 (layout)
+             926 LOAD_ATTR               15 (NULL|self + addWidget)
+             946 LOAD_FAST                0 (self)
+             948 LOAD_ATTR               26 (no_2ct_6l)
+             968 CALL                     1
+             976 POP_TOP
+
+3824         978 LOAD_FAST                3 (layout)
+             980 LOAD_ATTR               33 (NULL|self + addStretch)
+            1000 CALL                     0
+            1008 POP_TOP
+
+3826        1010 LOAD_GLOBAL             35 (NULL + QHBoxLayout)
+            1020 CALL                     0
+            1028 STORE_FAST               4 (btn_row)
+
+3827        1030 LOAD_GLOBAL             37 (NULL + QPushButton)
+            1040 LOAD_CONST              14 ('OK')
+            1042 CALL                     1
+            1050 STORE_FAST               5 (ok)
+
+3828        1052 LOAD_FAST                5 (ok)
+            1054 LOAD_ATTR               38 (clicked)
+            1074 LOAD_ATTR               41 (NULL|self + connect)
+            1094 LOAD_FAST                0 (self)
+            1096 LOAD_ATTR               42 (accept)
+            1116 CALL                     1
+            1124 POP_TOP
+
+3829        1126 LOAD_GLOBAL             37 (NULL + QPushButton)
+            1136 LOAD_CONST              15 ('Cancel')
+            1138 CALL                     1
+            1146 STORE_FAST               6 (cancel)
+
+3830        1148 LOAD_FAST                6 (cancel)
+            1150 LOAD_ATTR               38 (clicked)
+            1170 LOAD_ATTR               41 (NULL|self + connect)
+            1190 LOAD_FAST                0 (self)
+            1192 LOAD_ATTR               44 (reject)
+            1212 CALL                     1
+            1220 POP_TOP
+
+3831        1222 LOAD_FAST                4 (btn_row)
+            1224 LOAD_ATTR               33 (NULL|self + addStretch)
+            1244 CALL                     0
+            1252 POP_TOP
+
+3832        1254 LOAD_FAST                4 (btn_row)
+            1256 LOAD_ATTR               15 (NULL|self + addWidget)
+            1276 LOAD_FAST                5 (ok)
+            1278 CALL                     1
+            1286 POP_TOP
+
+3833        1288 LOAD_FAST                4 (btn_row)
+            1290 LOAD_ATTR               15 (NULL|self + addWidget)
+            1310 LOAD_FAST                6 (cancel)
+            1312 CALL                     1
+            1320 POP_TOP
+
+3834        1322 LOAD_FAST                3 (layout)
+            1324 LOAD_ATTR               47 (NULL|self + addLayout)
+            1344 LOAD_FAST                4 (btn_row)
+            1346 CALL                     1
+            1354 POP_TOP
+            1356 RETURN_CONST             0 (None)

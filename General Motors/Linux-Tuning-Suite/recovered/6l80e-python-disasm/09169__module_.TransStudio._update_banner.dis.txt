@@ -1,0 +1,110 @@
+9169           0 RESUME                   0
+
+9170           2 LOAD_CONST               1 ('Slip ')
+               4 LOAD_FAST                2 (res)
+               6 LOAD_CONST               2 ('slip_pct')
+               8 BINARY_SUBSCR
+              12 LOAD_CONST               3 ('.1f')
+              14 FORMAT_VALUE             4 (with format)
+              16 LOAD_CONST               4 ('%')
+              18 BUILD_STRING             3
+              20 STORE_FAST               4 (slip_str)
+
+9171          22 LOAD_CONST               5 ('Lead ')
+              24 LOAD_FAST                1 (cfg)
+              26 LOAD_CONST               6 ('lead_mode')
+              28 BINARY_SUBSCR
+              32 LOAD_ATTR                1 (NULL|self + upper)
+              52 CALL                     0
+              60 FORMAT_VALUE             0
+              62 BUILD_STRING             2
+              64 STORE_FAST               5 (lead_str)
+
+9172          66 LOAD_GLOBAL              3 (NULL + len)
+              76 LOAD_FAST                0 (self)
+              78 LOAD_ATTR                4 (_last_results_modes)
+              98 CALL                     1
+             106 LOAD_CONST               7 (1)
+             108 BINARY_OP               10 (-)
+             112 STORE_FAST               6 (n_extra)
+
+9173         114 LOAD_FAST                6 (n_extra)
+             116 LOAD_CONST               8 (0)
+             118 COMPARE_OP              68 (>)
+             122 POP_JUMP_IF_FALSE        6 (to 136)
+             124 LOAD_CONST               9 (' | MULTI-MODE (')
+             126 LOAD_FAST                6 (n_extra)
+             128 FORMAT_VALUE             0
+             130 LOAD_CONST              10 (' extra)')
+             132 BUILD_STRING             3
+             134 JUMP_FORWARD             1 (to 138)
+         >>  136 LOAD_CONST              11 ('')
+         >>  138 STORE_FAST               7 (modes_str)
+
+9174         140 LOAD_FAST                0 (self)
+             142 LOAD_ATTR                6 (metric)
+             162 POP_JUMP_IF_FALSE        2 (to 168)
+             164 LOAD_CONST              12 (' | METRIC')
+             166 JUMP_FORWARD             1 (to 170)
+         >>  168 LOAD_CONST              11 ('')
+         >>  170 STORE_FAST               8 (unit_str)
+
+9175         172 LOAD_CONST              13 ('✓ Calculated. ')
+             174 LOAD_FAST                4 (slip_str)
+             176 FORMAT_VALUE             0
+             178 LOAD_CONST              14 ('  |  ')
+             180 LOAD_FAST                5 (lead_str)
+             182 FORMAT_VALUE             0
+             184 LOAD_FAST                7 (modes_str)
+             186 FORMAT_VALUE             0
+             188 LOAD_FAST                8 (unit_str)
+             190 FORMAT_VALUE             0
+             192 BUILD_STRING             6
+             194 STORE_FAST               9 (head)
+
+9176         196 LOAD_FAST                3 (warnings)
+             198 POP_JUMP_IF_TRUE        55 (to 310)
+
+9177         200 LOAD_FAST                0 (self)
+             202 LOAD_ATTR                8 (validation_banner)
+             222 LOAD_ATTR               11 (NULL|self + setStyleSheet)
+
+9178         242 LOAD_CONST              15 ('QLabel { background: #1a3a1a; color: #b8e0b8; border: 1px solid #2a6a2a; padding: 4px 8px; font-size: 10pt; }')
+
+9177         244 CALL                     1
+             252 POP_TOP
+
+9181         254 LOAD_FAST                0 (self)
+             256 LOAD_ATTR                8 (validation_banner)
+             276 LOAD_ATTR               13 (NULL|self + setText)
+             296 LOAD_FAST                9 (head)
+             298 CALL                     1
+             306 POP_TOP
+             308 RETURN_CONST             0 (None)
+
+9183     >>  310 LOAD_FAST                0 (self)
+             312 LOAD_ATTR                8 (validation_banner)
+             332 LOAD_ATTR               11 (NULL|self + setStyleSheet)
+
+9184         352 LOAD_CONST              16 ('QLabel { background: #3a2a1a; color: #f0c898; border: 1px solid #8a5a2a; padding: 4px 8px; font-size: 10pt; }')
+
+9183         354 CALL                     1
+             362 POP_TOP
+
+9187         364 LOAD_FAST                9 (head)
+             366 LOAD_CONST              17 ('\n⚠ ')
+             368 BINARY_OP                0 (+)
+             372 LOAD_CONST              17 ('\n⚠ ')
+             374 LOAD_ATTR               15 (NULL|self + join)
+             394 LOAD_FAST                3 (warnings)
+             396 CALL                     1
+             404 BINARY_OP                0 (+)
+             408 STORE_FAST              10 (body)
+
+9188         410 LOAD_FAST                0 (self)
+             412 LOAD_ATTR                8 (validation_banner)
+             432 LOAD_ATTR               13 (NULL|self + setText)
+             452 LOAD_FAST               10 (body)
+             454 CALL                     1
+             462 POP_TOP
+             464 RETURN_CONST             0 (None)

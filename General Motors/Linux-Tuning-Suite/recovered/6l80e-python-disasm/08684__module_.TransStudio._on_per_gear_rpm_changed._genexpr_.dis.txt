@@ -1,0 +1,25 @@
+               0 COPY_FREE_VARS           1
+
+8684           2 RETURN_GENERATOR
+               4 POP_TOP
+               6 RESUME                   0
+               8 LOAD_FAST                0 (.0)
+         >>   10 FOR_ITER                21 (to 56)
+              14 STORE_FAST               1 (v)
+              16 LOAD_GLOBAL              1 (NULL + abs)
+              26 LOAD_FAST                1 (v)
+              28 LOAD_DEREF               2 (global_rpm)
+              30 BINARY_OP               10 (-)
+              34 CALL                     1
+              42 LOAD_CONST               0 (0.5)
+              44 COMPARE_OP               2 (<)
+              48 YIELD_VALUE              1
+              50 RESUME                   1
+              52 POP_TOP
+              54 JUMP_BACKWARD           23 (to 10)
+         >>   56 END_FOR
+              58 RETURN_CONST             1 (None)
+         >>   60 CALL_INTRINSIC_1         3 (INTRINSIC_STOPITERATION_ERROR)
+              62 RERAISE                  1
+ExceptionTable:
+  6 to 58 -> 60 [0] lasti

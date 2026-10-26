@@ -1,0 +1,30 @@
+               0 COPY_FREE_VARS           1
+
+1636           2 RETURN_GENERATOR
+               4 POP_TOP
+               6 RESUME                   0
+               8 LOAD_FAST                0 (.0)
+         >>   10 FOR_ITER                39 (to 92)
+              14 STORE_FAST               1 (cell)
+
+1637          16 LOAD_FAST                1 (cell)
+              18 LOAD_ATTR                1 (NULL|self + strip)
+              38 CALL                     0
+              46 POP_JUMP_IF_FALSE       21 (to 90)
+              48 LOAD_DEREF               2 (cls)
+              50 LOAD_ATTR                3 (NULL|self + _is_number)
+              70 LOAD_FAST                1 (cell)
+              72 CALL                     1
+              80 POP_JUMP_IF_TRUE         4 (to 90)
+
+1636          82 LOAD_CONST               0 (1)
+              84 YIELD_VALUE              1
+              86 RESUME                   1
+              88 POP_TOP
+         >>   90 JUMP_BACKWARD           41 (to 10)
+         >>   92 END_FOR
+              94 RETURN_CONST             1 (None)
+         >>   96 CALL_INTRINSIC_1         3 (INTRINSIC_STOPITERATION_ERROR)
+              98 RERAISE                  1
+ExceptionTable:
+  6 to 94 -> 96 [0] lasti

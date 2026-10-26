@@ -1,0 +1,12 @@
+               0 COPY_FREE_VARS           1
+
+3390           2 RESUME                   0
+               4 LOAD_FAST                0 (checked)
+               6 POP_JUMP_IF_FALSE       17 (to 42)
+               8 LOAD_DEREF               1 (self)
+              10 LOAD_ATTR                1 (NULL|self + _switch_era)
+              30 LOAD_CONST               1 ('07-13')
+              32 CALL                     1
+              40 RETURN_VALUE
+         >>   42 LOAD_CONST               0 (None)
+              44 RETURN_VALUE
