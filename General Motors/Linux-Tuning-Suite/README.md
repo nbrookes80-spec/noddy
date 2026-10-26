@@ -33,8 +33,11 @@ app/                         the application (install copies this folder)
     core.py                  GUI-free logic: profiles, intents, tables, TPS x Gear export, dyno, drag, logs
     engines/                 reconstructed calculation engines (see table)
     bct/                     BC Trans data: tune.py (.BTC), presets.py, shiftmath.py, shift_cfg.py (.BTC to Shift Points inputs)
-    gui/                     PyQt6 tabs: shift_tab, pressure_tab, dyno_tab, log_tab, xdf_tab, bct_tab
-  tests/                     unittest suite (68 tests; one skipped if the XDF reference is absent)
+    vehicle.py               car, engine, transmission library, vehicle profile (vehicle.json)
+    consistency.py           checks that the inputs agree with each other and with the ECU limits
+    ai_tools.py              tools the AI may use: read settings, propose a change, ask the user
+    gui/                     PyQt6 tabs: shift_tab, vehicle_tab, pressure_tab, dyno_tab, log_tab, xdf_tab, bct_tab, ai_tab; theme.py (palette, icons)
+  tests/                     unittest suite (93 tests; one skipped if the XDF reference is absent)
 installer/tests/             install and uninstall tests (9), run with HOME set to a scratch folder
 installer/
   install_tunertoolpro.py    Windows-style Setup wizard (Tkinter); also the uninstaller

@@ -28,7 +28,7 @@ class GuiSmokeTests(unittest.TestCase):
 
     def test_all_tabs_present(self):
         names = [self.tabs.tabText(i) for i in range(self.tabs.count())]
-        self.assertEqual(names, ['Shift Points', 'Pressure & Timing', 'Dyno & Drag',
+        self.assertEqual(names, ['Shift Points', 'Vehicle', 'Pressure & Timing', 'Dyno & Drag',
                                  'Datalog', 'XDF / BIN', 'BCT Tunes', 'AI Assistant'])
 
     def test_shift_calculate_fills_tables(self):
@@ -89,7 +89,7 @@ class GuiSmokeTests(unittest.TestCase):
         self.assertEqual(tab._tables_data['n_gears'], 8)
 
     def test_pressure_tables_switch(self):
-        tab = self.tabs.widget(1)
+        tab = self.tabs.widget(2)
         tab.kind_box.setCurrentText('Shift time 4-speed')
         self.assertEqual((tab.table.rowCount(), tab.table.columnCount()), (3, 17))
         tab.kind_box.setCurrentText('TCC duty maximum')
@@ -104,7 +104,7 @@ class GuiSmokeTests(unittest.TestCase):
 
     def test_dyno_and_drag_with_synthetic_curve(self):
         from tunertoolpro.engines.torque_curve import TorqueCurve
-        tab = self.tabs.widget(2)
+        tab = self.tabs.widget(3)
         tab.curve = TorqueCurve([(1000, 150, 790), (3000, 280, 490), (5000, 320, 336),
                                  (6200, 300, 254)])
         tab.refresh_dyno()
@@ -118,7 +118,7 @@ class GuiSmokeTests(unittest.TestCase):
         tunes = sorted(glob.glob(os.path.join(bct_dir, '*.BTC')))
         if not tunes:
             self.skipTest('no BC Trans tunes')
-        tab = self.tabs.widget(5)
+        tab = self.tabs.widget(6)
         tab.tune = BtcTune.load(tunes[0])
         tab._show_keys()
         tab.show_speeds()

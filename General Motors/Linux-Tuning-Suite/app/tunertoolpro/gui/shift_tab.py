@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import (QComboBox, QDoubleSpinBox, QFileDialog,
 from .. import core
 from ..bct.shift_cfg import shift_cfg_from_btc
 from ..bct.tune import BtcTune
+from .theme import icon
 from .widgets import fill_grid, make_read_only_table
 
 # (cfg key, label, minimum, maximum, step, decimals)
@@ -60,8 +61,8 @@ class ShiftTab(QWidget):
         self.stall_logic.addItems(['Off', 'On'])
         self.engine_box = QComboBox()
         self.engine_box.addItems([core.ENGINE_CALC, core.ENGINE_BC])
-        load_btn = QPushButton('Reload profile')
-        btc_btn = QPushButton('Load .BTC tune...')
+        load_btn = QPushButton(icon(self, 'reload'), 'Reload profile')
+        btc_btn = QPushButton(icon(self, 'open'), 'Load .BTC tune...')
         top.addWidget(QLabel('Profile'))
         top.addWidget(self.profile_box, 2)
         top.addWidget(QLabel('Intent'))
@@ -109,8 +110,8 @@ class ShiftTab(QWidget):
         grid.addWidget(self.stall_logic, row, 3)
 
         buttons = QHBoxLayout()
-        calc_btn = QPushButton('Calculate')
-        export_btn = QPushButton('Export TPS x Gear...')
+        calc_btn = QPushButton(icon(self, 'calculate'), 'Calculate')
+        export_btn = QPushButton(icon(self, 'export'), 'Export TPS x Gear...')
         buttons.addStretch(1)
         buttons.addWidget(calc_btn)
         buttons.addWidget(export_btn)
@@ -136,6 +137,40 @@ class ShiftTab(QWidget):
         layout.addLayout(buttons)
         layout.addWidget(self.results, 1)
         self._tables_data = None
+
+    def widgets(self):
+        """The numeric inputs by name, for the AI's bounds and proposals."""
+        return dict(self._widgets)
+
+    def value(self, key):
+        return self._widgets[key].value()
+
+    def set_value(self, key, value):
+        """Set one numeric input. Returns False if the name is not an input on this tab."""
+        widget = self._widgets.get(key)
+        if widget is None:
+            return False
+        if isinstance(widget, QSpinBox):
+            widget.setValue(int(round(value)))
+        else:
+            widget.setValue(float(value))
+        return True
+
+    def inputs_or_none(self):
+        """The calculation inputs, or None when the ratios cannot be read."""
+        try:
+            return self.build_cfg()
+        except (ValueError, KeyError):
+            return None
+
+    def take_vehicle(self, profile):
+        """Copy the tire, final drive and weight from the Vehicle tab. A value of zero means not set, so it is skipped."""
+        if profile.tire_dia:
+            self.set_value('tire_dia', profile.tire_dia)
+        if profile.final_drive:
+            self.set_value('axle', profile.final_drive)
+        if profile.weight_lb:
+            self.set_value('weight', profile.weight_lb)
 
     def load_profile(self):
         """Fill the form from the chosen profile and intent."""
