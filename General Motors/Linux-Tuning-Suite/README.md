@@ -16,7 +16,8 @@ Merged product name: **6L80e TunerToolPro**. Version 0.1.0.
 | Disassemble the Python app's bytecode | Done — `recovered/6l80e-python-disasm/` |
 | Reconstruct the calculation engines | Done (see table below). All verified against the original |
 | BC Trans data formats (`.BTC`, presets, speed math) | Done. All 33 shipped tunes round-trip byte-for-byte |
-| Merged PyQt6 application | Done — `app/`. Six tabs. Tests pass headless |
+| BC Trans `Calc_Shifts` port | Ported to `app/tunertoolpro/bct/calc_shifts.py`. Matches the decompiled original on 433 cases (33 tunes + 400 random variants) within 5e-05. Not compared with BC Trans itself, which cannot be run here. Notes in `recovered/bct-csharp/CALC_SHIFTS_NOTES.md` |
+| Merged PyQt6 application | Done — `app/`. Six tabs. Tests pass headless (58 tests) |
 | GUI installer | Done — `installer/`. Tested in CLI mode |
 | User guide | Done — `docs/USER_GUIDE.md` |
 | Differential tests against the original | Done for all reconstructed engines and readers: 34,685 checks, 0 failures (see below) |
@@ -31,9 +32,9 @@ app/                         the application (install copies this folder)
     __main__.py              python3 -m tunertoolpro
     core.py                  GUI-free logic: profiles, intents, tables, TPS x Gear export, dyno, drag, logs
     engines/                 reconstructed calculation engines (see table)
-    bct/                     BC Trans data: tune.py (.BTC), presets.py, shiftmath.py
+    bct/                     BC Trans data: tune.py (.BTC), presets.py, shiftmath.py, shift_cfg.py (.BTC to Shift Points inputs)
     gui/                     PyQt6 tabs: shift_tab, pressure_tab, dyno_tab, log_tab, xdf_tab, bct_tab
-  tests/                     unittest suite (34 tests; one skipped if the XDF reference is absent)
+  tests/                     unittest suite (58 tests; one skipped if the XDF reference is absent)
 installer/
   install_tunertoolpro.py    GUI installer (Tkinter) and --cli mode
 docs/
@@ -90,8 +91,9 @@ Known issues (not fixed):
 - `calc_engine.py`: `init_lock_logic` is read but never used. `calculate` has an unreachable `else base = min_speed` branch.
 - `xdf.py`: `_apply_math` evaluates an expression from the XDF with empty builtins. `**` is allowed, so a crafted XDF can force heavy computation. Treat as a hardening task.
 - `logimporter.py`: the WOT section skips rows with `rpm <= 0`. The original divides by zero there.
-- GUI: the Shift Points torque-lead mode uses 75% of rated HP, not the dyno curve. Per-gear delays are the fixed fallback (0.5 s up, 0.15 s down).
-- Not in the Pressure tab yet: TCC apply ramp tables and the 4-speed base table (axes unconfirmed).
+- GUI: the Shift Points torque-lead mode uses 75% of rated HP, not the dyno curve. BC Trans's own `Calc_Shifts` also uses 75% of RWHP, so this matches BC here. Without a loaded tune, per-gear delays are the fixed fallback (0.5 s up, 0.15 s down).
+- Shift Points has two engines, chosen by the **Engine** selector. *CalcEngine* maps a loaded `.BTC` tune's keys to its inputs (`bct/shift_cfg.py`; see the mapping table in `docs/USER_GUIDE.md`). *BC Trans (Calc_Shifts)* runs the `bct/calc_shifts.py` port on the tune as written. The port matches the decompiled `Calc_Shifts` on 433 cases within 5e-05. It is not checked against BC Trans running on a car, because BC Trans cannot be run here.
+- `bct/shift_cfg.py` reads `Gear` as the final drive and sets the chain ratio to 1.0. BC Trans has no separate chain ratio.
 
 Differential results (run 2026-10-26 with your approval, on the extracted main module `.pyc` only, in an empty folder with `python3 -I` and no network):
 - `reconstructed/python/tests/verify_calc_engine.py`: 22,400 checks, 0 failures

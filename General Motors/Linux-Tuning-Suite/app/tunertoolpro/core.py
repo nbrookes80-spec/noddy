@@ -110,6 +110,30 @@ def calc_shift_tables(cfg):
     return CalcEngine.calculate(cfg)
 
 
+# Shift Points engines. The BC Trans engine runs the Calc_Shifts port on a loaded .BTC tune.
+ENGINE_CALC = 'TunerToolPro (CalcEngine)'
+ENGINE_BC = 'BC Trans (Calc_Shifts)'
+
+
+def bc_shift_tables(tune):
+    """Run the BC Trans Calc_Shifts port on a BtcTune.
+
+    Returns the same keys as calc_shift_tables, so the tables and TPS x Gear export work
+    for both engines. Also returns logic_error and iterations for the status line.
+    """
+    from .bct.calc_shifts import calc_shifts
+    result = calc_shifts(tune)
+    return {
+        'upshift': result.upshift,
+        'downshift': result.downshift,
+        'tcc_unlock': result.tcc_unlock,
+        'tcc_lock': result.tcc_lock,
+        'n_gears': result.gears,
+        'logic_error': result.logic_error,
+        'iterations': result.iterations,
+    }
+
+
 def tps_gear_text(tables):
     """Tab-separated TPS x Gear matrices for pasting into VCM Editor or TunerPro.
 

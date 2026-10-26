@@ -6,6 +6,8 @@ from PyQt6.QtWidgets import (QComboBox, QDoubleSpinBox, QFileDialog,
                              QWidget)
 
 from .. import core
+from ..bct.shift_cfg import shift_cfg_from_btc
+from ..bct.tune import BtcTune
 from .widgets import fill_grid, make_read_only_table
 
 # (cfg key, label, minimum, maximum, step, decimals)
@@ -56,16 +58,29 @@ class ShiftTab(QWidget):
         self.lead_box.addItems(['rpm', 'torque'])
         self.stall_logic = QComboBox()
         self.stall_logic.addItems(['Off', 'On'])
+        self.engine_box = QComboBox()
+        self.engine_box.addItems([core.ENGINE_CALC, core.ENGINE_BC])
         load_btn = QPushButton('Reload profile')
+        btc_btn = QPushButton('Load .BTC tune...')
         top.addWidget(QLabel('Profile'))
         top.addWidget(self.profile_box, 2)
         top.addWidget(QLabel('Intent'))
         top.addWidget(self.intent_box, 1)
+        top.addWidget(QLabel('Engine'))
+        top.addWidget(self.engine_box, 2)
         top.addWidget(load_btn)
+        top.addWidget(btc_btn)
         self.profile_box.currentIndexChanged.connect(lambda _: self.load_profile())
         load_btn.clicked.connect(self.load_profile)
+        btc_btn.clicked.connect(self.load_btc)
+        self.engine_box.currentIndexChanged.connect(lambda _: self._engine_changed())
+        self.btc_label = QLabel()
+        self.btc_label.setWordWrap(True)
+        self._btc = None   # per-shift data from a loaded tune; None when no tune is loaded
+        self._tune = None  # the parsed BtcTune, needed by the BC Trans engine
 
-        form_box = QGroupBox('Vehicle and calibration')
+        self.form_box = QGroupBox('Vehicle and calibration')
+        form_box = self.form_box
         grid = QGridLayout(form_box)
         half = (len(FIELDS) + 1) // 2
         for i, (key, label, lo, hi, step, decimals) in enumerate(FIELDS):
@@ -114,6 +129,10 @@ class ShiftTab(QWidget):
         layout = QVBoxLayout(self)
         layout.addLayout(top)
         layout.addWidget(form_box)
+        layout.addWidget(self.btc_label)
+        self.calc_note = QLabel()
+        self.calc_note.setWordWrap(True)
+        layout.addWidget(self.calc_note)
         layout.addLayout(buttons)
         layout.addWidget(self.results, 1)
         self._tables_data = None
@@ -128,6 +147,50 @@ class ShiftTab(QWidget):
         self.ratios.setText(', '.join(f'{r:g}' for r in cfg['ratios']))
         self.lead_box.setCurrentText('torque' if cfg['lead_mode'] != 'rpm' else 'rpm')
         self.stall_logic.setCurrentIndex(0)
+        self._btc = None
+        self._tune = None
+        self.btc_label.setText('')
+        self._engine_changed()
+
+    def load_btc(self):
+        """Fill the form from a Bluecat .BTC tune. The intent is set to Custom so no clamp applies."""
+        path, _ = QFileDialog.getOpenFileName(self, 'Open BC Trans tune', '',
+                                              'BC Trans tunes (*.BTC *.btc);;All files (*)')
+        if not path:
+            return
+        try:
+            tune = BtcTune.load(path)
+            cfg = shift_cfg_from_btc(tune)
+        except (OSError, ValueError) as exc:
+            QMessageBox.warning(self, 'Cannot load tune', str(exc))
+            return
+        self.intent_box.setCurrentText(core.CUSTOM_INTENT)  # runs load_profile, which clears _btc
+        clipped = []
+        for key, widget in self._widgets.items():
+            value = cfg[key]
+            widget.setValue(int(value) if key in INTEGER_FIELDS else float(value))
+            if abs(widget.value() - value) > 1e-6:
+                clipped.append(key)
+        self.ratios.setText(', '.join(f'{r:g}' for r in cfg['ratios']))
+        self.lead_box.setCurrentText(cfg['lead_mode'])
+        self.stall_logic.setCurrentIndex(1 if cfg['stall_lock_logic'] else 0)
+        self._btc = {'delays': cfg['delays'], 'per_gear_rpm': cfg['per_gear_rpm']}
+        self._tune = tune
+        note = f'Loaded {path.rsplit("/", 1)[-1]}: {len(cfg["ratios"])} gears. Lead mode: {cfg["lead_mode"]}.'
+        if clipped:
+            note += ' Outside the form range, so the form shows the nearest value: ' + ', '.join(clipped) + '.'
+        self.btc_label.setText(note)
+        self._engine_changed()
+
+    def _engine_changed(self):
+        """BC Trans runs on the loaded tune as written, so the form is read-only in that mode."""
+        bc = self.engine_box.currentText() == core.ENGINE_BC
+        self.form_box.setEnabled(not bc)
+        self.calc_note.setText(
+            'BC Trans engine: the tables come from the loaded .BTC tune as written. '
+            'The form is disabled; change the tune file to change the result.'
+            if bc else '')
+        self._tables_data = None
 
     def build_cfg(self):
         cfg = {}
@@ -141,15 +204,41 @@ class ShiftTab(QWidget):
         cfg['lead_value'] = float(self._widgets['lead_value'].value())
         cfg['delays'] = [core.DEFAULT_DELAY] * n
         cfg['stall_lock_logic'] = self.stall_logic.currentIndex() == 1
+        if self._btc is not None:
+            # Per-shift delays and RPMs from the tune. A shorter list keeps its last entry.
+            delays = self._btc['delays']
+            cfg['delays'] = [delays[min(g, len(delays) - 1)] for g in range(n)]
+            if len(self._btc['per_gear_rpm']) == n:
+                cfg['per_gear_rpm'] = list(self._btc['per_gear_rpm'])
         return cfg
 
     def calculate(self):
-        try:
-            cfg = self.build_cfg()
-            tables = core.calc_shift_tables(cfg)
-        except (ValueError, ZeroDivisionError, KeyError) as exc:
-            QMessageBox.warning(self, 'Cannot calculate', str(exc))
-            return
+        self.calc_note.setText('')
+        if self.engine_box.currentText() == core.ENGINE_BC:
+            if self._tune is None:
+                QMessageBox.warning(self, 'Cannot calculate',
+                                    'The BC Trans engine needs a .BTC tune. Load one first.')
+                return
+            try:
+                tables = core.bc_shift_tables(self._tune)
+            except (ValueError, KeyError, ZeroDivisionError) as exc:
+                QMessageBox.warning(self, 'Cannot calculate', str(exc))
+                return
+            if tables['logic_error']:
+                self.calc_note.setText(
+                    f'BC Trans reports a logic error: {tables["logic_error"]} cells still changing '
+                    f'after {tables["iterations"]} passes. The tables are shown as BC Trans leaves them.')
+            else:
+                self.calc_note.setText(
+                    f'BC Trans Calc_Shifts converged in {tables["iterations"]} pass(es). '
+                    'Disabled TCC cells show BC Trans markers (318/317, or 255/254 on 4 gears).')
+        else:
+            try:
+                cfg = self.build_cfg()
+                tables = core.calc_shift_tables(cfg)
+            except (ValueError, ZeroDivisionError, KeyError) as exc:
+                QMessageBox.warning(self, 'Cannot calculate', str(exc))
+                return
         self._tables_data = tables
         tps = [f'{v:g}%' for v in core.tps_axis()]
         shifts = [f'{g + 1}-{g + 2}' for g in range(len(tables['upshift']))]

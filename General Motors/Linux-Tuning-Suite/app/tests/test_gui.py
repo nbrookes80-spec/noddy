@@ -37,6 +37,57 @@ class GuiSmokeTests(unittest.TestCase):
         self.assertEqual(tab.tables['upshift'].columnCount(), 17)
         self.assertGreater(tab.tables['upshift'].rowCount(), 0)
 
+    def _bct_path(self, name):
+        bct_dir = os.environ.get('BCT_DIR', '/home/nathan/Downloads/BCT+1.42/Bluecat Transmission Tool')
+        path = os.path.join(bct_dir, name)
+        if not os.path.exists(path):
+            self.skipTest('BC Trans tune not present')
+        return path
+
+    def test_shift_engine_selector_switches_tables_source(self):
+        from unittest import mock
+        from PyQt6.QtWidgets import QFileDialog, QMessageBox
+        from tunertoolpro import core
+        from tunertoolpro.bct.calc_shifts import calc_shifts
+        from tunertoolpro.bct.tune import BtcTune
+        path = self._bct_path('(Base)2012_C6_6L80_Boltons.BTC')
+        tab = self.tabs.widget(0)
+        with mock.patch.object(QMessageBox, 'warning') as warn:
+            tab.engine_box.setCurrentText(core.ENGINE_BC)
+            self.assertFalse(tab.form_box.isEnabled())
+            tab.calculate()                      # no tune loaded yet
+            self.assertEqual(warn.call_count, 1)
+        with mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(path, '')):
+            tab.load_btc()
+        self.assertTrue(tab.form_box.isEnabled() is False)  # still BC Trans mode
+        tab.calculate()
+        expected = calc_shifts(BtcTune.load(path)).upshift
+        self.assertEqual(tab.tables['upshift'].rowCount(), len(expected))
+        self.assertEqual(tab.tables['upshift'].columnCount(), 17)
+        self.assertEqual(tab.tables['upshift'].item(0, 0).text(), f'{expected[0][0]:.1f}')
+        self.assertIn('converged', tab.calc_note.text())
+        # Back to CalcEngine: the form is editable and the BC tables are not used.
+        tab.engine_box.setCurrentText(core.ENGINE_CALC)
+        self.assertTrue(tab.form_box.isEnabled())
+        tab.calculate()
+        self.assertIsNotNone(tab._tables_data)
+        self.assertNotIn('converged', tab.calc_note.text())
+
+    def test_bc_engine_export_text_uses_bc_tables(self):
+        from unittest import mock
+        from PyQt6.QtWidgets import QFileDialog
+        from tunertoolpro import core
+        path = self._bct_path('(Base)2016_F_8L90_Boltons.BTC')
+        tab = self.tabs.widget(0)
+        with mock.patch.object(QFileDialog, 'getOpenFileName', return_value=(path, '')):
+            tab.load_btc()
+        tab.engine_box.setCurrentText(core.ENGINE_BC)
+        tab.calculate()
+        text = core.tps_gear_text(tab._tables_data)
+        self.assertIn('Upshift MPH', text)
+        self.assertIn('TCC lock MPH', text)
+        self.assertEqual(tab._tables_data['n_gears'], 8)
+
     def test_pressure_tables_switch(self):
         tab = self.tabs.widget(1)
         tab.kind_box.setCurrentText('Shift time 4-speed')

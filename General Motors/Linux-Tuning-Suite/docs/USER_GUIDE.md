@@ -68,10 +68,13 @@ installer added the command.
    sets them.
 3. Edit the values in the form. Changing the profile or intent resets the form, so
    make the profile and intent choices first.
-4. Press **Calculate**. Four tables appear, one per tab: upshift MPH, downshift MPH,
+4. Pick an **Engine**. *TunerToolPro (CalcEngine)* uses the form values. *BC Trans
+   (Calc_Shifts)* uses a loaded `.BTC` tune as written (see below). It needs a tune loaded
+   first.
+5. Press **Calculate**. Four tables appear, one per tab: upshift MPH, downshift MPH,
    TCC unlock MPH and TCC lock MPH. Rows are shifts or gears. Columns are throttle
    position in steps of 6.25% from 0% to 100%.
-5. Press **Export TPS x Gear** to save a tab-separated text file. Each block has a
+6. Press **Export TPS x Gear** to save a tab-separated text file. Each block has a
    title, a header row of TPS percentages, and one row per shift or gear. Paste it into
    the VCM Editor or TunerPro tables, and check that the paste lines up.
 
@@ -80,9 +83,53 @@ Notes:
   lead uses 75% of the rated horsepower in this release. It does not yet read the dyno
   curve from the Dyno & Drag tab. **Stall-based lock floor** adds the stall-based floor
   to the lock tables.
-- The per-gear **delays** use the original program's fallback of 0.5 s up and 0.15 s
-  down for every gear. The original's own delay table was not recovered, so per-gear
-  delays cannot be set here yet.
+- Without a tune loaded, the per-gear **delays** use the original program's fallback of
+  0.5 s up and 0.15 s down. A loaded BC Trans tune supplies its own delays for each shift.
+
+### Load a BC Trans tune
+
+Press **Load .BTC tune...** to fill the form from a Bluecat `.BTC` file. The intent is set
+to *Custom* so no clamp changes the tune's numbers. A note under the form lists any value
+that was outside the form's range and was shown at its nearest limit.
+
+**Engine: TunerToolPro (CalcEngine)** calculates from the form values, which the tune
+filled in as the table below shows. **Engine: BC Trans (Calc_Shifts)** runs the BC Trans
+calculation on the tune itself. The tune's per-cell TCC grids, delays and every other key
+are read directly, and the form is disabled, because the tune file is the input. To change
+a value in that mode, edit the tune in BC Trans and load it again.
+
+| BC Trans key | Shift Points input |
+|---|---|
+| `Gear` (labelled *Final*) | Axle ratio. The chain ratio is set to 1.0 |
+| `Tire` | Tire diameter |
+| `Ratio1` to `RatioN` | Gear ratios |
+| `Idle`, `Stall`, `DownRPM` | Idle RPM, stall RPM, downshift RPM |
+| `RPM1` to `RPMN` | Shift RPM for each gear |
+| `Prep1` to `Prep(N-1)`, `React1` to `React(N-1)` | Per-gear delays (Prep + React on upshift) |
+| `DownTime` | Downshift time |
+| `Weight`, `RWHP` | Weight, rear-wheel HP |
+| `Lead`, `AdvancedLead` | Lead value. `AdvancedLead` 0 is RPM lead, 1 is torque lead |
+| `Factor`, `Offset`, `UpFactor`, `DownFactor` | TPS factor, TPS offset, upshift and downshift firmness |
+| `ShiftSpread`, `LockSpread`, `ShiftLockSpread`, `UnlockShiftSpread` | The four spreads |
+| `TCC_MinRpm` | Minimum TCC RPM (one value) |
+| `MinLockGear`, `AccelLockGear`, `WOTLockGear` | Minimum TCC, accelerator-lock and WOT-lock gears |
+| `StallLogic` | Stall-based lock floor |
+
+Not used by the CalcEngine path: the per-cell TCC grids (`MinTCCRPM*`,
+`TCC_UlckBeforeDown*`), `Trans`, `TBSlope`, `VSS`, `Metric`, the lock and unlock options
+(`Lock>Unlock`, `Up>Down`, `AccelGearLock` and the rest) and the `Exp_*` export options.
+
+The two engines are different calculations and give different tables.
+
+- **CalcEngine** is this app's own Shift Points algorithm, rebuilt from the Python app.
+- **BC Trans (Calc_Shifts)** is a port of the BC Trans `Calc_Shifts` routine. It was checked
+  against the decompiled BC Trans code on the 33 shipped tunes and 400 random variants. Every
+  cell agrees within 5e-05. It has not been checked against BC Trans running on a car, so
+  check the final numbers in BC Trans before you use them.
+
+BC Trans markers show as-is in the BC tables. On 6+ gear tunes, `318` in a lock table and
+`317` in an unlock table mark a disabled TCC cell. On 4-gear tunes the markers are `255` (lock)
+and `254` (unlock).
 
 ## Pressure & Timing
 
@@ -98,8 +145,9 @@ Notes:
    in lb-ft; for TCC duty, rows are temperatures in °F and columns are line pressure
    in psi.
 
-Not in this release: the TCC apply ramp tables (they depend on a model-year era and
-have their own axes) and the 4-speed base table (its axes are not yet confirmed).
+The **TCC apply pressure ramp** table has a *Model years* selector (2007 to 2010, 2011 to
+2014, or 2015 and later). Each era has its own shape. Max torque and the psi cap do not
+change that table, because the original's ramp does not read them, so those inputs are off.
 
 ## Dyno & Drag
 
@@ -194,9 +242,10 @@ changed. Keep a copy of the original.
 
 ## Known limits (this release)
 
-- Per-gear delays are fixed at the original's fallback values.
-- The TCC apply ramp and 4-speed base pressure tables are not in the Pressure tab yet.
-- The BCT tune file is not yet converted into shift-point inputs. The two tools share
-  the data files, not the calculation.
+- Without a loaded tune, per-gear delays are the original's fallback values.
+- With the CalcEngine path, a loaded tune only sets the Shift Points inputs. Its per-cell
+  TCC grids are not used. The BC Trans engine uses the whole tune.
+- The BC Trans engine has no form. It cannot take changes made in the form.
+- The 4-speed base pressure table's axes are not confirmed against the original.
 - The BCT speed table uses the same 3.14 value for pi as the original. The Shift Points
   tab uses the exact value, so the two can differ by about 0.05%.
