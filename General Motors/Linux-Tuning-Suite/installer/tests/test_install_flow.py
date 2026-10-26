@@ -130,3 +130,22 @@ class QtLibraryCheckTests(unittest.TestCase):
 
     def test_no_warning_when_library_present(self):
         self.assertEqual(setup.missing_qt_libraries(find=lambda name: '/usr/lib/libxcb-cursor.so.0'), [])
+
+
+class FolderPermissionTests(unittest.TestCase):
+    @unittest.skipIf(hasattr(os, 'geteuid') and os.geteuid() == 0, 'root can write anywhere')
+    def test_refuses_a_folder_the_user_cannot_create(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as base:
+            locked = Path(base) / 'locked'
+            locked.mkdir()
+            locked.chmod(0o555)
+            try:
+                with self.assertRaises(ValueError) as ctx:
+                    setup.check_target(str(locked / 'TunerToolPro'))
+                self.assertIn('permission', str(ctx.exception))
+            finally:
+                locked.chmod(0o755)
+
+    def test_accepts_a_folder_inside_the_home_folder(self):
+        setup.check_target(str(setup.DEFAULT_TARGET))

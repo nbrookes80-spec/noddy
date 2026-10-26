@@ -26,6 +26,7 @@ Needs Python 3.10+ with Tkinter and venv. On Zorin OS or Ubuntu:
 import ctypes.util
 import importlib.util
 import json
+import os
 import queue
 import re
 import shutil
@@ -109,6 +110,12 @@ def check_target(target):
     if target.exists() and any(target.iterdir()) and not (target / MANIFEST).exists():
         raise ValueError('That folder is not empty and is not a TunerToolPro install. '
                          'Choose an empty folder.')
+    nearest = resolved
+    while not nearest.exists() and nearest != nearest.parent:
+        nearest = nearest.parent
+    if not os.access(nearest, os.W_OK | os.X_OK):
+        raise ValueError(f'You do not have permission to create {resolved}. Choose a folder inside '
+                         f'your home folder, for example {DEFAULT_TARGET}')
 
 
 def desktop_dir():
@@ -557,7 +564,7 @@ def run_wizard(uninstall_mode=False):
             ttk.Checkbutton(body, text=f'Start {PRODUCT} now', variable=state['launch']).pack(anchor='w')
         else:
             set_header('Setup failed' if not uninstall_mode else 'Removal failed', detail)
-            wrapped(body, 'Setup did not finish. Fix the problem above and run Setup again. Your settings '
+            wrapped(body, 'Setup did not finish. Fix the problem shown at the top and run Setup again. Your settings '
                           'are not removed.')
 
     def finish():
