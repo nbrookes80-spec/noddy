@@ -1,0 +1,44 @@
+               0 MAKE_CELL                0 (__class__)
+
+4001           2 RESUME                   0
+               4 LOAD_NAME                0 (__name__)
+               6 STORE_NAME               1 (__module__)
+               8 LOAD_CONST               0 ('LogImportDialog')
+              10 STORE_NAME               2 (__qualname__)
+
+4002          12 LOAD_CONST               1 ('Import a dyno log CSV, run analysis, compare to predicted values.')
+              14 STORE_NAME               3 (__doc__)
+
+4004          16 LOAD_CLOSURE             0 (__class__)
+              18 BUILD_TUPLE              1
+              20 LOAD_CONST               2 (<code object __init__ at 0x30c285e0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4004>)
+              22 MAKE_FUNCTION            8 (closure)
+              24 STORE_NAME               4 (__init__)
+
+4111          26 LOAD_CONST               3 (<code object _load_file at 0x30c217c0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4111>)
+              28 MAKE_FUNCTION            0
+              30 STORE_NAME               5 (_load_file)
+
+4149          32 LOAD_CONST               4 (<code object _restore_ui at 0x73ab02b3f6d0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4149>)
+              34 MAKE_FUNCTION            0
+              36 STORE_NAME               6 (_restore_ui)
+
+4154          38 LOAD_CONST               5 (<code object _on_import_error at 0x73ab02bd9680, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4154>)
+              40 MAKE_FUNCTION            0
+              42 STORE_NAME               7 (_on_import_error)
+
+4159          44 LOAD_CONST               6 (<code object _on_import_complete at 0x30c22170, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4159>)
+              46 MAKE_FUNCTION            0
+              48 STORE_NAME               8 (_on_import_complete)
+
+4192          50 LOAD_CONST               7 (<code object _populate_comparison at 0x30c231f0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4192>)
+              52 MAKE_FUNCTION            0
+              54 STORE_NAME               9 (_populate_comparison)
+
+4303          56 LOAD_CONST               8 (<code object _apply_slip at 0x30b65820, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4303>)
+              58 MAKE_FUNCTION            0
+              60 STORE_NAME              10 (_apply_slip)
+              62 LOAD_CLOSURE             0 (__class__)
+              64 COPY                     1
+              66 STORE_NAME              11 (__classcell__)
+              68 RETURN_VALUE

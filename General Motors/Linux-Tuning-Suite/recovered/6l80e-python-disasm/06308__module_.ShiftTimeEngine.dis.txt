@@ -1,0 +1,18 @@
+6308           0 RESUME                   0
+               2 LOAD_NAME                0 (__name__)
+               4 STORE_NAME               1 (__module__)
+               6 LOAD_CONST               0 ('ShiftTimeEngine')
+               8 STORE_NAME               2 (__qualname__)
+
+6309          10 LOAD_CONST               1 ('Desired Shift Time tables for 4-spd transmissions.\n    Output: 2D list [3 shifts][17 torque cols] -> seconds.')
+              12 STORE_NAME               3 (__doc__)
+
+6312          14 LOAD_NAME                4 (staticmethod)
+
+6313          16 LOAD_CONST               2 (<code object desired_shift_time_4spd at 0x30c473c0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6312>)
+              18 MAKE_FUNCTION            0
+
+6312          20 CALL                     0
+
+6313          28 STORE_NAME               5 (desired_shift_time_4spd)
+              30 RETURN_CONST             3 (None)

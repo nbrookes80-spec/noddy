@@ -1,0 +1,383 @@
+               0 COPY_FREE_VARS           1
+
+4586           2 RESUME                   0
+
+4587           4 LOAD_GLOBAL              0 (super)
+              14 LOAD_DEREF              15 (__class__)
+              16 LOAD_FAST                0 (self)
+              18 LOAD_SUPER_ATTR          5 (NULL|self + __init__)
+              22 LOAD_FAST                1 (parent)
+              24 CALL                     1
+              32 POP_TOP
+
+4588          34 LOAD_FAST                0 (self)
+              36 LOAD_ATTR                5 (NULL|self + setWindowTitle)
+              56 LOAD_CONST               1 ('Torque Curve')
+              58 CALL                     1
+              66 POP_TOP
+
+4589          68 LOAD_FAST                0 (self)
+              70 LOAD_ATTR                7 (NULL|self + resize)
+              90 LOAD_CONST               2 (560)
+              92 LOAD_CONST               3 (540)
+              94 CALL                     2
+             102 POP_TOP
+
+4590         104 LOAD_GLOBAL              9 (NULL + TorqueCurve)
+             114 LOAD_FAST                2 (curve)
+             116 POP_JUMP_IF_FALSE       12 (to 142)
+             118 LOAD_FAST                2 (curve)
+             120 LOAD_ATTR               10 (points)
+             140 JUMP_FORWARD             1 (to 144)
+         >>  142 BUILD_LIST               0
+         >>  144 GET_ITER
+             146 LOAD_FAST_AND_CLEAR      3 (p)
+             148 SWAP                     2
+             150 BUILD_LIST               0
+             152 SWAP                     2
+         >>  154 FOR_ITER                13 (to 184)
+             158 STORE_FAST               3 (p)
+             160 LOAD_GLOBAL             13 (NULL + tuple)
+             170 LOAD_FAST                3 (p)
+             172 CALL                     1
+             180 LIST_APPEND              2
+             182 JUMP_BACKWARD           15 (to 154)
+         >>  184 END_FOR
+             186 SWAP                     2
+             188 STORE_FAST               3 (p)
+             190 CALL                     1
+             198 LOAD_FAST                0 (self)
+             200 STORE_ATTR               7 (curve)
+
+4592         210 LOAD_GLOBAL             17 (NULL + QVBoxLayout)
+             220 LOAD_FAST                0 (self)
+             222 CALL                     1
+             230 STORE_FAST               4 (layout)
+
+4593         232 LOAD_FAST                4 (layout)
+             234 LOAD_ATTR               19 (NULL|self + addWidget)
+             254 LOAD_GLOBAL             21 (NULL + QLabel)
+
+4594         264 LOAD_CONST               4 ('Enter HP and Torque vs RPM. Used in Time-mode WOT shift lead for\naccurate acceleration prediction across the shift band.\nLeave empty to fall back to the single RWHP scalar mode.')
+
+4593         266 CALL                     1
+             274 CALL                     1
+             282 POP_TOP
+
+4600         284 LOAD_GLOBAL             23 (NULL + QHBoxLayout)
+             294 CALL                     0
+             302 STORE_FAST               5 (ctrl)
+
+4601         304 LOAD_FAST                5 (ctrl)
+             306 LOAD_ATTR               19 (NULL|self + addWidget)
+             326 LOAD_GLOBAL             21 (NULL + QLabel)
+             336 LOAD_CONST               5 ('Preset:')
+             338 CALL                     1
+             346 CALL                     1
+             354 POP_TOP
+
+4602         356 LOAD_GLOBAL             25 (NULL + QComboBox)
+             366 CALL                     0
+             374 LOAD_FAST                0 (self)
+             376 STORE_ATTR              13 (preset_combo)
+
+4603         386 LOAD_FAST                0 (self)
+             388 LOAD_ATTR               26 (preset_combo)
+             408 LOAD_ATTR               29 (NULL|self + addItems)
+             428 LOAD_GLOBAL             31 (NULL + list)
+             438 LOAD_FAST                0 (self)
+             440 LOAD_ATTR               32 (PRESETS)
+             460 LOAD_ATTR               35 (NULL|self + keys)
+             480 CALL                     0
+             488 CALL                     1
+             496 CALL                     1
+             504 POP_TOP
+
+4604         506 LOAD_FAST                0 (self)
+             508 LOAD_ATTR               26 (preset_combo)
+             528 LOAD_ATTR               36 (currentTextChanged)
+             548 LOAD_ATTR               39 (NULL|self + connect)
+             568 LOAD_FAST                0 (self)
+             570 LOAD_ATTR               40 (_apply_preset)
+             590 CALL                     1
+             598 POP_TOP
+
+4605         600 LOAD_FAST                5 (ctrl)
+             602 LOAD_ATTR               19 (NULL|self + addWidget)
+             622 LOAD_FAST                0 (self)
+             624 LOAD_ATTR               26 (preset_combo)
+             644 LOAD_CONST               6 (1)
+             646 CALL                     2
+             654 POP_TOP
+
+4606         656 LOAD_GLOBAL             43 (NULL + QPushButton)
+             666 LOAD_CONST               7 ('Import CSV…')
+             668 CALL                     1
+             676 STORE_FAST               6 (import_btn)
+
+4607         678 LOAD_FAST                6 (import_btn)
+             680 LOAD_ATTR               45 (NULL|self + setToolTip)
+
+4608         700 LOAD_CONST               8 ('Import HP/TQ vs RPM from CSV. Expected columns: RPM, HP, [TQ].\nHeader row is optional. Tolerant of common dyno export formats.')
+
+4607         702 CALL                     1
+             710 POP_TOP
+
+4611         712 LOAD_FAST                6 (import_btn)
+             714 LOAD_ATTR               46 (clicked)
+             734 LOAD_ATTR               39 (NULL|self + connect)
+             754 LOAD_FAST                0 (self)
+             756 LOAD_ATTR               48 (_import_csv)
+             776 CALL                     1
+             784 POP_TOP
+
+4612         786 LOAD_FAST                5 (ctrl)
+             788 LOAD_ATTR               19 (NULL|self + addWidget)
+             808 LOAD_FAST                6 (import_btn)
+             810 CALL                     1
+             818 POP_TOP
+
+4613         820 LOAD_FAST                4 (layout)
+             822 LOAD_ATTR               51 (NULL|self + addLayout)
+             842 LOAD_FAST                5 (ctrl)
+             844 CALL                     1
+             852 POP_TOP
+
+4616         854 LOAD_GLOBAL             53 (NULL + QTableWidget)
+             864 LOAD_CONST               9 (0)
+             866 LOAD_CONST              10 (3)
+             868 CALL                     2
+             876 LOAD_FAST                0 (self)
+             878 STORE_ATTR              27 (tbl)
+
+4617         888 LOAD_FAST                0 (self)
+             890 LOAD_ATTR               54 (tbl)
+             910 LOAD_ATTR               57 (NULL|self + setHorizontalHeaderLabels)
+             930 BUILD_LIST               0
+             932 LOAD_CONST              11 (('RPM', 'HP', 'TQ (lb·ft)'))
+             934 LIST_EXTEND              1
+             936 CALL                     1
+             944 POP_TOP
+
+4618         946 LOAD_FAST                0 (self)
+             948 LOAD_ATTR               54 (tbl)
+             968 LOAD_ATTR               59 (NULL|self + horizontalHeader)
+             988 CALL                     0
+             996 LOAD_ATTR               61 (NULL|self + setSectionResizeMode)
+            1016 LOAD_GLOBAL             62 (QHeaderView)
+            1026 LOAD_ATTR               64 (ResizeMode)
+            1046 LOAD_ATTR               66 (Stretch)
+            1066 CALL                     1
+            1074 POP_TOP
+
+4619        1076 LOAD_FAST                0 (self)
+            1078 LOAD_ATTR               54 (tbl)
+            1098 LOAD_ATTR               69 (NULL|self + setMinimumHeight)
+            1118 LOAD_CONST              12 (280)
+            1120 CALL                     1
+            1128 POP_TOP
+
+4620        1130 LOAD_FAST                4 (layout)
+            1132 LOAD_ATTR               19 (NULL|self + addWidget)
+            1152 LOAD_FAST                0 (self)
+            1154 LOAD_ATTR               54 (tbl)
+            1174 LOAD_CONST               6 (1)
+            1176 CALL                     2
+            1184 POP_TOP
+
+4623        1186 LOAD_GLOBAL             23 (NULL + QHBoxLayout)
+            1196 CALL                     0
+            1204 STORE_FAST               7 (row_ctrl)
+
+4624        1206 LOAD_GLOBAL             43 (NULL + QPushButton)
+            1216 LOAD_CONST              13 ('Add Row')
+            1218 CALL                     1
+            1226 STORE_FAST               8 (add_btn)
+
+4625        1228 LOAD_FAST                8 (add_btn)
+            1230 LOAD_ATTR               46 (clicked)
+            1250 LOAD_ATTR               39 (NULL|self + connect)
+            1270 LOAD_FAST                0 (self)
+            1272 LOAD_ATTR               70 (_add_row)
+            1292 CALL                     1
+            1300 POP_TOP
+
+4626        1302 LOAD_GLOBAL             43 (NULL + QPushButton)
+            1312 LOAD_CONST              14 ('Delete Selected')
+            1314 CALL                     1
+            1322 STORE_FAST               9 (del_btn)
+
+4627        1324 LOAD_FAST                9 (del_btn)
+            1326 LOAD_ATTR               46 (clicked)
+            1346 LOAD_ATTR               39 (NULL|self + connect)
+            1366 LOAD_FAST                0 (self)
+            1368 LOAD_ATTR               72 (_del_row)
+            1388 CALL                     1
+            1396 POP_TOP
+
+4628        1398 LOAD_GLOBAL             43 (NULL + QPushButton)
+            1408 LOAD_CONST              15 ('Auto-fill TQ from HP')
+            1410 CALL                     1
+            1418 STORE_FAST              10 (autofill_btn)
+
+4629        1420 LOAD_FAST               10 (autofill_btn)
+            1422 LOAD_ATTR               45 (NULL|self + setToolTip)
+
+4630        1442 LOAD_CONST              16 ('Fill missing TQ values using TQ = HP × 5252 / RPM. Useful if you only have HP from a dyno trace.')
+
+4629        1444 CALL                     1
+            1452 POP_TOP
+
+4633        1454 LOAD_FAST               10 (autofill_btn)
+            1456 LOAD_ATTR               46 (clicked)
+            1476 LOAD_ATTR               39 (NULL|self + connect)
+            1496 LOAD_FAST                0 (self)
+            1498 LOAD_ATTR               74 (_autofill_tq)
+            1518 CALL                     1
+            1526 POP_TOP
+
+4634        1528 LOAD_FAST                7 (row_ctrl)
+            1530 LOAD_ATTR               19 (NULL|self + addWidget)
+            1550 LOAD_FAST                8 (add_btn)
+            1552 CALL                     1
+            1560 POP_TOP
+
+4635        1562 LOAD_FAST                7 (row_ctrl)
+            1564 LOAD_ATTR               19 (NULL|self + addWidget)
+            1584 LOAD_FAST                9 (del_btn)
+            1586 CALL                     1
+            1594 POP_TOP
+
+4636        1596 LOAD_FAST                7 (row_ctrl)
+            1598 LOAD_ATTR               77 (NULL|self + addStretch)
+            1618 CALL                     0
+            1626 POP_TOP
+
+4637        1628 LOAD_FAST                7 (row_ctrl)
+            1630 LOAD_ATTR               19 (NULL|self + addWidget)
+            1650 LOAD_FAST               10 (autofill_btn)
+            1652 CALL                     1
+            1660 POP_TOP
+
+4638        1662 LOAD_FAST                4 (layout)
+            1664 LOAD_ATTR               51 (NULL|self + addLayout)
+            1684 LOAD_FAST                7 (row_ctrl)
+            1686 CALL                     1
+            1694 POP_TOP
+
+4641        1696 LOAD_GLOBAL             21 (NULL + QLabel)
+            1706 LOAD_CONST              17 ('')
+            1708 CALL                     1
+            1716 LOAD_FAST                0 (self)
+            1718 STORE_ATTR              39 (summary)
+
+4642        1728 LOAD_FAST                0 (self)
+            1730 LOAD_ATTR               78 (summary)
+            1750 LOAD_ATTR               81 (NULL|self + setStyleSheet)
+            1770 LOAD_CONST              18 ('color: #ccc; padding: 6px; background: #2a2a2a; border-radius: 3px;')
+            1772 CALL                     1
+            1780 POP_TOP
+
+4644        1782 LOAD_FAST                4 (layout)
+            1784 LOAD_ATTR               19 (NULL|self + addWidget)
+            1804 LOAD_FAST                0 (self)
+            1806 LOAD_ATTR               78 (summary)
+            1826 CALL                     1
+            1834 POP_TOP
+
+4647        1836 LOAD_GLOBAL             23 (NULL + QHBoxLayout)
+            1846 CALL                     0
+            1854 STORE_FAST              11 (btn_row)
+
+4648        1856 LOAD_GLOBAL             43 (NULL + QPushButton)
+            1866 LOAD_CONST              19 ('Clear (use RWHP scalar)')
+            1868 CALL                     1
+            1876 STORE_FAST              12 (clear_btn)
+
+4649        1878 LOAD_FAST               12 (clear_btn)
+            1880 LOAD_ATTR               46 (clicked)
+            1900 LOAD_ATTR               39 (NULL|self + connect)
+            1920 LOAD_FAST                0 (self)
+            1922 LOAD_ATTR               82 (_clear)
+            1942 CALL                     1
+            1950 POP_TOP
+
+4650        1952 LOAD_FAST               11 (btn_row)
+            1954 LOAD_ATTR               19 (NULL|self + addWidget)
+            1974 LOAD_FAST               12 (clear_btn)
+            1976 CALL                     1
+            1984 POP_TOP
+
+4651        1986 LOAD_FAST               11 (btn_row)
+            1988 LOAD_ATTR               77 (NULL|self + addStretch)
+            2008 CALL                     0
+            2016 POP_TOP
+
+4652        2018 LOAD_GLOBAL             43 (NULL + QPushButton)
+            2028 LOAD_CONST              20 ('OK')
+            2030 CALL                     1
+            2038 STORE_FAST              13 (ok)
+
+4653        2040 LOAD_FAST               13 (ok)
+            2042 LOAD_ATTR               85 (NULL|self + setDefault)
+            2062 LOAD_CONST              21 (True)
+            2064 CALL                     1
+            2072 POP_TOP
+
+4654        2074 LOAD_FAST               13 (ok)
+            2076 LOAD_ATTR               46 (clicked)
+            2096 LOAD_ATTR               39 (NULL|self + connect)
+            2116 LOAD_FAST                0 (self)
+            2118 LOAD_ATTR               86 (accept)
+            2138 CALL                     1
+            2146 POP_TOP
+
+4655        2148 LOAD_GLOBAL             43 (NULL + QPushButton)
+            2158 LOAD_CONST              22 ('Cancel')
+            2160 CALL                     1
+            2168 STORE_FAST              14 (cancel)
+
+4656        2170 LOAD_FAST               14 (cancel)
+            2172 LOAD_ATTR               46 (clicked)
+            2192 LOAD_ATTR               39 (NULL|self + connect)
+            2212 LOAD_FAST                0 (self)
+            2214 LOAD_ATTR               88 (reject)
+            2234 CALL                     1
+            2242 POP_TOP
+
+4657        2244 LOAD_FAST               11 (btn_row)
+            2246 LOAD_ATTR               19 (NULL|self + addWidget)
+            2266 LOAD_FAST               13 (ok)
+            2268 CALL                     1
+            2276 POP_TOP
+
+4658        2278 LOAD_FAST               11 (btn_row)
+            2280 LOAD_ATTR               19 (NULL|self + addWidget)
+            2300 LOAD_FAST               14 (cancel)
+            2302 CALL                     1
+            2310 POP_TOP
+
+4659        2312 LOAD_FAST                4 (layout)
+            2314 LOAD_ATTR               51 (NULL|self + addLayout)
+            2334 LOAD_FAST               11 (btn_row)
+            2336 CALL                     1
+            2344 POP_TOP
+
+4661        2346 LOAD_FAST                0 (self)
+            2348 LOAD_ATTR               91 (NULL|self + _load_curve_into_table)
+            2368 CALL                     0
+            2376 POP_TOP
+
+4662        2378 LOAD_FAST                0 (self)
+            2380 LOAD_ATTR               93 (NULL|self + _update_summary)
+            2400 CALL                     0
+            2408 POP_TOP
+            2410 RETURN_CONST             0 (None)
+         >> 2412 SWAP                     2
+            2414 POP_TOP
+
+4590        2416 SWAP                     2
+            2418 STORE_FAST               3 (p)
+            2420 RERAISE                  0
+ExceptionTable:
+  150 to 184 -> 2412 [4]

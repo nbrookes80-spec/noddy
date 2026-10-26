@@ -1,0 +1,45 @@
+1280           0 RESUME                   0
+
+1282           2 LOAD_FAST                1 (d)
+               4 POP_JUMP_IF_TRUE         7 (to 20)
+
+1283           6 PUSH_NULL
+               8 LOAD_FAST                0 (cls)
+              10 CALL                     0
+              18 RETURN_VALUE
+
+1284     >>   20 PUSH_NULL
+              22 LOAD_FAST                0 (cls)
+
+1285          24 LOAD_FAST                1 (d)
+              26 LOAD_ATTR                1 (NULL|self + get)
+              46 LOAD_CONST               1 ('spool_rpm')
+              48 LOAD_CONST               2 (2500)
+              50 CALL                     2
+
+1286          58 LOAD_FAST                1 (d)
+              60 LOAD_ATTR                1 (NULL|self + get)
+              80 LOAD_CONST               3 ('peak_psi')
+              82 LOAD_CONST               4 (0.0)
+              84 CALL                     2
+
+1287          92 LOAD_FAST                1 (d)
+              94 LOAD_ATTR                1 (NULL|self + get)
+             114 LOAD_CONST               5 ('peak_rpm')
+             116 LOAD_CONST               6 (4000)
+             118 CALL                     2
+
+1288         126 LOAD_FAST                1 (d)
+             128 LOAD_ATTR                1 (NULL|self + get)
+             148 LOAD_CONST               7 ('redline_psi')
+             150 CALL                     1
+
+1289         158 LOAD_FAST                1 (d)
+             160 LOAD_ATTR                1 (NULL|self + get)
+             180 LOAD_CONST               8 ('torque_per_psi_pct')
+             182 LOAD_CONST               9 (7.5)
+             184 CALL                     2
+
+1284         192 KW_NAMES                10 (('spool_rpm', 'peak_psi', 'peak_rpm', 'redline_psi', 'torque_per_psi_pct'))
+             194 CALL                     5
+             202 RETURN_VALUE

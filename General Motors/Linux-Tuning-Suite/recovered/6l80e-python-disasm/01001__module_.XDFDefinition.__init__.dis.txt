@@ -1,0 +1,14 @@
+1001           0 RESUME                   0
+
+1002           2 BUILD_LIST               0
+               4 LOAD_FAST                0 (self)
+               6 STORE_ATTR               0 (parameters)
+
+1003          16 LOAD_CONST               1 (0)
+              18 LOAD_FAST                0 (self)
+              20 STORE_ATTR               1 (base_offset)
+
+1004          30 LOAD_CONST               2 ('')
+              32 LOAD_FAST                0 (self)
+              34 STORE_ATTR               2 (title)
+              44 RETURN_CONST             0 (None)

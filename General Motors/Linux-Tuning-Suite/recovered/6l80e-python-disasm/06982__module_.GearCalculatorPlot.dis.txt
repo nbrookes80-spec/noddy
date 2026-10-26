@@ -1,0 +1,35 @@
+               0 MAKE_CELL                0 (__class__)
+
+6982           2 RESUME                   0
+               4 LOAD_NAME                0 (__name__)
+               6 STORE_NAME               1 (__module__)
+               8 LOAD_CONST               0 ('GearCalculatorPlot')
+              10 STORE_NAME               2 (__qualname__)
+
+6983          12 LOAD_CONST               1 ('MPH-vs-RPM line plot — one line per gear at a given axle ratio.\n    Pure QPainter, no chart-lib deps.')
+              14 STORE_NAME               3 (__doc__)
+
+6985          16 LOAD_CLOSURE             0 (__class__)
+              18 BUILD_TUPLE              1
+              20 LOAD_CONST               2 (<code object __init__ at 0x73ab02babd20, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6985>)
+              22 MAKE_FUNCTION            8 (closure)
+              24 STORE_NAME               4 (__init__)
+
+6999          26 NOP
+
+6998          28 LOAD_CONST               6 (('MPH', 1.0))
+              30 LOAD_CONST               3 (<code object set_data at 0x73ab02a90030, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6998>)
+              32 MAKE_FUNCTION            1 (defaults)
+              34 STORE_NAME               5 (set_data)
+
+7011          36 LOAD_CONST               4 (<code object _mph_at at 0x73ab02a4e1f0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7011>)
+              38 MAKE_FUNCTION            0
+              40 STORE_NAME               6 (_mph_at)
+
+7018          42 LOAD_CONST               5 (<code object paintEvent at 0x30c526e0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7018>)
+              44 MAKE_FUNCTION            0
+              46 STORE_NAME               7 (paintEvent)
+              48 LOAD_CLOSURE             0 (__class__)
+              50 COPY                     1
+              52 STORE_NAME               8 (__classcell__)
+              54 RETURN_VALUE

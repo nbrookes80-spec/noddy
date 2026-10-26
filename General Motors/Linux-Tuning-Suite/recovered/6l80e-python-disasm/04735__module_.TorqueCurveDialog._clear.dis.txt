@@ -1,0 +1,19 @@
+4735           0 RESUME                   0
+
+4736           2 LOAD_GLOBAL              1 (NULL + TorqueCurve)
+              12 CALL                     0
+              20 LOAD_FAST                0 (self)
+              22 STORE_ATTR               1 (curve)
+
+4737          32 LOAD_FAST                0 (self)
+              34 LOAD_ATTR                4 (tbl)
+              54 LOAD_ATTR                7 (NULL|self + setRowCount)
+              74 LOAD_CONST               1 (0)
+              76 CALL                     1
+              84 POP_TOP
+
+4738          86 LOAD_FAST                0 (self)
+              88 LOAD_ATTR                9 (NULL|self + _update_summary)
+             108 CALL                     0
+             116 POP_TOP
+             118 RETURN_CONST             0 (None)

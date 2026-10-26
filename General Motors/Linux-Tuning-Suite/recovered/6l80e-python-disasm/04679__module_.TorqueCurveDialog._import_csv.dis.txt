@@ -1,0 +1,116 @@
+4679           0 RESUME                   0
+
+4680           2 LOAD_GLOBAL              1 (NULL + QFileDialog)
+              12 LOAD_ATTR                2 (getOpenFileName)
+
+4681          32 LOAD_FAST                0 (self)
+              34 LOAD_CONST               1 ('Import Torque Curve CSV')
+              36 LOAD_CONST               2 ('')
+
+4682          38 LOAD_CONST               3 ('CSV (*.csv);;All files (*.*)')
+
+4680          40 CALL                     4
+              48 UNPACK_SEQUENCE          2
+              52 STORE_FAST               1 (path)
+              54 STORE_FAST               2 (_)
+
+4684          56 LOAD_FAST                1 (path)
+              58 POP_JUMP_IF_TRUE         1 (to 62)
+
+4685          60 RETURN_CONST             0 (None)
+
+4686     >>   62 NOP
+
+4687          64 LOAD_GLOBAL              4 (TorqueCurve)
+              74 LOAD_ATTR                7 (NULL|self + from_csv)
+              94 LOAD_FAST                1 (path)
+              96 CALL                     1
+             104 STORE_FAST               3 (new_curve)
+
+4688         106 LOAD_FAST                3 (new_curve)
+             108 LOAD_ATTR                8 (is_empty)
+             128 POP_JUMP_IF_FALSE       24 (to 178)
+
+4689         130 LOAD_GLOBAL             11 (NULL + QMessageBox)
+             140 LOAD_ATTR               12 (warning)
+             160 LOAD_FAST                0 (self)
+             162 LOAD_CONST               4 ('Import')
+
+4690         164 LOAD_CONST               5 ('No valid (RPM, HP) rows found in the CSV.\nExpected format: RPM, HP, TQ (with optional header row).')
+
+4689         166 CALL                     3
+             174 POP_TOP
+
+4692         176 RETURN_CONST             0 (None)
+
+4693     >>  178 LOAD_FAST                3 (new_curve)
+             180 LOAD_FAST                0 (self)
+             182 STORE_ATTR               7 (curve)
+
+4694         192 LOAD_FAST                0 (self)
+             194 LOAD_ATTR               17 (NULL|self + _load_curve_into_table)
+             214 CALL                     0
+             222 POP_TOP
+
+4695         224 LOAD_FAST                0 (self)
+             226 LOAD_ATTR               19 (NULL|self + _update_summary)
+             246 CALL                     0
+             254 POP_TOP
+
+4696         256 LOAD_FAST                0 (self)
+             258 LOAD_ATTR               20 (preset_combo)
+             278 LOAD_ATTR               23 (NULL|self + blockSignals)
+             298 LOAD_CONST               6 (True)
+             300 CALL                     1
+             308 POP_TOP
+
+4697         310 LOAD_FAST                0 (self)
+             312 LOAD_ATTR               20 (preset_combo)
+             332 LOAD_ATTR               25 (NULL|self + setCurrentText)
+             352 LOAD_CONST               7 ('(Manual entry)')
+             354 CALL                     1
+             362 POP_TOP
+
+4698         364 LOAD_FAST                0 (self)
+             366 LOAD_ATTR               20 (preset_combo)
+             386 LOAD_ATTR               23 (NULL|self + blockSignals)
+             406 LOAD_CONST               8 (False)
+             408 CALL                     1
+             416 POP_TOP
+             418 RETURN_CONST             0 (None)
+         >>  420 PUSH_EXC_INFO
+
+4699         422 LOAD_GLOBAL             26 (Exception)
+             432 CHECK_EXC_MATCH
+             434 POP_JUMP_IF_FALSE       42 (to 520)
+             436 STORE_FAST               4 (e)
+
+4700         438 LOAD_GLOBAL             11 (NULL + QMessageBox)
+             448 LOAD_ATTR               28 (critical)
+             468 LOAD_FAST                0 (self)
+             470 LOAD_CONST               9 ('Import error')
+             472 LOAD_GLOBAL             31 (NULL + str)
+             482 LOAD_FAST                4 (e)
+             484 CALL                     1
+             492 CALL                     3
+             500 POP_TOP
+             502 POP_EXCEPT
+             504 LOAD_CONST               0 (None)
+             506 STORE_FAST               4 (e)
+             508 DELETE_FAST              4 (e)
+             510 RETURN_CONST             0 (None)
+         >>  512 LOAD_CONST               0 (None)
+             514 STORE_FAST               4 (e)
+             516 DELETE_FAST              4 (e)
+             518 RERAISE                  1
+
+4699     >>  520 RERAISE                  0
+         >>  522 COPY                     3
+             524 POP_EXCEPT
+             526 RERAISE                  1
+ExceptionTable:
+  64 to 174 -> 420 [0]
+  178 to 416 -> 420 [0]
+  420 to 436 -> 522 [1] lasti
+  438 to 500 -> 512 [1] lasti
+  512 to 520 -> 522 [1] lasti

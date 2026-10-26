@@ -1,0 +1,17 @@
+1957           0 RESUME                   0
+
+1958           2 LOAD_FAST                1 (rpm)
+               4 LOAD_FAST                0 (self)
+               6 LOAD_ATTR                0 (tire_dia)
+              26 BINARY_OP                5 (*)
+              30 LOAD_FAST                0 (self)
+              32 LOAD_ATTR                2 (final_drive)
+              52 LOAD_FAST                0 (self)
+              54 LOAD_ATTR                4 (ratios)
+              74 LOAD_FAST                2 (gear_idx)
+              76 BINARY_SUBSCR
+              80 BINARY_OP                5 (*)
+              84 LOAD_GLOBAL              6 (MPH_K)
+              94 BINARY_OP                5 (*)
+              98 BINARY_OP               11 (/)
+             102 RETURN_VALUE

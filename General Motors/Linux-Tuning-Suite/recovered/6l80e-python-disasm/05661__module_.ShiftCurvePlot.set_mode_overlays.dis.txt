@@ -1,0 +1,46 @@
+5661           0 RESUME                   0
+
+5664           2 LOAD_FAST                1 (overlays)
+               4 LOAD_ATTR                1 (NULL|self + items)
+              24 CALL                     0
+              32 GET_ITER
+              34 LOAD_FAST_AND_CLEAR      2 (k)
+              36 LOAD_FAST_AND_CLEAR      3 (v)
+              38 SWAP                     3
+              40 BUILD_MAP                0
+              42 SWAP                     2
+         >>   44 FOR_ITER                14 (to 76)
+              48 UNPACK_SEQUENCE          2
+              52 STORE_FAST               2 (k)
+              54 STORE_FAST               3 (v)
+              56 LOAD_FAST                2 (k)
+              58 LOAD_CONST               1 ('Normal')
+              60 COMPARE_OP              55 (!=)
+              64 POP_JUMP_IF_TRUE         1 (to 68)
+              66 JUMP_BACKWARD           12 (to 44)
+         >>   68 LOAD_FAST                2 (k)
+              70 LOAD_FAST                3 (v)
+              72 MAP_ADD                  2
+              74 JUMP_BACKWARD           16 (to 44)
+         >>   76 END_FOR
+              78 SWAP                     3
+              80 STORE_FAST               3 (v)
+              82 STORE_FAST               2 (k)
+              84 LOAD_FAST                0 (self)
+              86 STORE_ATTR               1 (mode_overlays)
+
+5665          96 LOAD_FAST                0 (self)
+              98 LOAD_ATTR                5 (NULL|self + update)
+             118 CALL                     0
+             126 POP_TOP
+             128 RETURN_CONST             2 (None)
+         >>  130 SWAP                     2
+             132 POP_TOP
+
+5664         134 SWAP                     3
+             136 STORE_FAST               3 (v)
+             138 STORE_FAST               2 (k)
+             140 RERAISE                  0
+ExceptionTable:
+  40 to 64 -> 130 [3]
+  68 to 76 -> 130 [3]

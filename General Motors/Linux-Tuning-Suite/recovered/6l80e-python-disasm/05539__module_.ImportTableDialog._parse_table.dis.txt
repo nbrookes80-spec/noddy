@@ -1,0 +1,92 @@
+5539           0 RESUME                   0
+
+5540           2 BUILD_LIST               0
+               4 STORE_FAST               1 (rows)
+
+5541           6 LOAD_FAST                0 (self)
+               8 LOAD_ATTR                0 (input)
+              28 LOAD_ATTR                3 (NULL|self + toPlainText)
+              48 CALL                     0
+              56 LOAD_ATTR                5 (NULL|self + strip)
+              76 CALL                     0
+              84 LOAD_ATTR                7 (NULL|self + split)
+             104 LOAD_CONST               1 ('\n')
+             106 CALL                     1
+             114 GET_ITER
+         >>  116 FOR_ITER                95 (to 310)
+             120 STORE_FAST               2 (line)
+
+5542         122 LOAD_FAST                2 (line)
+             124 LOAD_ATTR                9 (NULL|self + replace)
+             144 LOAD_CONST               2 (',')
+             146 LOAD_CONST               3 (' ')
+             148 CALL                     2
+             156 LOAD_ATTR                7 (NULL|self + split)
+             176 CALL                     0
+             184 STORE_FAST               3 (parts)
+
+5543         186 NOP
+
+5544         188 LOAD_FAST                3 (parts)
+             190 GET_ITER
+             192 LOAD_FAST_AND_CLEAR      4 (p)
+             194 SWAP                     2
+             196 BUILD_LIST               0
+             198 SWAP                     2
+         >>  200 FOR_ITER                13 (to 230)
+             204 STORE_FAST               4 (p)
+             206 LOAD_GLOBAL             11 (NULL + float)
+             216 LOAD_FAST                4 (p)
+             218 CALL                     1
+             226 LIST_APPEND              2
+             228 JUMP_BACKWARD           15 (to 200)
+         >>  230 END_FOR
+             232 STORE_FAST               5 (vals)
+             234 STORE_FAST               4 (p)
+
+5547         236 LOAD_GLOBAL             15 (NULL + len)
+             246 LOAD_FAST                5 (vals)
+             248 CALL                     1
+             256 LOAD_GLOBAL             16 (TPS_COLS)
+             266 COMPARE_OP              40 (==)
+             270 POP_JUMP_IF_TRUE         1 (to 274)
+             272 JUMP_BACKWARD           79 (to 116)
+
+5548     >>  274 LOAD_FAST                1 (rows)
+             276 LOAD_ATTR               19 (NULL|self + append)
+             296 LOAD_FAST                5 (vals)
+             298 CALL                     1
+             306 POP_TOP
+             308 JUMP_BACKWARD           97 (to 116)
+
+5541     >>  310 END_FOR
+
+5549         312 LOAD_FAST                1 (rows)
+             314 RETURN_VALUE
+         >>  316 SWAP                     2
+             318 POP_TOP
+
+5544         320 SWAP                     2
+             322 STORE_FAST               4 (p)
+             324 RERAISE                  0
+         >>  326 PUSH_EXC_INFO
+
+5545         328 LOAD_GLOBAL             12 (ValueError)
+             338 CHECK_EXC_MATCH
+             340 POP_JUMP_IF_FALSE        3 (to 348)
+             342 POP_TOP
+
+5546         344 POP_EXCEPT
+             346 JUMP_BACKWARD          116 (to 116)
+
+5545     >>  348 RERAISE                  0
+         >>  350 COPY                     3
+             352 POP_EXCEPT
+             354 RERAISE                  1
+ExceptionTable:
+  188 to 194 -> 326 [1]
+  196 to 230 -> 316 [3]
+  232 to 234 -> 326 [1]
+  316 to 324 -> 326 [1]
+  326 to 342 -> 350 [2] lasti
+  348 to 348 -> 350 [2] lasti

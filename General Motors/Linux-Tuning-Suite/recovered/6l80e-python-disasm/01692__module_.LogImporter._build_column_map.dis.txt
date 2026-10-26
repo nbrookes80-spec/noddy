@@ -1,0 +1,131 @@
+1692           0 RESUME                   0
+
+1694           2 BUILD_MAP                0
+               4 STORE_FAST               2 (mapping)
+
+1696           6 LOAD_CONST               1 ('rpm')
+               8 LOAD_FAST                0 (self)
+              10 LOAD_ATTR                0 (RPM_ALIASES)
+              30 BUILD_TUPLE              2
+
+1697          32 LOAD_CONST               2 ('mph')
+              34 LOAD_FAST                0 (self)
+              36 LOAD_ATTR                2 (MPH_ALIASES)
+              56 BUILD_TUPLE              2
+
+1698          58 LOAD_CONST               3 ('kph')
+              60 LOAD_FAST                0 (self)
+              62 LOAD_ATTR                4 (KPH_ALIASES)
+              82 BUILD_TUPLE              2
+
+1699          84 LOAD_CONST               4 ('tps')
+              86 LOAD_FAST                0 (self)
+              88 LOAD_ATTR                6 (TPS_ALIASES)
+             108 BUILD_TUPLE              2
+
+1700         110 LOAD_CONST               5 ('gear')
+             112 LOAD_FAST                0 (self)
+             114 LOAD_ATTR                8 (GEAR_ALIASES)
+             134 BUILD_TUPLE              2
+
+1701         136 LOAD_CONST               6 ('trans_temp')
+             138 LOAD_FAST                0 (self)
+             140 LOAD_ATTR               10 (TRANS_TEMP_ALIASES)
+             160 BUILD_TUPLE              2
+
+1702         162 LOAD_CONST               7 ('input_spd')
+             164 LOAD_FAST                0 (self)
+             166 LOAD_ATTR               12 (INPUT_SPD_ALIASES)
+             186 BUILD_TUPLE              2
+
+1703         188 LOAD_CONST               8 ('output_spd')
+             190 LOAD_FAST                0 (self)
+             192 LOAD_ATTR               14 (OUTPUT_SPD_ALIASES)
+             212 BUILD_TUPLE              2
+
+1704         214 LOAD_CONST               9 ('tcc_dc')
+             216 LOAD_FAST                0 (self)
+             218 LOAD_ATTR               16 (TCC_DC_ALIASES)
+             238 BUILD_TUPLE              2
+
+1695         240 BUILD_LIST               9
+             242 STORE_FAST               3 (targets)
+
+1706         244 LOAD_FAST                1 (headers)
+             246 GET_ITER
+             248 LOAD_FAST_AND_CLEAR      4 (h)
+             250 SWAP                     2
+             252 BUILD_LIST               0
+             254 SWAP                     2
+         >>  256 FOR_ITER                18 (to 296)
+             260 STORE_FAST               4 (h)
+             262 LOAD_FAST                4 (h)
+             264 LOAD_ATTR               19 (NULL|self + lower)
+             284 CALL                     0
+             292 LIST_APPEND              2
+             294 JUMP_BACKWARD           20 (to 256)
+         >>  296 END_FOR
+             298 STORE_FAST               5 (lc_headers)
+             300 STORE_FAST               4 (h)
+
+1707         302 LOAD_FAST                3 (targets)
+             304 GET_ITER
+         >>  306 FOR_ITER                48 (to 406)
+             310 UNPACK_SEQUENCE          2
+             314 STORE_FAST               6 (key)
+             316 STORE_FAST               7 (aliases)
+
+1708         318 LOAD_FAST                7 (aliases)
+             320 GET_ITER
+         >>  322 FOR_ITER                38 (to 402)
+             326 STORE_FAST               8 (alias)
+
+1709         328 LOAD_GLOBAL             21 (NULL + enumerate)
+             338 LOAD_FAST                5 (lc_headers)
+             340 CALL                     1
+             348 GET_ITER
+         >>  350 FOR_ITER                16 (to 386)
+             354 UNPACK_SEQUENCE          2
+             358 STORE_FAST               9 (i)
+             360 STORE_FAST               4 (h)
+
+1710         362 LOAD_FAST                8 (alias)
+             364 LOAD_FAST                4 (h)
+             366 CONTAINS_OP              0
+             368 POP_JUMP_IF_TRUE         1 (to 372)
+             370 JUMP_BACKWARD           11 (to 350)
+
+1711     >>  372 LOAD_FAST                9 (i)
+             374 LOAD_FAST                2 (mapping)
+             376 LOAD_FAST                6 (key)
+             378 STORE_SUBSCR
+
+1712         382 POP_TOP
+             384 JUMP_FORWARD             1 (to 388)
+
+1709     >>  386 END_FOR
+
+1713     >>  388 LOAD_FAST                6 (key)
+             390 LOAD_FAST                2 (mapping)
+             392 CONTAINS_OP              0
+             394 POP_JUMP_IF_TRUE         1 (to 398)
+             396 JUMP_BACKWARD           38 (to 322)
+
+1714     >>  398 POP_TOP
+             400 JUMP_BACKWARD           48 (to 306)
+
+1708     >>  402 END_FOR
+             404 JUMP_BACKWARD           50 (to 306)
+
+1707     >>  406 END_FOR
+
+1715         408 LOAD_FAST                2 (mapping)
+             410 RETURN_VALUE
+         >>  412 SWAP                     2
+             414 POP_TOP
+
+1706         416 SWAP                     2
+             418 STORE_FAST               4 (h)
+             420 RERAISE                  0
+ExceptionTable:
+  252 to 296 -> 412 [2]

@@ -1,0 +1,96 @@
+4771           0 RESUME                   0
+
+4773           2 BUILD_LIST               0
+               4 STORE_FAST               1 (points)
+
+4774           6 LOAD_GLOBAL              1 (NULL + range)
+              16 LOAD_FAST                0 (self)
+              18 LOAD_ATTR                2 (tbl)
+              38 LOAD_ATTR                5 (NULL|self + rowCount)
+              58 CALL                     0
+              66 CALL                     1
+              74 GET_ITER
+         >>   76 FOR_ITER               181 (to 442)
+              80 STORE_FAST               2 (r)
+
+4775          82 NOP
+
+4776          84 LOAD_GLOBAL              7 (NULL + float)
+              94 LOAD_FAST                0 (self)
+              96 LOAD_ATTR                2 (tbl)
+             116 LOAD_ATTR                9 (NULL|self + item)
+             136 LOAD_FAST                2 (r)
+             138 LOAD_CONST               1 (0)
+             140 CALL                     2
+             148 LOAD_ATTR               11 (NULL|self + text)
+             168 CALL                     0
+             176 CALL                     1
+             184 STORE_FAST               3 (rpm)
+
+4777         186 LOAD_GLOBAL              7 (NULL + float)
+             196 LOAD_FAST                0 (self)
+             198 LOAD_ATTR                2 (tbl)
+             218 LOAD_ATTR                9 (NULL|self + item)
+             238 LOAD_FAST                2 (r)
+             240 LOAD_CONST               2 (1)
+             242 CALL                     2
+             250 LOAD_ATTR               11 (NULL|self + text)
+             270 CALL                     0
+             278 CALL                     1
+             286 STORE_FAST               4 (hp)
+
+4778         288 LOAD_GLOBAL              7 (NULL + float)
+             298 LOAD_FAST                0 (self)
+             300 LOAD_ATTR                2 (tbl)
+             320 LOAD_ATTR                9 (NULL|self + item)
+             340 LOAD_FAST                2 (r)
+             342 LOAD_CONST               3 (2)
+             344 CALL                     2
+             352 LOAD_ATTR               11 (NULL|self + text)
+             372 CALL                     0
+             380 CALL                     1
+             388 STORE_FAST               5 (tq)
+
+4779         390 LOAD_FAST                3 (rpm)
+             392 LOAD_CONST               1 (0)
+             394 COMPARE_OP              68 (>)
+             398 POP_JUMP_IF_FALSE       20 (to 440)
+
+4780         400 LOAD_FAST                1 (points)
+             402 LOAD_ATTR               13 (NULL|self + append)
+             422 LOAD_FAST                3 (rpm)
+             424 LOAD_FAST                4 (hp)
+             426 LOAD_FAST                5 (tq)
+             428 BUILD_TUPLE              3
+             430 CALL                     1
+             438 POP_TOP
+         >>  440 JUMP_BACKWARD          183 (to 76)
+
+4774     >>  442 END_FOR
+
+4783         444 LOAD_GLOBAL             19 (NULL + TorqueCurve)
+             454 LOAD_FAST                1 (points)
+             456 CALL                     1
+             464 LOAD_FAST                0 (self)
+             466 STORE_ATTR              10 (curve)
+             476 RETURN_CONST             0 (None)
+         >>  478 PUSH_EXC_INFO
+
+4781         480 LOAD_GLOBAL             14 (ValueError)
+             490 LOAD_GLOBAL             16 (AttributeError)
+             500 BUILD_TUPLE              2
+             502 CHECK_EXC_MATCH
+             504 POP_JUMP_IF_FALSE        3 (to 512)
+             506 POP_TOP
+
+4782         508 POP_EXCEPT
+             510 JUMP_BACKWARD          218 (to 76)
+
+4781     >>  512 RERAISE                  0
+         >>  514 COPY                     3
+             516 POP_EXCEPT
+             518 RERAISE                  1
+ExceptionTable:
+  84 to 438 -> 478 [1]
+  478 to 506 -> 514 [2] lasti
+  512 to 512 -> 514 [2] lasti

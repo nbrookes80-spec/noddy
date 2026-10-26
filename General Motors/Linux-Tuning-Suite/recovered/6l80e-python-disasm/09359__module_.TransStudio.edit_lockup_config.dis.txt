@@ -1,0 +1,22 @@
+9359           0 RESUME                   0
+
+9360           2 LOAD_GLOBAL              1 (NULL + LockupConfigDialog)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_FAST                0 (self)
+              16 LOAD_ATTR                2 (lockup_flags)
+              36 CALL                     2
+              44 STORE_FAST               1 (dlg)
+
+9361          46 LOAD_FAST                1 (dlg)
+              48 LOAD_ATTR                5 (NULL|self + exec)
+              68 CALL                     0
+              76 POP_JUMP_IF_FALSE       22 (to 122)
+
+9362          78 LOAD_FAST                1 (dlg)
+              80 LOAD_ATTR                7 (NULL|self + get_flags)
+             100 CALL                     0
+             108 LOAD_FAST                0 (self)
+             110 STORE_ATTR               1 (lockup_flags)
+             120 RETURN_CONST             0 (None)
+
+9361     >>  122 RETURN_CONST             0 (None)

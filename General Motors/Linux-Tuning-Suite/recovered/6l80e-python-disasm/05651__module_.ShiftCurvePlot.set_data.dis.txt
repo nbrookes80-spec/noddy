@@ -1,0 +1,35 @@
+5651           0 RESUME                   0
+
+5653           2 LOAD_FAST                1 (upshift)
+               4 LOAD_FAST                0 (self)
+               6 STORE_ATTR               0 (upshift)
+
+5654          16 LOAD_FAST                2 (downshift)
+              18 LOAD_FAST                0 (self)
+              20 STORE_ATTR               1 (downshift)
+
+5655          30 LOAD_FAST                3 (n_gears)
+              32 LOAD_FAST                0 (self)
+              34 STORE_ATTR               2 (gear_count)
+
+5656          44 LOAD_FAST                4 (unit_label)
+              46 LOAD_FAST                0 (self)
+              48 STORE_ATTR               3 (unit_label)
+
+5657          58 LOAD_FAST                5 (unit_scale)
+              60 LOAD_FAST                0 (self)
+              62 STORE_ATTR               4 (unit_scale)
+
+5658          72 LOAD_FAST                6 (rpm_targets)
+              74 COPY                     1
+              76 POP_JUMP_IF_TRUE         2 (to 82)
+              78 POP_TOP
+              80 BUILD_LIST               0
+         >>   82 LOAD_FAST                0 (self)
+              84 STORE_ATTR               5 (rpm_targets)
+
+5659          94 LOAD_FAST                0 (self)
+              96 LOAD_ATTR               13 (NULL|self + update)
+             116 CALL                     0
+             124 POP_TOP
+             126 RETURN_CONST             0 (None)

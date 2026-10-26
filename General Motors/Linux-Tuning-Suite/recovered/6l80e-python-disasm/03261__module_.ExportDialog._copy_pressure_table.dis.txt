@@ -1,0 +1,233 @@
+               0 MAKE_CELL               11 (fmt)
+               2 MAKE_CELL               12 (scale)
+
+3261           4 RESUME                   0
+
+3262           6 LOAD_FAST                0 (self)
+               8 LOAD_ATTR                0 (is_4spd)
+              28 POP_JUMP_IF_FALSE      155 (to 340)
+
+3263          30 LOAD_FAST                0 (self)
+              32 LOAD_ATTR                3 (NULL|self + _get_4spd_current_table)
+              52 CALL                     0
+              60 UNPACK_SEQUENCE          5
+              64 STORE_FAST               1 (data)
+              66 STORE_FAST               2 (_)
+              68 STORE_FAST               2 (_)
+              70 STORE_FAST               3 (kind)
+              72 STORE_FAST               2 (_)
+
+3264          74 LOAD_FAST                1 (data)
+              76 POP_JUMP_IF_TRUE         1 (to 80)
+
+3265          78 RETURN_CONST             0 (None)
+
+3266     >>   80 LOAD_GLOBAL              5 (NULL + hasattr)
+              90 LOAD_FAST                0 (self)
+              92 LOAD_CONST               1 ('pressure_unit_combo')
+              94 CALL                     2
+             102 POP_JUMP_IF_FALSE       26 (to 156)
+             104 LOAD_FAST                0 (self)
+             106 LOAD_ATTR                6 (pressure_unit_combo)
+             126 LOAD_ATTR                9 (NULL|self + currentText)
+             146 CALL                     0
+             154 JUMP_FORWARD             1 (to 158)
+         >>  156 LOAD_CONST               2 ('PSI')
+         >>  158 STORE_FAST               4 (unit)
+
+3267         160 LOAD_FAST                3 (kind)
+             162 LOAD_CONST               3 ('psi_4spd')
+             164 COMPARE_OP              40 (==)
+             168 POP_JUMP_IF_FALSE       11 (to 192)
+             170 LOAD_FAST                4 (unit)
+             172 LOAD_CONST               4 ('kPa')
+             174 COMPARE_OP              40 (==)
+             178 POP_JUMP_IF_FALSE        6 (to 192)
+             180 LOAD_GLOBAL             10 (PSI_TO_KPA)
+             190 JUMP_FORWARD             1 (to 194)
+         >>  192 LOAD_CONST               5 (1.0)
+         >>  194 STORE_DEREF             12 (scale)
+
+3268         196 LOAD_FAST                3 (kind)
+             198 LOAD_CONST               6 ('sec')
+             200 COMPARE_OP              40 (==)
+             204 POP_JUMP_IF_FALSE        2 (to 210)
+             206 LOAD_CONST               7 ('{:.3f}')
+             208 JUMP_FORWARD             1 (to 212)
+         >>  210 LOAD_CONST               8 ('{:.1f}')
+         >>  212 STORE_DEREF             11 (fmt)
+
+3269         214 LOAD_CONST               9 ('\n')
+             216 LOAD_ATTR               13 (NULL|self + join)
+             236 LOAD_CLOSURE            11 (fmt)
+             238 LOAD_CLOSURE            12 (scale)
+             240 BUILD_TUPLE              2
+             242 LOAD_CONST              10 (<code object <genexpr> at 0x73ab02a4c150, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3269>)
+             244 MAKE_FUNCTION            8 (closure)
+
+3270         246 LOAD_FAST                1 (data)
+
+3269         248 GET_ITER
+             250 CALL                     0
+             258 CALL                     1
+             266 STORE_FAST               5 (text)
+
+3271         268 LOAD_GLOBAL             15 (NULL + QGuiApplication)
+             278 LOAD_ATTR               16 (clipboard)
+             298 CALL                     0
+             306 LOAD_ATTR               19 (NULL|self + setText)
+             326 LOAD_FAST                5 (text)
+             328 CALL                     1
+             336 POP_TOP
+
+3272         338 RETURN_CONST             0 (None)
+
+3275     >>  340 LOAD_GLOBAL             21 (NULL + getattr)
+             350 LOAD_FAST                0 (self)
+             352 LOAD_CONST              11 ('current_pressure_table_type')
+             354 LOAD_CONST              12 ('Base Shift')
+             356 CALL                     3
+             364 STORE_FAST               6 (table_type)
+
+3276         366 LOAD_GLOBAL              5 (NULL + hasattr)
+             376 LOAD_FAST                0 (self)
+             378 LOAD_CONST              13 ('pres_mode_combo')
+             380 CALL                     2
+             388 POP_JUMP_IF_FALSE       26 (to 442)
+             390 LOAD_FAST                0 (self)
+             392 LOAD_ATTR               22 (pres_mode_combo)
+             412 LOAD_ATTR                9 (NULL|self + currentText)
+             432 CALL                     0
+             440 JUMP_FORWARD            11 (to 464)
+
+3277     >>  442 LOAD_FAST                0 (self)
+             444 LOAD_ATTR               24 (current_pressure_pattern)
+
+3276     >>  464 STORE_FAST               7 (mode)
+
+3278         466 LOAD_CONST               0 (None)
+             468 STORE_FAST               1 (data)
+
+3279         470 LOAD_FAST                6 (table_type)
+             472 LOAD_CONST              12 ('Base Shift')
+             474 COMPARE_OP              40 (==)
+             478 POP_JUMP_IF_FALSE       62 (to 604)
+
+3280         480 LOAD_FAST                0 (self)
+             482 LOAD_ATTR               26 (current_pressure_shift)
+             502 STORE_FAST               8 (shift)
+
+3281         504 LOAD_FAST                7 (mode)
+             506 LOAD_FAST                0 (self)
+             508 LOAD_ATTR               28 (pressure_per_shift)
+             528 CONTAINS_OP              0
+             530 POP_JUMP_IF_FALSE      157 (to 846)
+             532 LOAD_FAST                8 (shift)
+             534 LOAD_FAST                0 (self)
+             536 LOAD_ATTR               28 (pressure_per_shift)
+             556 LOAD_FAST                7 (mode)
+             558 BINARY_SUBSCR
+             562 CONTAINS_OP              0
+             564 POP_JUMP_IF_FALSE      140 (to 846)
+
+3282         566 LOAD_FAST                0 (self)
+             568 LOAD_ATTR               28 (pressure_per_shift)
+             588 LOAD_FAST                7 (mode)
+             590 BINARY_SUBSCR
+             594 LOAD_FAST                8 (shift)
+             596 BINARY_SUBSCR
+             600 STORE_FAST               1 (data)
+             602 JUMP_FORWARD           121 (to 846)
+
+3283     >>  604 LOAD_FAST                6 (table_type)
+             606 LOAD_CONST              14 ('TCC Apply')
+             608 COMPARE_OP              40 (==)
+             612 POP_JUMP_IF_FALSE      116 (to 846)
+
+3285         614 LOAD_GLOBAL             21 (NULL + getattr)
+             624 LOAD_FAST                0 (self)
+             626 LOAD_CONST              15 ('_tcc_ramp_current')
+             628 LOAD_CONST               0 (None)
+             630 CALL                     3
+             638 STORE_FAST               1 (data)
+
+3286         640 LOAD_FAST                1 (data)
+             642 POP_JUMP_IF_NOT_NONE   101 (to 846)
+
+3288         644 LOAD_GLOBAL              5 (NULL + hasattr)
+             654 LOAD_FAST                0 (self)
+             656 LOAD_CONST              16 ('tcc_era_combo')
+             658 CALL                     2
+             666 POP_JUMP_IF_FALSE       26 (to 720)
+             668 LOAD_FAST                0 (self)
+             670 LOAD_ATTR               30 (tcc_era_combo)
+             690 LOAD_ATTR                9 (NULL|self + currentText)
+             710 CALL                     0
+             718 JUMP_FORWARD             1 (to 722)
+         >>  720 LOAD_CONST              17 ('2015+')
+         >>  722 STORE_FAST               9 (era)
+
+3289         724 LOAD_FAST                0 (self)
+             726 LOAD_ATTR               32 (pressure_intent_per_mode)
+             746 LOAD_ATTR               35 (NULL|self + get)
+             766 LOAD_FAST                7 (mode)
+             768 LOAD_CONST              18 ('Daily')
+             770 CALL                     2
+             778 STORE_FAST              10 (intent)
+
+3290         780 LOAD_GLOBAL             36 (PressureEngine)
+             790 LOAD_ATTR               39 (NULL|self + tcc_apply_pressure_ramp)
+             810 LOAD_FAST               10 (intent)
+             812 LOAD_FAST                9 (era)
+             814 LOAD_FAST                0 (self)
+             816 LOAD_ATTR               40 (max_tq)
+             836 CALL                     3
+             844 STORE_FAST               1 (data)
+
+3291     >>  846 LOAD_FAST                1 (data)
+             848 POP_JUMP_IF_TRUE         1 (to 852)
+
+3292         850 RETURN_CONST             0 (None)
+
+3293     >>  852 LOAD_GLOBAL              5 (NULL + hasattr)
+             862 LOAD_FAST                0 (self)
+             864 LOAD_CONST               1 ('pressure_unit_combo')
+             866 CALL                     2
+             874 POP_JUMP_IF_FALSE       26 (to 928)
+             876 LOAD_FAST                0 (self)
+             878 LOAD_ATTR                6 (pressure_unit_combo)
+             898 LOAD_ATTR                9 (NULL|self + currentText)
+             918 CALL                     0
+             926 JUMP_FORWARD             1 (to 930)
+         >>  928 LOAD_CONST               2 ('PSI')
+         >>  930 STORE_FAST               4 (unit)
+
+3294         932 LOAD_FAST                4 (unit)
+             934 LOAD_CONST               4 ('kPa')
+             936 COMPARE_OP              40 (==)
+             940 POP_JUMP_IF_FALSE        6 (to 954)
+             942 LOAD_GLOBAL             10 (PSI_TO_KPA)
+             952 JUMP_FORWARD             1 (to 956)
+         >>  954 LOAD_CONST               5 (1.0)
+         >>  956 STORE_DEREF             12 (scale)
+
+3295         958 LOAD_CONST               9 ('\n')
+             960 LOAD_ATTR               13 (NULL|self + join)
+             980 LOAD_CLOSURE            12 (scale)
+             982 BUILD_TUPLE              1
+             984 LOAD_CONST              19 (<code object <genexpr> at 0x73ab02a4c270, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3295>)
+             986 MAKE_FUNCTION            8 (closure)
+             988 LOAD_FAST                1 (data)
+             990 GET_ITER
+             992 CALL                     0
+            1000 CALL                     1
+            1008 STORE_FAST               5 (text)
+
+3296        1010 LOAD_GLOBAL             15 (NULL + QGuiApplication)
+            1020 LOAD_ATTR               16 (clipboard)
+            1040 CALL                     0
+            1048 LOAD_ATTR               19 (NULL|self + setText)
+            1068 LOAD_FAST                5 (text)
+            1070 CALL                     1
+            1078 POP_TOP
+            1080 RETURN_CONST             0 (None)

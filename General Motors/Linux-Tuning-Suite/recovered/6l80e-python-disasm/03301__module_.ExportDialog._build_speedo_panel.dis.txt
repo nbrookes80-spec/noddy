@@ -1,0 +1,183 @@
+3301           0 RESUME                   0
+
+3302           2 LOAD_GLOBAL              1 (NULL + QVBoxLayout)
+              12 CALL                     0
+              20 STORE_FAST               1 (v)
+
+3303          22 LOAD_GLOBAL              3 (NULL + QGroupBox)
+              32 LOAD_CONST               1 ('Speedometer Cal')
+              34 CALL                     1
+              42 STORE_FAST               2 (gb)
+
+3304          44 LOAD_GLOBAL              5 (NULL + QFormLayout)
+              54 CALL                     0
+              62 STORE_FAST               3 (form)
+
+3306          64 LOAD_GLOBAL              7 (NULL + QComboBox)
+              74 CALL                     0
+              82 LOAD_FAST                0 (self)
+              84 STORE_ATTR               4 (speedo_combo)
+
+3307          94 LOAD_FAST                0 (self)
+              96 LOAD_ATTR                8 (speedo_combo)
+             116 LOAD_ATTR               11 (NULL|self + addItems)
+             136 LOAD_GLOBAL             12 (SPEEDO_MODES)
+             146 CALL                     1
+             154 POP_TOP
+
+3308         156 LOAD_FAST                0 (self)
+             158 LOAD_ATTR                8 (speedo_combo)
+             178 LOAD_ATTR               15 (NULL|self + setCurrentIndex)
+             198 LOAD_CONST               2 (2)
+             200 CALL                     1
+             208 POP_TOP
+
+3309         210 LOAD_FAST                0 (self)
+             212 LOAD_ATTR                8 (speedo_combo)
+             232 LOAD_ATTR               16 (currentIndexChanged)
+             252 LOAD_ATTR               19 (NULL|self + connect)
+             272 LOAD_FAST                0 (self)
+             274 LOAD_ATTR               20 (_refresh_speedo)
+             294 CALL                     1
+             302 POP_TOP
+
+3310         304 LOAD_FAST                3 (form)
+             306 LOAD_ATTR               23 (NULL|self + addRow)
+             326 LOAD_CONST               3 ('Mode:')
+             328 LOAD_FAST                0 (self)
+             330 LOAD_ATTR                8 (speedo_combo)
+             350 CALL                     2
+             358 POP_TOP
+
+3313         360 LOAD_GLOBAL             25 (NULL + QDoubleSpinBox)
+             370 CALL                     0
+             378 LOAD_FAST                0 (self)
+             380 STORE_ATTR              13 (vss_count)
+
+3314         390 LOAD_FAST                0 (self)
+             392 LOAD_ATTR               26 (vss_count)
+             412 LOAD_ATTR               29 (NULL|self + setRange)
+             432 LOAD_CONST               4 (1.0)
+             434 LOAD_CONST               5 (200.0)
+             436 CALL                     2
+             444 POP_TOP
+
+3315         446 LOAD_FAST                0 (self)
+             448 LOAD_ATTR               26 (vss_count)
+             468 LOAD_ATTR               31 (NULL|self + setDecimals)
+             488 LOAD_CONST               6 (1)
+             490 CALL                     1
+             498 POP_TOP
+
+3316         500 LOAD_FAST                0 (self)
+             502 LOAD_ATTR               26 (vss_count)
+             522 LOAD_ATTR               33 (NULL|self + setValue)
+             542 LOAD_FAST                0 (self)
+             544 LOAD_ATTR               34 (dt)
+             564 LOAD_ATTR               37 (NULL|self + get)
+             584 LOAD_CONST               7 ('vss_count')
+             586 LOAD_CONST               8 (40.0)
+             588 CALL                     2
+             596 CALL                     1
+             604 POP_TOP
+
+3317         606 LOAD_FAST                0 (self)
+             608 LOAD_ATTR               26 (vss_count)
+             628 LOAD_ATTR               38 (valueChanged)
+             648 LOAD_ATTR               19 (NULL|self + connect)
+             668 LOAD_FAST                0 (self)
+             670 LOAD_ATTR               20 (_refresh_speedo)
+             690 CALL                     1
+             698 POP_TOP
+
+3318         700 LOAD_FAST                3 (form)
+             702 LOAD_ATTR               23 (NULL|self + addRow)
+             722 LOAD_CONST               9 ('VSS Count (input):')
+             724 LOAD_FAST                0 (self)
+             726 LOAD_ATTR               26 (vss_count)
+             746 CALL                     2
+             754 POP_TOP
+
+3322         756 LOAD_GLOBAL             41 (NULL + QLabel)
+             766 LOAD_CONST              10 ('')
+             768 CALL                     1
+             776 LOAD_GLOBAL             41 (NULL + QLabel)
+             786 LOAD_CONST              10 ('')
+             788 CALL                     1
+             796 LOAD_GLOBAL             41 (NULL + QLabel)
+             806 LOAD_CONST              10 ('')
+             808 CALL                     1
+             816 LOAD_GLOBAL             41 (NULL + QLabel)
+             826 LOAD_CONST              10 ('')
+             828 CALL                     1
+             836 BUILD_LIST               4
+             838 LOAD_FAST                0 (self)
+             840 STORE_ATTR              21 (_speedo_labels)
+
+3323         850 LOAD_GLOBAL             45 (NULL + QLineEdit)
+             860 CALL                     0
+             868 LOAD_GLOBAL             45 (NULL + QLineEdit)
+             878 CALL                     0
+             886 LOAD_GLOBAL             45 (NULL + QLineEdit)
+             896 CALL                     0
+             904 LOAD_GLOBAL             45 (NULL + QLineEdit)
+             914 CALL                     0
+             922 BUILD_LIST               4
+             924 LOAD_FAST                0 (self)
+             926 STORE_ATTR              23 (_speedo_values)
+
+3324         936 LOAD_GLOBAL             49 (NULL + zip)
+             946 LOAD_FAST                0 (self)
+             948 LOAD_ATTR               42 (_speedo_labels)
+             968 LOAD_FAST                0 (self)
+             970 LOAD_ATTR               46 (_speedo_values)
+             990 CALL                     2
+             998 GET_ITER
+         >> 1000 FOR_ITER                57 (to 1118)
+            1004 UNPACK_SEQUENCE          2
+            1008 STORE_FAST               4 (lbl)
+            1010 STORE_FAST               5 (le)
+
+3325        1012 LOAD_FAST                5 (le)
+            1014 LOAD_ATTR               51 (NULL|self + setReadOnly)
+            1034 LOAD_CONST              11 (True)
+            1036 CALL                     1
+            1044 POP_TOP
+
+3326        1046 LOAD_FAST                5 (le)
+            1048 LOAD_ATTR               53 (NULL|self + setStyleSheet)
+
+3327        1068 LOAD_CONST              12 ('QLineEdit { background: #ffffff; color: #000000; border: 1px solid #888; padding: 2px; }')
+
+3326        1070 CALL                     1
+            1078 POP_TOP
+
+3330        1080 LOAD_FAST                3 (form)
+            1082 LOAD_ATTR               23 (NULL|self + addRow)
+            1102 LOAD_FAST                4 (lbl)
+            1104 LOAD_FAST                5 (le)
+            1106 CALL                     2
+            1114 POP_TOP
+            1116 JUMP_BACKWARD           59 (to 1000)
+
+3324     >> 1118 END_FOR
+
+3332        1120 LOAD_FAST                2 (gb)
+            1122 LOAD_ATTR               55 (NULL|self + setLayout)
+            1142 LOAD_FAST                3 (form)
+            1144 CALL                     1
+            1152 POP_TOP
+
+3333        1154 LOAD_FAST                1 (v)
+            1156 LOAD_ATTR               57 (NULL|self + addWidget)
+            1176 LOAD_FAST                2 (gb)
+            1178 CALL                     1
+            1186 POP_TOP
+
+3334        1188 LOAD_FAST                1 (v)
+            1190 LOAD_ATTR               59 (NULL|self + addStretch)
+            1210 CALL                     0
+            1218 POP_TOP
+
+3335        1220 LOAD_FAST                1 (v)
+            1222 RETURN_VALUE

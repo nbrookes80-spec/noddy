@@ -1,0 +1,324 @@
+3627           0 RESUME                   0
+
+3630           2 LOAD_GLOBAL              1 (NULL + len)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_ATTR                2 (raw)
+              34 LOAD_CONST               1 ('upshift')
+              36 BINARY_SUBSCR
+              40 CALL                     1
+              48 STORE_FAST               3 (n_shifts)
+
+3631          50 LOAD_FAST                0 (self)
+              52 LOAD_ATTR                5 (NULL|self + _current_table_list)
+              72 CALL                     0
+              80 STORE_FAST               4 (tables)
+
+3632          82 LOAD_FAST                0 (self)
+              84 LOAD_ATTR                6 (table_idx)
+             104 LOAD_GLOBAL              1 (NULL + len)
+             114 LOAD_FAST                4 (tables)
+             116 CALL                     1
+             124 COMPARE_OP              92 (>=)
+             128 POP_JUMP_IF_FALSE       28 (to 186)
+
+3633         130 LOAD_FAST                0 (self)
+             132 LOAD_ATTR                8 (shift_grid)
+             152 LOAD_ATTR               11 (NULL|self + setVerticalHeaderLabels)
+             172 BUILD_LIST               0
+             174 CALL                     1
+             182 POP_TOP
+
+3634         184 RETURN_CONST             2 (None)
+
+3635     >>  186 LOAD_FAST                4 (tables)
+             188 LOAD_FAST                0 (self)
+             190 LOAD_ATTR                6 (table_idx)
+             210 BINARY_SUBSCR
+             214 UNPACK_SEQUENCE          3
+             218 STORE_FAST               5 (_)
+             220 STORE_FAST               6 (kind)
+             222 STORE_FAST               7 (g_indices)
+
+3636         224 BUILD_LIST               0
+             226 STORE_FAST               8 (labels)
+
+3638         228 LOAD_FAST                6 (kind)
+             230 LOAD_CONST               3 (('shift_combined', 'wot_shift_combined'))
+             232 CONTAINS_OP              0
+             234 POP_JUMP_IF_FALSE       85 (to 406)
+
+3640         236 LOAD_FAST                7 (g_indices)
+             238 GET_ITER
+         >>  240 FOR_ITER                37 (to 318)
+             244 STORE_FAST               9 (g)
+
+3641         246 LOAD_FAST                9 (g)
+             248 LOAD_FAST                3 (n_shifts)
+             250 COMPARE_OP               2 (<)
+             254 POP_JUMP_IF_TRUE         1 (to 258)
+             256 JUMP_BACKWARD            9 (to 240)
+
+3642     >>  258 LOAD_FAST                8 (labels)
+             260 LOAD_ATTR               13 (NULL|self + append)
+             280 LOAD_FAST                9 (g)
+             282 LOAD_CONST               4 (1)
+             284 BINARY_OP                0 (+)
+             288 FORMAT_VALUE             0
+             290 LOAD_CONST               5 ('→')
+             292 LOAD_FAST                9 (g)
+             294 LOAD_CONST               6 (2)
+             296 BINARY_OP                0 (+)
+             300 FORMAT_VALUE             0
+             302 LOAD_CONST               7 (' Shift')
+             304 BUILD_STRING             4
+             306 CALL                     1
+             314 POP_TOP
+             316 JUMP_BACKWARD           39 (to 240)
+
+3640     >>  318 END_FOR
+
+3643         320 LOAD_FAST                7 (g_indices)
+             322 GET_ITER
+         >>  324 FOR_ITER                37 (to 402)
+             328 STORE_FAST               9 (g)
+
+3644         330 LOAD_FAST                9 (g)
+             332 LOAD_FAST                3 (n_shifts)
+             334 COMPARE_OP               2 (<)
+             338 POP_JUMP_IF_TRUE         1 (to 342)
+             340 JUMP_BACKWARD            9 (to 324)
+
+3645     >>  342 LOAD_FAST                8 (labels)
+             344 LOAD_ATTR               13 (NULL|self + append)
+             364 LOAD_FAST                9 (g)
+             366 LOAD_CONST               6 (2)
+             368 BINARY_OP                0 (+)
+             372 FORMAT_VALUE             0
+             374 LOAD_CONST               5 ('→')
+             376 LOAD_FAST                9 (g)
+             378 LOAD_CONST               4 (1)
+             380 BINARY_OP                0 (+)
+             384 FORMAT_VALUE             0
+             386 LOAD_CONST               7 (' Shift')
+             388 BUILD_STRING             4
+             390 CALL                     1
+             398 POP_TOP
+             400 JUMP_BACKWARD           39 (to 324)
+
+3643     >>  402 END_FOR
+             404 JUMP_FORWARD           196 (to 798)
+
+3646     >>  406 LOAD_FAST                6 (kind)
+             408 LOAD_CONST               8 (('upshift_only', 'wot_upshift_only'))
+             410 CONTAINS_OP              0
+             412 POP_JUMP_IF_FALSE       34 (to 482)
+
+3647         414 LOAD_FAST                7 (g_indices)
+             416 GET_ITER
+             418 LOAD_FAST_AND_CLEAR      9 (g)
+             420 SWAP                     2
+             422 BUILD_LIST               0
+             424 SWAP                     2
+         >>  426 FOR_ITER                22 (to 474)
+             430 STORE_FAST               9 (g)
+             432 LOAD_FAST                9 (g)
+             434 LOAD_FAST                3 (n_shifts)
+             436 COMPARE_OP               2 (<)
+             440 POP_JUMP_IF_TRUE         1 (to 444)
+             442 JUMP_BACKWARD            9 (to 426)
+         >>  444 LOAD_FAST                9 (g)
+             446 LOAD_CONST               4 (1)
+             448 BINARY_OP                0 (+)
+             452 FORMAT_VALUE             0
+             454 LOAD_CONST               5 ('→')
+             456 LOAD_FAST                9 (g)
+             458 LOAD_CONST               6 (2)
+             460 BINARY_OP                0 (+)
+             464 FORMAT_VALUE             0
+             466 LOAD_CONST               7 (' Shift')
+             468 BUILD_STRING             4
+             470 LIST_APPEND              2
+             472 JUMP_BACKWARD           24 (to 426)
+         >>  474 END_FOR
+             476 STORE_FAST               8 (labels)
+             478 STORE_FAST               9 (g)
+             480 JUMP_FORWARD           158 (to 798)
+
+3648     >>  482 LOAD_FAST                6 (kind)
+             484 LOAD_CONST               9 (('downshift_only', 'wot_downshift_only'))
+             486 CONTAINS_OP              0
+             488 POP_JUMP_IF_FALSE       34 (to 558)
+
+3649         490 LOAD_FAST                7 (g_indices)
+             492 GET_ITER
+             494 LOAD_FAST_AND_CLEAR      9 (g)
+             496 SWAP                     2
+             498 BUILD_LIST               0
+             500 SWAP                     2
+         >>  502 FOR_ITER                22 (to 550)
+             506 STORE_FAST               9 (g)
+             508 LOAD_FAST                9 (g)
+             510 LOAD_FAST                3 (n_shifts)
+             512 COMPARE_OP               2 (<)
+             516 POP_JUMP_IF_TRUE         1 (to 520)
+             518 JUMP_BACKWARD            9 (to 502)
+         >>  520 LOAD_FAST                9 (g)
+             522 LOAD_CONST               6 (2)
+             524 BINARY_OP                0 (+)
+             528 FORMAT_VALUE             0
+             530 LOAD_CONST               5 ('→')
+             532 LOAD_FAST                9 (g)
+             534 LOAD_CONST               4 (1)
+             536 BINARY_OP                0 (+)
+             540 FORMAT_VALUE             0
+             542 LOAD_CONST               7 (' Shift')
+             544 BUILD_STRING             4
+             546 LIST_APPEND              2
+             548 JUMP_BACKWARD           24 (to 502)
+         >>  550 END_FOR
+             552 STORE_FAST               8 (labels)
+             554 STORE_FAST               9 (g)
+             556 JUMP_FORWARD           120 (to 798)
+
+3650     >>  558 LOAD_FAST                6 (kind)
+             560 LOAD_CONST              10 ('wot_rpm_group')
+             562 COMPARE_OP              40 (==)
+             566 POP_JUMP_IF_FALSE       33 (to 634)
+
+3651         568 LOAD_FAST                7 (g_indices)
+             570 GET_ITER
+             572 LOAD_FAST_AND_CLEAR      9 (g)
+             574 SWAP                     2
+             576 BUILD_LIST               0
+             578 SWAP                     2
+         >>  580 FOR_ITER                21 (to 626)
+             584 STORE_FAST               9 (g)
+             586 LOAD_FAST                9 (g)
+             588 LOAD_FAST                3 (n_shifts)
+             590 COMPARE_OP               2 (<)
+             594 POP_JUMP_IF_TRUE         1 (to 598)
+             596 JUMP_BACKWARD            9 (to 580)
+         >>  598 LOAD_FAST                9 (g)
+             600 LOAD_CONST               4 (1)
+             602 BINARY_OP                0 (+)
+             606 FORMAT_VALUE             0
+             608 LOAD_CONST               5 ('→')
+             610 LOAD_FAST                9 (g)
+             612 LOAD_CONST               6 (2)
+             614 BINARY_OP                0 (+)
+             618 FORMAT_VALUE             0
+             620 BUILD_STRING             3
+             622 LIST_APPEND              2
+             624 JUMP_BACKWARD           23 (to 580)
+         >>  626 END_FOR
+             628 STORE_FAST               8 (labels)
+             630 STORE_FAST               9 (g)
+             632 JUMP_FORWARD            82 (to 798)
+
+3652     >>  634 LOAD_FAST                6 (kind)
+             636 LOAD_CONST              11 (('tcc', 'tcc_wot'))
+             638 CONTAINS_OP              0
+             640 POP_JUMP_IF_FALSE       78 (to 798)
+
+3653         642 LOAD_FAST                0 (self)
+             644 LOAD_ATTR               14 (calc)
+             664 LOAD_CONST              12 ('n_gears')
+             666 BINARY_SUBSCR
+             670 STORE_FAST              10 (n)
+
+3654         672 LOAD_GLOBAL             17 (NULL + range)
+             682 LOAD_FAST               10 (n)
+             684 CALL                     1
+             692 GET_ITER
+             694 LOAD_FAST_AND_CLEAR     11 (i)
+             696 SWAP                     2
+             698 BUILD_LIST               0
+             700 SWAP                     2
+         >>  702 FOR_ITER                10 (to 726)
+             706 STORE_FAST              11 (i)
+             708 LOAD_CONST              13 ('Lock G')
+             710 LOAD_FAST               11 (i)
+             712 LOAD_CONST               4 (1)
+             714 BINARY_OP                0 (+)
+             718 FORMAT_VALUE             0
+             720 BUILD_STRING             2
+             722 LIST_APPEND              2
+             724 JUMP_BACKWARD           12 (to 702)
+         >>  726 END_FOR
+             728 SWAP                     2
+             730 STORE_FAST              11 (i)
+
+3655         732 LOAD_GLOBAL             17 (NULL + range)
+             742 LOAD_FAST               10 (n)
+             744 CALL                     1
+             752 GET_ITER
+             754 LOAD_FAST_AND_CLEAR     11 (i)
+             756 SWAP                     2
+             758 BUILD_LIST               0
+             760 SWAP                     2
+         >>  762 FOR_ITER                10 (to 786)
+             766 STORE_FAST              11 (i)
+             768 LOAD_CONST              14 ('Unlock G')
+             770 LOAD_FAST               11 (i)
+             772 LOAD_CONST               4 (1)
+             774 BINARY_OP                0 (+)
+             778 FORMAT_VALUE             0
+             780 BUILD_STRING             2
+             782 LIST_APPEND              2
+             784 JUMP_BACKWARD           12 (to 762)
+         >>  786 END_FOR
+             788 SWAP                     2
+             790 STORE_FAST              11 (i)
+
+3654         792 BINARY_OP                0 (+)
+             796 STORE_FAST               8 (labels)
+
+3657     >>  798 LOAD_FAST                0 (self)
+             800 LOAD_ATTR                8 (shift_grid)
+             820 LOAD_ATTR               11 (NULL|self + setVerticalHeaderLabels)
+             840 LOAD_FAST                8 (labels)
+             842 LOAD_CONST               2 (None)
+             844 LOAD_FAST                2 (rows)
+             846 BINARY_SLICE
+             848 CALL                     1
+             856 POP_TOP
+             858 RETURN_CONST             2 (None)
+         >>  860 SWAP                     2
+             862 POP_TOP
+
+3647         864 SWAP                     2
+             866 STORE_FAST               9 (g)
+             868 RERAISE                  0
+         >>  870 SWAP                     2
+             872 POP_TOP
+
+3649         874 SWAP                     2
+             876 STORE_FAST               9 (g)
+             878 RERAISE                  0
+         >>  880 SWAP                     2
+             882 POP_TOP
+
+3651         884 SWAP                     2
+             886 STORE_FAST               9 (g)
+             888 RERAISE                  0
+         >>  890 SWAP                     2
+             892 POP_TOP
+
+3654         894 SWAP                     2
+             896 STORE_FAST              11 (i)
+             898 RERAISE                  0
+         >>  900 SWAP                     2
+             902 POP_TOP
+
+3655         904 SWAP                     2
+             906 STORE_FAST              11 (i)
+             908 RERAISE                  0
+ExceptionTable:
+  422 to 440 -> 860 [2]
+  444 to 474 -> 860 [2]
+  498 to 516 -> 870 [2]
+  520 to 550 -> 870 [2]
+  576 to 594 -> 880 [2]
+  598 to 626 -> 880 [2]
+  698 to 726 -> 890 [2]
+  758 to 786 -> 900 [3]

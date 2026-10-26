@@ -1,0 +1,52 @@
+3766           0 RESUME                   0
+
+3767           2 BUILD_MAP                0
+               4 STORE_FAST               1 (out)
+
+3768           6 LOAD_FAST                0 (self)
+               8 LOAD_ATTR                0 (fields)
+              28 LOAD_ATTR                3 (NULL|self + items)
+              48 CALL                     0
+              56 GET_ITER
+         >>   58 FOR_ITER                43 (to 148)
+              62 UNPACK_SEQUENCE          2
+              66 STORE_FAST               2 (key)
+              68 STORE_FAST               3 (widget)
+
+3769          70 LOAD_FAST                3 (widget)
+              72 LOAD_ATTR                5 (NULL|self + text)
+              92 CALL                     0
+             100 LOAD_ATTR                7 (NULL|self + strip)
+             120 CALL                     0
+             128 STORE_FAST               4 (text)
+
+3770         130 LOAD_FAST                4 (text)
+             132 POP_JUMP_IF_TRUE         1 (to 136)
+             134 JUMP_BACKWARD           39 (to 58)
+
+3771     >>  136 LOAD_FAST                4 (text)
+             138 LOAD_FAST                1 (out)
+             140 LOAD_FAST                2 (key)
+             142 STORE_SUBSCR
+             146 JUMP_BACKWARD           45 (to 58)
+
+3768     >>  148 END_FOR
+
+3772         150 LOAD_FAST                0 (self)
+             152 LOAD_ATTR                8 (notes)
+             172 LOAD_ATTR               11 (NULL|self + toPlainText)
+             192 CALL                     0
+             200 LOAD_ATTR                7 (NULL|self + strip)
+             220 CALL                     0
+             228 STORE_FAST               5 (notes)
+
+3773         230 LOAD_FAST                5 (notes)
+             232 POP_JUMP_IF_FALSE        5 (to 244)
+
+3774         234 LOAD_FAST                5 (notes)
+             236 LOAD_FAST                1 (out)
+             238 LOAD_CONST               1 ('notes')
+             240 STORE_SUBSCR
+
+3775     >>  244 LOAD_FAST                1 (out)
+             246 RETURN_VALUE

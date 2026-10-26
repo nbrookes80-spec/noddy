@@ -1,0 +1,640 @@
+               0 COPY_FREE_VARS           1
+
+4328           2 RESUME                   0
+
+4329           4 LOAD_GLOBAL              0 (super)
+              14 LOAD_DEREF              15 (__class__)
+              16 LOAD_FAST                0 (self)
+              18 LOAD_SUPER_ATTR          5 (NULL|self + __init__)
+              22 LOAD_FAST                1 (parent)
+              24 CALL                     1
+              32 POP_TOP
+
+4330          34 LOAD_FAST                0 (self)
+              36 LOAD_ATTR                5 (NULL|self + setWindowTitle)
+              56 LOAD_CONST               1 ('Performance Simulator')
+              58 CALL                     1
+              66 POP_TOP
+
+4331          68 LOAD_FAST                0 (self)
+              70 LOAD_ATTR                7 (NULL|self + resize)
+              90 LOAD_CONST               2 (960)
+              92 LOAD_CONST               3 (740)
+              94 CALL                     2
+             102 POP_TOP
+
+4332         104 LOAD_FAST                2 (sim_cfg)
+             106 LOAD_FAST                0 (self)
+             108 STORE_ATTR               4 (sim_cfg)
+
+4333         118 LOAD_FAST                3 (shift_points_mph)
+             120 COPY                     1
+             122 POP_JUMP_IF_TRUE         2 (to 128)
+             124 POP_TOP
+             126 BUILD_LIST               0
+         >>  128 LOAD_FAST                0 (self)
+             130 STORE_ATTR               5 (shift_points_mph)
+
+4334         140 LOAD_CONST               0 (None)
+             142 LOAD_FAST                0 (self)
+             144 STORE_ATTR               6 (last_results)
+
+4336         154 LOAD_GLOBAL             15 (NULL + QVBoxLayout)
+             164 LOAD_FAST                0 (self)
+             166 CALL                     1
+             174 STORE_FAST               4 (layout)
+
+4339         176 LOAD_GLOBAL             17 (NULL + QGroupBox)
+             186 LOAD_CONST               4 ('Inputs')
+             188 CALL                     1
+             196 STORE_FAST               5 (info_box)
+
+4340         198 LOAD_GLOBAL             19 (NULL + QFormLayout)
+             208 CALL                     0
+             216 STORE_FAST               6 (info_l)
+
+4341         218 LOAD_FAST                2 (sim_cfg)
+             220 LOAD_ATTR               21 (NULL|self + get)
+             240 LOAD_CONST               5 ('torque_curve')
+             242 CALL                     1
+             250 STORE_FAST               7 (curve)
+
+4342         252 LOAD_FAST                6 (info_l)
+             254 LOAD_ATTR               23 (NULL|self + addRow)
+             274 LOAD_CONST               6 ('Trans:')
+             276 LOAD_GLOBAL             25 (NULL + QLabel)
+
+4343         286 LOAD_GLOBAL             27 (NULL + len)
+             296 LOAD_FAST                2 (sim_cfg)
+             298 LOAD_CONST               7 ('ratios')
+             300 BINARY_SUBSCR
+             304 CALL                     1
+             312 FORMAT_VALUE             0
+             314 LOAD_CONST               8 ('-spd, ratios ')
+
+4344         316 LOAD_FAST                2 (sim_cfg)
+             318 LOAD_CONST               7 ('ratios')
+             320 BINARY_SUBSCR
+             324 GET_ITER
+             326 LOAD_FAST_AND_CLEAR      8 (r)
+             328 SWAP                     2
+             330 BUILD_LIST               0
+             332 SWAP                     2
+         >>  334 FOR_ITER                 6 (to 350)
+             338 STORE_FAST               8 (r)
+             340 LOAD_FAST                8 (r)
+             342 LOAD_CONST               9 ('.2f')
+             344 FORMAT_VALUE             4 (with format)
+             346 LIST_APPEND              2
+             348 JUMP_BACKWARD            8 (to 334)
+         >>  350 END_FOR
+             352 SWAP                     2
+             354 STORE_FAST               8 (r)
+             356 FORMAT_VALUE             0
+
+4343         358 BUILD_STRING             3
+
+4342         360 CALL                     1
+             368 CALL                     2
+             376 POP_TOP
+
+4346         378 LOAD_FAST                6 (info_l)
+             380 LOAD_ATTR               23 (NULL|self + addRow)
+             400 LOAD_CONST              10 ('Drivetrain:')
+             402 LOAD_GLOBAL             25 (NULL + QLabel)
+
+4347         412 LOAD_FAST                2 (sim_cfg)
+             414 LOAD_CONST              11 ('tire_dia')
+             416 BINARY_SUBSCR
+             420 LOAD_CONST              12 ('.1f')
+             422 FORMAT_VALUE             4 (with format)
+             424 LOAD_CONST              13 ('″ tire × ')
+             426 LOAD_FAST                2 (sim_cfg)
+             428 LOAD_CONST              14 ('axle')
+             430 BINARY_SUBSCR
+             434 LOAD_CONST               9 ('.2f')
+             436 FORMAT_VALUE             4 (with format)
+             438 LOAD_CONST              15 (' axle × ')
+
+4348         440 LOAD_FAST                2 (sim_cfg)
+             442 LOAD_CONST              16 ('chain')
+             444 BINARY_SUBSCR
+             448 LOAD_CONST               9 ('.2f')
+             450 FORMAT_VALUE             4 (with format)
+             452 LOAD_CONST              17 (' t-case = ')
+             454 LOAD_FAST                2 (sim_cfg)
+             456 LOAD_CONST              14 ('axle')
+             458 BINARY_SUBSCR
+             462 LOAD_FAST                2 (sim_cfg)
+             464 LOAD_CONST              16 ('chain')
+             466 BINARY_SUBSCR
+             470 BINARY_OP                5 (*)
+             474 LOAD_CONST              18 ('.3f')
+             476 FORMAT_VALUE             4 (with format)
+             478 LOAD_CONST              19 (' final')
+
+4347         480 BUILD_STRING             8
+
+4346         482 CALL                     1
+             490 CALL                     2
+             498 POP_TOP
+
+4350         500 LOAD_FAST                6 (info_l)
+             502 LOAD_ATTR               23 (NULL|self + addRow)
+             522 LOAD_CONST              20 ('Weight:')
+             524 LOAD_GLOBAL             25 (NULL + QLabel)
+             534 LOAD_FAST                2 (sim_cfg)
+             536 LOAD_CONST              21 ('weight')
+             538 BINARY_SUBSCR
+             542 LOAD_CONST              22 ('.0f')
+             544 FORMAT_VALUE             4 (with format)
+             546 LOAD_CONST              23 (' lb')
+             548 BUILD_STRING             2
+             550 CALL                     1
+             558 CALL                     2
+             566 POP_TOP
+
+4351         568 LOAD_FAST                6 (info_l)
+             570 LOAD_ATTR               23 (NULL|self + addRow)
+             590 LOAD_CONST              24 ('Stall RPM:')
+             592 LOAD_GLOBAL             25 (NULL + QLabel)
+             602 LOAD_FAST                2 (sim_cfg)
+             604 LOAD_CONST              25 ('stall_rpm')
+             606 BINARY_SUBSCR
+             610 LOAD_CONST              22 ('.0f')
+             612 FORMAT_VALUE             4 (with format)
+             614 CALL                     1
+             622 CALL                     2
+             630 POP_TOP
+
+4352         632 LOAD_FAST                7 (curve)
+             634 POP_JUMP_IF_FALSE       96 (to 828)
+             636 LOAD_FAST                7 (curve)
+             638 LOAD_ATTR               28 (is_empty)
+             658 POP_JUMP_IF_TRUE        84 (to 828)
+
+4353         660 LOAD_FAST                6 (info_l)
+             662 LOAD_ATTR               23 (NULL|self + addRow)
+             682 LOAD_CONST              26 ('Torque Curve:')
+             684 LOAD_GLOBAL             25 (NULL + QLabel)
+
+4354         694 LOAD_CONST              27 ('Peak ')
+             696 LOAD_FAST                7 (curve)
+             698 LOAD_ATTR               30 (peak_hp)
+             718 LOAD_CONST              22 ('.0f')
+             720 FORMAT_VALUE             4 (with format)
+             722 LOAD_CONST              28 (' HP @ ')
+             724 LOAD_FAST                7 (curve)
+             726 LOAD_ATTR               32 (peak_hp_rpm)
+             746 LOAD_CONST              22 ('.0f')
+             748 FORMAT_VALUE             4 (with format)
+             750 LOAD_CONST              29 (' / ')
+
+4355         752 LOAD_FAST                7 (curve)
+             754 LOAD_ATTR               34 (peak_tq)
+             774 LOAD_CONST              22 ('.0f')
+             776 FORMAT_VALUE             4 (with format)
+             778 LOAD_CONST              30 (' lb·ft @ ')
+             780 LOAD_FAST                7 (curve)
+             782 LOAD_ATTR               36 (peak_tq_rpm)
+             802 LOAD_CONST              22 ('.0f')
+             804 FORMAT_VALUE             4 (with format)
+
+4354         806 BUILD_STRING             8
+
+4353         808 CALL                     1
+             816 CALL                     2
+             824 POP_TOP
+             826 JUMP_FORWARD            46 (to 920)
+
+4358     >>  828 LOAD_GLOBAL             25 (NULL + QLabel)
+             838 LOAD_CONST              31 ('⚠ No torque curve loaded — load via Tools → Torque Curve')
+             840 CALL                     1
+             848 STORE_FAST               9 (warn)
+
+4359         850 LOAD_FAST                9 (warn)
+             852 LOAD_ATTR               39 (NULL|self + setStyleSheet)
+             872 LOAD_CONST              32 ('color: #f0a060;')
+             874 CALL                     1
+             882 POP_TOP
+
+4360         884 LOAD_FAST                6 (info_l)
+             886 LOAD_ATTR               23 (NULL|self + addRow)
+             906 LOAD_CONST              26 ('Torque Curve:')
+             908 LOAD_FAST                9 (warn)
+             910 CALL                     2
+             918 POP_TOP
+
+4363     >>  920 LOAD_GLOBAL             41 (NULL + QDoubleSpinBox)
+             930 CALL                     0
+             938 LOAD_FAST                0 (self)
+             940 STORE_ATTR              21 (cda_spin)
+
+4364         950 LOAD_FAST                0 (self)
+             952 LOAD_ATTR               42 (cda_spin)
+             972 LOAD_ATTR               45 (NULL|self + setRange)
+             992 LOAD_CONST              33 (2.0)
+             994 LOAD_CONST              34 (30.0)
+             996 CALL                     2
+            1004 POP_TOP
+
+4365        1006 LOAD_FAST                0 (self)
+            1008 LOAD_ATTR               42 (cda_spin)
+            1028 LOAD_ATTR               47 (NULL|self + setDecimals)
+            1048 LOAD_CONST              35 (1)
+            1050 CALL                     1
+            1058 POP_TOP
+
+4366        1060 LOAD_FAST                0 (self)
+            1062 LOAD_ATTR               42 (cda_spin)
+            1082 LOAD_ATTR               49 (NULL|self + setValue)
+            1102 LOAD_CONST              36 (9.0)
+            1104 CALL                     1
+            1112 POP_TOP
+
+4367        1114 LOAD_FAST                0 (self)
+            1116 LOAD_ATTR               42 (cda_spin)
+            1136 LOAD_ATTR               51 (NULL|self + setToolTip)
+
+4368        1156 LOAD_CONST              37 ('Drag area Cd × A (ft²). Typical values:\n  • Sports car (Vette, GT):       6-8\n  • Sedan (CTS, G8):              8-10\n  • Truck (Silverado/Sierra):    12-16\n  • SUV (Tahoe, Suburban):       14-18\n  • Brick (Hummer H2):           22-28')
+
+4367        1158 CALL                     1
+            1166 POP_TOP
+
+4375        1168 LOAD_FAST                6 (info_l)
+            1170 LOAD_ATTR               23 (NULL|self + addRow)
+            1190 LOAD_CONST              38 ('Drag Cd×A (ft²):')
+            1192 LOAD_FAST                0 (self)
+            1194 LOAD_ATTR               42 (cda_spin)
+            1214 CALL                     2
+            1222 POP_TOP
+
+4376        1224 LOAD_GLOBAL             41 (NULL + QDoubleSpinBox)
+            1234 CALL                     0
+            1242 LOAD_FAST                0 (self)
+            1244 STORE_ATTR              26 (crr_spin)
+
+4377        1254 LOAD_FAST                0 (self)
+            1256 LOAD_ATTR               52 (crr_spin)
+            1276 LOAD_ATTR               45 (NULL|self + setRange)
+            1296 LOAD_CONST              39 (0.005)
+            1298 LOAD_CONST              40 (0.03)
+            1300 CALL                     2
+            1308 POP_TOP
+
+4378        1310 LOAD_FAST                0 (self)
+            1312 LOAD_ATTR               52 (crr_spin)
+            1332 LOAD_ATTR               47 (NULL|self + setDecimals)
+            1352 LOAD_CONST              41 (3)
+            1354 CALL                     1
+            1362 POP_TOP
+
+4379        1364 LOAD_FAST                0 (self)
+            1366 LOAD_ATTR               52 (crr_spin)
+            1386 LOAD_ATTR               55 (NULL|self + setSingleStep)
+            1406 LOAD_CONST              42 (0.001)
+            1408 CALL                     1
+            1416 POP_TOP
+
+4380        1418 LOAD_FAST                0 (self)
+            1420 LOAD_ATTR               52 (crr_spin)
+            1440 LOAD_ATTR               49 (NULL|self + setValue)
+            1460 LOAD_CONST              43 (0.012)
+            1462 CALL                     1
+            1470 POP_TOP
+
+4381        1472 LOAD_FAST                0 (self)
+            1474 LOAD_ATTR               52 (crr_spin)
+            1494 LOAD_ATTR               51 (NULL|self + setToolTip)
+
+4382        1514 LOAD_CONST              44 ('Rolling resistance coefficient. Typical:\n  • Drag radials / slicks:  0.008-0.010\n  • Performance street:     0.011-0.013\n  • All-season:             0.013-0.015\n  • Truck A/T or M/T tires: 0.015-0.020')
+
+4381        1516 CALL                     1
+            1524 POP_TOP
+
+4388        1526 LOAD_FAST                6 (info_l)
+            1528 LOAD_ATTR               23 (NULL|self + addRow)
+            1548 LOAD_CONST              45 ('Rolling Resist:')
+            1550 LOAD_FAST                0 (self)
+            1552 LOAD_ATTR               52 (crr_spin)
+            1572 CALL                     2
+            1580 POP_TOP
+
+4390        1582 LOAD_GLOBAL             41 (NULL + QDoubleSpinBox)
+            1592 CALL                     0
+            1600 LOAD_FAST                0 (self)
+            1602 STORE_ATTR              28 (launch_grip_spin)
+
+4391        1612 LOAD_FAST                0 (self)
+            1614 LOAD_ATTR               56 (launch_grip_spin)
+            1634 LOAD_ATTR               45 (NULL|self + setRange)
+            1654 LOAD_CONST              46 (0.4)
+            1656 LOAD_CONST              47 (1.8)
+            1658 CALL                     2
+            1666 POP_TOP
+
+4392        1668 LOAD_FAST                0 (self)
+            1670 LOAD_ATTR               56 (launch_grip_spin)
+            1690 LOAD_ATTR               47 (NULL|self + setDecimals)
+            1710 LOAD_CONST              48 (2)
+            1712 CALL                     1
+            1720 POP_TOP
+
+4393        1722 LOAD_FAST                0 (self)
+            1724 LOAD_ATTR               56 (launch_grip_spin)
+            1744 LOAD_ATTR               55 (NULL|self + setSingleStep)
+            1764 LOAD_CONST              49 (0.05)
+            1766 CALL                     1
+            1774 POP_TOP
+
+4394        1776 LOAD_FAST                0 (self)
+            1778 LOAD_ATTR               56 (launch_grip_spin)
+            1798 LOAD_ATTR               49 (NULL|self + setValue)
+            1818 LOAD_CONST              50 (1.1)
+            1820 CALL                     1
+            1828 POP_TOP
+
+4395        1830 LOAD_FAST                0 (self)
+            1832 LOAD_ATTR               56 (launch_grip_spin)
+            1852 LOAD_ATTR               51 (NULL|self + setToolTip)
+
+4396        1872 LOAD_CONST              51 ('Tire grip limit in g. This is the dominant correction for\nhigh-HP launches — caps acceleration where engine torque\nexceeds rear tire grip. Typical values:\n  • Slicks:               1.40-1.60\n  • Drag radials:         1.20-1.30\n  • Performance street:   0.95-1.10\n  • All-season:           0.75-0.85\n  • Truck A/T:            0.65-0.75')
+
+4395        1874 CALL                     1
+            1882 POP_TOP
+
+4405        1884 LOAD_FAST                6 (info_l)
+            1886 LOAD_ATTR               23 (NULL|self + addRow)
+            1906 LOAD_CONST              52 ('Launch Grip (g):')
+            1908 LOAD_FAST                0 (self)
+            1910 LOAD_ATTR               56 (launch_grip_spin)
+            1930 CALL                     2
+            1938 POP_TOP
+
+4407        1940 LOAD_GLOBAL             41 (NULL + QDoubleSpinBox)
+            1950 CALL                     0
+            1958 LOAD_FAST                0 (self)
+            1960 STORE_ATTR              29 (eff_spin)
+
+4408        1970 LOAD_FAST                0 (self)
+            1972 LOAD_ATTR               58 (eff_spin)
+            1992 LOAD_ATTR               45 (NULL|self + setRange)
+            2012 LOAD_CONST              53 (0.7)
+            2014 LOAD_CONST              54 (0.95)
+            2016 CALL                     2
+            2024 POP_TOP
+
+4409        2026 LOAD_FAST                0 (self)
+            2028 LOAD_ATTR               58 (eff_spin)
+            2048 LOAD_ATTR               47 (NULL|self + setDecimals)
+            2068 LOAD_CONST              48 (2)
+            2070 CALL                     1
+            2078 POP_TOP
+
+4410        2080 LOAD_FAST                0 (self)
+            2082 LOAD_ATTR               58 (eff_spin)
+            2102 LOAD_ATTR               55 (NULL|self + setSingleStep)
+            2122 LOAD_CONST              55 (0.01)
+            2124 CALL                     1
+            2132 POP_TOP
+
+4411        2134 LOAD_FAST                0 (self)
+            2136 LOAD_ATTR               58 (eff_spin)
+            2156 LOAD_ATTR               49 (NULL|self + setValue)
+            2176 LOAD_CONST              56 (0.85)
+            2178 CALL                     1
+            2186 POP_TOP
+
+4412        2188 LOAD_FAST                0 (self)
+            2190 LOAD_ATTR               58 (eff_spin)
+            2210 LOAD_ATTR               51 (NULL|self + setToolTip)
+
+4413        2230 LOAD_CONST              57 ('Drivetrain efficiency (engine TQ → wheel TQ ratio).\n  • 4-spd auto:   0.78-0.82 (older, more losses)\n  • 6-spd auto:   0.83-0.87\n  • 8/10-spd:     0.86-0.88 (modern design)\n  • FWD:          add ~0.02 (shorter driveline)\n  • Manual:       0.90-0.93')
+
+4412        2232 CALL                     1
+            2240 POP_TOP
+
+4420        2242 LOAD_FAST                6 (info_l)
+            2244 LOAD_ATTR               23 (NULL|self + addRow)
+            2264 LOAD_CONST              58 ('Drivetrain Eff:')
+            2266 LOAD_FAST                0 (self)
+            2268 LOAD_ATTR               58 (eff_spin)
+            2288 CALL                     2
+            2296 POP_TOP
+
+4422        2298 LOAD_FAST                5 (info_box)
+            2300 LOAD_ATTR               61 (NULL|self + setLayout)
+            2320 LOAD_FAST                6 (info_l)
+            2322 CALL                     1
+            2330 POP_TOP
+
+4423        2332 LOAD_FAST                4 (layout)
+            2334 LOAD_ATTR               63 (NULL|self + addWidget)
+            2354 LOAD_FAST                5 (info_box)
+            2356 CALL                     1
+            2364 POP_TOP
+
+4426        2366 LOAD_GLOBAL             65 (NULL + QHBoxLayout)
+            2376 CALL                     0
+            2384 STORE_FAST              10 (run_row)
+
+4427        2386 LOAD_GLOBAL             67 (NULL + QPushButton)
+            2396 LOAD_CONST              59 ('▶ Run Simulation')
+            2398 CALL                     1
+            2406 LOAD_FAST                0 (self)
+            2408 STORE_ATTR              34 (run_btn)
+
+4428        2418 LOAD_FAST                0 (self)
+            2420 LOAD_ATTR               68 (run_btn)
+            2440 LOAD_ATTR               71 (NULL|self + setMinimumHeight)
+            2460 LOAD_CONST              60 (36)
+            2462 CALL                     1
+            2470 POP_TOP
+
+4429        2472 LOAD_FAST                0 (self)
+            2474 LOAD_ATTR               68 (run_btn)
+            2494 LOAD_ATTR               39 (NULL|self + setStyleSheet)
+
+4430        2514 LOAD_CONST              61 ('QPushButton { font-weight: bold; background: #005A9E; color: white; }QPushButton:hover { background: #0073C7; }')
+
+4429        2516 CALL                     1
+            2524 POP_TOP
+
+4433        2526 LOAD_FAST                0 (self)
+            2528 LOAD_ATTR               68 (run_btn)
+            2548 LOAD_ATTR               72 (clicked)
+            2568 LOAD_ATTR               75 (NULL|self + connect)
+            2588 LOAD_FAST                0 (self)
+            2590 LOAD_ATTR               76 (_run)
+            2610 CALL                     1
+            2618 POP_TOP
+
+4434        2620 LOAD_FAST               10 (run_row)
+            2622 LOAD_ATTR               63 (NULL|self + addWidget)
+            2642 LOAD_FAST                0 (self)
+            2644 LOAD_ATTR               68 (run_btn)
+            2664 LOAD_CONST              35 (1)
+            2666 CALL                     2
+            2674 POP_TOP
+
+4435        2676 LOAD_FAST                4 (layout)
+            2678 LOAD_ATTR               79 (NULL|self + addLayout)
+            2698 LOAD_FAST               10 (run_row)
+            2700 CALL                     1
+            2708 POP_TOP
+
+4438        2710 LOAD_GLOBAL             25 (NULL + QLabel)
+            2720 LOAD_CONST              62 ('(Run simulation to populate)')
+            2722 CALL                     1
+            2730 LOAD_FAST                0 (self)
+            2732 STORE_ATTR              40 (results_label)
+
+4439        2742 LOAD_FAST                0 (self)
+            2744 LOAD_ATTR               80 (results_label)
+            2764 LOAD_ATTR               39 (NULL|self + setStyleSheet)
+
+4440        2784 LOAD_CONST              63 ('background: #2a2a2a; color: #ddd; padding: 8px; border-radius: 3px;font-family: Consolas; font-size: 10pt;')
+
+4439        2786 CALL                     1
+            2794 POP_TOP
+
+4443        2796 LOAD_FAST                0 (self)
+            2798 LOAD_ATTR               80 (results_label)
+            2818 LOAD_ATTR               83 (NULL|self + setWordWrap)
+            2838 LOAD_CONST              64 (True)
+            2840 CALL                     1
+            2848 POP_TOP
+
+4444        2850 LOAD_FAST                4 (layout)
+            2852 LOAD_ATTR               63 (NULL|self + addWidget)
+            2872 LOAD_FAST                0 (self)
+            2874 LOAD_ATTR               80 (results_label)
+            2894 CALL                     1
+            2902 POP_TOP
+
+4447        2904 LOAD_GLOBAL             85 (NULL + DragRunPlot)
+            2914 CALL                     0
+            2922 LOAD_FAST                0 (self)
+            2924 STORE_ATTR              43 (plot)
+
+4448        2934 LOAD_FAST                4 (layout)
+            2936 LOAD_ATTR               63 (NULL|self + addWidget)
+            2956 LOAD_FAST                0 (self)
+            2958 LOAD_ATTR               86 (plot)
+            2978 LOAD_CONST              35 (1)
+            2980 CALL                     2
+            2988 POP_TOP
+
+4451        2990 LOAD_GLOBAL             17 (NULL + QGroupBox)
+            3000 LOAD_CONST              65 ("Shift Point Timing (#6 — verify shifts don't bump rev limiter)")
+            3002 CALL                     1
+            3010 STORE_FAST              11 (timing_box)
+
+4452        3012 LOAD_GLOBAL             15 (NULL + QVBoxLayout)
+            3022 CALL                     0
+            3030 STORE_FAST              12 (tg)
+
+4453        3032 LOAD_GLOBAL             89 (NULL + QTableWidget)
+            3042 LOAD_CONST              66 (0)
+            3044 LOAD_CONST              67 (6)
+            3046 CALL                     2
+            3054 LOAD_FAST                0 (self)
+            3056 STORE_ATTR              45 (shift_table)
+
+4454        3066 LOAD_FAST                0 (self)
+            3068 LOAD_ATTR               90 (shift_table)
+            3088 LOAD_ATTR               93 (NULL|self + setHorizontalHeaderLabels)
+            3108 BUILD_LIST               0
+            3110 LOAD_CONST              68 (('Shift', 'Init MPH', 'Init RPM', 'Post RPM', 'Drop', 'Rev Margin'))
+            3112 LIST_EXTEND              1
+            3114 CALL                     1
+            3122 POP_TOP
+
+4457        3124 LOAD_FAST                0 (self)
+            3126 LOAD_ATTR               90 (shift_table)
+            3146 LOAD_ATTR               95 (NULL|self + horizontalHeader)
+            3166 CALL                     0
+            3174 LOAD_ATTR               97 (NULL|self + setSectionResizeMode)
+            3194 LOAD_GLOBAL             98 (QHeaderView)
+            3204 LOAD_ATTR              100 (ResizeMode)
+            3224 LOAD_ATTR              102 (Stretch)
+            3244 CALL                     1
+            3252 POP_TOP
+
+4458        3254 LOAD_FAST                0 (self)
+            3256 LOAD_ATTR               90 (shift_table)
+            3276 LOAD_ATTR              105 (NULL|self + setMaximumHeight)
+            3296 LOAD_CONST              69 (180)
+            3298 CALL                     1
+            3306 POP_TOP
+
+4459        3308 LOAD_FAST                0 (self)
+            3310 LOAD_ATTR               90 (shift_table)
+            3330 LOAD_ATTR              107 (NULL|self + setEditTriggers)
+            3350 LOAD_GLOBAL             88 (QTableWidget)
+            3360 LOAD_ATTR              108 (EditTrigger)
+            3380 LOAD_ATTR              110 (NoEditTriggers)
+            3400 CALL                     1
+            3408 POP_TOP
+
+4460        3410 LOAD_FAST               12 (tg)
+            3412 LOAD_ATTR               63 (NULL|self + addWidget)
+            3432 LOAD_FAST                0 (self)
+            3434 LOAD_ATTR               90 (shift_table)
+            3454 CALL                     1
+            3462 POP_TOP
+
+4461        3464 LOAD_FAST               11 (timing_box)
+            3466 LOAD_ATTR               61 (NULL|self + setLayout)
+            3486 LOAD_FAST               12 (tg)
+            3488 CALL                     1
+            3496 POP_TOP
+
+4462        3498 LOAD_FAST                4 (layout)
+            3500 LOAD_ATTR               63 (NULL|self + addWidget)
+            3520 LOAD_FAST               11 (timing_box)
+            3522 CALL                     1
+            3530 POP_TOP
+
+4465        3532 LOAD_GLOBAL             65 (NULL + QHBoxLayout)
+            3542 CALL                     0
+            3550 STORE_FAST              13 (btn_row)
+
+4466        3552 LOAD_FAST               13 (btn_row)
+            3554 LOAD_ATTR              113 (NULL|self + addStretch)
+            3574 CALL                     0
+            3582 POP_TOP
+
+4467        3584 LOAD_GLOBAL             67 (NULL + QPushButton)
+            3594 LOAD_CONST              70 ('Close')
+            3596 CALL                     1
+            3604 STORE_FAST              14 (close)
+
+4468        3606 LOAD_FAST               14 (close)
+            3608 LOAD_ATTR               72 (clicked)
+            3628 LOAD_ATTR               75 (NULL|self + connect)
+            3648 LOAD_FAST                0 (self)
+            3650 LOAD_ATTR              114 (accept)
+            3670 CALL                     1
+            3678 POP_TOP
+
+4469        3680 LOAD_FAST               13 (btn_row)
+            3682 LOAD_ATTR               63 (NULL|self + addWidget)
+            3702 LOAD_FAST               14 (close)
+            3704 CALL                     1
+            3712 POP_TOP
+
+4470        3714 LOAD_FAST                4 (layout)
+            3716 LOAD_ATTR               79 (NULL|self + addLayout)
+            3736 LOAD_FAST               13 (btn_row)
+            3738 CALL                     1
+            3746 POP_TOP
+            3748 RETURN_CONST             0 (None)
+         >> 3750 SWAP                     2
+            3752 POP_TOP
+
+4344        3754 SWAP                     2
+            3756 STORE_FAST               8 (r)
+            3758 RERAISE                  0
+ExceptionTable:
+  330 to 350 -> 3750 [9]

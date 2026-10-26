@@ -1,0 +1,196 @@
+10640           0 RESUME                   0
+
+10641           2 LOAD_GLOBAL              1 (NULL + QFileDialog)
+               12 LOAD_ATTR                2 (getOpenFileName)
+               32 LOAD_FAST                0 (self)
+               34 LOAD_CONST               1 ('Load Profile')
+
+10642          36 LOAD_CONST               2 ('')
+               38 LOAD_CONST               3 ('JSON (*.json)')
+
+10641          40 CALL                     4
+               48 UNPACK_SEQUENCE          2
+               52 STORE_FAST               1 (path)
+               54 STORE_FAST               2 (_)
+
+10643          56 LOAD_FAST                1 (path)
+               58 POP_JUMP_IF_TRUE         1 (to 62)
+
+10644          60 RETURN_CONST             0 (None)
+
+10645     >>   62 NOP
+
+10646          64 LOAD_GLOBAL              5 (NULL + open)
+               74 LOAD_FAST                1 (path)
+               76 CALL                     1
+               84 BEFORE_WITH
+               86 STORE_FAST               3 (f)
+
+10647          88 LOAD_GLOBAL              7 (NULL + json)
+               98 LOAD_ATTR                8 (load)
+              118 LOAD_FAST                3 (f)
+              120 CALL                     1
+              128 STORE_FAST               4 (cfg)
+
+10646         130 LOAD_CONST               0 (None)
+              132 LOAD_CONST               0 (None)
+              134 LOAD_CONST               0 (None)
+              136 CALL                     2
+              144 POP_TOP
+
+10659     >>  146 NOP
+
+10660         148 LOAD_FAST                0 (self)
+              150 LOAD_ATTR               25 (NULL|self + _apply_loaded_config)
+              170 LOAD_FAST_CHECK          4 (cfg)
+              172 CALL                     1
+              180 POP_TOP
+
+10661         182 LOAD_FAST                0 (self)
+              184 LOAD_ATTR               27 (NULL|self + statusBar)
+              204 CALL                     0
+              212 LOAD_ATTR               29 (NULL|self + showMessage)
+              232 LOAD_CONST              10 ('Loaded ')
+              234 LOAD_FAST                1 (path)
+              236 FORMAT_VALUE             0
+              238 BUILD_STRING             2
+              240 LOAD_CONST              11 (4000)
+              242 CALL                     2
+              250 POP_TOP
+              252 RETURN_CONST             0 (None)
+
+10646     >>  254 PUSH_EXC_INFO
+              256 WITH_EXCEPT_START
+              258 POP_JUMP_IF_TRUE         1 (to 262)
+              260 RERAISE                  2
+          >>  262 POP_TOP
+              264 POP_EXCEPT
+              266 POP_TOP
+              268 POP_TOP
+              270 JUMP_BACKWARD           63 (to 146)
+          >>  272 COPY                     3
+              274 POP_EXCEPT
+              276 RERAISE                  1
+          >>  278 PUSH_EXC_INFO
+
+10648         280 LOAD_GLOBAL              6 (json)
+              290 LOAD_ATTR               10 (JSONDecodeError)
+              310 CHECK_EXC_MATCH
+              312 POP_JUMP_IF_FALSE       73 (to 460)
+              314 STORE_FAST               5 (e)
+
+10649         316 LOAD_GLOBAL             13 (NULL + QMessageBox)
+              326 LOAD_ATTR               14 (critical)
+              346 LOAD_FAST                0 (self)
+              348 LOAD_CONST               4 ('Load Failed')
+
+10650         350 LOAD_CONST               5 ('Profile file is corrupt or not valid JSON.\n\nError: ')
+
+10651         352 LOAD_FAST                5 (e)
+              354 LOAD_ATTR               16 (msg)
+              374 FORMAT_VALUE             0
+              376 LOAD_CONST               6 ('\nLocation: line ')
+
+10652         378 LOAD_FAST                5 (e)
+              380 LOAD_ATTR               18 (lineno)
+              400 FORMAT_VALUE             0
+              402 LOAD_CONST               7 (', column ')
+              404 LOAD_FAST                5 (e)
+              406 LOAD_ATTR               20 (colno)
+              426 FORMAT_VALUE             0
+              428 LOAD_CONST               8 ('\n\nOpen the file in a text editor to inspect/repair, or choose a different profile.')
+
+10650         430 BUILD_STRING             7
+
+10649         432 CALL                     3
+              440 POP_TOP
+
+10655         442 POP_EXCEPT
+              444 LOAD_CONST               0 (None)
+              446 STORE_FAST               5 (e)
+              448 DELETE_FAST              5 (e)
+              450 RETURN_CONST             0 (None)
+          >>  452 LOAD_CONST               0 (None)
+              454 STORE_FAST               5 (e)
+              456 DELETE_FAST              5 (e)
+              458 RERAISE                  1
+
+10656     >>  460 LOAD_GLOBAL             22 (OSError)
+              470 CHECK_EXC_MATCH
+              472 POP_JUMP_IF_FALSE       36 (to 546)
+              474 STORE_FAST               5 (e)
+
+10657         476 LOAD_GLOBAL             13 (NULL + QMessageBox)
+              486 LOAD_ATTR               14 (critical)
+              506 LOAD_FAST                0 (self)
+              508 LOAD_CONST               4 ('Load Failed')
+              510 LOAD_CONST               9 ('Cannot read file:\n')
+              512 LOAD_FAST                5 (e)
+              514 FORMAT_VALUE             0
+              516 BUILD_STRING             2
+              518 CALL                     3
+              526 POP_TOP
+
+10658         528 POP_EXCEPT
+              530 LOAD_CONST               0 (None)
+              532 STORE_FAST               5 (e)
+              534 DELETE_FAST              5 (e)
+              536 RETURN_CONST             0 (None)
+          >>  538 LOAD_CONST               0 (None)
+              540 STORE_FAST               5 (e)
+              542 DELETE_FAST              5 (e)
+              544 RERAISE                  1
+
+10656     >>  546 RERAISE                  0
+          >>  548 COPY                     3
+              550 POP_EXCEPT
+              552 RERAISE                  1
+          >>  554 PUSH_EXC_INFO
+
+10662         556 LOAD_GLOBAL             30 (Exception)
+              566 CHECK_EXC_MATCH
+              568 POP_JUMP_IF_FALSE       37 (to 644)
+              570 STORE_FAST               5 (e)
+
+10663         572 LOAD_GLOBAL             13 (NULL + QMessageBox)
+              582 LOAD_ATTR               32 (warning)
+              602 LOAD_FAST                0 (self)
+              604 LOAD_CONST              12 ('Partial Load')
+
+10664         606 LOAD_CONST              13 ('Profile loaded but some settings could not be applied:\n\n')
+              608 LOAD_FAST                5 (e)
+              610 FORMAT_VALUE             0
+              612 LOAD_CONST              14 ('\n\nDefaults will be used where missing.')
+              614 BUILD_STRING             3
+
+10663         616 CALL                     3
+              624 POP_TOP
+              626 POP_EXCEPT
+              628 LOAD_CONST               0 (None)
+              630 STORE_FAST               5 (e)
+              632 DELETE_FAST              5 (e)
+              634 RETURN_CONST             0 (None)
+          >>  636 LOAD_CONST               0 (None)
+              638 STORE_FAST               5 (e)
+              640 DELETE_FAST              5 (e)
+              642 RERAISE                  1
+
+10662     >>  644 RERAISE                  0
+          >>  646 COPY                     3
+              648 POP_EXCEPT
+              650 RERAISE                  1
+ExceptionTable:
+  64 to 84 -> 278 [0]
+  86 to 128 -> 254 [1] lasti
+  130 to 144 -> 278 [0]
+  148 to 250 -> 554 [0]
+  254 to 262 -> 272 [3] lasti
+  264 to 276 -> 278 [0]
+  278 to 314 -> 548 [1] lasti
+  316 to 440 -> 452 [1] lasti
+  452 to 474 -> 548 [1] lasti
+  476 to 526 -> 538 [1] lasti
+  538 to 546 -> 548 [1] lasti
+  554 to 570 -> 646 [1] lasti
+  572 to 624 -> 636 [1] lasti
+  636 to 644 -> 646 [1] lasti

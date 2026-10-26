@@ -1,0 +1,15 @@
+                0 COPY_FREE_VARS           1
+
+10360           2 RESUME                   0
+
+10361           4 LOAD_DEREF               2 (p)
+                6 LOAD_ATTR                1 (NULL|self + fontMetrics)
+               26 CALL                     0
+               34 STORE_FAST               1 (fm)
+
+10362          36 LOAD_FAST                1 (fm)
+               38 LOAD_ATTR                3 (NULL|self + height)
+               58 CALL                     0
+               66 LOAD_CONST               1 (1.15)
+               68 BINARY_OP                5 (*)
+               72 RETURN_VALUE

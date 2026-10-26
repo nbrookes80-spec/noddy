@@ -1,0 +1,5 @@
+5611           0 RESUME                   0
+
+5612           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (result)
+              24 RETURN_VALUE

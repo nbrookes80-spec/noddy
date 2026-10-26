@@ -1,0 +1,310 @@
+               0 MAKE_CELL               17 (max_tq)
+               2 MAKE_CELL               18 (shifts)
+
+9002           4 RESUME                   0
+
+9015           6 BUILD_MAP                0
+               8 LOAD_FAST                0 (self)
+              10 STORE_ATTR               0 (_pressure_per_shift)
+
+9016          20 BUILD_MAP                0
+              22 LOAD_FAST                0 (self)
+              24 STORE_ATTR               1 (_pressure_mode_intents)
+
+9017          34 BUILD_MAP                0
+              36 LOAD_FAST                0 (self)
+              38 STORE_ATTR               2 (_tcc_apply_tables)
+
+9018          48 BUILD_MAP                0
+              50 LOAD_FAST                0 (self)
+              52 STORE_ATTR               3 (_coast_tables)
+
+9019          62 BUILD_MAP                0
+              64 LOAD_FAST                0 (self)
+              66 STORE_ATTR               4 (_garage_tables)
+
+9020          76 BUILD_MAP                0
+              78 LOAD_FAST                0 (self)
+              80 STORE_ATTR               5 (_pressure_4spd)
+
+9021          90 BUILD_MAP                0
+              92 LOAD_FAST                0 (self)
+              94 STORE_ATTR               6 (_brake_shift_4spd)
+
+9022         104 BUILD_MAP                0
+             106 LOAD_FAST                0 (self)
+             108 STORE_ATTR               7 (_shift_time_4spd)
+
+9023         118 LOAD_CONST               1 (None)
+             120 LOAD_FAST                0 (self)
+             122 STORE_ATTR               8 (_tcc_duty_4spd)
+
+9024         132 LOAD_CONST               1 (None)
+             134 LOAD_FAST                0 (self)
+             136 STORE_ATTR               9 (_force_motor_4spd)
+
+9026         146 LOAD_FAST                1 (n_gears)
+             148 LOAD_CONST               2 (6)
+             150 COMPARE_OP               2 (<)
+             154 POP_JUMP_IF_FALSE       17 (to 190)
+
+9027         156 LOAD_FAST                0 (self)
+             158 LOAD_ATTR               21 (NULL|self + _generate_4spd_tables)
+             178 CALL                     0
+             186 POP_TOP
+
+9028         188 RETURN_CONST             1 (None)
+
+9030     >>  190 LOAD_GLOBAL             22 (TRANS_DB)
+             200 LOAD_FAST                0 (self)
+             202 LOAD_ATTR               24 (trans)
+             222 LOAD_ATTR               27 (NULL|self + currentText)
+             242 CALL                     0
+             250 BINARY_SUBSCR
+             254 STORE_FAST               2 (trans_spec)
+
+9031         256 LOAD_FAST                2 (trans_spec)
+             258 LOAD_ATTR               29 (NULL|self + get)
+             278 LOAD_CONST               3 ('torque')
+             280 LOAD_CONST               4 (400)
+             282 CALL                     2
+             290 STORE_DEREF             17 (max_tq)
+
+9032         292 LOAD_GLOBAL             30 (PressureEngine)
+             302 LOAD_ATTR               33 (NULL|self + torque_cols)
+             322 LOAD_DEREF              17 (max_tq)
+             324 CALL                     1
+             332 STORE_FAST               3 (torque_cols)
+
+9033         334 LOAD_FAST                3 (torque_cols)
+             336 LOAD_FAST                0 (self)
+             338 STORE_ATTR              17 (_pressure_torque_cols)
+
+9034         348 LOAD_GLOBAL             37 (NULL + get_pattern_shifts)
+             358 LOAD_FAST                1 (n_gears)
+             360 CALL                     1
+             368 STORE_DEREF             18 (shifts)
+
+9036         370 LOAD_CLOSURE            17 (max_tq)
+             372 LOAD_CLOSURE            18 (shifts)
+             374 BUILD_TUPLE              2
+             376 LOAD_CONST               5 (<code object build_for_intent at 0x73ab02a4f1b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 9036>)
+             378 MAKE_FUNCTION            8 (closure)
+             380 STORE_FAST               4 (build_for_intent)
+
+9042         382 LOAD_GLOBAL             39 (NULL + hasattr)
+             392 LOAD_FAST                0 (self)
+             394 LOAD_CONST               6 ('pressure_intent_overrides')
+             396 CALL                     2
+             404 POP_JUMP_IF_FALSE       28 (to 462)
+
+9041         406 LOAD_FAST                0 (self)
+             408 LOAD_ATTR               40 (pressure_intent_overrides)
+             428 LOAD_ATTR               29 (NULL|self + get)
+             448 LOAD_CONST               7 ('Normal')
+             450 LOAD_CONST               8 ('Daily')
+             452 CALL                     2
+             460 JUMP_FORWARD             1 (to 464)
+
+9042     >>  462 LOAD_CONST               8 ('Daily')
+
+9041     >>  464 STORE_FAST               5 (normal_intent)
+
+9043         466 PUSH_NULL
+             468 LOAD_FAST                4 (build_for_intent)
+             470 LOAD_FAST                5 (normal_intent)
+             472 CALL                     1
+             480 LOAD_FAST                0 (self)
+             482 LOAD_ATTR                0 (_pressure_per_shift)
+             502 LOAD_CONST               7 ('Normal')
+             504 STORE_SUBSCR
+
+9044         508 LOAD_FAST                5 (normal_intent)
+             510 LOAD_FAST                0 (self)
+             512 LOAD_ATTR                2 (_pressure_mode_intents)
+             532 LOAD_CONST               7 ('Normal')
+             534 STORE_SUBSCR
+
+9045         538 LOAD_FAST                5 (normal_intent)
+             540 LOAD_GLOBAL             42 (TCC_APPLY_INTENTS)
+             550 CONTAINS_OP              0
+             552 POP_JUMP_IF_FALSE        2 (to 558)
+             554 LOAD_FAST                5 (normal_intent)
+             556 JUMP_FORWARD             1 (to 560)
+         >>  558 LOAD_CONST               8 ('Daily')
+         >>  560 STORE_FAST               6 (tcc_n)
+
+9046         562 LOAD_GLOBAL             30 (PressureEngine)
+             572 LOAD_ATTR               45 (NULL|self + tcc_apply_pressure)
+             592 LOAD_FAST                6 (tcc_n)
+             594 LOAD_DEREF              17 (max_tq)
+             596 CALL                     2
+             604 LOAD_FAST                0 (self)
+             606 LOAD_ATTR                4 (_tcc_apply_tables)
+             626 LOAD_CONST               7 ('Normal')
+             628 STORE_SUBSCR
+
+9051         632 LOAD_GLOBAL             47 (NULL + getattr)
+             642 LOAD_FAST                0 (self)
+             644 LOAD_CONST               6 ('pressure_intent_overrides')
+             646 BUILD_MAP                0
+             648 CALL                     3
+             656 STORE_FAST               7 (overrides)
+
+9052         658 LOAD_FAST                0 (self)
+             660 LOAD_ATTR               48 (mode_overrides)
+             680 LOAD_ATTR               51 (NULL|self + items)
+             700 CALL                     0
+             708 GET_ITER
+         >>  710 FOR_ITER               212 (to 1138)
+             714 UNPACK_SEQUENCE          2
+             718 STORE_FAST               8 (mode_name)
+             720 STORE_FAST               9 (mode_cfg)
+
+9053         722 LOAD_FAST                9 (mode_cfg)
+             724 LOAD_ATTR               29 (NULL|self + get)
+             744 LOAD_CONST               9 ('enabled')
+             746 CALL                     1
+             754 POP_JUMP_IF_TRUE         1 (to 758)
+
+9054         756 JUMP_BACKWARD           24 (to 710)
+
+9055     >>  758 LOAD_FAST                8 (mode_name)
+             760 LOAD_CONST              10 ('Hot Trans')
+             762 COMPARE_OP              40 (==)
+             766 POP_JUMP_IF_FALSE        1 (to 770)
+
+9056         768 JUMP_BACKWARD           30 (to 710)
+
+9057     >>  770 LOAD_FAST                8 (mode_name)
+             772 LOAD_FAST                7 (overrides)
+             774 CONTAINS_OP              0
+             776 POP_JUMP_IF_FALSE        6 (to 790)
+
+9058         778 LOAD_FAST                7 (overrides)
+             780 LOAD_FAST                8 (mode_name)
+             782 BINARY_SUBSCR
+             786 STORE_FAST              10 (press_intent)
+             788 JUMP_FORWARD            90 (to 970)
+
+9060     >>  790 LOAD_FAST                9 (mode_cfg)
+             792 LOAD_ATTR               29 (NULL|self + get)
+             812 LOAD_CONST              11 ('intent')
+             814 LOAD_CONST              12 ('')
+             816 CALL                     2
+             824 STORE_FAST              11 (shift_intent)
+
+9061         826 LOAD_FAST               11 (shift_intent)
+             828 LOAD_ATTR               53 (NULL|self + replace)
+             848 LOAD_CONST              13 ('User: ')
+             850 LOAD_CONST              12 ('')
+             852 CALL                     2
+             860 LOAD_ATTR               55 (NULL|self + split)
+             880 LOAD_CONST              14 (' —')
+             882 CALL                     1
+             890 LOAD_CONST              15 (0)
+             892 BINARY_SUBSCR
+             896 LOAD_ATTR               57 (NULL|self + strip)
+             916 CALL                     0
+             924 STORE_FAST              12 (clean)
+
+9062         926 LOAD_GLOBAL             58 (SHIFT_TO_PRESSURE_INTENT)
+             936 LOAD_ATTR               29 (NULL|self + get)
+             956 LOAD_FAST               12 (clean)
+             958 LOAD_CONST               8 ('Daily')
+             960 CALL                     2
+             968 STORE_FAST              10 (press_intent)
+
+9063     >>  970 PUSH_NULL
+             972 LOAD_FAST                4 (build_for_intent)
+             974 LOAD_FAST               10 (press_intent)
+             976 CALL                     1
+             984 LOAD_FAST                0 (self)
+             986 LOAD_ATTR                0 (_pressure_per_shift)
+            1006 LOAD_FAST                8 (mode_name)
+            1008 STORE_SUBSCR
+
+9064        1012 LOAD_FAST               10 (press_intent)
+            1014 LOAD_FAST                0 (self)
+            1016 LOAD_ATTR                2 (_pressure_mode_intents)
+            1036 LOAD_FAST                8 (mode_name)
+            1038 STORE_SUBSCR
+
+9065        1042 LOAD_FAST               10 (press_intent)
+            1044 LOAD_GLOBAL             42 (TCC_APPLY_INTENTS)
+            1054 CONTAINS_OP              0
+            1056 POP_JUMP_IF_FALSE        2 (to 1062)
+            1058 LOAD_FAST               10 (press_intent)
+            1060 JUMP_FORWARD             1 (to 1064)
+         >> 1062 LOAD_CONST               8 ('Daily')
+         >> 1064 STORE_FAST              13 (tcc_intent)
+
+9066        1066 LOAD_GLOBAL             30 (PressureEngine)
+            1076 LOAD_ATTR               45 (NULL|self + tcc_apply_pressure)
+
+9067        1096 LOAD_FAST               13 (tcc_intent)
+            1098 LOAD_DEREF              17 (max_tq)
+
+9066        1100 CALL                     2
+            1108 LOAD_FAST                0 (self)
+            1110 LOAD_ATTR                4 (_tcc_apply_tables)
+            1130 LOAD_FAST                8 (mode_name)
+            1132 STORE_SUBSCR
+            1136 JUMP_BACKWARD          214 (to 710)
+
+9052     >> 1138 END_FOR
+
+9070        1140 LOAD_FAST                0 (self)
+            1142 LOAD_ATTR                0 (_pressure_per_shift)
+            1162 LOAD_ATTR               51 (NULL|self + items)
+            1182 CALL                     0
+            1190 GET_ITER
+            1192 LOAD_FAST_AND_CLEAR     14 (m)
+            1194 LOAD_FAST_AND_CLEAR     15 (t)
+            1196 SWAP                     3
+            1198 BUILD_MAP                0
+            1200 SWAP                     2
+         >> 1202 FOR_ITER                24 (to 1254)
+            1206 UNPACK_SEQUENCE          2
+            1210 STORE_FAST              14 (m)
+            1212 STORE_FAST              15 (t)
+            1214 LOAD_FAST               14 (m)
+            1216 LOAD_FAST               15 (t)
+            1218 LOAD_ATTR               29 (NULL|self + get)
+            1238 LOAD_CONST              16 ('1-2')
+            1240 BUILD_LIST               0
+            1242 CALL                     2
+            1250 MAP_ADD                  2
+            1252 JUMP_BACKWARD           26 (to 1202)
+         >> 1254 END_FOR
+            1256 STORE_FAST              16 (tab_tables)
+            1258 STORE_FAST              14 (m)
+            1260 STORE_FAST              15 (t)
+
+9071        1262 LOAD_FAST                0 (self)
+            1264 LOAD_ATTR               60 (pressure_tab)
+            1284 LOAD_ATTR               63 (NULL|self + set_pressure_tables)
+
+9072        1304 LOAD_FAST               16 (tab_tables)
+            1306 LOAD_FAST                0 (self)
+            1308 LOAD_ATTR                2 (_pressure_mode_intents)
+            1328 LOAD_FAST                3 (torque_cols)
+
+9073        1330 LOAD_FAST                0 (self)
+            1332 LOAD_ATTR                4 (_tcc_apply_tables)
+
+9074        1352 LOAD_DEREF              17 (max_tq)
+
+9071        1354 KW_NAMES                17 (('tcc_apply_tables', 'max_tq'))
+            1356 CALL                     5
+            1364 POP_TOP
+            1366 RETURN_CONST             1 (None)
+         >> 1368 SWAP                     2
+            1370 POP_TOP
+
+9070        1372 SWAP                     3
+            1374 STORE_FAST              15 (t)
+            1376 STORE_FAST              14 (m)
+            1378 RERAISE                  0
+ExceptionTable:
+  1198 to 1254 -> 1368 [3]

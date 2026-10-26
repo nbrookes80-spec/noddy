@@ -1,0 +1,384 @@
+9111           0 RESUME                   0
+
+9113           2 BUILD_LIST               0
+               4 STORE_FAST               3 (w)
+
+9114           6 LOAD_FAST                2 (res)
+               8 LOAD_CONST               1 ('n_gears')
+              10 BINARY_SUBSCR
+              14 STORE_FAST               4 (n)
+
+9115          16 LOAD_FAST                4 (n)
+              18 LOAD_CONST               2 (1)
+              20 BINARY_OP               10 (-)
+              24 STORE_FAST               5 (n_shifts)
+
+9117          26 LOAD_GLOBAL              1 (NULL + range)
+              36 LOAD_FAST                5 (n_shifts)
+              38 CALL                     1
+              46 GET_ITER
+         >>   48 FOR_ITER               106 (to 264)
+              52 STORE_FAST               6 (g)
+
+9118          54 LOAD_FAST                2 (res)
+              56 LOAD_CONST               3 ('upshift')
+              58 BINARY_SUBSCR
+              62 LOAD_FAST                6 (g)
+              64 BINARY_SUBSCR
+              68 LOAD_CONST               4 (16)
+              70 BINARY_SUBSCR
+              74 LOAD_FAST                2 (res)
+              76 LOAD_CONST               5 ('min_speed')
+              78 BINARY_SUBSCR
+              82 LOAD_FAST                6 (g)
+              84 BINARY_SUBSCR
+              88 COMPARE_OP              26 (<=)
+              92 POP_JUMP_IF_FALSE       30 (to 154)
+
+9119          94 LOAD_FAST                3 (w)
+              96 LOAD_ATTR                3 (NULL|self + append)
+             116 LOAD_CONST               6 ('G')
+             118 LOAD_FAST                6 (g)
+             120 LOAD_CONST               2 (1)
+             122 BINARY_OP                0 (+)
+             126 FORMAT_VALUE             0
+             128 LOAD_CONST               7 ('→G')
+             130 LOAD_FAST                6 (g)
+             132 LOAD_CONST               8 (2)
+             134 BINARY_OP                0 (+)
+             138 FORMAT_VALUE             0
+             140 LOAD_CONST               9 (': WOT upshift below min speed — check ratios/RPM.')
+             142 BUILD_STRING             5
+             144 CALL                     1
+             152 POP_TOP
+
+9120     >>  154 LOAD_FAST                2 (res)
+             156 LOAD_CONST               3 ('upshift')
+             158 BINARY_SUBSCR
+             162 LOAD_FAST                6 (g)
+             164 BINARY_SUBSCR
+             168 LOAD_CONST               4 (16)
+             170 BINARY_SUBSCR
+             174 LOAD_FAST                2 (res)
+             176 LOAD_CONST               3 ('upshift')
+             178 BINARY_SUBSCR
+             182 LOAD_FAST                6 (g)
+             184 BINARY_SUBSCR
+             188 LOAD_CONST              10 (0)
+             190 BINARY_SUBSCR
+             194 COMPARE_OP               2 (<)
+             198 POP_JUMP_IF_TRUE         1 (to 202)
+             200 JUMP_BACKWARD           77 (to 48)
+
+9121     >>  202 LOAD_FAST                3 (w)
+             204 LOAD_ATTR                3 (NULL|self + append)
+             224 LOAD_CONST               6 ('G')
+             226 LOAD_FAST                6 (g)
+             228 LOAD_CONST               2 (1)
+             230 BINARY_OP                0 (+)
+             234 FORMAT_VALUE             0
+             236 LOAD_CONST               7 ('→G')
+             238 LOAD_FAST                6 (g)
+             240 LOAD_CONST               8 (2)
+             242 BINARY_OP                0 (+)
+             246 FORMAT_VALUE             0
+             248 LOAD_CONST              11 (': WOT upshift < idle upshift — slope inverted.')
+             250 BUILD_STRING             5
+             252 CALL                     1
+             260 POP_TOP
+             262 JUMP_BACKWARD          108 (to 48)
+
+9117     >>  264 END_FOR
+
+9124         266 LOAD_FAST                1 (cfg)
+             268 LOAD_CONST              12 ('stall_rpm')
+             270 BINARY_SUBSCR
+             274 LOAD_FAST                1 (cfg)
+             276 LOAD_CONST              13 ('min_tcc_rpm')
+             278 BINARY_SUBSCR
+             282 LOAD_CONST              14 (200)
+             284 BINARY_OP                0 (+)
+             288 COMPARE_OP               2 (<)
+             292 POP_JUMP_IF_FALSE       32 (to 358)
+
+9125         294 LOAD_FAST                3 (w)
+             296 LOAD_ATTR                3 (NULL|self + append)
+             316 LOAD_CONST              15 ('Stall RPM (')
+             318 LOAD_FAST                1 (cfg)
+             320 LOAD_CONST              12 ('stall_rpm')
+             322 BINARY_SUBSCR
+             326 LOAD_CONST              16 ('.0f')
+             328 FORMAT_VALUE             4 (with format)
+             330 LOAD_CONST              17 (') within 200 of Min TCC Lock RPM (')
+
+9126         332 LOAD_FAST                1 (cfg)
+             334 LOAD_CONST              13 ('min_tcc_rpm')
+             336 BINARY_SUBSCR
+             340 LOAD_CONST              16 ('.0f')
+             342 FORMAT_VALUE             4 (with format)
+             344 LOAD_CONST              18 (') — converter will hunt cruising in top gears.')
+
+9125         346 BUILD_STRING             5
+             348 CALL                     1
+             356 POP_TOP
+
+9129     >>  358 LOAD_FAST                1 (cfg)
+             360 LOAD_CONST              19 ('downshift_rpm')
+             362 BINARY_SUBSCR
+             366 LOAD_FAST                1 (cfg)
+             368 LOAD_CONST              20 ('shift_rpm')
+             370 BINARY_SUBSCR
+             374 LOAD_CONST              21 (500)
+             376 BINARY_OP               10 (-)
+             380 COMPARE_OP              92 (>=)
+             384 POP_JUMP_IF_FALSE       32 (to 450)
+
+9130         386 LOAD_FAST                3 (w)
+             388 LOAD_ATTR                3 (NULL|self + append)
+             408 LOAD_CONST              22 ('Max Downshift RPM (')
+             410 LOAD_FAST                1 (cfg)
+             412 LOAD_CONST              19 ('downshift_rpm')
+             414 BINARY_SUBSCR
+             418 LOAD_CONST              16 ('.0f')
+             420 FORMAT_VALUE             4 (with format)
+             422 LOAD_CONST              23 (') too close to WOT Shift RPM (')
+
+9131         424 LOAD_FAST                1 (cfg)
+             426 LOAD_CONST              20 ('shift_rpm')
+             428 BINARY_SUBSCR
+             432 LOAD_CONST              16 ('.0f')
+             434 FORMAT_VALUE             4 (with format)
+             436 LOAD_CONST              24 (') — downshift kick may overrev.')
+
+9130         438 BUILD_STRING             5
+             440 CALL                     1
+             448 POP_TOP
+
+9134     >>  450 LOAD_FAST                1 (cfg)
+             452 LOAD_CONST              25 ('min_tcc_gear')
+             454 BINARY_SUBSCR
+             458 LOAD_FAST                4 (n)
+             460 COMPARE_OP              68 (>)
+             464 POP_JUMP_IF_FALSE       27 (to 520)
+
+9135         466 LOAD_FAST                3 (w)
+             468 LOAD_ATTR                3 (NULL|self + append)
+             488 LOAD_CONST              26 ('Min TCC Gear (')
+             490 LOAD_FAST                1 (cfg)
+             492 LOAD_CONST              25 ('min_tcc_gear')
+             494 BINARY_SUBSCR
+             498 FORMAT_VALUE             0
+             500 LOAD_CONST              27 (') > top gear (')
+             502 LOAD_FAST                4 (n)
+             504 FORMAT_VALUE             0
+             506 LOAD_CONST              28 (') — TCC fully disabled.')
+             508 BUILD_STRING             5
+             510 CALL                     1
+             518 POP_TOP
+
+9136     >>  520 LOAD_FAST                1 (cfg)
+             522 LOAD_CONST              29 ('accel_lock_gear')
+             524 BINARY_SUBSCR
+             528 LOAD_FAST                4 (n)
+             530 COMPARE_OP              68 (>)
+             534 POP_JUMP_IF_FALSE       27 (to 590)
+
+9137         536 LOAD_FAST                3 (w)
+             538 LOAD_ATTR                3 (NULL|self + append)
+             558 LOAD_CONST              30 ('Accel Lock Gear (')
+             560 LOAD_FAST                1 (cfg)
+             562 LOAD_CONST              29 ('accel_lock_gear')
+             564 BINARY_SUBSCR
+             568 FORMAT_VALUE             0
+             570 LOAD_CONST              27 (') > top gear (')
+             572 LOAD_FAST                4 (n)
+             574 FORMAT_VALUE             0
+             576 LOAD_CONST              31 (') — Accel Lock unused.')
+             578 BUILD_STRING             5
+             580 CALL                     1
+             588 POP_TOP
+
+9138     >>  590 LOAD_FAST                1 (cfg)
+             592 LOAD_CONST              32 ('wot_lock_gear')
+             594 BINARY_SUBSCR
+             598 LOAD_FAST                4 (n)
+             600 COMPARE_OP              68 (>)
+             604 POP_JUMP_IF_FALSE       27 (to 660)
+
+9139         606 LOAD_FAST                3 (w)
+             608 LOAD_ATTR                3 (NULL|self + append)
+             628 LOAD_CONST              33 ('WOT Lock Gear (')
+             630 LOAD_FAST                1 (cfg)
+             632 LOAD_CONST              32 ('wot_lock_gear')
+             634 BINARY_SUBSCR
+             638 FORMAT_VALUE             0
+             640 LOAD_CONST              27 (') > top gear (')
+             642 LOAD_FAST                4 (n)
+             644 FORMAT_VALUE             0
+             646 LOAD_CONST              34 (') — WOT Lock unused.')
+             648 BUILD_STRING             5
+             650 CALL                     1
+             658 POP_TOP
+
+9142     >>  660 LOAD_FAST                1 (cfg)
+             662 LOAD_CONST              35 ('spread_up')
+             664 BINARY_SUBSCR
+             668 LOAD_CONST              36 (3.0)
+             670 COMPARE_OP               2 (<)
+             674 POP_JUMP_IF_FALSE       25 (to 726)
+
+9143         676 LOAD_FAST                3 (w)
+             678 LOAD_ATTR                3 (NULL|self + append)
+             698 LOAD_CONST              37 ('Upshift>Downshift spread (')
+             700 LOAD_FAST                1 (cfg)
+             702 LOAD_CONST              35 ('spread_up')
+             704 BINARY_SUBSCR
+             708 LOAD_CONST              38 ('.1f')
+             710 FORMAT_VALUE             4 (with format)
+             712 LOAD_CONST              39 (') tight — shift hunting risk. Recommend ≥3.5.')
+             714 BUILD_STRING             3
+             716 CALL                     1
+             724 POP_TOP
+
+9144     >>  726 LOAD_FAST                1 (cfg)
+             728 LOAD_CONST              40 ('spread_lock')
+             730 BINARY_SUBSCR
+             734 LOAD_CONST              41 (3.5)
+             736 COMPARE_OP               2 (<)
+             740 POP_JUMP_IF_FALSE       25 (to 792)
+
+9145         742 LOAD_FAST                3 (w)
+             744 LOAD_ATTR                3 (NULL|self + append)
+             764 LOAD_CONST              42 ('Lock>Unlock spread (')
+             766 LOAD_FAST                1 (cfg)
+             768 LOAD_CONST              40 ('spread_lock')
+             770 BINARY_SUBSCR
+             774 LOAD_CONST              38 ('.1f')
+             776 FORMAT_VALUE             4 (with format)
+             778 LOAD_CONST              43 (') tight — TCC oscillation likely on worn fluid/converter. Recommend ≥4.0.')
+             780 BUILD_STRING             3
+             782 CALL                     1
+             790 POP_TOP
+
+9146     >>  792 LOAD_FAST                1 (cfg)
+             794 LOAD_CONST              44 ('spread_lock_up')
+             796 BINARY_SUBSCR
+             800 LOAD_CONST              45 (2.0)
+             802 COMPARE_OP               2 (<)
+             806 POP_JUMP_IF_FALSE       25 (to 858)
+
+9147         808 LOAD_FAST                3 (w)
+             810 LOAD_ATTR                3 (NULL|self + append)
+             830 LOAD_CONST              46 ('Upshift>Lock spread (')
+             832 LOAD_FAST                1 (cfg)
+             834 LOAD_CONST              44 ('spread_lock_up')
+             836 BINARY_SUBSCR
+             840 LOAD_CONST              38 ('.1f')
+             842 FORMAT_VALUE             4 (with format)
+             844 LOAD_CONST              47 (') tight — lock may overlap upshift firing.')
+             846 BUILD_STRING             3
+             848 CALL                     1
+             856 POP_TOP
+
+9148     >>  858 LOAD_FAST                1 (cfg)
+             860 LOAD_CONST              48 ('spread_unlock_dn')
+             862 BINARY_SUBSCR
+             866 LOAD_CONST              49 (2.5)
+             868 COMPARE_OP               2 (<)
+             872 POP_JUMP_IF_FALSE       25 (to 924)
+
+9149         874 LOAD_FAST                3 (w)
+             876 LOAD_ATTR                3 (NULL|self + append)
+             896 LOAD_CONST              50 ('Unlock>Downshift spread (')
+             898 LOAD_FAST                1 (cfg)
+             900 LOAD_CONST              48 ('spread_unlock_dn')
+             902 BINARY_SUBSCR
+             906 LOAD_CONST              38 ('.1f')
+             908 FORMAT_VALUE             4 (with format)
+             910 LOAD_CONST              51 (') tight — risk of unlock-then-immediate-downshift.')
+             912 BUILD_STRING             3
+             914 CALL                     1
+             922 POP_TOP
+
+9152     >>  924 LOAD_FAST                0 (self)
+             926 LOAD_ATTR                4 (meas_slip)
+             946 LOAD_ATTR                7 (NULL|self + value)
+             966 CALL                     0
+             974 LOAD_CONST              52 (0.01)
+             976 COMPARE_OP              68 (>)
+             980 POP_JUMP_IF_FALSE      127 (to 1236)
+
+9153         982 LOAD_FAST                2 (res)
+             984 LOAD_CONST              53 ('slip_pct')
+             986 BINARY_SUBSCR
+             990 STORE_FAST               7 (predicted_slip)
+
+9154         992 LOAD_FAST                0 (self)
+             994 LOAD_ATTR                4 (meas_slip)
+            1014 LOAD_ATTR                7 (NULL|self + value)
+            1034 CALL                     0
+            1042 STORE_FAST               8 (measured)
+
+9155        1044 LOAD_GLOBAL              9 (NULL + abs)
+            1054 LOAD_FAST                7 (predicted_slip)
+            1056 LOAD_FAST                8 (measured)
+            1058 BINARY_OP               10 (-)
+            1062 CALL                     1
+            1070 STORE_FAST               9 (delta)
+
+9156        1072 LOAD_GLOBAL             11 (NULL + max)
+            1082 LOAD_FAST                7 (predicted_slip)
+            1084 LOAD_FAST                8 (measured)
+            1086 CALL                     2
+            1094 LOAD_GLOBAL             11 (NULL + max)
+            1104 LOAD_CONST              54 (0.1)
+            1106 LOAD_GLOBAL             13 (NULL + min)
+            1116 LOAD_FAST                7 (predicted_slip)
+            1118 LOAD_FAST                8 (measured)
+            1120 CALL                     2
+            1128 CALL                     2
+            1136 BINARY_OP               11 (/)
+            1140 STORE_FAST              10 (ratio)
+
+9157        1142 LOAD_FAST               10 (ratio)
+            1144 LOAD_CONST              55 (1.4)
+            1146 COMPARE_OP              68 (>)
+            1150 POP_JUMP_IF_FALSE       42 (to 1236)
+
+9160        1152 LOAD_CONST              56 (1000.0)
+            1154 LOAD_FAST                8 (measured)
+            1156 LOAD_CONST              57 (0.5882352941176471)
+            1158 BINARY_OP                8 (**)
+            1162 BINARY_OP                5 (*)
+            1166 STORE_FAST              11 (target_stall)
+
+9161        1168 LOAD_FAST                3 (w)
+            1170 LOAD_ATTR                3 (NULL|self + append)
+
+9162        1190 LOAD_CONST              58 ('Measured slip ')
+            1192 LOAD_FAST                8 (measured)
+            1194 LOAD_CONST              38 ('.1f')
+            1196 FORMAT_VALUE             4 (with format)
+            1198 LOAD_CONST              59 ('% disagrees with stall-predicted ')
+
+9163        1200 LOAD_FAST                7 (predicted_slip)
+            1202 LOAD_CONST              38 ('.1f')
+            1204 FORMAT_VALUE             4 (with format)
+            1206 LOAD_CONST              60 ('% (Δ ')
+            1208 LOAD_FAST                9 (delta)
+            1210 LOAD_CONST              38 ('.1f')
+            1212 FORMAT_VALUE             4 (with format)
+            1214 LOAD_CONST              61 ('%). Stall RPM ~')
+
+9164        1216 LOAD_FAST               11 (target_stall)
+            1218 LOAD_CONST              16 ('.0f')
+            1220 FORMAT_VALUE             4 (with format)
+            1222 LOAD_CONST              62 (' would match your measured value.')
+
+9162        1224 BUILD_STRING             9
+
+9161        1226 CALL                     1
+            1234 POP_TOP
+
+9167     >> 1236 LOAD_FAST                3 (w)
+            1238 RETURN_VALUE

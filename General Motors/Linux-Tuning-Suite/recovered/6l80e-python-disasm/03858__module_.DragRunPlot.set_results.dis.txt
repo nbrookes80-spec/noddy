@@ -1,0 +1,11 @@
+3858           0 RESUME                   0
+
+3859           2 LOAD_FAST                1 (results)
+               4 LOAD_FAST                0 (self)
+               6 STORE_ATTR               0 (results)
+
+3860          16 LOAD_FAST                0 (self)
+              18 LOAD_ATTR                3 (NULL|self + update)
+              38 CALL                     0
+              46 POP_TOP
+              48 RETURN_CONST             0 (None)

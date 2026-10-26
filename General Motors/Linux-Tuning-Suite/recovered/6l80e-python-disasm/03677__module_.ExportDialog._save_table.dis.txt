@@ -1,0 +1,85 @@
+3677           0 RESUME                   0
+
+3678           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                1 (NULL|self + _build_current_table)
+              24 CALL                     0
+              32 UNPACK_SEQUENCE          3
+              36 STORE_FAST               1 (name)
+              38 STORE_FAST               2 (_)
+              40 STORE_FAST               2 (_)
+
+3679          42 LOAD_GLOBAL              3 (NULL + QFileDialog)
+              52 LOAD_ATTR                4 (getSaveFileName)
+
+3680          72 LOAD_FAST                0 (self)
+              74 LOAD_CONST               1 ('Save Table')
+
+3681          76 LOAD_FAST                1 (name)
+              78 LOAD_ATTR                7 (NULL|self + replace)
+              98 LOAD_CONST               2 (' ')
+             100 LOAD_CONST               3 ('_')
+             102 CALL                     2
+             110 LOAD_CONST               4 ('.csv')
+             112 BINARY_OP                0 (+)
+
+3682         116 LOAD_CONST               5 ('CSV (*.csv);;Tab-delimited (*.txt)')
+
+3679         118 CALL                     4
+             126 UNPACK_SEQUENCE          2
+             130 STORE_FAST               3 (path)
+             132 STORE_FAST               2 (_)
+
+3684         134 LOAD_FAST                3 (path)
+             136 POP_JUMP_IF_TRUE         1 (to 140)
+
+3685         138 RETURN_CONST             0 (None)
+
+3686     >>  140 LOAD_FAST                3 (path)
+             142 LOAD_ATTR                9 (NULL|self + lower)
+             162 CALL                     0
+             170 LOAD_ATTR               11 (NULL|self + endswith)
+             190 LOAD_CONST               4 ('.csv')
+             192 CALL                     1
+             200 POP_JUMP_IF_FALSE        2 (to 206)
+             202 LOAD_CONST               6 (',')
+             204 JUMP_FORWARD             1 (to 208)
+         >>  206 LOAD_CONST               7 ('\t')
+         >>  208 STORE_FAST               4 (sep)
+
+3687         210 LOAD_GLOBAL             13 (NULL + open)
+             220 LOAD_FAST                3 (path)
+             222 LOAD_CONST               8 ('w')
+             224 CALL                     2
+             232 BEFORE_WITH
+             234 STORE_FAST               5 (f)
+
+3688         236 LOAD_FAST                5 (f)
+             238 LOAD_ATTR               15 (NULL|self + write)
+             258 LOAD_FAST                0 (self)
+             260 LOAD_ATTR               17 (NULL|self + _table_as_text)
+             280 LOAD_FAST                4 (sep)
+             282 CALL                     1
+             290 CALL                     1
+             298 POP_TOP
+
+3687         300 LOAD_CONST               0 (None)
+             302 LOAD_CONST               0 (None)
+             304 LOAD_CONST               0 (None)
+             306 CALL                     2
+             314 POP_TOP
+             316 RETURN_CONST             0 (None)
+         >>  318 PUSH_EXC_INFO
+             320 WITH_EXCEPT_START
+             322 POP_JUMP_IF_TRUE         1 (to 326)
+             324 RERAISE                  2
+         >>  326 POP_TOP
+             328 POP_EXCEPT
+             330 POP_TOP
+             332 POP_TOP
+             334 RETURN_CONST             0 (None)
+         >>  336 COPY                     3
+             338 POP_EXCEPT
+             340 RERAISE                  1
+ExceptionTable:
+  234 to 298 -> 318 [1] lasti
+  318 to 326 -> 336 [3] lasti

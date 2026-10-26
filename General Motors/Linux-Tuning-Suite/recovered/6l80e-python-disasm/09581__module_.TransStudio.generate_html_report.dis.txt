@@ -1,0 +1,141 @@
+9581           0 RESUME                   0
+
+9585           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (_last_result)
+              24 POP_JUMP_IF_TRUE        24 (to 74)
+
+9586          26 LOAD_GLOBAL              3 (NULL + QMessageBox)
+              36 LOAD_ATTR                4 (information)
+              56 LOAD_FAST                0 (self)
+              58 LOAD_CONST               1 ('Calculate first')
+
+9587          60 LOAD_CONST               2 ('Run Calculate before generating a report.')
+
+9586          62 CALL                     3
+              70 POP_TOP
+
+9588          72 RETURN_CONST             3 (None)
+
+9589     >>   74 LOAD_GLOBAL              7 (NULL + QFileDialog)
+              84 LOAD_ATTR                8 (getSaveFileName)
+
+9590         104 LOAD_FAST                0 (self)
+             106 LOAD_CONST               4 ('Save HTML Report')
+
+9591         108 LOAD_CONST               5 ('trans_report_')
+             110 LOAD_FAST                0 (self)
+             112 LOAD_ATTR               10 (trans)
+             132 LOAD_ATTR               13 (NULL|self + currentText)
+             152 CALL                     0
+             160 LOAD_ATTR               15 (NULL|self + split)
+             180 CALL                     0
+             188 LOAD_CONST               6 (0)
+             190 BINARY_SUBSCR
+             194 FORMAT_VALUE             0
+             196 LOAD_CONST               7 ('.html')
+             198 BUILD_STRING             3
+
+9592         200 LOAD_CONST               8 ('HTML (*.html)')
+
+9589         202 CALL                     4
+             210 UNPACK_SEQUENCE          2
+             214 STORE_FAST               1 (path)
+             216 STORE_FAST               2 (_)
+
+9594         218 LOAD_FAST                1 (path)
+             220 POP_JUMP_IF_TRUE         1 (to 224)
+
+9595         222 RETURN_CONST             3 (None)
+
+9596     >>  224 NOP
+
+9597         226 LOAD_FAST                0 (self)
+             228 LOAD_ATTR               17 (NULL|self + _build_html_report)
+             248 CALL                     0
+             256 STORE_FAST               3 (html)
+
+9598         258 LOAD_GLOBAL             19 (NULL + open)
+             268 LOAD_FAST                1 (path)
+             270 LOAD_CONST               9 ('w')
+             272 LOAD_CONST              10 ('utf-8')
+             274 KW_NAMES                11 (('encoding',))
+             276 CALL                     3
+             284 BEFORE_WITH
+             286 STORE_FAST               4 (f)
+
+9599         288 LOAD_FAST                4 (f)
+             290 LOAD_ATTR               21 (NULL|self + write)
+             310 LOAD_FAST                3 (html)
+             312 CALL                     1
+             320 POP_TOP
+
+9598         322 LOAD_CONST               3 (None)
+             324 LOAD_CONST               3 (None)
+             326 LOAD_CONST               3 (None)
+             328 CALL                     2
+             336 POP_TOP
+
+9600     >>  338 LOAD_FAST                0 (self)
+             340 LOAD_ATTR               23 (NULL|self + statusBar)
+             360 CALL                     0
+             368 LOAD_ATTR               25 (NULL|self + showMessage)
+             388 LOAD_CONST              12 ('Report saved: ')
+             390 LOAD_FAST                1 (path)
+             392 FORMAT_VALUE             0
+             394 BUILD_STRING             2
+             396 LOAD_CONST              13 (6000)
+             398 CALL                     2
+             406 POP_TOP
+             408 RETURN_CONST             3 (None)
+
+9598     >>  410 PUSH_EXC_INFO
+             412 WITH_EXCEPT_START
+             414 POP_JUMP_IF_TRUE         1 (to 418)
+             416 RERAISE                  2
+         >>  418 POP_TOP
+             420 POP_EXCEPT
+             422 POP_TOP
+             424 POP_TOP
+             426 JUMP_BACKWARD           45 (to 338)
+         >>  428 COPY                     3
+             430 POP_EXCEPT
+             432 RERAISE                  1
+         >>  434 PUSH_EXC_INFO
+
+9601         436 LOAD_GLOBAL             26 (Exception)
+             446 CHECK_EXC_MATCH
+             448 POP_JUMP_IF_FALSE       42 (to 534)
+             450 STORE_FAST               5 (e)
+
+9602         452 LOAD_GLOBAL              3 (NULL + QMessageBox)
+             462 LOAD_ATTR               28 (critical)
+             482 LOAD_FAST                0 (self)
+             484 LOAD_CONST              14 ('Report Failed')
+             486 LOAD_GLOBAL             31 (NULL + str)
+             496 LOAD_FAST                5 (e)
+             498 CALL                     1
+             506 CALL                     3
+             514 POP_TOP
+             516 POP_EXCEPT
+             518 LOAD_CONST               3 (None)
+             520 STORE_FAST               5 (e)
+             522 DELETE_FAST              5 (e)
+             524 RETURN_CONST             3 (None)
+         >>  526 LOAD_CONST               3 (None)
+             528 STORE_FAST               5 (e)
+             530 DELETE_FAST              5 (e)
+             532 RERAISE                  1
+
+9601     >>  534 RERAISE                  0
+         >>  536 COPY                     3
+             538 POP_EXCEPT
+             540 RERAISE                  1
+ExceptionTable:
+  226 to 284 -> 434 [0]
+  286 to 320 -> 410 [1] lasti
+  322 to 406 -> 434 [0]
+  410 to 418 -> 428 [3] lasti
+  420 to 432 -> 434 [0]
+  434 to 450 -> 536 [1] lasti
+  452 to 514 -> 526 [1] lasti
+  526 to 534 -> 536 [1] lasti

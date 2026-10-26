@@ -1,0 +1,58 @@
+2700           0 RESUME                   0
+
+2701           2 LOAD_GLOBAL              1 (NULL + QVBoxLayout)
+              12 CALL                     0
+              20 STORE_FAST               1 (v)
+
+2704          22 LOAD_GLOBAL              3 (NULL + QCheckBox)
+              32 LOAD_CONST               1 ('Keep window on top (for VCM Editor paste)')
+              34 CALL                     1
+              42 LOAD_FAST                0 (self)
+              44 STORE_ATTR               2 (aot_check)
+
+2705          54 LOAD_FAST                0 (self)
+              56 LOAD_ATTR                4 (aot_check)
+              76 LOAD_ATTR                7 (NULL|self + setChecked)
+              96 LOAD_CONST               2 (True)
+              98 CALL                     1
+             106 POP_TOP
+
+2706         108 LOAD_FAST                0 (self)
+             110 LOAD_ATTR                4 (aot_check)
+             130 LOAD_ATTR                8 (toggled)
+             150 LOAD_ATTR               11 (NULL|self + connect)
+             170 LOAD_FAST                0 (self)
+             172 LOAD_ATTR               12 (_toggle_always_on_top)
+             192 CALL                     1
+             200 POP_TOP
+
+2707         202 LOAD_FAST                1 (v)
+             204 LOAD_ATTR               15 (NULL|self + addWidget)
+             224 LOAD_FAST                0 (self)
+             226 LOAD_ATTR                4 (aot_check)
+             246 CALL                     1
+             254 POP_TOP
+
+2709         256 LOAD_FAST                1 (v)
+             258 LOAD_ATTR               17 (NULL|self + addLayout)
+             278 LOAD_FAST                0 (self)
+             280 LOAD_ATTR               19 (NULL|self + _build_speedo_panel)
+             300 CALL                     0
+             308 CALL                     1
+             316 POP_TOP
+
+2710         318 LOAD_FAST                1 (v)
+             320 LOAD_ATTR               17 (NULL|self + addLayout)
+             340 LOAD_FAST                0 (self)
+             342 LOAD_ATTR               21 (NULL|self + _build_pattern_panels)
+             362 CALL                     0
+             370 CALL                     1
+             378 POP_TOP
+
+2711         380 LOAD_FAST                1 (v)
+             382 LOAD_ATTR               23 (NULL|self + addStretch)
+             402 CALL                     0
+             410 POP_TOP
+
+2712         412 LOAD_FAST                1 (v)
+             414 RETURN_VALUE

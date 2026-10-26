@@ -1,0 +1,129 @@
+3337           0 RESUME                   0
+
+3338           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (speedo_combo)
+              24 LOAD_ATTR                3 (NULL|self + currentIndex)
+              44 CALL                     0
+              52 STORE_FAST               1 (mode)
+
+3339          54 LOAD_FAST                0 (self)
+              56 LOAD_ATTR                4 (vss_count)
+              76 LOAD_ATTR                7 (NULL|self + value)
+              96 CALL                     0
+             104 STORE_FAST               2 (vss)
+
+3340         106 LOAD_GLOBAL              8 (CalcEngine)
+             116 LOAD_ATTR               11 (NULL|self + vss_calibration)
+
+3341         136 LOAD_FAST                1 (mode)
+             138 LOAD_FAST                0 (self)
+             140 LOAD_ATTR               12 (dt)
+             160 LOAD_CONST               1 ('tire')
+             162 BINARY_SUBSCR
+             166 LOAD_FAST                0 (self)
+             168 LOAD_ATTR               12 (dt)
+             188 LOAD_CONST               2 ('axle')
+             190 BINARY_SUBSCR
+             194 LOAD_FAST                2 (vss)
+
+3342         196 LOAD_FAST                0 (self)
+             198 LOAD_ATTR               12 (dt)
+             218 LOAD_ATTR               15 (NULL|self + get)
+             238 LOAD_CONST               3 ('metric')
+             240 LOAD_CONST               4 (False)
+             242 CALL                     2
+
+3340         250 KW_NAMES                 5 (('metric',))
+             252 CALL                     5
+             260 STORE_FAST               3 (result)
+
+3345         262 LOAD_GLOBAL             17 (NULL + list)
+             272 LOAD_FAST                3 (result)
+             274 LOAD_ATTR               19 (NULL|self + items)
+             294 CALL                     0
+             302 CALL                     1
+             310 STORE_FAST               4 (items)
+
+3346         312 LOAD_GLOBAL             21 (NULL + range)
+             322 LOAD_CONST               6 (4)
+             324 CALL                     1
+             332 GET_ITER
+         >>  334 FOR_ITER               210 (to 758)
+             338 STORE_FAST               5 (i)
+
+3347         340 LOAD_FAST                5 (i)
+             342 LOAD_GLOBAL             23 (NULL + len)
+             352 LOAD_FAST                4 (items)
+             354 CALL                     1
+             362 COMPARE_OP               2 (<)
+             366 POP_JUMP_IF_FALSE      134 (to 636)
+
+3348         368 LOAD_FAST                4 (items)
+             370 LOAD_FAST                5 (i)
+             372 BINARY_SUBSCR
+             376 UNPACK_SEQUENCE          2
+             380 STORE_FAST               6 (k)
+             382 STORE_FAST               7 (val)
+
+3349         384 LOAD_FAST                0 (self)
+             386 LOAD_ATTR               24 (_speedo_labels)
+             406 LOAD_FAST                5 (i)
+             408 BINARY_SUBSCR
+             412 LOAD_ATTR               27 (NULL|self + setText)
+             432 LOAD_FAST                6 (k)
+             434 LOAD_CONST               7 (':')
+             436 BINARY_OP                0 (+)
+             440 CALL                     1
+             448 POP_TOP
+
+3350         450 LOAD_FAST                0 (self)
+             452 LOAD_ATTR               28 (_speedo_values)
+             472 LOAD_FAST                5 (i)
+             474 BINARY_SUBSCR
+             478 LOAD_ATTR               27 (NULL|self + setText)
+             498 LOAD_FAST                7 (val)
+             500 LOAD_CONST               8 ('.3f')
+             502 FORMAT_VALUE             4 (with format)
+             504 CALL                     1
+             512 POP_TOP
+
+3351         514 LOAD_FAST                0 (self)
+             516 LOAD_ATTR               24 (_speedo_labels)
+             536 LOAD_FAST                5 (i)
+             538 BINARY_SUBSCR
+             542 LOAD_ATTR               31 (NULL|self + setVisible)
+             562 LOAD_CONST               9 (True)
+             564 CALL                     1
+             572 POP_TOP
+
+3352         574 LOAD_FAST                0 (self)
+             576 LOAD_ATTR               28 (_speedo_values)
+             596 LOAD_FAST                5 (i)
+             598 BINARY_SUBSCR
+             602 LOAD_ATTR               31 (NULL|self + setVisible)
+             622 LOAD_CONST               9 (True)
+             624 CALL                     1
+             632 POP_TOP
+             634 JUMP_BACKWARD          151 (to 334)
+
+3354     >>  636 LOAD_FAST                0 (self)
+             638 LOAD_ATTR               24 (_speedo_labels)
+             658 LOAD_FAST                5 (i)
+             660 BINARY_SUBSCR
+             664 LOAD_ATTR               31 (NULL|self + setVisible)
+             684 LOAD_CONST               4 (False)
+             686 CALL                     1
+             694 POP_TOP
+
+3355         696 LOAD_FAST                0 (self)
+             698 LOAD_ATTR               28 (_speedo_values)
+             718 LOAD_FAST                5 (i)
+             720 BINARY_SUBSCR
+             724 LOAD_ATTR               31 (NULL|self + setVisible)
+             744 LOAD_CONST               4 (False)
+             746 CALL                     1
+             754 POP_TOP
+             756 JUMP_BACKWARD          212 (to 334)
+
+3346     >>  758 END_FOR
+             760 RETURN_CONST             0 (None)

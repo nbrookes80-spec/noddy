@@ -1,0 +1,23 @@
+3471           0 RESUME                   0
+
+3475           2 LOAD_FAST                1 (new_era)
+               4 LOAD_FAST                0 (self)
+               6 LOAD_ATTR                0 (tcm_era)
+              26 COMPARE_OP              40 (==)
+              30 POP_JUMP_IF_FALSE        1 (to 34)
+
+3476          32 RETURN_CONST             1 (None)
+
+3477     >>   34 LOAD_FAST                1 (new_era)
+              36 LOAD_FAST                0 (self)
+              38 STORE_ATTR               0 (tcm_era)
+
+3478          48 LOAD_CONST               2 (0)
+              50 LOAD_FAST                0 (self)
+              52 STORE_ATTR               1 (table_idx)
+
+3479          62 LOAD_FAST                0 (self)
+              64 LOAD_ATTR                5 (NULL|self + _refresh_shift_table)
+              84 CALL                     0
+              92 POP_TOP
+              94 RETURN_CONST             1 (None)

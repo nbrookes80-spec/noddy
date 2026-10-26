@@ -1,0 +1,200 @@
+2985           0 RESUME                   0
+
+2988           2 LOAD_CONST               1 (True)
+               4 LOAD_FAST                0 (self)
+               6 STORE_ATTR               0 (_suppress_pres_combo_signals)
+
+2989          16 LOAD_FAST                0 (self)
+              18 LOAD_ATTR                2 (pres_intent_combo)
+              38 LOAD_ATTR                5 (NULL|self + clear)
+              58 CALL                     0
+              66 POP_TOP
+
+2990          68 LOAD_FAST                0 (self)
+              70 LOAD_ATTR                6 (pres_table_combo)
+              90 LOAD_ATTR                9 (NULL|self + currentText)
+             110 CALL                     0
+             118 STORE_FAST               1 (table_type)
+
+2991         120 LOAD_FAST                0 (self)
+             122 LOAD_ATTR               10 (is_4spd)
+             142 POP_JUMP_IF_FALSE      253 (to 650)
+
+2992         144 LOAD_CONST               2 ('Base Shift Pressure')
+             146 LOAD_FAST                1 (table_type)
+             148 CONTAINS_OP              0
+             150 POP_JUMP_IF_FALSE       30 (to 212)
+
+2993         152 LOAD_GLOBAL             13 (NULL + list)
+             162 LOAD_GLOBAL             14 (PRESSURE_INTENTS_4SPD)
+             172 LOAD_ATTR               17 (NULL|self + keys)
+             192 CALL                     0
+             200 CALL                     1
+             208 STORE_FAST               2 (intents)
+             210 JUMP_FORWARD            99 (to 410)
+
+2994     >>  212 LOAD_CONST               3 ('Desired Shift Time')
+             214 LOAD_FAST                1 (table_type)
+             216 CONTAINS_OP              0
+             218 POP_JUMP_IF_FALSE       30 (to 280)
+
+2995         220 LOAD_GLOBAL             13 (NULL + list)
+             230 LOAD_GLOBAL             18 (SHIFT_TIME_INTENTS_4SPD)
+             240 LOAD_ATTR               17 (NULL|self + keys)
+             260 CALL                     0
+             268 CALL                     1
+             276 STORE_FAST               2 (intents)
+             278 JUMP_FORWARD            65 (to 410)
+
+2997     >>  280 LOAD_CONST               4 ('(single table)')
+             282 BUILD_LIST               1
+             284 STORE_FAST               2 (intents)
+
+2998         286 LOAD_FAST                0 (self)
+             288 LOAD_ATTR                2 (pres_intent_combo)
+             308 LOAD_ATTR               21 (NULL|self + addItem)
+             328 LOAD_CONST               4 ('(single table)')
+             330 CALL                     1
+             338 POP_TOP
+
+2999         340 LOAD_FAST                0 (self)
+             342 LOAD_ATTR                2 (pres_intent_combo)
+             362 LOAD_ATTR               23 (NULL|self + setEnabled)
+             382 LOAD_CONST               5 (False)
+             384 CALL                     1
+             392 POP_TOP
+
+3000         394 LOAD_CONST               5 (False)
+             396 LOAD_FAST                0 (self)
+             398 STORE_ATTR               0 (_suppress_pres_combo_signals)
+
+3001         408 RETURN_CONST             6 (None)
+
+3002     >>  410 LOAD_FAST                0 (self)
+             412 LOAD_ATTR                2 (pres_intent_combo)
+             432 LOAD_ATTR               25 (NULL|self + addItems)
+             452 LOAD_FAST                2 (intents)
+             454 CALL                     1
+             462 POP_TOP
+
+3003         464 LOAD_FAST                0 (self)
+             466 LOAD_ATTR                2 (pres_intent_combo)
+             486 LOAD_ATTR               23 (NULL|self + setEnabled)
+             506 LOAD_CONST               1 (True)
+             508 CALL                     1
+             516 POP_TOP
+
+3004         518 LOAD_FAST                0 (self)
+             520 LOAD_ATTR               26 (pres_mode_combo)
+             540 LOAD_ATTR                9 (NULL|self + currentText)
+             560 CALL                     0
+             568 STORE_FAST               3 (current_mode)
+
+3005         570 LOAD_FAST                3 (current_mode)
+             572 LOAD_FAST                2 (intents)
+             574 CONTAINS_OP              0
+             576 EXTENDED_ARG             1
+             578 POP_JUMP_IF_FALSE      305 (to 1190)
+
+3006         580 LOAD_FAST                0 (self)
+             582 LOAD_ATTR                2 (pres_intent_combo)
+             602 LOAD_ATTR               29 (NULL|self + setCurrentText)
+             622 LOAD_FAST                3 (current_mode)
+             624 CALL                     1
+             632 POP_TOP
+
+3022         634 LOAD_CONST               5 (False)
+             636 LOAD_FAST                0 (self)
+             638 STORE_ATTR               0 (_suppress_pres_combo_signals)
+             648 RETURN_CONST             6 (None)
+
+3008     >>  650 LOAD_CONST               7 ('TCC Apply')
+             652 LOAD_FAST                1 (table_type)
+             654 CONTAINS_OP              0
+             656 POP_JUMP_IF_FALSE       30 (to 718)
+
+3009         658 LOAD_GLOBAL             13 (NULL + list)
+             668 LOAD_GLOBAL             30 (TCC_APPLY_INTENTS)
+             678 LOAD_ATTR               17 (NULL|self + keys)
+             698 CALL                     0
+             706 CALL                     1
+             714 STORE_FAST               2 (intents)
+             716 JUMP_FORWARD            97 (to 912)
+
+3010     >>  718 LOAD_CONST               8 ('Coast')
+             720 LOAD_FAST                1 (table_type)
+             722 CONTAINS_OP              0
+             724 POP_JUMP_IF_FALSE       30 (to 786)
+
+3011         726 LOAD_GLOBAL             13 (NULL + list)
+             736 LOAD_GLOBAL             32 (COAST_PRESSURE_INTENTS)
+             746 LOAD_ATTR               17 (NULL|self + keys)
+             766 CALL                     0
+             774 CALL                     1
+             782 STORE_FAST               2 (intents)
+             784 JUMP_FORWARD            63 (to 912)
+
+3012     >>  786 LOAD_CONST               9 ('Garage')
+             788 LOAD_FAST                1 (table_type)
+             790 CONTAINS_OP              0
+             792 POP_JUMP_IF_FALSE       30 (to 854)
+
+3013         794 LOAD_GLOBAL             13 (NULL + list)
+             804 LOAD_GLOBAL             34 (GARAGE_SHIFT_INTENTS)
+             814 LOAD_ATTR               17 (NULL|self + keys)
+             834 CALL                     0
+             842 CALL                     1
+             850 STORE_FAST               2 (intents)
+             852 JUMP_FORWARD            29 (to 912)
+
+3015     >>  854 LOAD_GLOBAL             13 (NULL + list)
+             864 LOAD_GLOBAL             36 (PRESSURE_INTENTS)
+             874 LOAD_ATTR               17 (NULL|self + keys)
+             894 CALL                     0
+             902 CALL                     1
+             910 STORE_FAST               2 (intents)
+
+3016     >>  912 LOAD_FAST                0 (self)
+             914 LOAD_ATTR                2 (pres_intent_combo)
+             934 LOAD_ATTR               25 (NULL|self + addItems)
+             954 LOAD_FAST                2 (intents)
+             956 CALL                     1
+             964 POP_TOP
+
+3017         966 LOAD_FAST                0 (self)
+             968 LOAD_ATTR                2 (pres_intent_combo)
+             988 LOAD_ATTR               23 (NULL|self + setEnabled)
+            1008 LOAD_CONST               1 (True)
+            1010 CALL                     1
+            1018 POP_TOP
+
+3018        1020 LOAD_FAST                0 (self)
+            1022 LOAD_ATTR               26 (pres_mode_combo)
+            1042 LOAD_ATTR                9 (NULL|self + currentText)
+            1062 CALL                     0
+            1070 STORE_FAST               4 (mode)
+
+3019        1072 LOAD_FAST                0 (self)
+            1074 LOAD_ATTR               38 (pressure_intent_per_mode)
+            1094 LOAD_ATTR               41 (NULL|self + get)
+            1114 LOAD_FAST                4 (mode)
+            1116 LOAD_CONST              10 ('Daily')
+            1118 CALL                     2
+            1126 STORE_FAST               5 (cur)
+
+3020        1128 LOAD_FAST                5 (cur)
+            1130 LOAD_FAST                2 (intents)
+            1132 CONTAINS_OP              0
+            1134 POP_JUMP_IF_FALSE       27 (to 1190)
+
+3021        1136 LOAD_FAST                0 (self)
+            1138 LOAD_ATTR                2 (pres_intent_combo)
+            1158 LOAD_ATTR               29 (NULL|self + setCurrentText)
+            1178 LOAD_FAST                5 (cur)
+            1180 CALL                     1
+            1188 POP_TOP
+
+3022     >> 1190 LOAD_CONST               5 (False)
+            1192 LOAD_FAST                0 (self)
+            1194 STORE_ATTR               0 (_suppress_pres_combo_signals)
+            1204 RETURN_CONST             6 (None)

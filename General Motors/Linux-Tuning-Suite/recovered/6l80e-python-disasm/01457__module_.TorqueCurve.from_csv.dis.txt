@@ -1,0 +1,180 @@
+1457           0 RESUME                   0
+
+1461           2 LOAD_CONST               1 (0)
+               4 LOAD_CONST               2 (None)
+               6 IMPORT_NAME              0 (csv)
+               8 STORE_FAST               2 (_csv)
+
+1462          10 BUILD_LIST               0
+              12 STORE_FAST               3 (points)
+
+1463          14 LOAD_GLOBAL              3 (NULL + open)
+              24 LOAD_FAST                1 (path)
+              26 LOAD_CONST               3 ('r')
+              28 CALL                     2
+              36 BEFORE_WITH
+              38 STORE_FAST               4 (f)
+
+1464          40 LOAD_FAST                2 (_csv)
+              42 LOAD_ATTR                5 (NULL|self + reader)
+              62 LOAD_FAST                4 (f)
+              64 CALL                     1
+              72 STORE_FAST               5 (reader)
+
+1465          74 LOAD_CONST               4 (False)
+              76 STORE_FAST               6 (header_skipped)
+
+1466          78 LOAD_FAST                5 (reader)
+              80 GET_ITER
+         >>   82 FOR_ITER               124 (to 334)
+              86 STORE_FAST               7 (row)
+
+1467          88 LOAD_FAST                7 (row)
+              90 POP_JUMP_IF_TRUE         1 (to 94)
+
+1468          92 JUMP_BACKWARD            6 (to 82)
+
+1470     >>   94 LOAD_FAST                6 (header_skipped)
+              96 POP_JUMP_IF_TRUE        17 (to 132)
+
+1471          98 NOP
+
+1472         100 LOAD_GLOBAL              7 (NULL + float)
+             110 LOAD_FAST                7 (row)
+             112 LOAD_CONST               1 (0)
+             114 BINARY_SUBSCR
+             118 CALL                     1
+             126 POP_TOP
+
+1476         128 LOAD_CONST               5 (True)
+             130 STORE_FAST               6 (header_skipped)
+
+1478     >>  132 NOP
+
+1479         134 LOAD_GLOBAL              7 (NULL + float)
+             144 LOAD_FAST                7 (row)
+             146 LOAD_CONST               1 (0)
+             148 BINARY_SUBSCR
+             152 CALL                     1
+             160 STORE_FAST               8 (rpm)
+
+1480         162 LOAD_GLOBAL             11 (NULL + len)
+             172 LOAD_FAST                7 (row)
+             174 CALL                     1
+             182 LOAD_CONST               6 (1)
+             184 COMPARE_OP              68 (>)
+             188 POP_JUMP_IF_FALSE       14 (to 218)
+             190 LOAD_GLOBAL              7 (NULL + float)
+             200 LOAD_FAST                7 (row)
+             202 LOAD_CONST               6 (1)
+             204 BINARY_SUBSCR
+             208 CALL                     1
+             216 JUMP_FORWARD             1 (to 220)
+         >>  218 LOAD_CONST               7 (0.0)
+         >>  220 STORE_FAST               9 (hp)
+
+1481         222 LOAD_GLOBAL             11 (NULL + len)
+             232 LOAD_FAST                7 (row)
+             234 CALL                     1
+             242 LOAD_CONST               8 (2)
+             244 COMPARE_OP              68 (>)
+             248 POP_JUMP_IF_FALSE       14 (to 278)
+             250 LOAD_GLOBAL              7 (NULL + float)
+             260 LOAD_FAST                7 (row)
+             262 LOAD_CONST               8 (2)
+             264 BINARY_SUBSCR
+             268 CALL                     1
+             276 JUMP_FORWARD             1 (to 280)
+         >>  278 LOAD_CONST               7 (0.0)
+         >>  280 STORE_FAST              10 (tq)
+
+1482         282 LOAD_FAST                8 (rpm)
+             284 LOAD_CONST               1 (0)
+             286 COMPARE_OP              68 (>)
+             290 POP_JUMP_IF_FALSE       20 (to 332)
+
+1483         292 LOAD_FAST                3 (points)
+             294 LOAD_ATTR               13 (NULL|self + append)
+             314 LOAD_FAST                8 (rpm)
+             316 LOAD_FAST                9 (hp)
+             318 LOAD_FAST               10 (tq)
+             320 BUILD_TUPLE              3
+             322 CALL                     1
+             330 POP_TOP
+         >>  332 JUMP_BACKWARD          126 (to 82)
+
+1466     >>  334 END_FOR
+             336 NOP
+
+1463         338 LOAD_CONST               2 (None)
+             340 LOAD_CONST               2 (None)
+             342 LOAD_CONST               2 (None)
+             344 CALL                     2
+             352 POP_TOP
+
+1486     >>  354 PUSH_NULL
+             356 LOAD_FAST                0 (cls)
+             358 LOAD_FAST                3 (points)
+             360 CALL                     1
+             368 RETURN_VALUE
+         >>  370 PUSH_EXC_INFO
+
+1473         372 LOAD_GLOBAL              8 (ValueError)
+             382 CHECK_EXC_MATCH
+             384 POP_JUMP_IF_FALSE        5 (to 396)
+             386 POP_TOP
+
+1474         388 LOAD_CONST               5 (True)
+             390 STORE_FAST               6 (header_skipped)
+
+1475         392 POP_EXCEPT
+             394 JUMP_BACKWARD          157 (to 82)
+
+1473     >>  396 RERAISE                  0
+         >>  398 COPY                     3
+             400 POP_EXCEPT
+             402 RERAISE                  1
+         >>  404 PUSH_EXC_INFO
+
+1484         406 LOAD_GLOBAL              8 (ValueError)
+             416 LOAD_GLOBAL             14 (IndexError)
+             426 BUILD_TUPLE              2
+             428 CHECK_EXC_MATCH
+             430 POP_JUMP_IF_FALSE        3 (to 438)
+             432 POP_TOP
+
+1485         434 POP_EXCEPT
+             436 JUMP_BACKWARD          178 (to 82)
+
+1484     >>  438 RERAISE                  0
+         >>  440 COPY                     3
+             442 POP_EXCEPT
+             444 RERAISE                  1
+
+1463     >>  446 PUSH_EXC_INFO
+             448 WITH_EXCEPT_START
+             450 POP_JUMP_IF_TRUE         1 (to 454)
+             452 RERAISE                  2
+         >>  454 POP_TOP
+             456 POP_EXCEPT
+             458 POP_TOP
+             460 POP_TOP
+             462 JUMP_BACKWARD           55 (to 354)
+         >>  464 COPY                     3
+             466 POP_EXCEPT
+             468 RERAISE                  1
+ExceptionTable:
+  38 to 96 -> 446 [1] lasti
+  100 to 126 -> 370 [2]
+  128 to 130 -> 446 [1] lasti
+  134 to 330 -> 404 [2]
+  332 to 334 -> 446 [1] lasti
+  370 to 390 -> 398 [3] lasti
+  392 to 394 -> 446 [1] lasti
+  396 to 396 -> 398 [3] lasti
+  398 to 402 -> 446 [1] lasti
+  404 to 432 -> 440 [3] lasti
+  434 to 436 -> 446 [1] lasti
+  438 to 438 -> 440 [3] lasti
+  440 to 444 -> 446 [1] lasti
+  446 to 454 -> 464 [3] lasti

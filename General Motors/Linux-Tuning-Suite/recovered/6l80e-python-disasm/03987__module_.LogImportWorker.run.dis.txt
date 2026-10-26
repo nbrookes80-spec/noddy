@@ -1,0 +1,81 @@
+               0 MAKE_CELL                0 (self)
+
+3987           2 RESUME                   0
+
+3988           4 NOP
+
+3989           6 LOAD_GLOBAL              0 (LogImporter)
+              16 LOAD_ATTR                3 (NULL|self + from_csv)
+
+3990          36 LOAD_DEREF               0 (self)
+              38 LOAD_ATTR                4 (filepath)
+
+3991          58 LOAD_CLOSURE             0 (self)
+              60 BUILD_TUPLE              1
+              62 LOAD_CONST               1 (<code object <lambda> at 0x73ab02a64130, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3991>)
+              64 MAKE_FUNCTION            8 (closure)
+
+3992          66 LOAD_DEREF               0 (self)
+              68 LOAD_ATTR                6 (target_hz)
+
+3989          88 KW_NAMES                 2 (('progress_cb', 'target_hz'))
+              90 CALL                     3
+              98 STORE_FAST               1 (log)
+
+3994         100 LOAD_DEREF               0 (self)
+             102 LOAD_ATTR                8 (finished)
+             122 LOAD_ATTR               11 (NULL|self + emit)
+             142 LOAD_FAST                1 (log)
+             144 CALL                     1
+             152 POP_TOP
+             154 RETURN_CONST             0 (None)
+         >>  156 PUSH_EXC_INFO
+
+3995         158 LOAD_GLOBAL             12 (Exception)
+             168 CHECK_EXC_MATCH
+             170 POP_JUMP_IF_FALSE       81 (to 334)
+             172 STORE_FAST               2 (e)
+
+3996         174 LOAD_CONST               3 (0)
+             176 LOAD_CONST               0 (None)
+             178 IMPORT_NAME              7 (traceback)
+             180 STORE_FAST               3 (traceback)
+
+3997         182 LOAD_FAST                3 (traceback)
+             184 LOAD_ATTR               17 (NULL|self + print_exc)
+             204 CALL                     0
+             212 POP_TOP
+
+3998         214 LOAD_DEREF               0 (self)
+             216 LOAD_ATTR               18 (error)
+             236 LOAD_ATTR               11 (NULL|self + emit)
+             256 LOAD_GLOBAL             21 (NULL + type)
+             266 LOAD_FAST                2 (e)
+             268 CALL                     1
+             276 LOAD_ATTR               22 (__name__)
+             296 FORMAT_VALUE             0
+             298 LOAD_CONST               4 (': ')
+             300 LOAD_FAST                2 (e)
+             302 FORMAT_VALUE             0
+             304 BUILD_STRING             3
+             306 CALL                     1
+             314 POP_TOP
+             316 POP_EXCEPT
+             318 LOAD_CONST               0 (None)
+             320 STORE_FAST               2 (e)
+             322 DELETE_FAST              2 (e)
+             324 RETURN_CONST             0 (None)
+         >>  326 LOAD_CONST               0 (None)
+             328 STORE_FAST               2 (e)
+             330 DELETE_FAST              2 (e)
+             332 RERAISE                  1
+
+3995     >>  334 RERAISE                  0
+         >>  336 COPY                     3
+             338 POP_EXCEPT
+             340 RERAISE                  1
+ExceptionTable:
+  6 to 152 -> 156 [0]
+  156 to 172 -> 336 [1] lasti
+  174 to 314 -> 326 [1] lasti
+  326 to 334 -> 336 [1] lasti

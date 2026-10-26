@@ -1,0 +1,462 @@
+               0 COPY_FREE_VARS           1
+
+4004           2 RESUME                   0
+
+4005           4 LOAD_GLOBAL              0 (super)
+              14 LOAD_DEREF              14 (__class__)
+              16 LOAD_FAST                0 (self)
+              18 LOAD_SUPER_ATTR          5 (NULL|self + __init__)
+              22 LOAD_FAST                1 (parent)
+              24 CALL                     1
+              32 POP_TOP
+
+4006          34 LOAD_FAST                0 (self)
+              36 LOAD_ATTR                5 (NULL|self + setWindowTitle)
+              56 LOAD_CONST               1 ('Log Import / Validation')
+              58 CALL                     1
+              66 POP_TOP
+
+4007          68 LOAD_FAST                0 (self)
+              70 LOAD_ATTR                7 (NULL|self + resize)
+              90 LOAD_CONST               2 (900)
+              92 LOAD_CONST               3 (720)
+              94 CALL                     2
+             102 POP_TOP
+
+4008         104 LOAD_FAST                2 (sim_cfg)
+             106 LOAD_FAST                0 (self)
+             108 STORE_ATTR               4 (sim_cfg)
+
+4009         118 LOAD_FAST                3 (calc_result)
+             120 LOAD_FAST                0 (self)
+             122 STORE_ATTR               5 (calc_result)
+
+4010         132 LOAD_CONST               0 (None)
+             134 LOAD_FAST                0 (self)
+             136 STORE_ATTR               6 (log)
+
+4012         146 LOAD_GLOBAL             15 (NULL + QVBoxLayout)
+             156 LOAD_FAST                0 (self)
+             158 CALL                     1
+             166 STORE_FAST               4 (layout)
+
+4013         168 LOAD_FAST                4 (layout)
+             170 LOAD_ATTR               17 (NULL|self + addWidget)
+             190 LOAD_GLOBAL             19 (NULL + QLabel)
+
+4014         200 LOAD_CONST               4 ('Import a VCM Scanner / EFILive / OBDLink CSV log to validate the\ncalculated tune against actual measured behavior. The tool will\nauto-detect column names and compute deltas against predictions.')
+
+4013         202 CALL                     1
+             210 CALL                     1
+             218 POP_TOP
+
+4020         220 LOAD_GLOBAL             21 (NULL + QHBoxLayout)
+             230 CALL                     0
+             238 STORE_FAST               5 (file_row)
+
+4021         240 LOAD_GLOBAL             19 (NULL + QLabel)
+             250 LOAD_CONST               5 ('(no file loaded)')
+             252 CALL                     1
+             260 LOAD_FAST                0 (self)
+             262 STORE_ATTR              11 (file_label)
+
+4022         272 LOAD_FAST                0 (self)
+             274 LOAD_ATTR               22 (file_label)
+             294 LOAD_ATTR               25 (NULL|self + setStyleSheet)
+             314 LOAD_CONST               6 ('color: #aaa; padding: 4px;')
+             316 CALL                     1
+             324 POP_TOP
+
+4023         326 LOAD_FAST                5 (file_row)
+             328 LOAD_ATTR               17 (NULL|self + addWidget)
+             348 LOAD_FAST                0 (self)
+             350 LOAD_ATTR               22 (file_label)
+             370 LOAD_CONST               7 (1)
+             372 CALL                     2
+             380 POP_TOP
+
+4026         382 LOAD_FAST                5 (file_row)
+             384 LOAD_ATTR               17 (NULL|self + addWidget)
+             404 LOAD_GLOBAL             19 (NULL + QLabel)
+             414 LOAD_CONST               8 ('Downsample to:')
+             416 CALL                     1
+             424 CALL                     1
+             432 POP_TOP
+
+4027         434 LOAD_GLOBAL             27 (NULL + QComboBox)
+             444 CALL                     0
+             452 LOAD_FAST                0 (self)
+             454 STORE_ATTR              14 (downsample_combo)
+
+4028         464 LOAD_FAST                0 (self)
+             466 LOAD_ATTR               28 (downsample_combo)
+             486 LOAD_ATTR               31 (NULL|self + addItems)
+             506 BUILD_LIST               0
+             508 LOAD_CONST               9 (('No downsample', '10 Hz', '20 Hz', '50 Hz'))
+             510 LIST_EXTEND              1
+             512 CALL                     1
+             520 POP_TOP
+
+4029         522 LOAD_FAST                0 (self)
+             524 LOAD_ATTR               28 (downsample_combo)
+             544 LOAD_ATTR               33 (NULL|self + setCurrentIndex)
+             564 LOAD_CONST               7 (1)
+             566 CALL                     1
+             574 POP_TOP
+
+4030         576 LOAD_FAST                0 (self)
+             578 LOAD_ATTR               28 (downsample_combo)
+             598 LOAD_ATTR               35 (NULL|self + setToolTip)
+
+4031         618 LOAD_CONST              10 ('VCM Scanner logs at 30-100 Hz produce huge files. Analysis only\nneeds ~10 Hz for shift detection / slip averaging — downsampling\ngives a 10× speedup with no accuracy loss.')
+
+4030         620 CALL                     1
+             628 POP_TOP
+
+4035         630 LOAD_FAST                5 (file_row)
+             632 LOAD_ATTR               17 (NULL|self + addWidget)
+             652 LOAD_FAST                0 (self)
+             654 LOAD_ATTR               28 (downsample_combo)
+             674 CALL                     1
+             682 POP_TOP
+
+4036         684 LOAD_GLOBAL             37 (NULL + QPushButton)
+             694 LOAD_CONST              11 ('Load CSV…')
+             696 CALL                     1
+             704 LOAD_FAST                0 (self)
+             706 STORE_ATTR              19 (load_btn)
+
+4037         716 LOAD_FAST                0 (self)
+             718 LOAD_ATTR               38 (load_btn)
+             738 LOAD_ATTR               40 (clicked)
+             758 LOAD_ATTR               43 (NULL|self + connect)
+             778 LOAD_FAST                0 (self)
+             780 LOAD_ATTR               44 (_load_file)
+             800 CALL                     1
+             808 POP_TOP
+
+4038         810 LOAD_FAST                5 (file_row)
+             812 LOAD_ATTR               17 (NULL|self + addWidget)
+             832 LOAD_FAST                0 (self)
+             834 LOAD_ATTR               38 (load_btn)
+             854 CALL                     1
+             862 POP_TOP
+
+4039         864 LOAD_FAST                4 (layout)
+             866 LOAD_ATTR               47 (NULL|self + addLayout)
+             886 LOAD_FAST                5 (file_row)
+             888 CALL                     1
+             896 POP_TOP
+
+4042         898 LOAD_GLOBAL             49 (NULL + QProgressBar)
+             908 CALL                     0
+             916 LOAD_FAST                0 (self)
+             918 STORE_ATTR              25 (progress_bar)
+
+4043         928 LOAD_FAST                0 (self)
+             930 LOAD_ATTR               50 (progress_bar)
+             950 LOAD_ATTR               53 (NULL|self + setRange)
+             970 LOAD_CONST              12 (0)
+             972 LOAD_CONST              13 (100)
+             974 CALL                     2
+             982 POP_TOP
+
+4044         984 LOAD_FAST                0 (self)
+             986 LOAD_ATTR               50 (progress_bar)
+            1006 LOAD_ATTR               55 (NULL|self + setVisible)
+            1026 LOAD_CONST              14 (False)
+            1028 CALL                     1
+            1036 POP_TOP
+
+4045        1038 LOAD_FAST                4 (layout)
+            1040 LOAD_ATTR               17 (NULL|self + addWidget)
+            1060 LOAD_FAST                0 (self)
+            1062 LOAD_ATTR               50 (progress_bar)
+            1082 CALL                     1
+            1090 POP_TOP
+
+4048        1092 LOAD_GLOBAL             57 (NULL + QGroupBox)
+            1102 LOAD_CONST              15 ('Detected Columns')
+            1104 CALL                     1
+            1112 STORE_FAST               6 (col_box)
+
+4049        1114 LOAD_GLOBAL             15 (NULL + QVBoxLayout)
+            1124 CALL                     0
+            1132 STORE_FAST               7 (cl)
+
+4050        1134 LOAD_GLOBAL             19 (NULL + QLabel)
+            1144 LOAD_CONST              16 ('(load a file first)')
+            1146 CALL                     1
+            1154 LOAD_FAST                0 (self)
+            1156 STORE_ATTR              29 (col_label)
+
+4051        1166 LOAD_FAST                0 (self)
+            1168 LOAD_ATTR               58 (col_label)
+            1188 LOAD_ATTR               25 (NULL|self + setStyleSheet)
+
+4052        1208 LOAD_CONST              17 ('font-family: Consolas; color: #ccc; padding: 6px; background: #2a2a2a; border-radius: 3px;')
+
+4051        1210 CALL                     1
+            1218 POP_TOP
+
+4055        1220 LOAD_FAST                0 (self)
+            1222 LOAD_ATTR               58 (col_label)
+            1242 LOAD_ATTR               61 (NULL|self + setWordWrap)
+            1262 LOAD_CONST              18 (True)
+            1264 CALL                     1
+            1272 POP_TOP
+
+4056        1274 LOAD_FAST                7 (cl)
+            1276 LOAD_ATTR               17 (NULL|self + addWidget)
+            1296 LOAD_FAST                0 (self)
+            1298 LOAD_ATTR               58 (col_label)
+            1318 CALL                     1
+            1326 POP_TOP
+
+4057        1328 LOAD_FAST                6 (col_box)
+            1330 LOAD_ATTR               63 (NULL|self + setLayout)
+            1350 LOAD_FAST                7 (cl)
+            1352 CALL                     1
+            1360 POP_TOP
+
+4058        1362 LOAD_FAST                4 (layout)
+            1364 LOAD_ATTR               17 (NULL|self + addWidget)
+            1384 LOAD_FAST                6 (col_box)
+            1386 CALL                     1
+            1394 POP_TOP
+
+4061        1396 LOAD_GLOBAL             57 (NULL + QGroupBox)
+            1406 LOAD_CONST              19 ('Measured vs Predicted')
+            1408 CALL                     1
+            1416 STORE_FAST               8 (cmp_box)
+
+4062        1418 LOAD_GLOBAL             15 (NULL + QVBoxLayout)
+            1428 CALL                     0
+            1436 STORE_FAST               9 (cmp_l)
+
+4063        1438 LOAD_GLOBAL             65 (NULL + QTableWidget)
+            1448 LOAD_CONST              12 (0)
+            1450 LOAD_CONST              20 (4)
+            1452 CALL                     2
+            1460 LOAD_FAST                0 (self)
+            1462 STORE_ATTR              33 (cmp_table)
+
+4064        1472 LOAD_FAST                0 (self)
+            1474 LOAD_ATTR               66 (cmp_table)
+            1494 LOAD_ATTR               69 (NULL|self + setHorizontalHeaderLabels)
+            1514 BUILD_LIST               0
+            1516 LOAD_CONST              21 (('Metric', 'Predicted', 'Measured', 'Δ / Notes'))
+            1518 LIST_EXTEND              1
+            1520 CALL                     1
+            1528 POP_TOP
+
+4067        1530 LOAD_FAST                0 (self)
+            1532 LOAD_ATTR               66 (cmp_table)
+            1552 LOAD_ATTR               71 (NULL|self + horizontalHeader)
+            1572 CALL                     0
+            1580 LOAD_ATTR               73 (NULL|self + setSectionResizeMode)
+            1600 LOAD_GLOBAL             74 (QHeaderView)
+            1610 LOAD_ATTR               76 (ResizeMode)
+            1630 LOAD_ATTR               78 (Stretch)
+            1650 CALL                     1
+            1658 POP_TOP
+
+4068        1660 LOAD_FAST                0 (self)
+            1662 LOAD_ATTR               66 (cmp_table)
+            1682 LOAD_ATTR               81 (NULL|self + setEditTriggers)
+            1702 LOAD_GLOBAL             64 (QTableWidget)
+            1712 LOAD_ATTR               82 (EditTrigger)
+            1732 LOAD_ATTR               84 (NoEditTriggers)
+            1752 CALL                     1
+            1760 POP_TOP
+
+4069        1762 LOAD_FAST                9 (cmp_l)
+            1764 LOAD_ATTR               17 (NULL|self + addWidget)
+            1784 LOAD_FAST                0 (self)
+            1786 LOAD_ATTR               66 (cmp_table)
+            1806 CALL                     1
+            1814 POP_TOP
+
+4070        1816 LOAD_FAST                8 (cmp_box)
+            1818 LOAD_ATTR               63 (NULL|self + setLayout)
+            1838 LOAD_FAST                9 (cmp_l)
+            1840 CALL                     1
+            1848 POP_TOP
+
+4071        1850 LOAD_FAST                4 (layout)
+            1852 LOAD_ATTR               17 (NULL|self + addWidget)
+            1872 LOAD_FAST                8 (cmp_box)
+            1874 LOAD_CONST               7 (1)
+            1876 CALL                     2
+            1884 POP_TOP
+
+4074        1886 LOAD_GLOBAL             57 (NULL + QGroupBox)
+            1896 LOAD_CONST              22 ('Measured Shift Events (WOT only — TPS > 70%)')
+            1898 CALL                     1
+            1906 STORE_FAST              10 (shift_box)
+
+4075        1908 LOAD_GLOBAL             15 (NULL + QVBoxLayout)
+            1918 CALL                     0
+            1926 STORE_FAST              11 (sl)
+
+4076        1928 LOAD_GLOBAL             65 (NULL + QTableWidget)
+            1938 LOAD_CONST              12 (0)
+            1940 LOAD_CONST              23 (5)
+            1942 CALL                     2
+            1950 LOAD_FAST                0 (self)
+            1952 STORE_ATTR              43 (shift_table)
+
+4077        1962 LOAD_FAST                0 (self)
+            1964 LOAD_ATTR               86 (shift_table)
+            1984 LOAD_ATTR               69 (NULL|self + setHorizontalHeaderLabels)
+            2004 BUILD_LIST               0
+            2006 LOAD_CONST              24 (('Shift', 'Measured MPH', 'Predicted MPH', 'Δ', 'RPM'))
+            2008 LIST_EXTEND              1
+            2010 CALL                     1
+            2018 POP_TOP
+
+4080        2020 LOAD_FAST                0 (self)
+            2022 LOAD_ATTR               86 (shift_table)
+            2042 LOAD_ATTR               71 (NULL|self + horizontalHeader)
+            2062 CALL                     0
+            2070 LOAD_ATTR               73 (NULL|self + setSectionResizeMode)
+            2090 LOAD_GLOBAL             74 (QHeaderView)
+            2100 LOAD_ATTR               76 (ResizeMode)
+            2120 LOAD_ATTR               78 (Stretch)
+            2140 CALL                     1
+            2148 POP_TOP
+
+4081        2150 LOAD_FAST                0 (self)
+            2152 LOAD_ATTR               86 (shift_table)
+            2172 LOAD_ATTR               81 (NULL|self + setEditTriggers)
+            2192 LOAD_GLOBAL             64 (QTableWidget)
+            2202 LOAD_ATTR               82 (EditTrigger)
+            2222 LOAD_ATTR               84 (NoEditTriggers)
+            2242 CALL                     1
+            2250 POP_TOP
+
+4082        2252 LOAD_FAST                0 (self)
+            2254 LOAD_ATTR               86 (shift_table)
+            2274 LOAD_ATTR               89 (NULL|self + setMaximumHeight)
+            2294 LOAD_CONST              25 (180)
+            2296 CALL                     1
+            2304 POP_TOP
+
+4083        2306 LOAD_FAST               11 (sl)
+            2308 LOAD_ATTR               17 (NULL|self + addWidget)
+            2328 LOAD_FAST                0 (self)
+            2330 LOAD_ATTR               86 (shift_table)
+            2350 CALL                     1
+            2358 POP_TOP
+
+4084        2360 LOAD_FAST               10 (shift_box)
+            2362 LOAD_ATTR               63 (NULL|self + setLayout)
+            2382 LOAD_FAST               11 (sl)
+            2384 CALL                     1
+            2392 POP_TOP
+
+4085        2394 LOAD_FAST                4 (layout)
+            2396 LOAD_ATTR               17 (NULL|self + addWidget)
+            2416 LOAD_FAST               10 (shift_box)
+            2418 CALL                     1
+            2426 POP_TOP
+
+4088        2428 LOAD_GLOBAL             19 (NULL + QLabel)
+            2438 LOAD_CONST              26 ('')
+            2440 CALL                     1
+            2448 LOAD_FAST                0 (self)
+            2450 STORE_ATTR              45 (warn_label)
+
+4089        2460 LOAD_FAST                0 (self)
+            2462 LOAD_ATTR               90 (warn_label)
+            2482 LOAD_ATTR               25 (NULL|self + setStyleSheet)
+            2502 LOAD_CONST              27 ('color: #f0a060; padding: 4px;')
+            2504 CALL                     1
+            2512 POP_TOP
+
+4090        2514 LOAD_FAST                0 (self)
+            2516 LOAD_ATTR               90 (warn_label)
+            2536 LOAD_ATTR               61 (NULL|self + setWordWrap)
+            2556 LOAD_CONST              18 (True)
+            2558 CALL                     1
+            2566 POP_TOP
+
+4091        2568 LOAD_FAST                4 (layout)
+            2570 LOAD_ATTR               17 (NULL|self + addWidget)
+            2590 LOAD_FAST                0 (self)
+            2592 LOAD_ATTR               90 (warn_label)
+            2612 CALL                     1
+            2620 POP_TOP
+
+4094        2622 LOAD_GLOBAL             21 (NULL + QHBoxLayout)
+            2632 CALL                     0
+            2640 STORE_FAST              12 (btn_row)
+
+4095        2642 LOAD_FAST               12 (btn_row)
+            2644 LOAD_ATTR               93 (NULL|self + addStretch)
+            2664 CALL                     0
+            2672 POP_TOP
+
+4097        2674 LOAD_GLOBAL             37 (NULL + QPushButton)
+            2684 LOAD_CONST              28 ('Apply Measured Slip to Stall RPM')
+            2686 CALL                     1
+            2694 LOAD_FAST                0 (self)
+            2696 STORE_ATTR              47 (apply_slip_btn)
+
+4098        2706 LOAD_FAST                0 (self)
+            2708 LOAD_ATTR               94 (apply_slip_btn)
+            2728 LOAD_ATTR               35 (NULL|self + setToolTip)
+
+4099        2748 LOAD_CONST              29 ("If measured WOT slip% disagrees with stall-predicted slip%,\nback-solve the stall RPM that would produce the measured slip\nand apply it to the main window's Stall RPM field.")
+
+4098        2750 CALL                     1
+            2758 POP_TOP
+
+4103        2760 LOAD_FAST                0 (self)
+            2762 LOAD_ATTR               94 (apply_slip_btn)
+            2782 LOAD_ATTR               97 (NULL|self + setEnabled)
+            2802 LOAD_CONST              14 (False)
+            2804 CALL                     1
+            2812 POP_TOP
+
+4104        2814 LOAD_FAST                0 (self)
+            2816 LOAD_ATTR               94 (apply_slip_btn)
+            2836 LOAD_ATTR               40 (clicked)
+            2856 LOAD_ATTR               43 (NULL|self + connect)
+            2876 LOAD_FAST                0 (self)
+            2878 LOAD_ATTR               98 (_apply_slip)
+            2898 CALL                     1
+            2906 POP_TOP
+
+4105        2908 LOAD_FAST               12 (btn_row)
+            2910 LOAD_ATTR               17 (NULL|self + addWidget)
+            2930 LOAD_FAST                0 (self)
+            2932 LOAD_ATTR               94 (apply_slip_btn)
+            2952 CALL                     1
+            2960 POP_TOP
+
+4106        2962 LOAD_GLOBAL             37 (NULL + QPushButton)
+            2972 LOAD_CONST              30 ('Close')
+            2974 CALL                     1
+            2982 STORE_FAST              13 (close)
+
+4107        2984 LOAD_FAST               13 (close)
+            2986 LOAD_ATTR               40 (clicked)
+            3006 LOAD_ATTR               43 (NULL|self + connect)
+            3026 LOAD_FAST                0 (self)
+            3028 LOAD_ATTR              100 (accept)
+            3048 CALL                     1
+            3056 POP_TOP
+
+4108        3058 LOAD_FAST               12 (btn_row)
+            3060 LOAD_ATTR               17 (NULL|self + addWidget)
+            3080 LOAD_FAST               13 (close)
+            3082 CALL                     1
+            3090 POP_TOP
+
+4109        3092 LOAD_FAST                4 (layout)
+            3094 LOAD_ATTR               47 (NULL|self + addLayout)
+            3114 LOAD_FAST               12 (btn_row)
+            3116 CALL                     1
+            3124 POP_TOP
+            3126 RETURN_CONST             0 (None)

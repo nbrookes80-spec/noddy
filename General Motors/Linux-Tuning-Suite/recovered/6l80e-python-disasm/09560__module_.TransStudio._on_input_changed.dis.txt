@@ -1,0 +1,14 @@
+9560           0 RESUME                   0
+
+9562           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (live_preview_enabled)
+              24 POP_JUMP_IF_FALSE       27 (to 80)
+
+9563          26 LOAD_FAST                0 (self)
+              28 LOAD_ATTR                2 (_live_timer)
+              48 LOAD_ATTR                5 (NULL|self + start)
+              68 CALL                     0
+              76 POP_TOP
+              78 RETURN_CONST             1 (None)
+
+9562     >>   80 RETURN_CONST             1 (None)

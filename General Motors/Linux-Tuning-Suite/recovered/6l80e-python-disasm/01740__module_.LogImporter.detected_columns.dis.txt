@@ -1,0 +1,40 @@
+1740           0 RESUME                   0
+
+1742           2 BUILD_LIST               0
+               4 STORE_FAST               1 (out)
+
+1743           6 LOAD_FAST                0 (self)
+               8 LOAD_ATTR                0 (col_map)
+              28 LOAD_ATTR                3 (NULL|self + items)
+              48 CALL                     0
+              56 GET_ITER
+         >>   58 FOR_ITER                62 (to 186)
+              62 UNPACK_SEQUENCE          2
+              66 STORE_FAST               2 (key)
+              68 STORE_FAST               3 (idx)
+
+1744          70 LOAD_FAST                3 (idx)
+              72 LOAD_GLOBAL              5 (NULL + len)
+              82 LOAD_FAST                0 (self)
+              84 LOAD_ATTR                6 (headers)
+             104 CALL                     1
+             112 COMPARE_OP               2 (<)
+             116 POP_JUMP_IF_TRUE         1 (to 120)
+             118 JUMP_BACKWARD           31 (to 58)
+
+1745     >>  120 LOAD_FAST                1 (out)
+             122 LOAD_ATTR                9 (NULL|self + append)
+             142 LOAD_FAST                2 (key)
+             144 LOAD_FAST                0 (self)
+             146 LOAD_ATTR                6 (headers)
+             166 LOAD_FAST                3 (idx)
+             168 BINARY_SUBSCR
+             172 BUILD_TUPLE              2
+             174 CALL                     1
+             182 POP_TOP
+             184 JUMP_BACKWARD           64 (to 58)
+
+1743     >>  186 END_FOR
+
+1746         188 LOAD_FAST                1 (out)
+             190 RETURN_VALUE

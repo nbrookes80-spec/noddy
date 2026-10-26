@@ -1,0 +1,27 @@
+9565           0 RESUME                   0
+
+9567           2 NOP
+
+9568           4 LOAD_FAST                0 (self)
+               6 LOAD_ATTR                1 (NULL|self + calculate)
+              26 CALL                     0
+              34 POP_TOP
+              36 RETURN_CONST             1 (None)
+         >>   38 PUSH_EXC_INFO
+
+9569          40 LOAD_GLOBAL              2 (Exception)
+              50 CHECK_EXC_MATCH
+              52 POP_JUMP_IF_FALSE        3 (to 60)
+              54 POP_TOP
+
+9570          56 POP_EXCEPT
+              58 RETURN_CONST             1 (None)
+
+9569     >>   60 RERAISE                  0
+         >>   62 COPY                     3
+              64 POP_EXCEPT
+              66 RERAISE                  1
+ExceptionTable:
+  4 to 34 -> 38 [0]
+  38 to 54 -> 62 [1] lasti
+  60 to 60 -> 62 [1] lasti

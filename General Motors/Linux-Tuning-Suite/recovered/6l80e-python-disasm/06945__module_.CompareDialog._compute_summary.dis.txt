@@ -1,0 +1,146 @@
+6945           0 RESUME                   0
+
+6946           2 BUILD_LIST               0
+               4 STORE_FAST               1 (lines)
+
+6947           6 LOAD_CONST               1 ((('Upshift', 'upshift'), ('Downshift', 'downshift'), ('TCC Lock', 'tcc_lock'), ('TCC Unlock', 'tcc_unlock')))
+               8 GET_ITER
+         >>   10 FOR_ITER               240 (to 494)
+              14 UNPACK_SEQUENCE          2
+              18 STORE_FAST               2 (name)
+              20 STORE_FAST               3 (key)
+
+6949          22 LOAD_FAST                0 (self)
+              24 LOAD_ATTR                0 (cur)
+              44 LOAD_FAST                3 (key)
+              46 BINARY_SUBSCR
+              50 STORE_FAST               4 (cur)
+
+6950          52 LOAD_FAST                0 (self)
+              54 LOAD_ATTR                2 (cmp)
+              74 LOAD_FAST                3 (key)
+              76 BINARY_SUBSCR
+              80 STORE_FAST               5 (cmp)
+
+6951          82 LOAD_GLOBAL              5 (NULL + min)
+              92 LOAD_GLOBAL              7 (NULL + len)
+             102 LOAD_FAST                4 (cur)
+             104 CALL                     1
+             112 LOAD_GLOBAL              7 (NULL + len)
+             122 LOAD_FAST                5 (cmp)
+             124 CALL                     1
+             132 CALL                     2
+             140 STORE_FAST               6 (rows)
+
+6952         142 BUILD_LIST               0
+             144 STORE_FAST               7 (deltas)
+
+6953         146 LOAD_GLOBAL              9 (NULL + range)
+             156 LOAD_FAST                6 (rows)
+             158 CALL                     1
+             166 GET_ITER
+         >>  168 FOR_ITER                78 (to 328)
+             172 STORE_FAST               8 (r)
+
+6954         174 LOAD_GLOBAL              9 (NULL + range)
+             184 LOAD_GLOBAL             10 (TPS_COLS)
+             194 CALL                     1
+             202 GET_ITER
+         >>  204 FOR_ITER                58 (to 324)
+             208 STORE_FAST               9 (c)
+
+6955         210 LOAD_FAST                4 (cur)
+             212 LOAD_FAST                8 (r)
+             214 BINARY_SUBSCR
+             218 LOAD_FAST                9 (c)
+             220 BINARY_SUBSCR
+             224 LOAD_CONST               2 (254)
+             226 COMPARE_OP               2 (<)
+             230 POP_JUMP_IF_TRUE         1 (to 234)
+             232 JUMP_BACKWARD           15 (to 204)
+         >>  234 LOAD_FAST                5 (cmp)
+             236 LOAD_FAST                8 (r)
+             238 BINARY_SUBSCR
+             242 LOAD_FAST                9 (c)
+             244 BINARY_SUBSCR
+             248 LOAD_CONST               2 (254)
+             250 COMPARE_OP               2 (<)
+             254 POP_JUMP_IF_TRUE         1 (to 258)
+             256 JUMP_BACKWARD           27 (to 204)
+
+6956     >>  258 LOAD_FAST                7 (deltas)
+             260 LOAD_ATTR               13 (NULL|self + append)
+             280 LOAD_FAST                5 (cmp)
+             282 LOAD_FAST                8 (r)
+             284 BINARY_SUBSCR
+             288 LOAD_FAST                9 (c)
+             290 BINARY_SUBSCR
+             294 LOAD_FAST                4 (cur)
+             296 LOAD_FAST                8 (r)
+             298 BINARY_SUBSCR
+             302 LOAD_FAST                9 (c)
+             304 BINARY_SUBSCR
+             308 BINARY_OP               10 (-)
+             312 CALL                     1
+             320 POP_TOP
+             322 JUMP_BACKWARD           60 (to 204)
+
+6954     >>  324 END_FOR
+             326 JUMP_BACKWARD           80 (to 168)
+
+6953     >>  328 END_FOR
+
+6957         330 LOAD_FAST                7 (deltas)
+             332 POP_JUMP_IF_TRUE         1 (to 336)
+
+6958         334 JUMP_BACKWARD          163 (to 10)
+
+6959     >>  336 LOAD_GLOBAL             15 (NULL + sum)
+             346 LOAD_FAST                7 (deltas)
+             348 CALL                     1
+             356 LOAD_GLOBAL              7 (NULL + len)
+             366 LOAD_FAST                7 (deltas)
+             368 CALL                     1
+             376 BINARY_OP               11 (/)
+             380 STORE_FAST              10 (mean)
+
+6960         382 LOAD_GLOBAL             17 (NULL + max)
+             392 LOAD_FAST                7 (deltas)
+             394 CALL                     1
+             402 STORE_FAST              11 (max_d)
+
+6961         404 LOAD_GLOBAL              5 (NULL + min)
+             414 LOAD_FAST                7 (deltas)
+             416 CALL                     1
+             424 STORE_FAST              12 (min_d)
+
+6962         426 LOAD_FAST                1 (lines)
+             428 LOAD_ATTR               13 (NULL|self + append)
+             448 LOAD_FAST                2 (name)
+             450 LOAD_CONST               3 ('12')
+             452 FORMAT_VALUE             4 (with format)
+             454 LOAD_CONST               4 (' mean Δ ')
+             456 LOAD_FAST               10 (mean)
+             458 LOAD_CONST               5 ('+6.2f')
+             460 FORMAT_VALUE             4 (with format)
+             462 LOAD_CONST               6 ('  range [')
+             464 LOAD_FAST               12 (min_d)
+             466 LOAD_CONST               5 ('+6.2f')
+             468 FORMAT_VALUE             4 (with format)
+             470 LOAD_CONST               7 (' .. ')
+             472 LOAD_FAST               11 (max_d)
+             474 LOAD_CONST               5 ('+6.2f')
+             476 FORMAT_VALUE             4 (with format)
+             478 LOAD_CONST               8 ('] MPH')
+             480 BUILD_STRING             8
+             482 CALL                     1
+             490 POP_TOP
+             492 JUMP_BACKWARD          242 (to 10)
+
+6947     >>  494 END_FOR
+
+6963         496 LOAD_CONST               9 ('\n')
+             498 LOAD_ATTR               19 (NULL|self + join)
+             518 LOAD_FAST                1 (lines)
+             520 CALL                     1
+             528 RETURN_VALUE

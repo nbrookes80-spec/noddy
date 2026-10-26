@@ -1,0 +1,15 @@
+                0 COPY_FREE_VARS           1
+
+10475           2 RESUME                   0
+                4 LOAD_FAST                0 (v)
+                6 LOAD_CONST               1 (254)
+                8 COMPARE_OP               2 (<)
+               12 POP_JUMP_IF_FALSE        7 (to 28)
+               14 LOAD_FAST                0 (v)
+               16 LOAD_DEREF               1 (scale)
+               18 BINARY_OP                5 (*)
+               22 LOAD_CONST               2 ('.1f')
+               24 FORMAT_VALUE             4 (with format)
+               26 RETURN_VALUE
+          >>   28 LOAD_CONST               3 ('OFF')
+               30 RETURN_VALUE

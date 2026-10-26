@@ -1,0 +1,166 @@
+1883           0 RESUME                   0
+
+1885           2 LOAD_FAST                1 (cfg)
+               4 LOAD_ATTR                1 (NULL|self + get)
+              24 LOAD_CONST               1 ('torque_curve')
+              26 CALL                     1
+              34 LOAD_FAST                0 (self)
+              36 STORE_ATTR               1 (curve)
+
+1886          46 LOAD_FAST                1 (cfg)
+              48 LOAD_CONST               2 ('ratios')
+              50 BINARY_SUBSCR
+              54 LOAD_FAST                0 (self)
+              56 STORE_ATTR               2 (ratios)
+
+1887          66 LOAD_FAST                1 (cfg)
+              68 LOAD_CONST               3 ('axle')
+              70 BINARY_SUBSCR
+              74 LOAD_FAST                1 (cfg)
+              76 LOAD_CONST               4 ('chain')
+              78 BINARY_SUBSCR
+              82 BINARY_OP                5 (*)
+              86 LOAD_FAST                0 (self)
+              88 STORE_ATTR               3 (final_drive)
+
+1888          98 LOAD_FAST                1 (cfg)
+             100 LOAD_CONST               5 ('tire_dia')
+             102 BINARY_SUBSCR
+             106 LOAD_FAST                0 (self)
+             108 STORE_ATTR               4 (tire_dia)
+
+1889         118 LOAD_FAST                1 (cfg)
+             120 LOAD_CONST               6 ('weight')
+             122 BINARY_SUBSCR
+             126 LOAD_FAST                0 (self)
+             128 STORE_ATTR               5 (weight)
+
+1890         138 LOAD_FAST                1 (cfg)
+             140 LOAD_CONST               7 ('stall_rpm')
+             142 BINARY_SUBSCR
+             146 LOAD_FAST                0 (self)
+             148 STORE_ATTR               6 (stall_rpm)
+
+1891         158 LOAD_FAST                1 (cfg)
+             160 LOAD_CONST               8 ('idle_rpm')
+             162 BINARY_SUBSCR
+             166 LOAD_FAST                0 (self)
+             168 STORE_ATTR               7 (idle_rpm)
+
+1893         178 LOAD_FAST                1 (cfg)
+             180 LOAD_CONST               9 ('shift_rpm')
+             182 BINARY_SUBSCR
+             186 STORE_FAST               7 (global_rpm)
+
+1894         188 LOAD_FAST                1 (cfg)
+             190 LOAD_ATTR                1 (NULL|self + get)
+             210 LOAD_CONST              10 ('per_gear_rpm')
+             212 CALL                     1
+             220 COPY                     1
+             222 POP_JUMP_IF_TRUE         2 (to 228)
+             224 POP_TOP
+             226 BUILD_LIST               0
+         >>  228 STORE_FAST               8 (per_gear)
+
+1897         230 LOAD_GLOBAL             17 (NULL + range)
+             240 LOAD_GLOBAL             19 (NULL + len)
+             250 LOAD_FAST                0 (self)
+             252 LOAD_ATTR                4 (ratios)
+             272 CALL                     1
+             280 CALL                     1
+
+1895         288 GET_ITER
+             290 LOAD_FAST_AND_CLEAR      9 (i)
+             292 SWAP                     2
+             294 BUILD_LIST               0
+             296 SWAP                     2
+         >>  298 FOR_ITER                23 (to 348)
+
+1897         302 STORE_FAST               9 (i)
+
+1896         304 LOAD_FAST                9 (i)
+             306 LOAD_GLOBAL             19 (NULL + len)
+             316 LOAD_FAST                8 (per_gear)
+             318 CALL                     1
+             326 COMPARE_OP               2 (<)
+             330 POP_JUMP_IF_FALSE        5 (to 342)
+             332 LOAD_FAST                8 (per_gear)
+             334 LOAD_FAST                9 (i)
+             336 BINARY_SUBSCR
+             340 JUMP_FORWARD             1 (to 344)
+         >>  342 LOAD_FAST                7 (global_rpm)
+         >>  344 LIST_APPEND              2
+             346 JUMP_BACKWARD           25 (to 298)
+
+1895     >>  348 END_FOR
+             350 SWAP                     2
+             352 STORE_FAST               9 (i)
+             354 LOAD_FAST                0 (self)
+             356 STORE_ATTR              10 (shift_rpm_per_gear)
+
+1899         366 LOAD_FAST                2 (shift_points_mph)
+             368 COPY                     1
+             370 POP_JUMP_IF_TRUE         2 (to 376)
+             372 POP_TOP
+             374 BUILD_LIST               0
+         >>  376 LOAD_FAST                0 (self)
+             378 STORE_ATTR              11 (shift_points_mph)
+
+1900         388 LOAD_FAST                3 (cda)
+             390 LOAD_FAST                0 (self)
+             392 STORE_ATTR              12 (cda)
+
+1901         402 LOAD_FAST                4 (crr)
+             404 LOAD_FAST                0 (self)
+             406 STORE_ATTR              13 (crr)
+
+1910         416 LOAD_FAST                5 (launch_grip_g)
+             418 LOAD_FAST                0 (self)
+             420 STORE_ATTR              14 (launch_grip_g)
+
+1914         430 LOAD_FAST                6 (drivetrain_eff)
+             432 POP_JUMP_IF_NOT_NONE    55 (to 544)
+
+1915         434 LOAD_GLOBAL             19 (NULL + len)
+             444 LOAD_FAST                0 (self)
+             446 LOAD_ATTR                4 (ratios)
+             466 CALL                     1
+             474 STORE_FAST              10 (n_gears)
+
+1918         476 LOAD_FAST               10 (n_gears)
+             478 LOAD_CONST              11 (4)
+             480 COMPARE_OP              26 (<=)
+             484 POP_JUMP_IF_FALSE        8 (to 502)
+             486 LOAD_CONST              12 (0.82)
+             488 LOAD_FAST                0 (self)
+             490 STORE_ATTR              15 (drivetrain_eff)
+             500 RETURN_CONST             0 (None)
+
+1919     >>  502 LOAD_FAST               10 (n_gears)
+             504 LOAD_CONST              13 (8)
+             506 COMPARE_OP              92 (>=)
+             510 POP_JUMP_IF_FALSE        8 (to 528)
+             512 LOAD_CONST              14 (0.86)
+
+1918         514 LOAD_FAST                0 (self)
+             516 STORE_ATTR              15 (drivetrain_eff)
+             526 RETURN_CONST             0 (None)
+
+1919     >>  528 LOAD_CONST              15 (0.85)
+
+1918         530 LOAD_FAST                0 (self)
+             532 STORE_ATTR              15 (drivetrain_eff)
+             542 RETURN_CONST             0 (None)
+
+1921     >>  544 LOAD_FAST                6 (drivetrain_eff)
+             546 LOAD_FAST                0 (self)
+             548 STORE_ATTR              15 (drivetrain_eff)
+             558 RETURN_CONST             0 (None)
+         >>  560 SWAP                     2
+             562 POP_TOP
+
+1895         564 SWAP                     2
+             566 STORE_FAST               9 (i)
+             568 RERAISE                  0
+ExceptionTable:
+  294 to 348 -> 560 [2]

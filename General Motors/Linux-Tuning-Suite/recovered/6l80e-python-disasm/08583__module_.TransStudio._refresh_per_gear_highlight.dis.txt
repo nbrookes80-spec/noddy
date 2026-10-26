@@ -1,0 +1,187 @@
+8583           0 RESUME                   0
+
+8586           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (per_gear_rpm_table)
+              24 STORE_FAST               1 (tbl)
+
+8587          26 LOAD_GLOBAL              3 (NULL + int)
+              36 LOAD_FAST                0 (self)
+              38 LOAD_ATTR                4 (shift_rpm)
+              58 LOAD_ATTR                7 (NULL|self + value)
+              78 CALL                     0
+              86 CALL                     1
+              94 STORE_FAST               2 (global_rpm)
+
+8588          96 LOAD_CONST               1 (0)
+              98 STORE_FAST               3 (override_count)
+
+8589         100 LOAD_GLOBAL              9 (NULL + range)
+             110 LOAD_FAST                1 (tbl)
+             112 LOAD_ATTR               11 (NULL|self + rowCount)
+             132 CALL                     0
+             140 CALL                     1
+             148 GET_ITER
+         >>  150 FOR_ITER               196 (to 546)
+             154 STORE_FAST               4 (i)
+
+8590         156 LOAD_FAST                1 (tbl)
+             158 LOAD_ATTR               13 (NULL|self + item)
+             178 LOAD_FAST                4 (i)
+             180 LOAD_CONST               1 (0)
+             182 CALL                     2
+             190 STORE_FAST               5 (cell)
+
+8591         192 LOAD_FAST                5 (cell)
+             194 POP_JUMP_IF_NOT_NONE     1 (to 198)
+
+8592         196 JUMP_BACKWARD           24 (to 150)
+
+8593     >>  198 NOP
+
+8594         200 LOAD_GLOBAL             15 (NULL + float)
+             210 LOAD_FAST                5 (cell)
+             212 LOAD_ATTR               17 (NULL|self + text)
+             232 CALL                     0
+             240 CALL                     1
+             248 STORE_FAST               6 (v)
+
+8597         250 LOAD_GLOBAL             23 (NULL + abs)
+             260 LOAD_FAST                6 (v)
+             262 LOAD_FAST                2 (global_rpm)
+             264 BINARY_OP               10 (-)
+             268 CALL                     1
+             276 LOAD_CONST               3 (0.5)
+             278 COMPARE_OP              68 (>)
+             282 POP_JUMP_IF_FALSE       80 (to 444)
+
+8599         284 LOAD_FAST                5 (cell)
+             286 LOAD_ATTR               25 (NULL|self + setBackground)
+             306 LOAD_GLOBAL             27 (NULL + QBrush)
+             316 LOAD_GLOBAL             29 (NULL + QColor)
+             326 LOAD_CONST               4 (60)
+             328 LOAD_CONST               5 (100)
+             330 LOAD_CONST               6 (160)
+             332 CALL                     3
+             340 CALL                     1
+             348 CALL                     1
+             356 POP_TOP
+
+8600         358 LOAD_FAST                5 (cell)
+             360 LOAD_ATTR               31 (NULL|self + setForeground)
+             380 LOAD_GLOBAL             27 (NULL + QBrush)
+             390 LOAD_GLOBAL             29 (NULL + QColor)
+             400 LOAD_CONST               7 (255)
+             402 LOAD_CONST               7 (255)
+             404 LOAD_CONST               7 (255)
+             406 CALL                     3
+             414 CALL                     1
+             422 CALL                     1
+             430 POP_TOP
+
+8601         432 LOAD_FAST                3 (override_count)
+             434 LOAD_CONST               8 (1)
+             436 BINARY_OP               13 (+=)
+             440 STORE_FAST               3 (override_count)
+             442 JUMP_BACKWARD          147 (to 150)
+
+8603     >>  444 LOAD_FAST                5 (cell)
+             446 LOAD_ATTR               25 (NULL|self + setBackground)
+             466 LOAD_GLOBAL             27 (NULL + QBrush)
+             476 CALL                     0
+             484 CALL                     1
+             492 POP_TOP
+
+8604         494 LOAD_FAST                5 (cell)
+             496 LOAD_ATTR               31 (NULL|self + setForeground)
+             516 LOAD_GLOBAL             27 (NULL + QBrush)
+             526 CALL                     0
+             534 CALL                     1
+             542 POP_TOP
+             544 JUMP_BACKWARD          198 (to 150)
+
+8589     >>  546 END_FOR
+
+8605         548 LOAD_FAST                3 (override_count)
+             550 LOAD_CONST               1 (0)
+             552 COMPARE_OP              40 (==)
+             556 POP_JUMP_IF_FALSE       59 (to 676)
+
+8606         558 LOAD_FAST                0 (self)
+             560 LOAD_ATTR               32 (per_gear_rpm_status)
+             580 LOAD_ATTR               35 (NULL|self + setText)
+
+8607         600 LOAD_CONST               9 ('All shifts using global (')
+             602 LOAD_FAST                2 (global_rpm)
+             604 FORMAT_VALUE             0
+             606 LOAD_CONST              10 (' RPM)')
+             608 BUILD_STRING             3
+
+8606         610 CALL                     1
+             618 POP_TOP
+
+8608         620 LOAD_FAST                0 (self)
+             622 LOAD_ATTR               32 (per_gear_rpm_status)
+             642 LOAD_ATTR               37 (NULL|self + setStyleSheet)
+
+8609         662 LOAD_CONST              11 ('color: #888; font-size: 9pt; padding: 2px;')
+
+8608         664 CALL                     1
+             672 POP_TOP
+             674 RETURN_CONST             2 (None)
+
+8611     >>  676 LOAD_FAST                0 (self)
+             678 LOAD_ATTR               32 (per_gear_rpm_status)
+             698 LOAD_ATTR               35 (NULL|self + setText)
+
+8612         718 LOAD_FAST                3 (override_count)
+             720 FORMAT_VALUE             0
+             722 LOAD_CONST              12 (' shift')
+             724 LOAD_FAST                3 (override_count)
+             726 LOAD_CONST               8 (1)
+             728 COMPARE_OP              55 (!=)
+             732 POP_JUMP_IF_FALSE        2 (to 738)
+             734 LOAD_CONST              13 ('s')
+             736 JUMP_FORWARD             1 (to 740)
+         >>  738 LOAD_CONST              14 ('')
+         >>  740 FORMAT_VALUE             0
+             742 LOAD_CONST              15 (' overriding global (')
+
+8613         744 LOAD_FAST                2 (global_rpm)
+             746 FORMAT_VALUE             0
+             748 LOAD_CONST              10 (' RPM)')
+
+8612         750 BUILD_STRING             6
+
+8611         752 CALL                     1
+             760 POP_TOP
+
+8614         762 LOAD_FAST                0 (self)
+             764 LOAD_ATTR               32 (per_gear_rpm_status)
+             784 LOAD_ATTR               37 (NULL|self + setStyleSheet)
+
+8615         804 LOAD_CONST              16 ('color: #4a9eff; font-size: 9pt; padding: 2px; font-weight: bold;')
+
+8614         806 CALL                     1
+             814 POP_TOP
+             816 RETURN_CONST             2 (None)
+         >>  818 PUSH_EXC_INFO
+
+8595         820 LOAD_GLOBAL             18 (ValueError)
+             830 LOAD_GLOBAL             20 (AttributeError)
+             840 BUILD_TUPLE              2
+             842 CHECK_EXC_MATCH
+             844 POP_JUMP_IF_FALSE        4 (to 854)
+             846 POP_TOP
+
+8596         848 POP_EXCEPT
+             850 EXTENDED_ARG             1
+             852 JUMP_BACKWARD          352 (to 150)
+
+8595     >>  854 RERAISE                  0
+         >>  856 COPY                     3
+             858 POP_EXCEPT
+             860 RERAISE                  1
+ExceptionTable:
+  200 to 248 -> 818 [1]
+  818 to 846 -> 856 [2] lasti
+  854 to 854 -> 856 [2] lasti

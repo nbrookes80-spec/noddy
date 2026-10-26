@@ -1,0 +1,30 @@
+5821           0 RESUME                   0
+
+5824           2 LOAD_GLOBAL              0 (PRESSURE_TORQUE_PCT)
+              12 GET_ITER
+              14 LOAD_FAST_AND_CLEAR      1 (pct)
+              16 SWAP                     2
+              18 BUILD_LIST               0
+              20 SWAP                     2
+         >>   22 FOR_ITER                25 (to 76)
+              26 STORE_FAST               1 (pct)
+              28 LOAD_GLOBAL              3 (NULL + int)
+              38 LOAD_GLOBAL              5 (NULL + round)
+              48 LOAD_FAST                0 (max_torque)
+              50 LOAD_FAST                1 (pct)
+              52 BINARY_OP                5 (*)
+              56 CALL                     1
+              64 CALL                     1
+              72 LIST_APPEND              2
+              74 JUMP_BACKWARD           27 (to 22)
+         >>   76 END_FOR
+              78 SWAP                     2
+              80 STORE_FAST               1 (pct)
+              82 RETURN_VALUE
+         >>   84 SWAP                     2
+              86 POP_TOP
+              88 SWAP                     2
+              90 STORE_FAST               1 (pct)
+              92 RERAISE                  0
+ExceptionTable:
+  18 to 76 -> 84 [2]

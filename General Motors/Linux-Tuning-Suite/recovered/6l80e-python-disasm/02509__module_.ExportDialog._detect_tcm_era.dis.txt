@@ -1,0 +1,23 @@
+2509           0 RESUME                   0
+
+2515           2 LOAD_FAST                1 (n_gears)
+               4 LOAD_CONST               1 (4)
+               6 COMPARE_OP              26 (<=)
+              10 POP_JUMP_IF_FALSE        1 (to 14)
+
+2516          12 RETURN_CONST             2 ('4spd')
+
+2517     >>   14 LOAD_FAST                0 (trans_name)
+              16 LOAD_ATTR                1 (NULL|self + lower)
+              36 CALL                     0
+              44 STORE_FAST               2 (name)
+
+2519          46 LOAD_FAST                2 (name)
+              48 LOAD_ATTR                3 (NULL|self + startswith)
+              68 LOAD_CONST               3 (('8l', '9t', '10l'))
+              70 CALL                     1
+              78 POP_JUMP_IF_FALSE        1 (to 82)
+
+2520          80 RETURN_CONST             4 ('14+')
+
+2522     >>   82 RETURN_CONST             5 ('07-13')

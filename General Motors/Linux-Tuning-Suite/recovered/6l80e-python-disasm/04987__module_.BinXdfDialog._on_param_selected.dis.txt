@@ -1,0 +1,67 @@
+4987           0 RESUME                   0
+
+4988           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (reader)
+              24 POP_JUMP_IF_NONE        12 (to 50)
+              26 LOAD_FAST                0 (self)
+              28 LOAD_ATTR                2 (xdf)
+              48 POP_JUMP_IF_NOT_NONE     1 (to 52)
+
+4989     >>   50 RETURN_CONST             0 (None)
+
+4990     >>   52 LOAD_FAST                0 (self)
+              54 LOAD_ATTR                4 (param_list)
+              74 LOAD_ATTR                7 (NULL|self + selectionModel)
+              94 CALL                     0
+             102 LOAD_ATTR                9 (NULL|self + selectedRows)
+             122 CALL                     0
+             130 STORE_FAST               1 (rows)
+
+4991         132 LOAD_FAST                1 (rows)
+             134 POP_JUMP_IF_TRUE         1 (to 138)
+
+4992         136 RETURN_CONST             0 (None)
+
+4993     >>  138 LOAD_FAST                1 (rows)
+             140 LOAD_CONST               1 (0)
+             142 BINARY_SUBSCR
+             146 LOAD_ATTR               11 (NULL|self + row)
+             166 CALL                     0
+             174 STORE_FAST               2 (idx)
+
+4994         176 LOAD_GLOBAL             13 (NULL + getattr)
+             186 LOAD_FAST                0 (self)
+             188 LOAD_CONST               2 ('_filtered_params')
+             190 BUILD_LIST               0
+             192 CALL                     3
+             200 STORE_FAST               3 (params)
+
+4995         202 LOAD_CONST               1 (0)
+             204 LOAD_FAST                2 (idx)
+             206 SWAP                     2
+             208 COPY                     2
+             210 COMPARE_OP              26 (<=)
+             214 POP_JUMP_IF_FALSE       14 (to 244)
+             216 LOAD_GLOBAL             15 (NULL + len)
+             226 LOAD_FAST                3 (params)
+             228 CALL                     1
+             236 COMPARE_OP               2 (<)
+             240 POP_JUMP_IF_TRUE         3 (to 248)
+
+4996         242 RETURN_CONST             0 (None)
+
+4995     >>  244 POP_TOP
+
+4996         246 RETURN_CONST             0 (None)
+
+4997     >>  248 LOAD_FAST                3 (params)
+             250 LOAD_FAST                2 (idx)
+             252 BINARY_SUBSCR
+             256 STORE_FAST               4 (p)
+
+4998         258 LOAD_FAST                0 (self)
+             260 LOAD_ATTR               17 (NULL|self + _render_param_detail)
+             280 LOAD_FAST                4 (p)
+             282 CALL                     1
+             290 POP_TOP
+             292 RETURN_CONST             0 (None)

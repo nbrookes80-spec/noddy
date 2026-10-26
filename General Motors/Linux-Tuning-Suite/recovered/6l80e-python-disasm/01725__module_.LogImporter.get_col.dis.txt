@@ -1,0 +1,24 @@
+1725           0 RESUME                   0
+
+1727           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (col_map)
+              24 LOAD_ATTR                3 (NULL|self + get)
+              44 LOAD_FAST                1 (key)
+              46 CALL                     1
+              54 STORE_FAST               3 (idx)
+
+1728          56 LOAD_FAST                3 (idx)
+              58 POP_JUMP_IF_NONE        14 (to 88)
+              60 LOAD_FAST                3 (idx)
+              62 LOAD_GLOBAL              5 (NULL + len)
+              72 LOAD_FAST                2 (row)
+              74 CALL                     1
+              82 COMPARE_OP              92 (>=)
+              86 POP_JUMP_IF_FALSE        1 (to 90)
+
+1729     >>   88 RETURN_CONST             1 (None)
+
+1730     >>   90 LOAD_FAST                2 (row)
+              92 LOAD_FAST                3 (idx)
+              94 BINARY_SUBSCR
+              98 RETURN_VALUE

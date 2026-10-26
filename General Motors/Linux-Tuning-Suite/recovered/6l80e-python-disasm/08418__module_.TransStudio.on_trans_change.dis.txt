@@ -1,0 +1,334 @@
+8418           0 RESUME                   0
+
+8419           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (trans)
+              24 LOAD_ATTR                3 (NULL|self + currentText)
+              44 CALL                     0
+              52 STORE_FAST               1 (name)
+
+8420          54 LOAD_GLOBAL              4 (TRANS_DB)
+              64 LOAD_FAST                1 (name)
+              66 BINARY_SUBSCR
+              70 STORE_FAST               2 (spec)
+
+8421          72 LOAD_GLOBAL              7 (NULL + len)
+              82 LOAD_FAST                2 (spec)
+              84 LOAD_CONST               1 ('ratios')
+              86 BINARY_SUBSCR
+              90 CALL                     1
+              98 STORE_FAST               3 (n)
+
+8422         100 LOAD_FAST                0 (self)
+             102 LOAD_ATTR                8 (trans_info)
+             122 LOAD_ATTR               11 (NULL|self + setText)
+
+8423         142 LOAD_FAST                3 (n)
+             144 FORMAT_VALUE             0
+             146 LOAD_CONST               2 ('-spd  |  ')
+             148 LOAD_FAST                2 (spec)
+             150 LOAD_CONST               3 ('type')
+             152 BINARY_SUBSCR
+             156 FORMAT_VALUE             0
+             158 LOAD_CONST               4 ('  |  ~')
+             160 LOAD_FAST                2 (spec)
+             162 LOAD_CONST               5 ('torque')
+             164 BINARY_SUBSCR
+             168 FORMAT_VALUE             0
+             170 LOAD_CONST               6 (' lb·ft rating\nRatios: ')
+
+8424         172 LOAD_CONST               7 (', ')
+             174 LOAD_ATTR               13 (NULL|self + join)
+             194 LOAD_CONST               8 (<code object <genexpr> at 0x73ab02a983f0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 8424>)
+             196 MAKE_FUNCTION            0
+             198 LOAD_FAST                2 (spec)
+             200 LOAD_CONST               1 ('ratios')
+             202 BINARY_SUBSCR
+             206 GET_ITER
+             208 CALL                     0
+             216 CALL                     1
+             224 FORMAT_VALUE             0
+
+8423         226 BUILD_STRING             7
+
+8422         228 CALL                     1
+             236 POP_TOP
+
+8427         238 LOAD_FAST                2 (spec)
+             240 LOAD_CONST               3 ('type')
+             242 BINARY_SUBSCR
+             246 LOAD_CONST               9 ('FWD')
+             248 COMPARE_OP              40 (==)
+             252 POP_JUMP_IF_FALSE       27 (to 308)
+
+8428         254 LOAD_FAST                0 (self)
+             256 LOAD_ATTR               14 (chain)
+             276 LOAD_ATTR               17 (NULL|self + setValue)
+             296 LOAD_CONST              10 (1.0)
+             298 CALL                     1
+             306 POP_TOP
+
+8430     >>  308 LOAD_FAST                3 (n)
+             310 LOAD_CONST              11 (1)
+             312 BINARY_OP               10 (-)
+             316 STORE_FAST               4 (n_shifts)
+
+8431         318 LOAD_GLOBAL              7 (NULL + len)
+             328 LOAD_FAST                0 (self)
+             330 LOAD_ATTR               18 (shift_delays)
+             350 CALL                     1
+             358 LOAD_FAST                4 (n_shifts)
+             360 COMPARE_OP               2 (<)
+             364 POP_JUMP_IF_FALSE       76 (to 518)
+
+8432         366 LOAD_FAST                0 (self)
+             368 LOAD_ATTR               18 (shift_delays)
+             388 POP_JUMP_IF_FALSE       15 (to 420)
+             390 LOAD_FAST                0 (self)
+             392 LOAD_ATTR               18 (shift_delays)
+             412 LOAD_CONST              12 (-1)
+             414 BINARY_SUBSCR
+             418 JUMP_FORWARD             1 (to 422)
+         >>  420 LOAD_CONST              13 ((0.5, 0.15))
+         >>  422 STORE_FAST               5 (last)
+
+8433         424 LOAD_FAST                0 (self)
+             426 COPY                     1
+             428 LOAD_ATTR               18 (shift_delays)
+             448 LOAD_FAST                5 (last)
+             450 BUILD_LIST               1
+             452 LOAD_FAST                4 (n_shifts)
+             454 LOAD_GLOBAL              7 (NULL + len)
+             464 LOAD_FAST                0 (self)
+             466 LOAD_ATTR               18 (shift_delays)
+             486 CALL                     1
+             494 BINARY_OP               10 (-)
+             498 BINARY_OP                5 (*)
+             502 BINARY_OP               13 (+=)
+             506 SWAP                     2
+             508 STORE_ATTR               9 (shift_delays)
+
+8436     >>  518 LOAD_GLOBAL             21 (NULL + hasattr)
+             528 LOAD_FAST                0 (self)
+             530 LOAD_CONST              14 ('min_tcc_gear')
+             532 CALL                     2
+             540 POP_JUMP_IF_FALSE      204 (to 950)
+
+8437         542 LOAD_FAST                0 (self)
+             544 LOAD_ATTR               22 (min_tcc_gear)
+             564 LOAD_ATTR               25 (NULL|self + setRange)
+             584 LOAD_CONST              11 (1)
+             586 LOAD_FAST                3 (n)
+             588 CALL                     2
+             596 POP_TOP
+
+8438         598 LOAD_FAST                0 (self)
+             600 LOAD_ATTR               26 (accel_lock_gear)
+             620 LOAD_ATTR               25 (NULL|self + setRange)
+             640 LOAD_CONST              11 (1)
+             642 LOAD_FAST                3 (n)
+             644 CALL                     2
+             652 POP_TOP
+
+8439         654 LOAD_FAST                0 (self)
+             656 LOAD_ATTR               28 (wot_lock_gear)
+             676 LOAD_ATTR               25 (NULL|self + setRange)
+             696 LOAD_CONST              11 (1)
+             698 LOAD_FAST                3 (n)
+             700 CALL                     2
+             708 POP_TOP
+
+8440         710 LOAD_FAST                0 (self)
+             712 LOAD_ATTR               22 (min_tcc_gear)
+             732 LOAD_ATTR               17 (NULL|self + setValue)
+             752 LOAD_CONST              15 (2)
+             754 CALL                     1
+             762 POP_TOP
+
+8441         764 LOAD_FAST                0 (self)
+             766 LOAD_ATTR               26 (accel_lock_gear)
+             786 LOAD_ATTR               17 (NULL|self + setValue)
+             806 LOAD_GLOBAL             31 (NULL + min)
+             816 LOAD_CONST              16 (3)
+             818 LOAD_FAST                3 (n)
+             820 CALL                     2
+             828 CALL                     1
+             836 POP_TOP
+
+8442         838 LOAD_FAST                0 (self)
+             840 LOAD_ATTR               28 (wot_lock_gear)
+             860 LOAD_ATTR               17 (NULL|self + setValue)
+             880 LOAD_GLOBAL             33 (NULL + max)
+             890 LOAD_CONST              15 (2)
+             892 LOAD_FAST                3 (n)
+             894 LOAD_CONST              11 (1)
+             896 BINARY_OP               10 (-)
+             900 CALL                     2
+             908 CALL                     1
+             916 POP_TOP
+
+8443         918 LOAD_FAST                0 (self)
+             920 LOAD_ATTR               35 (NULL|self + _enforce_tcc_gear_hierarchy)
+             940 CALL                     0
+             948 POP_TOP
+
+8444     >>  950 LOAD_GLOBAL             21 (NULL + hasattr)
+             960 LOAD_FAST                0 (self)
+             962 LOAD_CONST              17 ('per_gear_rpm_table')
+             964 CALL                     2
+             972 POP_JUMP_IF_FALSE       17 (to 1008)
+
+8445         974 LOAD_FAST                0 (self)
+             976 LOAD_ATTR               37 (NULL|self + _rebuild_per_gear_rpm_table)
+             996 LOAD_FAST                3 (n)
+             998 CALL                     1
+            1006 POP_TOP
+
+8449     >> 1008 LOAD_FAST                3 (n)
+            1010 LOAD_CONST              18 (4)
+            1012 COMPARE_OP              26 (<=)
+            1016 POP_JUMP_IF_FALSE        2 (to 1022)
+            1018 LOAD_CONST              19 ('4spd')
+            1020 JUMP_FORWARD             1 (to 1024)
+         >> 1022 LOAD_CONST              20 ('6plus')
+         >> 1024 STORE_FAST               6 (layout_key)
+
+8450        1026 LOAD_GLOBAL             39 (NULL + set)
+            1036 LOAD_GLOBAL             40 (MODE_LAYOUTS)
+            1046 LOAD_FAST                6 (layout_key)
+            1048 BINARY_SUBSCR
+            1052 CALL                     1
+            1060 STORE_FAST               7 (valid_modes)
+
+8451        1062 LOAD_GLOBAL             21 (NULL + hasattr)
+            1072 LOAD_FAST                0 (self)
+            1074 LOAD_CONST              21 ('mode_overrides')
+            1076 CALL                     2
+            1084 POP_JUMP_IF_FALSE       55 (to 1196)
+
+8452        1086 LOAD_FAST                0 (self)
+            1088 LOAD_ATTR               42 (mode_overrides)
+            1108 LOAD_ATTR               45 (NULL|self + items)
+            1128 CALL                     0
+            1136 GET_ITER
+            1138 LOAD_FAST_AND_CLEAR      8 (k)
+            1140 LOAD_FAST_AND_CLEAR      9 (v)
+            1142 SWAP                     3
+            1144 BUILD_MAP                0
+            1146 SWAP                     2
+         >> 1148 FOR_ITER                12 (to 1176)
+            1152 UNPACK_SEQUENCE          2
+            1156 STORE_FAST               8 (k)
+            1158 STORE_FAST               9 (v)
+
+8453        1160 LOAD_FAST                8 (k)
+            1162 LOAD_FAST                7 (valid_modes)
+            1164 CONTAINS_OP              0
+            1166 POP_JUMP_IF_FALSE        3 (to 1174)
+
+8452        1168 LOAD_FAST                8 (k)
+            1170 LOAD_FAST                9 (v)
+            1172 MAP_ADD                  2
+         >> 1174 JUMP_BACKWARD           14 (to 1148)
+         >> 1176 END_FOR
+            1178 SWAP                     3
+            1180 STORE_FAST               9 (v)
+            1182 STORE_FAST               8 (k)
+            1184 LOAD_FAST                0 (self)
+            1186 STORE_ATTR              21 (mode_overrides)
+
+8454     >> 1196 LOAD_GLOBAL             21 (NULL + hasattr)
+            1206 LOAD_FAST                0 (self)
+            1208 LOAD_CONST              22 ('_last_results_modes')
+            1210 CALL                     2
+            1218 POP_JUMP_IF_FALSE       60 (to 1340)
+
+8455        1220 LOAD_FAST                0 (self)
+            1222 LOAD_ATTR               46 (_last_results_modes)
+            1242 LOAD_ATTR               45 (NULL|self + items)
+            1262 CALL                     0
+            1270 GET_ITER
+            1272 LOAD_FAST_AND_CLEAR      8 (k)
+            1274 LOAD_FAST_AND_CLEAR      9 (v)
+            1276 SWAP                     3
+            1278 BUILD_MAP                0
+            1280 SWAP                     2
+         >> 1282 FOR_ITER                17 (to 1320)
+            1286 UNPACK_SEQUENCE          2
+            1290 STORE_FAST               8 (k)
+            1292 STORE_FAST               9 (v)
+
+8456        1294 LOAD_FAST                8 (k)
+            1296 LOAD_FAST                7 (valid_modes)
+            1298 CONTAINS_OP              0
+            1300 POP_JUMP_IF_TRUE         5 (to 1312)
+            1302 LOAD_FAST                8 (k)
+            1304 LOAD_CONST              23 ('Normal')
+            1306 COMPARE_OP              40 (==)
+            1310 POP_JUMP_IF_FALSE        3 (to 1318)
+
+8455     >> 1312 LOAD_FAST                8 (k)
+            1314 LOAD_FAST                9 (v)
+            1316 MAP_ADD                  2
+         >> 1318 JUMP_BACKWARD           19 (to 1282)
+         >> 1320 END_FOR
+            1322 SWAP                     3
+            1324 STORE_FAST               9 (v)
+            1326 STORE_FAST               8 (k)
+            1328 LOAD_FAST                0 (self)
+            1330 STORE_ATTR              23 (_last_results_modes)
+
+8460     >> 1340 LOAD_GLOBAL             21 (NULL + hasattr)
+            1350 LOAD_FAST                0 (self)
+            1352 LOAD_CONST              24 ('pressure_tab')
+            1354 CALL                     2
+            1362 POP_JUMP_IF_FALSE       70 (to 1504)
+
+8461        1364 LOAD_FAST                0 (self)
+            1366 LOAD_ATTR               48 (tabs)
+            1386 LOAD_ATTR               51 (NULL|self + indexOf)
+            1406 LOAD_FAST                0 (self)
+            1408 LOAD_ATTR               52 (pressure_tab)
+            1428 CALL                     1
+            1436 STORE_FAST              10 (idx)
+
+8462        1438 LOAD_FAST               10 (idx)
+            1440 LOAD_CONST              25 (0)
+            1442 COMPARE_OP              92 (>=)
+            1446 POP_JUMP_IF_FALSE       28 (to 1504)
+
+8463        1448 LOAD_FAST                0 (self)
+            1450 LOAD_ATTR               48 (tabs)
+            1470 LOAD_ATTR               55 (NULL|self + setTabVisible)
+            1490 LOAD_FAST               10 (idx)
+            1492 LOAD_CONST              26 (True)
+            1494 CALL                     2
+            1502 POP_TOP
+
+8465     >> 1504 LOAD_FAST                0 (self)
+            1506 LOAD_ATTR               57 (NULL|self + _sync_gear_calc)
+            1526 CALL                     0
+            1534 POP_TOP
+
+8466        1536 LOAD_FAST                0 (self)
+            1538 LOAD_ATTR               59 (NULL|self + _init_grid_structure)
+            1558 LOAD_FAST                3 (n)
+            1560 CALL                     1
+            1568 POP_TOP
+            1570 RETURN_CONST             0 (None)
+         >> 1572 SWAP                     2
+            1574 POP_TOP
+
+8452        1576 SWAP                     3
+            1578 STORE_FAST               9 (v)
+            1580 STORE_FAST               8 (k)
+            1582 RERAISE                  0
+         >> 1584 SWAP                     2
+            1586 POP_TOP
+
+8455        1588 SWAP                     3
+            1590 STORE_FAST               9 (v)
+            1592 STORE_FAST               8 (k)
+            1594 RERAISE                  0
+ExceptionTable:
+  1144 to 1176 -> 1572 [3]
+  1278 to 1320 -> 1584 [3]

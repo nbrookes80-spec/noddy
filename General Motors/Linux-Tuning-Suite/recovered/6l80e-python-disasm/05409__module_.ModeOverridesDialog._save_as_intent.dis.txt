@@ -1,0 +1,231 @@
+5409           0 RESUME                   0
+
+5412           2 LOAD_CONST               1 (0)
+               4 LOAD_CONST               2 (('QInputDialog',))
+               6 IMPORT_NAME              0 (PyQt6.QtWidgets)
+               8 IMPORT_FROM              1 (QInputDialog)
+              10 STORE_FAST               2 (QInputDialog)
+              12 POP_TOP
+
+5413          14 LOAD_FAST                2 (QInputDialog)
+              16 LOAD_ATTR                5 (NULL|self + getText)
+
+5414          36 LOAD_FAST                0 (self)
+              38 LOAD_CONST               3 ('Save Intent')
+
+5415          40 LOAD_CONST               4 ("Intent name (no leading parens; will be prefixed with 'User:'):")
+
+5413          42 CALL                     3
+              50 UNPACK_SEQUENCE          2
+              54 STORE_FAST               3 (name)
+              56 STORE_FAST               4 (ok)
+
+5417          58 LOAD_FAST                4 (ok)
+              60 POP_JUMP_IF_FALSE       16 (to 94)
+              62 LOAD_FAST                3 (name)
+              64 LOAD_ATTR                7 (NULL|self + strip)
+              84 CALL                     0
+              92 POP_JUMP_IF_TRUE         1 (to 96)
+
+5418     >>   94 RETURN_CONST             5 (None)
+
+5419     >>   96 LOAD_CONST               6 ('User: ')
+              98 LOAD_FAST                3 (name)
+             100 LOAD_ATTR                7 (NULL|self + strip)
+             120 CALL                     0
+             128 BINARY_OP                0 (+)
+             132 STORE_FAST               3 (name)
+
+5420         134 LOAD_FAST                3 (name)
+             136 LOAD_GLOBAL              8 (INTENT_PRESETS)
+             146 CONTAINS_OP              0
+             148 POP_JUMP_IF_FALSE      117 (to 384)
+             150 LOAD_FAST                3 (name)
+             152 LOAD_GLOBAL             10 (BUILTIN_INTENT_NAMES)
+             162 CONTAINS_OP              1
+             164 POP_JUMP_IF_FALSE      109 (to 384)
+
+5421         166 LOAD_GLOBAL             13 (NULL + QMessageBox)
+             176 LOAD_ATTR               14 (question)
+
+5422         196 LOAD_FAST                0 (self)
+             198 LOAD_CONST               7 ('Overwrite?')
+
+5423         200 LOAD_CONST               8 ("Intent '")
+             202 LOAD_FAST                3 (name)
+             204 FORMAT_VALUE             0
+             206 LOAD_CONST               9 ("' already exists. Overwrite?")
+             208 BUILD_STRING             3
+
+5424         210 LOAD_GLOBAL             12 (QMessageBox)
+             220 LOAD_ATTR               16 (StandardButton)
+             240 LOAD_ATTR               18 (Yes)
+             260 LOAD_GLOBAL             12 (QMessageBox)
+             270 LOAD_ATTR               16 (StandardButton)
+             290 LOAD_ATTR               20 (No)
+             310 BINARY_OP                7 (|)
+
+5421         314 CALL                     4
+             322 STORE_FAST               5 (reply)
+
+5426         324 LOAD_FAST                5 (reply)
+             326 LOAD_GLOBAL             12 (QMessageBox)
+             336 LOAD_ATTR               16 (StandardButton)
+             356 LOAD_ATTR               18 (Yes)
+             376 COMPARE_OP              55 (!=)
+             380 POP_JUMP_IF_FALSE        1 (to 384)
+
+5427         382 RETURN_CONST             5 (None)
+
+5429     >>  384 BUILD_MAP                0
+             386 STORE_FAST               6 (new_intent)
+
+5430         388 LOAD_FAST                0 (self)
+             390 LOAD_ATTR               22 (FIELDS)
+             410 GET_ITER
+         >>  412 FOR_ITER                74 (to 564)
+             416 UNPACK_SEQUENCE          3
+             420 STORE_FAST               7 (key)
+             422 STORE_FAST               8 (_)
+             424 STORE_FAST               8 (_)
+
+5431         426 LOAD_FAST                0 (self)
+             428 LOAD_ATTR               24 (field_widgets)
+             448 LOAD_FAST                1 (mode)
+             450 LOAD_FAST                7 (key)
+             452 BUILD_TUPLE              2
+             454 BINARY_SUBSCR
+             458 LOAD_ATTR               27 (NULL|self + text)
+             478 CALL                     0
+             486 LOAD_ATTR                7 (NULL|self + strip)
+             506 CALL                     0
+             514 STORE_FAST               9 (txt)
+
+5432         516 LOAD_FAST                9 (txt)
+             518 POP_JUMP_IF_TRUE         1 (to 522)
+
+5433         520 JUMP_BACKWARD           55 (to 412)
+
+5434     >>  522 NOP
+
+5435         524 LOAD_GLOBAL             29 (NULL + float)
+             534 LOAD_FAST                9 (txt)
+             536 CALL                     1
+             544 STORE_FAST              10 (v)
+
+5436         546 LOAD_FAST               10 (v)
+             548 LOAD_FAST                6 (new_intent)
+             550 LOAD_FAST                7 (key)
+             552 LOAD_CONST              10 ('_abs')
+             554 BINARY_OP                0 (+)
+             558 STORE_SUBSCR
+             562 JUMP_BACKWARD           76 (to 412)
+
+5430     >>  564 END_FOR
+
+5439         566 LOAD_FAST                6 (new_intent)
+             568 POP_JUMP_IF_TRUE        24 (to 618)
+
+5440         570 LOAD_GLOBAL             13 (NULL + QMessageBox)
+             580 LOAD_ATTR               32 (information)
+             600 LOAD_FAST                0 (self)
+             602 LOAD_CONST              11 ('Empty Intent')
+
+5441         604 LOAD_CONST              12 ('No field values to save. Fill in at least one field first.')
+
+5440         606 CALL                     3
+             614 POP_TOP
+
+5442         616 RETURN_CONST             5 (None)
+
+5443     >>  618 LOAD_FAST                6 (new_intent)
+             620 LOAD_GLOBAL              8 (INTENT_PRESETS)
+             630 LOAD_FAST                3 (name)
+             632 STORE_SUBSCR
+
+5445         636 LOAD_FAST                0 (self)
+             638 LOAD_ATTR               34 (intent_combos)
+             658 LOAD_ATTR               37 (NULL|self + values)
+             678 CALL                     0
+             686 GET_ITER
+         >>  688 FOR_ITER               129 (to 950)
+             692 STORE_FAST              11 (c)
+
+5446         694 LOAD_FAST               11 (c)
+             696 LOAD_ATTR               39 (NULL|self + blockSignals)
+             716 LOAD_CONST              13 (True)
+             718 CALL                     1
+             726 POP_TOP
+
+5447         728 LOAD_FAST               11 (c)
+             730 LOAD_ATTR               41 (NULL|self + currentText)
+             750 CALL                     0
+             758 STORE_FAST              12 (current)
+
+5448         760 LOAD_FAST               11 (c)
+             762 LOAD_ATTR               43 (NULL|self + clear)
+             782 CALL                     0
+             790 POP_TOP
+
+5449         792 LOAD_FAST               11 (c)
+             794 LOAD_ATTR               45 (NULL|self + addItems)
+             814 LOAD_GLOBAL             47 (NULL + list)
+             824 LOAD_GLOBAL              8 (INTENT_PRESETS)
+             834 LOAD_ATTR               49 (NULL|self + keys)
+             854 CALL                     0
+             862 CALL                     1
+             870 CALL                     1
+             878 POP_TOP
+
+5450         880 LOAD_FAST               11 (c)
+             882 LOAD_ATTR               51 (NULL|self + setCurrentText)
+             902 LOAD_FAST               12 (current)
+             904 CALL                     1
+             912 POP_TOP
+
+5451         914 LOAD_FAST               11 (c)
+             916 LOAD_ATTR               39 (NULL|self + blockSignals)
+             936 LOAD_CONST              14 (False)
+             938 CALL                     1
+             946 POP_TOP
+             948 JUMP_BACKWARD          131 (to 688)
+
+5445     >>  950 END_FOR
+
+5452         952 LOAD_FAST                0 (self)
+             954 LOAD_ATTR               52 (intents_changed)
+             974 LOAD_ATTR               55 (NULL|self + emit)
+             994 CALL                     0
+            1002 POP_TOP
+
+5453        1004 LOAD_GLOBAL             13 (NULL + QMessageBox)
+            1014 LOAD_ATTR               32 (information)
+            1034 LOAD_FAST                0 (self)
+            1036 LOAD_CONST              15 ('Saved')
+            1038 LOAD_CONST              16 ("Saved intent '")
+            1040 LOAD_FAST                3 (name)
+            1042 FORMAT_VALUE             0
+            1044 LOAD_CONST              17 ("'.")
+            1046 BUILD_STRING             3
+            1048 CALL                     3
+            1056 POP_TOP
+            1058 RETURN_CONST             5 (None)
+         >> 1060 PUSH_EXC_INFO
+
+5437        1062 LOAD_GLOBAL             30 (ValueError)
+            1072 CHECK_EXC_MATCH
+            1074 POP_JUMP_IF_FALSE        4 (to 1084)
+            1076 POP_TOP
+
+5438        1078 POP_EXCEPT
+            1080 EXTENDED_ARG             1
+            1082 JUMP_BACKWARD          336 (to 412)
+
+5437     >> 1084 RERAISE                  0
+         >> 1086 COPY                     3
+            1088 POP_EXCEPT
+            1090 RERAISE                  1
+ExceptionTable:
+  524 to 560 -> 1060 [1]
+  1060 to 1076 -> 1086 [2] lasti
+  1084 to 1084 -> 1086 [2] lasti

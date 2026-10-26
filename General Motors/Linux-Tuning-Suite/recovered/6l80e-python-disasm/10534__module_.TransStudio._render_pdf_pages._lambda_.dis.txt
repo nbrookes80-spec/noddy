@@ -1,0 +1,5 @@
+10534           0 RESUME                   0
+                2 LOAD_FAST                0 (v)
+                4 LOAD_CONST               1 ('.1f')
+                6 FORMAT_VALUE             4 (with format)
+                8 RETURN_VALUE

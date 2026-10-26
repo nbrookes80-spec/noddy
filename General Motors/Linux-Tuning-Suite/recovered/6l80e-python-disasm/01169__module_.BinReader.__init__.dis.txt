@@ -1,0 +1,16 @@
+1169           0 RESUME                   0
+
+1170           2 LOAD_FAST                1 (bin_data)
+               4 LOAD_FAST                0 (self)
+               6 STORE_ATTR               0 (data)
+
+1171          16 LOAD_FAST                2 (xdf)
+              18 LOAD_FAST                0 (self)
+              20 STORE_ATTR               1 (xdf)
+
+1172          30 LOAD_GLOBAL              5 (NULL + len)
+              40 LOAD_FAST                1 (bin_data)
+              42 CALL                     1
+              50 LOAD_FAST                0 (self)
+              52 STORE_ATTR               3 (size)
+              62 RETURN_CONST             0 (None)

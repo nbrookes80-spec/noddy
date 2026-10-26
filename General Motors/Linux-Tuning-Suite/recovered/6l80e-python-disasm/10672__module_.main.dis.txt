@@ -1,0 +1,38 @@
+10672           0 RESUME                   0
+
+10673           2 LOAD_GLOBAL              1 (NULL + QApplication)
+               12 LOAD_GLOBAL              2 (sys)
+               22 LOAD_ATTR                4 (argv)
+               42 CALL                     1
+               50 STORE_FAST               0 (app)
+
+10674          52 LOAD_FAST                0 (app)
+               54 LOAD_ATTR                7 (NULL|self + setStyle)
+               74 LOAD_CONST               1 ('Fusion')
+               76 CALL                     1
+               84 POP_TOP
+
+10677          86 LOAD_GLOBAL              8 (Theme)
+               96 LOAD_ATTR               11 (NULL|self + apply)
+              116 LOAD_CONST               2 ('Dark')
+              118 LOAD_FAST                0 (app)
+              120 CALL                     2
+              128 POP_TOP
+
+10678         130 LOAD_GLOBAL             13 (NULL + TransStudio)
+              140 CALL                     0
+              148 STORE_FAST               1 (w)
+
+10679         150 LOAD_FAST                1 (w)
+              152 LOAD_ATTR               15 (NULL|self + show)
+              172 CALL                     0
+              180 POP_TOP
+
+10680         182 LOAD_GLOBAL              3 (NULL + sys)
+              192 LOAD_ATTR               16 (exit)
+              212 LOAD_FAST                0 (app)
+              214 LOAD_ATTR               19 (NULL|self + exec)
+              234 CALL                     0
+              242 CALL                     1
+              250 POP_TOP
+              252 RETURN_CONST             0 (None)

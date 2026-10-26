@@ -1,0 +1,50 @@
+923           0 RESUME                   0
+
+925           2 LOAD_FAST                0 (self)
+              4 LOAD_ATTR                0 (size_bits)
+             24 LOAD_CONST               1 (8)
+             26 BINARY_OP                2 (//)
+             30 STORE_FAST               3 (n_bytes)
+
+926          32 LOAD_FAST                2 (offset_bytes)
+             34 LOAD_FAST                3 (n_bytes)
+             36 BINARY_OP                0 (+)
+             40 LOAD_GLOBAL              3 (NULL + len)
+             50 LOAD_FAST                1 (bin_data)
+             52 CALL                     1
+             60 COMPARE_OP              68 (>)
+             64 POP_JUMP_IF_FALSE        1 (to 68)
+
+927          66 RETURN_CONST             2 (0.0)
+
+928     >>   68 LOAD_FAST                1 (bin_data)
+             70 LOAD_FAST                2 (offset_bytes)
+             72 LOAD_FAST                2 (offset_bytes)
+             74 LOAD_FAST                3 (n_bytes)
+             76 BINARY_OP                0 (+)
+             80 BINARY_SLICE
+             82 STORE_FAST               4 (raw_bytes)
+
+929          84 LOAD_FAST                0 (self)
+             86 LOAD_ATTR                4 (little_endian)
+            106 POP_JUMP_IF_FALSE        2 (to 112)
+            108 LOAD_CONST               3 ('little')
+            110 JUMP_FORWARD             1 (to 114)
+        >>  112 LOAD_CONST               4 ('big')
+        >>  114 STORE_FAST               5 (byte_order)
+
+930         116 LOAD_GLOBAL              6 (int)
+            126 LOAD_ATTR                9 (NULL|self + from_bytes)
+            146 LOAD_FAST                4 (raw_bytes)
+            148 LOAD_FAST                5 (byte_order)
+            150 LOAD_FAST                0 (self)
+            152 LOAD_ATTR               10 (signed)
+            172 KW_NAMES                 5 (('signed',))
+            174 CALL                     3
+            182 STORE_FAST               6 (raw)
+
+931         184 LOAD_FAST                0 (self)
+            186 LOAD_ATTR               13 (NULL|self + _apply_math)
+            206 LOAD_FAST                6 (raw)
+            208 CALL                     1
+            216 RETURN_VALUE

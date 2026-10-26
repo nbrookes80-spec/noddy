@@ -1,0 +1,63 @@
+2827           0 RESUME                   0
+
+2829           2 LOAD_FAST                1 (mode)
+               4 LOAD_FAST                0 (self)
+               6 STORE_ATTR               0 (current_pressure_pattern)
+
+2830          16 LOAD_FAST                2 (shift)
+              18 LOAD_FAST                0 (self)
+              20 STORE_ATTR               1 (current_pressure_shift)
+
+2831          30 LOAD_FAST                0 (self)
+              32 LOAD_ATTR                5 (NULL|self + _mark_selected_pattern_button)
+              52 CALL                     0
+              60 POP_TOP
+
+2833          62 LOAD_GLOBAL              7 (NULL + hasattr)
+              72 LOAD_FAST                0 (self)
+              74 LOAD_CONST               1 ('pres_mode_combo')
+              76 CALL                     2
+              84 POP_JUMP_IF_FALSE      101 (to 288)
+              86 LOAD_GLOBAL              7 (NULL + hasattr)
+              96 LOAD_FAST                0 (self)
+              98 LOAD_CONST               2 ('pres_intent_combo')
+             100 CALL                     2
+             108 POP_JUMP_IF_FALSE       89 (to 288)
+
+2834         110 LOAD_CONST               3 (True)
+             112 LOAD_FAST                0 (self)
+             114 STORE_ATTR               4 (_suppress_pres_combo_signals)
+
+2835         124 LOAD_FAST                0 (self)
+             126 LOAD_ATTR               10 (pres_mode_combo)
+             146 LOAD_ATTR               13 (NULL|self + findText)
+             166 LOAD_FAST                1 (mode)
+             168 CALL                     1
+             176 STORE_FAST               3 (idx)
+
+2836         178 LOAD_FAST                3 (idx)
+             180 LOAD_CONST               4 (0)
+             182 COMPARE_OP              92 (>=)
+             186 POP_JUMP_IF_FALSE       27 (to 242)
+
+2837         188 LOAD_FAST                0 (self)
+             190 LOAD_ATTR               10 (pres_mode_combo)
+             210 LOAD_ATTR               15 (NULL|self + setCurrentIndex)
+             230 LOAD_FAST                3 (idx)
+             232 CALL                     1
+             240 POP_TOP
+
+2838     >>  242 LOAD_FAST                0 (self)
+             244 LOAD_ATTR               17 (NULL|self + _populate_pres_intent_combo)
+             264 CALL                     0
+             272 POP_TOP
+
+2839         274 LOAD_CONST               5 (False)
+             276 LOAD_FAST                0 (self)
+             278 STORE_ATTR               4 (_suppress_pres_combo_signals)
+
+2840     >>  288 LOAD_FAST                0 (self)
+             290 LOAD_ATTR               19 (NULL|self + _refresh_pressure_table)
+             310 CALL                     0
+             318 POP_TOP
+             320 RETURN_CONST             6 (None)

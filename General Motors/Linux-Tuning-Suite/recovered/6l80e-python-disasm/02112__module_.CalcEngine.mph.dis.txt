@@ -1,0 +1,23 @@
+2112           0 RESUME                   0
+
+2114           2 LOAD_FAST                2 (ratio)
+               4 LOAD_CONST               1 (0)
+               6 COMPARE_OP              26 (<=)
+              10 POP_JUMP_IF_TRUE         5 (to 22)
+              12 LOAD_FAST                3 (final_drive)
+              14 LOAD_CONST               1 (0)
+              16 COMPARE_OP              26 (<=)
+              20 POP_JUMP_IF_FALSE        1 (to 24)
+
+2115     >>   22 RETURN_CONST             2 (0.0)
+
+2116     >>   24 LOAD_FAST                0 (rpm)
+              26 LOAD_FAST                1 (tire_dia)
+              28 BINARY_OP                5 (*)
+              32 LOAD_FAST                3 (final_drive)
+              34 LOAD_FAST                2 (ratio)
+              36 BINARY_OP                5 (*)
+              40 LOAD_GLOBAL              0 (MPH_K)
+              50 BINARY_OP                5 (*)
+              54 BINARY_OP               11 (/)
+              58 RETURN_VALUE

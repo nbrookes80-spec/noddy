@@ -1,0 +1,108 @@
+9483           0 RESUME                   0
+
+9484           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                1 (NULL|self + _gather_config)
+              24 CALL                     0
+              32 STORE_FAST               1 (cfg)
+
+9485          34 LOAD_GLOBAL              3 (NULL + ImportTableDialog)
+              44 LOAD_FAST                0 (self)
+              46 LOAD_FAST                1 (cfg)
+              48 CALL                     2
+              56 STORE_FAST               2 (dlg)
+
+9486          58 LOAD_FAST                2 (dlg)
+              60 LOAD_ATTR                5 (NULL|self + exec)
+              80 CALL                     0
+              88 POP_JUMP_IF_FALSE      237 (to 564)
+              90 LOAD_FAST                2 (dlg)
+              92 LOAD_ATTR                7 (NULL|self + get_result)
+             112 CALL                     0
+             120 POP_JUMP_IF_FALSE      220 (to 562)
+
+9487         122 LOAD_FAST                2 (dlg)
+             124 LOAD_ATTR                7 (NULL|self + get_result)
+             144 CALL                     0
+             152 STORE_FAST               3 (r)
+
+9488         154 LOAD_FAST                0 (self)
+             156 LOAD_ATTR                8 (tps_factor)
+             176 LOAD_ATTR               11 (NULL|self + setValue)
+             196 LOAD_FAST                3 (r)
+             198 LOAD_CONST               1 ('tps_factor')
+             200 BINARY_SUBSCR
+             204 CALL                     1
+             212 POP_TOP
+
+9489         214 LOAD_FAST                0 (self)
+             216 LOAD_ATTR               12 (tps_offset)
+             236 LOAD_ATTR               11 (NULL|self + setValue)
+             256 LOAD_FAST                3 (r)
+             258 LOAD_CONST               2 ('tps_offset')
+             260 BINARY_SUBSCR
+             264 CALL                     1
+             272 POP_TOP
+
+9490         274 LOAD_FAST                0 (self)
+             276 LOAD_ATTR               14 (upf)
+             296 LOAD_ATTR               11 (NULL|self + setValue)
+             316 LOAD_FAST                3 (r)
+             318 LOAD_CONST               3 ('up_firmness')
+             320 BINARY_SUBSCR
+             324 CALL                     1
+             332 POP_TOP
+
+9491         334 LOAD_FAST                0 (self)
+             336 LOAD_ATTR               16 (shift_rpm)
+             356 LOAD_ATTR               11 (NULL|self + setValue)
+             376 LOAD_FAST                3 (r)
+             378 LOAD_CONST               4 ('shift_rpm')
+             380 BINARY_SUBSCR
+             384 CALL                     1
+             392 POP_TOP
+
+9492         394 LOAD_FAST                0 (self)
+             396 LOAD_ATTR               18 (tb_preset)
+             416 LOAD_ATTR               21 (NULL|self + setCurrentText)
+             436 LOAD_CONST               5 ('Custom')
+             438 CALL                     1
+             446 POP_TOP
+
+9493         448 LOAD_FAST                0 (self)
+             450 LOAD_ATTR               23 (NULL|self + statusBar)
+             470 CALL                     0
+             478 LOAD_ATTR               25 (NULL|self + showMessage)
+
+9494         498 LOAD_CONST               6 ('Applied solved params: factor=')
+             500 LOAD_FAST                3 (r)
+             502 LOAD_CONST               1 ('tps_factor')
+             504 BINARY_SUBSCR
+             508 FORMAT_VALUE             0
+             510 LOAD_CONST               7 (' offset=')
+
+9495         512 LOAD_FAST                3 (r)
+             514 LOAD_CONST               2 ('tps_offset')
+             516 BINARY_SUBSCR
+             520 FORMAT_VALUE             0
+             522 LOAD_CONST               8 (' upf=')
+             524 LOAD_FAST                3 (r)
+             526 LOAD_CONST               3 ('up_firmness')
+             528 BINARY_SUBSCR
+             532 FORMAT_VALUE             0
+             534 LOAD_CONST               9 (' shiftRPM=')
+
+9496         536 LOAD_FAST                3 (r)
+             538 LOAD_CONST               4 ('shift_rpm')
+             540 BINARY_SUBSCR
+             544 FORMAT_VALUE             0
+
+9494         546 BUILD_STRING             8
+
+9496         548 LOAD_CONST              10 (8000)
+
+9493         550 CALL                     2
+             558 POP_TOP
+             560 RETURN_CONST             0 (None)
+
+9486     >>  562 RETURN_CONST             0 (None)
+         >>  564 RETURN_CONST             0 (None)

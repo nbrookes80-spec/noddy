@@ -1,0 +1,43 @@
+               0 MAKE_CELL                0 (__class__)
+
+3970           2 RESUME                   0
+               4 LOAD_NAME                0 (__name__)
+               6 STORE_NAME               1 (__module__)
+               8 LOAD_CONST               0 ('LogImportWorker')
+              10 STORE_NAME               2 (__qualname__)
+
+3971          12 LOAD_CONST               1 ('Runs LogImporter.from_csv() on a worker thread so the UI stays\n    responsive during multi-second imports of large logs.\n\n    Uses the QObject + moveToThread pattern (Qt6 preferred) rather than\n    subclassing QThread, for cleaner lifecycle management.\n    ')
+              14 STORE_NAME               3 (__doc__)
+
+3978          16 PUSH_NULL
+              18 LOAD_NAME                4 (pyqtSignal)
+              20 LOAD_NAME                5 (int)
+              22 CALL                     1
+              30 STORE_NAME               6 (progress)
+
+3979          32 PUSH_NULL
+              34 LOAD_NAME                4 (pyqtSignal)
+              36 LOAD_NAME                7 (object)
+              38 CALL                     1
+              46 STORE_NAME               8 (finished)
+
+3980          48 PUSH_NULL
+              50 LOAD_NAME                4 (pyqtSignal)
+              52 LOAD_NAME                9 (str)
+              54 CALL                     1
+              62 STORE_NAME              10 (error)
+
+3982          64 LOAD_CONST               4 ((10.0,))
+              66 LOAD_CLOSURE             0 (__class__)
+              68 BUILD_TUPLE              1
+              70 LOAD_CONST               2 (<code object __init__ at 0x73ab02a64030, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3982>)
+              72 MAKE_FUNCTION            9 (defaults, closure)
+              74 STORE_NAME              11 (__init__)
+
+3987          76 LOAD_CONST               3 (<code object run at 0x30c1be00, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3987>)
+              78 MAKE_FUNCTION            0
+              80 STORE_NAME              12 (run)
+              82 LOAD_CLOSURE             0 (__class__)
+              84 COPY                     1
+              86 STORE_NAME              13 (__classcell__)
+              88 RETURN_VALUE

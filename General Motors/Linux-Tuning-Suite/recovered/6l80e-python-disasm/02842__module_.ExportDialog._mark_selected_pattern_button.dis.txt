@@ -1,0 +1,43 @@
+2842           0 RESUME                   0
+
+2844           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (pattern_btn_groups)
+              24 LOAD_ATTR                3 (NULL|self + items)
+              44 CALL                     0
+              52 GET_ITER
+         >>   54 FOR_ITER                62 (to 182)
+              58 UNPACK_SEQUENCE          2
+              62 STORE_FAST               1 (mode)
+              64 STORE_FAST               2 (buttons)
+
+2845          66 LOAD_FAST                2 (buttons)
+              68 GET_ITER
+         >>   70 FOR_ITER                52 (to 178)
+              74 UNPACK_SEQUENCE          2
+              78 STORE_FAST               3 (sh)
+              80 STORE_FAST               4 (btn)
+
+2846          82 LOAD_FAST                4 (btn)
+              84 LOAD_ATTR                5 (NULL|self + setChecked)
+             104 LOAD_FAST                1 (mode)
+             106 LOAD_FAST                0 (self)
+             108 LOAD_ATTR                6 (current_pressure_pattern)
+             128 COMPARE_OP              40 (==)
+             132 COPY                     1
+             134 POP_JUMP_IF_FALSE       15 (to 166)
+             136 POP_TOP
+
+2847         138 LOAD_FAST                3 (sh)
+             140 LOAD_FAST                0 (self)
+             142 LOAD_ATTR                8 (current_pressure_shift)
+             162 COMPARE_OP              40 (==)
+
+2846     >>  166 CALL                     1
+             174 POP_TOP
+             176 JUMP_BACKWARD           54 (to 70)
+
+2845     >>  178 END_FOR
+             180 JUMP_BACKWARD           64 (to 54)
+
+2844     >>  182 END_FOR
+             184 RETURN_CONST             1 (None)

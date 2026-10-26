@@ -1,0 +1,235 @@
+               0 COPY_FREE_VARS           1
+
+7506           2 RESUME                   0
+
+7507           4 LOAD_GLOBAL              0 (super)
+              14 LOAD_DEREF               4 (__class__)
+              16 LOAD_FAST                0 (self)
+              18 LOAD_SUPER_ATTR          5 (NULL|self + __init__)
+              22 CALL                     0
+              30 POP_TOP
+
+7508          32 LOAD_FAST                0 (self)
+              34 LOAD_ATTR                5 (NULL|self + setWindowTitle)
+              54 LOAD_CONST               1 ("Ewalt's Auto Tuning Transmission Calibration Studio v2.1")
+              56 CALL                     1
+              64 POP_TOP
+
+7511          66 LOAD_CONST               2 (0)
+              68 LOAD_CONST               3 (('QIcon',))
+              70 IMPORT_NAME              3 (PyQt6.QtGui)
+              72 IMPORT_FROM              4 (QIcon)
+              74 STORE_FAST               1 (QIcon)
+              76 POP_TOP
+
+7512          78 LOAD_FAST                0 (self)
+              80 LOAD_ATTR               11 (NULL|self + setWindowIcon)
+             100 PUSH_NULL
+             102 LOAD_FAST                1 (QIcon)
+             104 LOAD_GLOBAL             13 (NULL + resource_path)
+             114 LOAD_CONST               4 ('icon.ico')
+             116 CALL                     1
+             124 CALL                     1
+             132 CALL                     1
+             140 POP_TOP
+
+7514         142 LOAD_FAST                0 (self)
+             144 LOAD_ATTR               15 (NULL|self + resize)
+             164 LOAD_CONST               5 (1500)
+             166 LOAD_CONST               6 (900)
+             168 CALL                     2
+             176 POP_TOP
+
+7517         178 LOAD_CONST               7 ((0.5, 0.15))
+             180 BUILD_LIST               1
+             182 LOAD_CONST               8 (9)
+             184 BINARY_OP                5 (*)
+             188 LOAD_FAST                0 (self)
+             190 STORE_ATTR               8 (shift_delays)
+
+7520         200 LOAD_CONST               0 (None)
+             202 LOAD_FAST                0 (self)
+             204 STORE_ATTR               9 (per_gear_rpm)
+
+7523         214 LOAD_CONST               0 (None)
+             216 LOAD_FAST                0 (self)
+             218 STORE_ATTR              10 (_last_cfg)
+
+7524         228 LOAD_CONST               0 (None)
+             230 LOAD_FAST                0 (self)
+             232 STORE_ATTR              11 (_last_result)
+
+7528         242 LOAD_CONST               9 (False)
+
+7529         244 LOAD_CONST               9 (False)
+
+7530         246 LOAD_CONST               9 (False)
+
+7531         248 LOAD_CONST               9 (False)
+
+7527         250 LOAD_CONST              10 (('stall_lock', 'init_lock', 'wot_4th_4l60', 'no_2ct_6l'))
+             252 BUILD_CONST_KEY_MAP      4
+             254 LOAD_FAST                0 (self)
+             256 STORE_ATTR              12 (lockup_flags)
+
+7536         266 BUILD_MAP                0
+             268 LOAD_FAST                0 (self)
+             270 STORE_ATTR              13 (mode_overrides)
+
+7537         280 LOAD_CONST               9 (False)
+             282 LOAD_FAST                0 (self)
+             284 STORE_ATTR              14 (multi_mode_enabled)
+
+7539         294 BUILD_MAP                0
+             296 LOAD_FAST                0 (self)
+             298 STORE_ATTR              15 (_last_results_modes)
+
+7542         308 LOAD_CONST               9 (False)
+             310 LOAD_FAST                0 (self)
+             312 STORE_ATTR              16 (metric)
+
+7545         322 LOAD_CONST              11 (0.0)
+             324 LOAD_FAST                0 (self)
+             326 STORE_ATTR              17 (measured_slip)
+
+7548         336 LOAD_GLOBAL             36 (os)
+             346 LOAD_ATTR               38 (path)
+             366 LOAD_ATTR               41 (NULL|self + join)
+
+7549         386 LOAD_GLOBAL             36 (os)
+             396 LOAD_ATTR               38 (path)
+             416 LOAD_ATTR               43 (NULL|self + expanduser)
+             436 LOAD_CONST              12 ('~')
+             438 CALL                     1
+             446 LOAD_CONST              13 ('.transtudio_intents.json')
+
+7548         448 CALL                     2
+             456 LOAD_FAST                0 (self)
+             458 STORE_ATTR              22 (_custom_intents_path)
+
+7550         468 LOAD_FAST                0 (self)
+             470 LOAD_ATTR               47 (NULL|self + _load_custom_intents)
+             490 CALL                     0
+             498 POP_TOP
+
+7553         500 LOAD_GLOBAL             49 (NULL + TorqueCurve)
+             510 CALL                     0
+             518 LOAD_FAST                0 (self)
+             520 STORE_ATTR              25 (torque_curve)
+
+7558         530 BUILD_MAP                0
+             532 LOAD_FAST                0 (self)
+             534 STORE_ATTR              26 (profile_metadata)
+
+7561         544 LOAD_CONST               0 (None)
+             546 LOAD_FAST                0 (self)
+             548 STORE_ATTR              27 (_compare_profile)
+
+7562         558 LOAD_CONST               0 (None)
+             560 LOAD_FAST                0 (self)
+             562 STORE_ATTR              28 (_compare_results)
+
+7565         572 LOAD_CONST               9 (False)
+             574 LOAD_FAST                0 (self)
+             576 STORE_ATTR              29 (live_preview_enabled)
+
+7566         586 LOAD_GLOBAL             61 (NULL + QTimer)
+             596 LOAD_FAST                0 (self)
+             598 CALL                     1
+             606 LOAD_FAST                0 (self)
+             608 STORE_ATTR              31 (_live_timer)
+
+7567         618 LOAD_FAST                0 (self)
+             620 LOAD_ATTR               62 (_live_timer)
+             640 LOAD_ATTR               65 (NULL|self + setSingleShot)
+             660 LOAD_CONST              14 (True)
+             662 CALL                     1
+             670 POP_TOP
+
+7568         672 LOAD_FAST                0 (self)
+             674 LOAD_ATTR               62 (_live_timer)
+             694 LOAD_ATTR               67 (NULL|self + setInterval)
+             714 LOAD_CONST              15 (450)
+             716 CALL                     1
+             724 POP_TOP
+
+7569         726 LOAD_FAST                0 (self)
+             728 LOAD_ATTR               62 (_live_timer)
+             748 LOAD_ATTR               68 (timeout)
+             768 LOAD_ATTR               71 (NULL|self + connect)
+             788 LOAD_FAST                0 (self)
+             790 LOAD_ATTR               72 (_live_recalc)
+             810 CALL                     1
+             818 POP_TOP
+
+7572         820 LOAD_GLOBAL             36 (os)
+             830 LOAD_ATTR               38 (path)
+             850 LOAD_ATTR               41 (NULL|self + join)
+
+7573         870 LOAD_GLOBAL             36 (os)
+             880 LOAD_ATTR               38 (path)
+             900 LOAD_ATTR               43 (NULL|self + expanduser)
+             920 LOAD_CONST              12 ('~')
+             922 CALL                     1
+             930 LOAD_CONST              16 ('.transtudio_last.json')
+
+7572         932 CALL                     2
+             940 LOAD_FAST                0 (self)
+             942 STORE_ATTR              37 (_autosave_path)
+
+7577         952 LOAD_GLOBAL             77 (NULL + QWidget)
+             962 CALL                     0
+             970 STORE_FAST               2 (central)
+
+7578         972 LOAD_FAST                0 (self)
+             974 LOAD_ATTR               79 (NULL|self + setCentralWidget)
+             994 LOAD_FAST                2 (central)
+             996 CALL                     1
+            1004 POP_TOP
+
+7579        1006 LOAD_GLOBAL             81 (NULL + QHBoxLayout)
+            1016 LOAD_FAST                2 (central)
+            1018 CALL                     1
+            1026 STORE_FAST               3 (root)
+
+7580        1028 LOAD_FAST                3 (root)
+            1030 LOAD_ATTR               83 (NULL|self + setContentsMargins)
+            1050 LOAD_CONST              17 (8)
+            1052 LOAD_CONST              17 (8)
+            1054 LOAD_CONST              17 (8)
+            1056 LOAD_CONST              17 (8)
+            1058 CALL                     4
+            1066 POP_TOP
+
+7582        1068 LOAD_FAST                0 (self)
+            1070 LOAD_ATTR               85 (NULL|self + _build_left_panel)
+            1090 LOAD_FAST                3 (root)
+            1092 CALL                     1
+            1100 POP_TOP
+
+7583        1102 LOAD_FAST                0 (self)
+            1104 LOAD_ATTR               87 (NULL|self + _build_right_panel)
+            1124 LOAD_FAST                3 (root)
+            1126 CALL                     1
+            1134 POP_TOP
+
+7584        1136 LOAD_FAST                0 (self)
+            1138 LOAD_ATTR               89 (NULL|self + _build_toolbar)
+            1158 CALL                     0
+            1166 POP_TOP
+
+7587        1168 LOAD_FAST                0 (self)
+            1170 LOAD_ATTR               91 (NULL|self + _wire_live_preview_signals)
+            1190 CALL                     0
+            1198 POP_TOP
+
+7590        1200 LOAD_FAST                0 (self)
+            1202 LOAD_ATTR               93 (NULL|self + on_trans_change)
+            1222 CALL                     0
+            1230 POP_TOP
+
+7593        1232 LOAD_FAST                0 (self)
+            1234 LOAD_ATTR               95 (NULL|self + _load_last_session)
+            1254 CALL                     0
+            1262 POP_TOP
+            1264 RETURN_CONST             0 (None)

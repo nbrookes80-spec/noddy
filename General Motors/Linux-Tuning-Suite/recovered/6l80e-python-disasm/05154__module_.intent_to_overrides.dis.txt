@@ -1,0 +1,112 @@
+5154           0 RESUME                   0
+
+5158           2 LOAD_GLOBAL              0 (INTENT_PRESETS)
+              12 LOAD_ATTR                3 (NULL|self + get)
+              32 LOAD_FAST                0 (intent_name)
+              34 CALL                     1
+              42 STORE_FAST               2 (intent)
+
+5159          44 LOAD_FAST                2 (intent)
+              46 POP_JUMP_IF_TRUE         2 (to 52)
+
+5160          48 BUILD_MAP                0
+              50 RETURN_VALUE
+
+5161     >>   52 BUILD_MAP                0
+              54 STORE_FAST               3 (out)
+
+5162          56 LOAD_FAST                2 (intent)
+              58 LOAD_ATTR                5 (NULL|self + items)
+              78 CALL                     0
+              86 GET_ITER
+         >>   88 FOR_ITER               171 (to 434)
+              92 UNPACK_SEQUENCE          2
+              96 STORE_FAST               4 (key)
+              98 STORE_FAST               5 (val)
+
+5163         100 LOAD_FAST                4 (key)
+             102 LOAD_ATTR                7 (NULL|self + endswith)
+             122 LOAD_CONST               1 ('_delta')
+             124 CALL                     1
+             132 POP_JUMP_IF_FALSE       37 (to 208)
+
+5164         134 LOAD_FAST                4 (key)
+             136 LOAD_CONST               2 (None)
+             138 LOAD_GLOBAL              9 (NULL + len)
+             148 LOAD_CONST               1 ('_delta')
+             150 CALL                     1
+             158 UNARY_NEGATIVE
+             160 BINARY_SLICE
+             162 STORE_FAST               6 (base)
+
+5165         164 LOAD_FAST                1 (normal_cfg)
+             166 LOAD_ATTR                3 (NULL|self + get)
+             186 LOAD_FAST                6 (base)
+             188 LOAD_CONST               3 (0)
+             190 CALL                     2
+             198 LOAD_FAST                5 (val)
+             200 BINARY_OP                0 (+)
+             204 STORE_FAST               7 (new_val)
+             206 JUMP_FORWARD            36 (to 280)
+
+5166     >>  208 LOAD_FAST                4 (key)
+             210 LOAD_ATTR                7 (NULL|self + endswith)
+             230 LOAD_CONST               4 ('_abs')
+             232 CALL                     1
+             240 POP_JUMP_IF_FALSE       18 (to 278)
+
+5167         242 LOAD_FAST                4 (key)
+             244 LOAD_CONST               2 (None)
+             246 LOAD_GLOBAL              9 (NULL + len)
+             256 LOAD_CONST               4 ('_abs')
+             258 CALL                     1
+             266 UNARY_NEGATIVE
+             268 BINARY_SLICE
+             270 STORE_FAST               6 (base)
+
+5168         272 LOAD_FAST                5 (val)
+             274 STORE_FAST               7 (new_val)
+             276 JUMP_FORWARD             1 (to 280)
+
+5170     >>  278 JUMP_BACKWARD           96 (to 88)
+
+5171     >>  280 LOAD_GLOBAL             10 (_INTENT_CLAMPS)
+             290 LOAD_ATTR                3 (NULL|self + get)
+             310 LOAD_FAST                6 (base)
+             312 LOAD_CONST               5 ((-1000000000.0, 1000000000.0))
+             314 CALL                     2
+             322 UNPACK_SEQUENCE          2
+             326 STORE_FAST               8 (lo)
+             328 STORE_FAST               9 (hi)
+
+5172         330 LOAD_GLOBAL             13 (NULL + max)
+             340 LOAD_FAST                8 (lo)
+             342 LOAD_GLOBAL             15 (NULL + min)
+             352 LOAD_FAST                9 (hi)
+             354 LOAD_FAST                7 (new_val)
+             356 CALL                     2
+             364 CALL                     2
+             372 STORE_FAST               7 (new_val)
+
+5174         374 LOAD_FAST                6 (base)
+             376 LOAD_CONST               6 (('accel_lock_gear', 'wot_lock_gear'))
+             378 CONTAINS_OP              0
+             380 POP_JUMP_IF_FALSE       20 (to 422)
+
+5175         382 LOAD_GLOBAL             17 (NULL + int)
+             392 LOAD_GLOBAL             19 (NULL + round)
+             402 LOAD_FAST                7 (new_val)
+             404 CALL                     1
+             412 CALL                     1
+             420 STORE_FAST               7 (new_val)
+
+5176     >>  422 LOAD_FAST                7 (new_val)
+             424 LOAD_FAST                3 (out)
+             426 LOAD_FAST                6 (base)
+             428 STORE_SUBSCR
+             432 JUMP_BACKWARD          173 (to 88)
+
+5162     >>  434 END_FOR
+
+5177         436 LOAD_FAST                3 (out)
+             438 RETURN_VALUE

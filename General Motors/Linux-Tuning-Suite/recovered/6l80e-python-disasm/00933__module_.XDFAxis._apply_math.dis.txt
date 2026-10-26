@@ -1,0 +1,93 @@
+933           0 RESUME                   0
+
+935           2 LOAD_FAST                0 (self)
+              4 LOAD_ATTR                0 (math_eq)
+             24 LOAD_ATTR                3 (NULL|self + strip)
+             44 CALL                     0
+             52 STORE_FAST               2 (eq)
+
+936          54 LOAD_FAST                2 (eq)
+             56 POP_JUMP_IF_FALSE       19 (to 96)
+             58 LOAD_FAST                2 (eq)
+             60 LOAD_ATTR                5 (NULL|self + upper)
+             80 CALL                     0
+             88 LOAD_CONST               1 ('X')
+             90 COMPARE_OP              40 (==)
+             94 POP_JUMP_IF_FALSE       11 (to 118)
+
+937     >>   96 LOAD_GLOBAL              7 (NULL + float)
+            106 LOAD_FAST                1 (raw_value)
+            108 CALL                     1
+            116 RETURN_VALUE
+
+938     >>  118 NOP
+
+939         120 LOAD_FAST                2 (eq)
+            122 LOAD_ATTR                5 (NULL|self + upper)
+            142 CALL                     0
+            150 LOAD_ATTR                9 (NULL|self + replace)
+            170 LOAD_CONST               1 ('X')
+            172 LOAD_CONST               2 ('(')
+            174 LOAD_GLOBAL              7 (NULL + float)
+            184 LOAD_FAST                1 (raw_value)
+            186 CALL                     1
+            194 FORMAT_VALUE             0
+            196 LOAD_CONST               3 (')')
+            198 BUILD_STRING             3
+            200 CALL                     2
+            208 STORE_FAST               3 (safe)
+
+941         210 LOAD_FAST                3 (safe)
+            212 GET_ITER
+        >>  214 FOR_ITER                19 (to 256)
+            218 STORE_FAST               4 (c)
+
+942         220 LOAD_FAST                4 (c)
+            222 LOAD_CONST               4 ('0123456789.+-*/() eE')
+            224 CONTAINS_OP              1
+            226 POP_JUMP_IF_TRUE         1 (to 230)
+            228 JUMP_BACKWARD            8 (to 214)
+
+943     >>  230 LOAD_GLOBAL              7 (NULL + float)
+            240 LOAD_FAST                1 (raw_value)
+            242 CALL                     1
+            250 SWAP                     2
+            252 POP_TOP
+            254 RETURN_VALUE
+
+941     >>  256 END_FOR
+
+944         258 LOAD_GLOBAL              7 (NULL + float)
+            268 LOAD_GLOBAL             11 (NULL + eval)
+            278 LOAD_FAST                3 (safe)
+            280 LOAD_CONST               5 ('__builtins__')
+            282 BUILD_MAP                0
+            284 BUILD_MAP                1
+            286 BUILD_MAP                0
+            288 CALL                     3
+            296 CALL                     1
+            304 RETURN_VALUE
+        >>  306 PUSH_EXC_INFO
+
+945         308 LOAD_GLOBAL             12 (Exception)
+            318 CHECK_EXC_MATCH
+            320 POP_JUMP_IF_FALSE       14 (to 350)
+            322 POP_TOP
+
+946         324 LOAD_GLOBAL              7 (NULL + float)
+            334 LOAD_FAST                1 (raw_value)
+            336 CALL                     1
+            344 SWAP                     2
+            346 POP_EXCEPT
+            348 RETURN_VALUE
+
+945     >>  350 RERAISE                  0
+        >>  352 COPY                     3
+            354 POP_EXCEPT
+            356 RERAISE                  1
+ExceptionTable:
+  120 to 226 -> 306 [0]
+  230 to 252 -> 306 [0]
+  256 to 302 -> 306 [0]
+  306 to 344 -> 352 [1] lasti
+  350 to 350 -> 352 [1] lasti

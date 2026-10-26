@@ -1,0 +1,48 @@
+1214           0 RESUME                   0
+               2 LOAD_NAME                0 (__name__)
+               4 STORE_NAME               1 (__module__)
+               6 LOAD_CONST               0 ('BoostCurve')
+               8 STORE_NAME               2 (__qualname__)
+
+1215          10 LOAD_CONST               1 ('Parameterized boost-vs-RPM curve for forced-induction engines.\n\n    Model: smooth ramp from 0 PSI at low RPM, reaching peak_psi at peak_rpm,\n    then either holding flat or tapering to redline_psi. Used to multiply\n    base engine torque in CalcEngine acceleration sim.\n\n    Effective torque: engine_tq * (1 + psi_at(rpm) * torque_per_psi_pct/100)\n\n    Defaults represent a moderate ~10 PSI turbo on a 5.3L LS-truck setup.\n    ')
+              12 STORE_NAME               3 (__doc__)
+
+1225          14 NOP
+
+1226          16 NOP
+
+1225          18 LOAD_CONST               9 ((2500, 0.0, 4000, None, 7.5))
+              20 LOAD_CONST               3 (<code object __init__ at 0x73ab034eabb0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1225>)
+              22 MAKE_FUNCTION            1 (defaults)
+              24 STORE_NAME               4 (__init__)
+
+1234          26 LOAD_NAME                5 (property)
+
+1235          28 LOAD_CONST               4 (<code object is_empty at 0x73ab02a1c3b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1234>)
+              30 MAKE_FUNCTION            0
+
+1234          32 CALL                     0
+
+1235          40 STORE_NAME               6 (is_empty)
+
+1238          42 LOAD_CONST               5 (<code object psi_at at 0x30c06890, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1238>)
+              44 MAKE_FUNCTION            0
+              46 STORE_NAME               7 (psi_at)
+
+1264          48 LOAD_CONST               6 (<code object torque_mult at 0x73ab03537930, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1264>)
+              50 MAKE_FUNCTION            0
+              52 STORE_NAME               8 (torque_mult)
+
+1271          54 LOAD_CONST               7 (<code object to_dict at 0x73ab02b1feb0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1271>)
+              56 MAKE_FUNCTION            0
+              58 STORE_NAME               9 (to_dict)
+
+1280          60 LOAD_NAME               10 (classmethod)
+
+1281          62 LOAD_CONST               8 (<code object from_dict at 0x73ab02baaf10, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1280>)
+              64 MAKE_FUNCTION            0
+
+1280          66 CALL                     0
+
+1281          74 STORE_NAME              11 (from_dict)
+              76 RETURN_CONST             2 (None)

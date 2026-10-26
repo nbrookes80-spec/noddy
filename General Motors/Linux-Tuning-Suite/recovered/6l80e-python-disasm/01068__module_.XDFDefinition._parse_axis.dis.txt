@@ -1,0 +1,217 @@
+1068           0 RESUME                   0
+
+1070           2 LOAD_FAST                0 (el)
+               4 POP_JUMP_IF_NOT_NONE     1 (to 8)
+
+1071           6 RETURN_CONST             0 (None)
+
+1072     >>    8 LOAD_GLOBAL              1 (NULL + XDFAxis)
+              18 CALL                     0
+              26 STORE_FAST               2 (ax)
+
+1073          28 LOAD_FAST                1 (axis_id)
+              30 LOAD_FAST                2 (ax)
+              32 STORE_ATTR               1 (axis_id)
+
+1074          42 LOAD_FAST                0 (el)
+              44 LOAD_ATTR                5 (NULL|self + find)
+              64 LOAD_CONST               1 ('EMBEDDEDDATA')
+              66 CALL                     1
+              74 STORE_FAST               3 (emb)
+
+1075          76 LOAD_FAST                3 (emb)
+              78 POP_JUMP_IF_NONE       236 (to 552)
+
+1076          80 LOAD_GLOBAL              6 (XDFDefinition)
+              90 LOAD_ATTR                9 (NULL|self + _parse_int)
+             110 LOAD_FAST                3 (emb)
+             112 LOAD_ATTR               11 (NULL|self + get)
+             132 LOAD_CONST               2 ('mmedaddress')
+             134 LOAD_CONST               3 ('0')
+             136 CALL                     2
+             144 CALL                     1
+             152 LOAD_FAST                2 (ax)
+             154 STORE_ATTR               6 (address)
+
+1077         164 LOAD_GLOBAL             15 (NULL + int)
+             174 LOAD_FAST                3 (emb)
+             176 LOAD_ATTR               11 (NULL|self + get)
+             196 LOAD_CONST               4 ('mmedelementsizebits')
+             198 LOAD_CONST               5 ('16')
+             200 CALL                     2
+             208 CALL                     1
+             216 LOAD_FAST                2 (ax)
+             218 STORE_ATTR               8 (size_bits)
+
+1078         228 LOAD_GLOBAL             15 (NULL + int)
+             238 LOAD_FAST                3 (emb)
+             240 LOAD_ATTR               11 (NULL|self + get)
+             260 LOAD_CONST               6 ('mmedmajorstridebits')
+             262 LOAD_CONST               3 ('0')
+             264 CALL                     2
+             272 CALL                     1
+             280 LOAD_FAST                2 (ax)
+             282 STORE_ATTR               9 (stride_bits)
+
+1079         292 LOAD_GLOBAL             15 (NULL + int)
+             302 LOAD_FAST                3 (emb)
+             304 LOAD_ATTR               11 (NULL|self + get)
+             324 LOAD_CONST               7 ('mmedrowcount')
+             326 LOAD_CONST               8 ('1')
+             328 CALL                     2
+             336 CALL                     1
+             344 LOAD_FAST                2 (ax)
+             346 STORE_ATTR              10 (row_count)
+
+1080         356 LOAD_GLOBAL             15 (NULL + int)
+             366 LOAD_FAST                3 (emb)
+             368 LOAD_ATTR               11 (NULL|self + get)
+             388 LOAD_CONST               9 ('mmedcolcount')
+             390 LOAD_CONST               8 ('1')
+             392 CALL                     2
+             400 CALL                     1
+             408 LOAD_FAST                2 (ax)
+             410 STORE_ATTR              11 (col_count)
+
+1081         420 LOAD_GLOBAL             15 (NULL + int)
+             430 LOAD_FAST                3 (emb)
+             432 LOAD_ATTR               11 (NULL|self + get)
+             452 LOAD_CONST              10 ('mmedtypeflags')
+             454 LOAD_CONST               3 ('0')
+             456 CALL                     2
+             464 LOAD_CONST              11 (0)
+             466 CALL                     2
+             474 STORE_FAST               4 (flags)
+
+1082         476 LOAD_GLOBAL             25 (NULL + bool)
+             486 LOAD_FAST                4 (flags)
+             488 LOAD_CONST              12 (1)
+             490 BINARY_OP                1 (&)
+             494 CALL                     1
+             502 LOAD_FAST                2 (ax)
+             504 STORE_ATTR              13 (signed)
+
+1083         514 LOAD_GLOBAL             25 (NULL + bool)
+             524 LOAD_FAST                4 (flags)
+             526 LOAD_CONST              13 (2)
+             528 BINARY_OP                1 (&)
+             532 CALL                     1
+             540 LOAD_FAST                2 (ax)
+             542 STORE_ATTR              14 (little_endian)
+
+1084     >>  552 LOAD_FAST                0 (el)
+             554 LOAD_ATTR                5 (NULL|self + find)
+             574 LOAD_CONST              14 ('MATH')
+             576 CALL                     1
+             584 STORE_FAST               5 (math_el)
+
+1085         586 LOAD_FAST                5 (math_el)
+             588 POP_JUMP_IF_NONE        27 (to 644)
+
+1086         590 LOAD_FAST                5 (math_el)
+             592 LOAD_ATTR               11 (NULL|self + get)
+             612 LOAD_CONST              15 ('equation')
+             614 LOAD_CONST              16 ('X')
+             616 CALL                     2
+             624 COPY                     1
+             626 POP_JUMP_IF_TRUE         2 (to 632)
+             628 POP_TOP
+             630 LOAD_CONST              16 ('X')
+         >>  632 LOAD_FAST                2 (ax)
+             634 STORE_ATTR              15 (math_eq)
+
+1087     >>  644 LOAD_FAST                0 (el)
+             646 LOAD_ATTR                5 (NULL|self + find)
+             666 LOAD_CONST              17 ('units')
+             668 CALL                     1
+             676 STORE_FAST               6 (units_el)
+
+1088         678 LOAD_FAST                6 (units_el)
+             680 POP_JUMP_IF_NONE        43 (to 768)
+             682 LOAD_FAST                6 (units_el)
+             684 LOAD_ATTR               32 (text)
+             704 POP_JUMP_IF_FALSE       31 (to 768)
+
+1089         706 LOAD_FAST                6 (units_el)
+             708 LOAD_ATTR               32 (text)
+             728 LOAD_ATTR               35 (NULL|self + strip)
+             748 CALL                     0
+             756 LOAD_FAST                2 (ax)
+             758 STORE_ATTR              18 (label_units)
+
+1090     >>  768 LOAD_FAST                0 (el)
+             770 LOAD_ATTR                5 (NULL|self + find)
+             790 LOAD_CONST              18 ('indexcount')
+             792 CALL                     1
+             800 STORE_FAST               7 (idx_el)
+
+1091         802 LOAD_FAST                7 (idx_el)
+             804 POP_JUMP_IF_NONE        92 (to 990)
+             806 LOAD_FAST                7 (idx_el)
+             808 LOAD_ATTR               32 (text)
+             828 POP_JUMP_IF_FALSE       80 (to 990)
+
+1092         830 NOP
+
+1093         832 LOAD_GLOBAL             15 (NULL + int)
+             842 LOAD_FAST                7 (idx_el)
+             844 LOAD_ATTR               32 (text)
+             864 CALL                     1
+             872 STORE_FAST               8 (cnt)
+
+1094         874 LOAD_FAST                1 (axis_id)
+             876 LOAD_CONST              19 ('x')
+             878 COMPARE_OP              40 (==)
+             882 POP_JUMP_IF_FALSE       24 (to 932)
+             884 LOAD_FAST                2 (ax)
+             886 LOAD_ATTR               22 (col_count)
+             906 LOAD_CONST              12 (1)
+             908 COMPARE_OP              40 (==)
+             912 POP_JUMP_IF_FALSE        9 (to 932)
+
+1095         914 LOAD_FAST                8 (cnt)
+             916 LOAD_FAST                2 (ax)
+             918 STORE_ATTR              11 (col_count)
+
+1100         928 LOAD_FAST                2 (ax)
+             930 RETURN_VALUE
+
+1096     >>  932 LOAD_FAST                1 (axis_id)
+             934 LOAD_CONST              20 ('y')
+             936 COMPARE_OP              40 (==)
+             940 POP_JUMP_IF_FALSE       22 (to 986)
+             942 LOAD_FAST                2 (ax)
+             944 LOAD_ATTR               20 (row_count)
+             964 LOAD_CONST              12 (1)
+             966 COMPARE_OP              40 (==)
+             970 POP_JUMP_IF_FALSE        7 (to 986)
+
+1097         972 LOAD_FAST                8 (cnt)
+             974 LOAD_FAST                2 (ax)
+             976 STORE_ATTR              10 (row_count)
+
+1100     >>  986 LOAD_FAST                2 (ax)
+             988 RETURN_VALUE
+         >>  990 LOAD_FAST                2 (ax)
+             992 RETURN_VALUE
+         >>  994 PUSH_EXC_INFO
+
+1098         996 LOAD_GLOBAL             38 (ValueError)
+            1006 CHECK_EXC_MATCH
+            1008 POP_JUMP_IF_FALSE        4 (to 1018)
+            1010 POP_TOP
+
+1099        1012 POP_EXCEPT
+
+1100        1014 LOAD_FAST                2 (ax)
+            1016 RETURN_VALUE
+
+1098     >> 1018 RERAISE                  0
+         >> 1020 COPY                     3
+            1022 POP_EXCEPT
+            1024 RERAISE                  1
+ExceptionTable:
+  832 to 926 -> 994 [0]
+  932 to 984 -> 994 [0]
+  994 to 1010 -> 1020 [1] lasti
+  1018 to 1018 -> 1020 [1] lasti

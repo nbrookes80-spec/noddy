@@ -1,0 +1,607 @@
+6695           0 RESUME                   0
+
+6698           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (is_4spd)
+              24 EXTENDED_ARG             1
+              26 POP_JUMP_IF_FALSE      468 (to 964)
+
+6699          28 LOAD_FAST                0 (self)
+              30 LOAD_ATTR                2 (table_combo)
+              50 LOAD_ATTR                5 (NULL|self + currentText)
+              70 CALL                     0
+              78 STORE_FAST               1 (tname)
+
+6700          80 LOAD_FAST                0 (self)
+              82 LOAD_ATTR                6 (mode_combo)
+             102 LOAD_ATTR                5 (NULL|self + currentText)
+             122 CALL                     0
+             130 STORE_FAST               2 (mode)
+
+6701         132 LOAD_CONST               1 ('Base Shift Pressure')
+             134 LOAD_FAST                1 (tname)
+             136 CONTAINS_OP              0
+             138 POP_JUMP_IF_FALSE       81 (to 302)
+
+6702         140 LOAD_FAST                0 (self)
+             142 LOAD_ATTR                8 (pressure_4spd)
+             162 LOAD_ATTR               11 (NULL|self + get)
+             182 LOAD_FAST                2 (mode)
+             184 BUILD_LIST               0
+             186 CALL                     2
+             194 STORE_FAST               3 (data)
+
+6703         196 LOAD_GLOBAL             13 (NULL + list)
+             206 LOAD_GLOBAL             14 (PRESSURE_4SPD_SHIFTS)
+             216 CALL                     1
+             224 STORE_FAST               4 (rows)
+
+6704         226 LOAD_GLOBAL             16 (PRESSURE_4SPD_TORQUE_COLS)
+             236 GET_ITER
+             238 LOAD_FAST_AND_CLEAR      5 (t)
+             240 SWAP                     2
+             242 BUILD_LIST               0
+             244 SWAP                     2
+         >>  246 FOR_ITER                13 (to 276)
+             250 STORE_FAST               5 (t)
+             252 LOAD_GLOBAL             19 (NULL + str)
+             262 LOAD_FAST                5 (t)
+             264 CALL                     1
+             272 LIST_APPEND              2
+             274 JUMP_BACKWARD           15 (to 246)
+         >>  276 END_FOR
+             278 STORE_FAST               6 (cols)
+             280 STORE_FAST               5 (t)
+
+6705         282 LOAD_FAST                3 (data)
+             284 LOAD_FAST                4 (rows)
+             286 LOAD_FAST                6 (cols)
+             288 LOAD_CONST               2 ('psi')
+
+6706         290 LOAD_CONST               3 ('4-spd Base Shift Pressure / ')
+             292 LOAD_FAST                2 (mode)
+             294 FORMAT_VALUE             0
+             296 BUILD_STRING             2
+
+6705         298 BUILD_TUPLE              5
+             300 RETURN_VALUE
+
+6707     >>  302 LOAD_CONST               4 ('Brake Shift Pressure')
+             304 LOAD_FAST                1 (tname)
+             306 CONTAINS_OP              0
+             308 POP_JUMP_IF_FALSE       81 (to 472)
+
+6708         310 LOAD_FAST                0 (self)
+             312 LOAD_ATTR               20 (brake_shift_4spd)
+             332 LOAD_ATTR               11 (NULL|self + get)
+             352 LOAD_FAST                2 (mode)
+             354 BUILD_LIST               0
+             356 CALL                     2
+             364 STORE_FAST               3 (data)
+
+6709         366 LOAD_GLOBAL             13 (NULL + list)
+             376 LOAD_GLOBAL             22 (BRAKE_SHIFT_4SPD_SHIFTS)
+             386 CALL                     1
+             394 STORE_FAST               4 (rows)
+
+6710         396 LOAD_GLOBAL             24 (BRAKE_SHIFT_4SPD_TORQUE_COLS)
+             406 GET_ITER
+             408 LOAD_FAST_AND_CLEAR      5 (t)
+             410 SWAP                     2
+             412 BUILD_LIST               0
+             414 SWAP                     2
+         >>  416 FOR_ITER                13 (to 446)
+             420 STORE_FAST               5 (t)
+             422 LOAD_GLOBAL             19 (NULL + str)
+             432 LOAD_FAST                5 (t)
+             434 CALL                     1
+             442 LIST_APPEND              2
+             444 JUMP_BACKWARD           15 (to 416)
+         >>  446 END_FOR
+             448 STORE_FAST               6 (cols)
+             450 STORE_FAST               5 (t)
+
+6711         452 LOAD_FAST                3 (data)
+             454 LOAD_FAST                4 (rows)
+             456 LOAD_FAST                6 (cols)
+             458 LOAD_CONST               2 ('psi')
+
+6712         460 LOAD_CONST               5 ('4-spd Brake Shift Pressure (downshift) / ')
+             462 LOAD_FAST                2 (mode)
+             464 FORMAT_VALUE             0
+             466 BUILD_STRING             2
+
+6711         468 BUILD_TUPLE              5
+             470 RETURN_VALUE
+
+6713     >>  472 LOAD_CONST               6 ('Desired Shift Time')
+             474 LOAD_FAST                1 (tname)
+             476 CONTAINS_OP              0
+             478 POP_JUMP_IF_FALSE       81 (to 642)
+
+6714         480 LOAD_FAST                0 (self)
+             482 LOAD_ATTR               26 (shift_time_4spd)
+             502 LOAD_ATTR               11 (NULL|self + get)
+             522 LOAD_FAST                2 (mode)
+             524 BUILD_LIST               0
+             526 CALL                     2
+             534 STORE_FAST               3 (data)
+
+6715         536 LOAD_GLOBAL             13 (NULL + list)
+             546 LOAD_GLOBAL             28 (SHIFT_TIME_SHIFTS)
+             556 CALL                     1
+             564 STORE_FAST               4 (rows)
+
+6716         566 LOAD_GLOBAL             30 (SHIFT_TIME_TORQUE_COLS)
+             576 GET_ITER
+             578 LOAD_FAST_AND_CLEAR      5 (t)
+             580 SWAP                     2
+             582 BUILD_LIST               0
+             584 SWAP                     2
+         >>  586 FOR_ITER                13 (to 616)
+             590 STORE_FAST               5 (t)
+             592 LOAD_GLOBAL             19 (NULL + str)
+             602 LOAD_FAST                5 (t)
+             604 CALL                     1
+             612 LIST_APPEND              2
+             614 JUMP_BACKWARD           15 (to 586)
+         >>  616 END_FOR
+             618 STORE_FAST               6 (cols)
+             620 STORE_FAST               5 (t)
+
+6717         622 LOAD_FAST                3 (data)
+             624 LOAD_FAST                4 (rows)
+             626 LOAD_FAST                6 (cols)
+             628 LOAD_CONST               7 ('sec')
+
+6718         630 LOAD_CONST               8 ('Desired Shift Time / ')
+             632 LOAD_FAST                2 (mode)
+             634 FORMAT_VALUE             0
+             636 BUILD_STRING             2
+
+6717         638 BUILD_TUPLE              5
+             640 RETURN_VALUE
+
+6719     >>  642 LOAD_CONST               9 ('TCC DC')
+             644 LOAD_FAST                1 (tname)
+             646 CONTAINS_OP              0
+             648 POP_JUMP_IF_FALSE       73 (to 796)
+
+6720         650 LOAD_FAST                0 (self)
+             652 LOAD_ATTR               32 (tcc_duty_4spd)
+             672 COPY                     1
+             674 POP_JUMP_IF_TRUE         2 (to 680)
+             676 POP_TOP
+             678 BUILD_LIST               0
+         >>  680 STORE_FAST               3 (data)
+
+6721         682 LOAD_GLOBAL             34 (TCC_DC_TEMP_ROWS)
+             692 GET_ITER
+             694 LOAD_FAST_AND_CLEAR      7 (r)
+             696 SWAP                     2
+             698 BUILD_LIST               0
+             700 SWAP                     2
+         >>  702 FOR_ITER                 7 (to 720)
+             706 STORE_FAST               7 (r)
+             708 LOAD_FAST                7 (r)
+             710 FORMAT_VALUE             0
+             712 LOAD_CONST              10 ('°F')
+             714 BUILD_STRING             2
+             716 LIST_APPEND              2
+             718 JUMP_BACKWARD            9 (to 702)
+         >>  720 END_FOR
+             722 STORE_FAST               4 (rows)
+             724 STORE_FAST               7 (r)
+
+6722         726 LOAD_GLOBAL             36 (TCC_DC_LINE_PSI_COLS)
+             736 GET_ITER
+             738 LOAD_FAST_AND_CLEAR      8 (p)
+             740 SWAP                     2
+             742 BUILD_LIST               0
+             744 SWAP                     2
+         >>  746 FOR_ITER                13 (to 776)
+             750 STORE_FAST               8 (p)
+             752 LOAD_GLOBAL             19 (NULL + str)
+             762 LOAD_FAST                8 (p)
+             764 CALL                     1
+             772 LIST_APPEND              2
+             774 JUMP_BACKWARD           15 (to 746)
+         >>  776 END_FOR
+             778 STORE_FAST               6 (cols)
+             780 STORE_FAST               8 (p)
+
+6723         782 LOAD_FAST                3 (data)
+             784 LOAD_FAST                4 (rows)
+             786 LOAD_FAST                6 (cols)
+             788 LOAD_CONST              11 ('pct')
+             790 LOAD_CONST              12 ('TCC DC Maximum')
+             792 BUILD_TUPLE              5
+             794 RETURN_VALUE
+
+6724     >>  796 LOAD_CONST              13 ('Force Motor Current')
+             798 LOAD_FAST                1 (tname)
+             800 CONTAINS_OP              0
+             802 POP_JUMP_IF_FALSE       73 (to 950)
+
+6725         804 LOAD_FAST                0 (self)
+             806 LOAD_ATTR               38 (force_motor_current)
+             826 COPY                     1
+             828 POP_JUMP_IF_TRUE         2 (to 834)
+             830 POP_TOP
+             832 BUILD_LIST               0
+         >>  834 STORE_FAST               3 (data)
+
+6726         836 LOAD_GLOBAL             40 (FORCE_MOTOR_TEMP_ROWS)
+             846 GET_ITER
+             848 LOAD_FAST_AND_CLEAR      7 (r)
+             850 SWAP                     2
+             852 BUILD_LIST               0
+             854 SWAP                     2
+         >>  856 FOR_ITER                 7 (to 874)
+             860 STORE_FAST               7 (r)
+             862 LOAD_FAST                7 (r)
+             864 FORMAT_VALUE             0
+             866 LOAD_CONST              10 ('°F')
+             868 BUILD_STRING             2
+             870 LIST_APPEND              2
+             872 JUMP_BACKWARD            9 (to 856)
+         >>  874 END_FOR
+             876 STORE_FAST               4 (rows)
+             878 STORE_FAST               7 (r)
+
+6727         880 LOAD_GLOBAL             42 (FORCE_MOTOR_PSI_COLS)
+             890 GET_ITER
+             892 LOAD_FAST_AND_CLEAR      8 (p)
+             894 SWAP                     2
+             896 BUILD_LIST               0
+             898 SWAP                     2
+         >>  900 FOR_ITER                13 (to 930)
+             904 STORE_FAST               8 (p)
+             906 LOAD_GLOBAL             19 (NULL + str)
+             916 LOAD_FAST                8 (p)
+             918 CALL                     1
+             926 LIST_APPEND              2
+             928 JUMP_BACKWARD           15 (to 900)
+         >>  930 END_FOR
+             932 STORE_FAST               6 (cols)
+             934 STORE_FAST               8 (p)
+
+6728         936 LOAD_FAST                3 (data)
+             938 LOAD_FAST                4 (rows)
+             940 LOAD_FAST                6 (cols)
+             942 LOAD_CONST              14 ('ma')
+
+6729         944 LOAD_CONST              15 ('Force Motor Current vs. Line PSI vs. ATF Temp')
+
+6728         946 BUILD_TUPLE              5
+             948 RETURN_VALUE
+
+6730     >>  950 BUILD_LIST               0
+             952 BUILD_LIST               0
+             954 BUILD_LIST               0
+             956 LOAD_CONST               2 ('psi')
+             958 LOAD_CONST              16 ('')
+             960 BUILD_TUPLE              5
+             962 RETURN_VALUE
+
+6732     >>  964 LOAD_FAST                0 (self)
+             966 LOAD_ATTR                2 (table_combo)
+             986 LOAD_ATTR                5 (NULL|self + currentText)
+            1006 CALL                     0
+            1014 STORE_FAST               9 (table_name)
+
+6733        1016 LOAD_FAST                0 (self)
+            1018 LOAD_ATTR                6 (mode_combo)
+            1038 LOAD_ATTR                5 (NULL|self + currentText)
+            1058 CALL                     0
+            1066 STORE_FAST               2 (mode)
+
+6734        1068 LOAD_CONST              17 ('TCC Apply')
+            1070 LOAD_FAST                9 (table_name)
+            1072 CONTAINS_OP              0
+            1074 POP_JUMP_IF_FALSE      246 (to 1568)
+
+6736        1076 LOAD_GLOBAL             45 (NULL + hasattr)
+            1086 LOAD_FAST                0 (self)
+            1088 LOAD_CONST              18 ('tcc_era_combo')
+            1090 CALL                     2
+            1098 POP_JUMP_IF_FALSE       26 (to 1152)
+            1100 LOAD_FAST                0 (self)
+            1102 LOAD_ATTR               46 (tcc_era_combo)
+            1122 LOAD_ATTR                5 (NULL|self + currentText)
+            1142 CALL                     0
+            1150 JUMP_FORWARD             1 (to 1154)
+         >> 1152 LOAD_CONST              19 ('2015+')
+         >> 1154 STORE_FAST              10 (era)
+
+6737        1156 LOAD_GLOBAL             48 (TCC_RAMP_ERAS)
+            1166 LOAD_ATTR               11 (NULL|self + get)
+            1186 LOAD_FAST               10 (era)
+            1188 LOAD_GLOBAL             48 (TCC_RAMP_ERAS)
+            1198 LOAD_CONST              19 ('2015+')
+            1200 BINARY_SUBSCR
+            1204 CALL                     2
+            1212 STORE_FAST              11 (era_cfg)
+
+6738        1214 LOAD_FAST                0 (self)
+            1216 LOAD_ATTR               50 (pressure_intent_per_mode)
+            1236 LOAD_ATTR               11 (NULL|self + get)
+            1256 LOAD_FAST                2 (mode)
+            1258 LOAD_CONST              20 ('Daily')
+            1260 CALL                     2
+            1268 STORE_FAST              12 (intent)
+
+6739        1270 LOAD_FAST               12 (intent)
+            1272 LOAD_GLOBAL             52 (TCC_APPLY_INTENTS)
+            1282 CONTAINS_OP              1
+            1284 POP_JUMP_IF_FALSE        2 (to 1290)
+
+6740        1286 LOAD_CONST              20 ('Daily')
+            1288 STORE_FAST              12 (intent)
+
+6741     >> 1290 LOAD_GLOBAL             54 (PressureEngine)
+            1300 LOAD_ATTR               57 (NULL|self + tcc_apply_pressure_ramp)
+
+6742        1320 LOAD_FAST               12 (intent)
+            1322 LOAD_FAST               10 (era)
+            1324 LOAD_FAST                0 (self)
+            1326 LOAD_ATTR               58 (max_tq)
+
+6741        1346 CALL                     3
+            1354 STORE_FAST               3 (data)
+
+6743        1356 LOAD_FAST               11 (era_cfg)
+            1358 LOAD_CONST              21 ('row_axis')
+            1360 BINARY_SUBSCR
+            1364 LOAD_CONST              22 ('torque')
+            1366 COMPARE_OP              40 (==)
+            1370 POP_JUMP_IF_FALSE       23 (to 1418)
+
+6744        1372 LOAD_FAST               11 (era_cfg)
+            1374 LOAD_CONST              23 ('torque_rows')
+            1376 BINARY_SUBSCR
+            1380 GET_ITER
+            1382 LOAD_FAST_AND_CLEAR      7 (r)
+            1384 SWAP                     2
+            1386 BUILD_LIST               0
+            1388 SWAP                     2
+         >> 1390 FOR_ITER                 6 (to 1406)
+            1394 STORE_FAST               7 (r)
+            1396 LOAD_FAST                7 (r)
+            1398 LOAD_CONST              24 ('.1f')
+            1400 FORMAT_VALUE             4 (with format)
+            1402 LIST_APPEND              2
+            1404 JUMP_BACKWARD            8 (to 1390)
+         >> 1406 END_FOR
+            1408 STORE_FAST               4 (rows)
+            1410 STORE_FAST               7 (r)
+
+6745        1412 LOAD_CONST              25 ('Torque (lb·ft)')
+            1414 STORE_FAST              13 (row_lbl)
+            1416 JUMP_FORWARD            29 (to 1476)
+
+6747     >> 1418 LOAD_FAST               11 (era_cfg)
+            1420 LOAD_CONST              26 ('rpm_rows')
+            1422 BINARY_SUBSCR
+            1426 GET_ITER
+            1428 LOAD_FAST_AND_CLEAR      7 (r)
+            1430 SWAP                     2
+            1432 BUILD_LIST               0
+            1434 SWAP                     2
+         >> 1436 FOR_ITER                13 (to 1466)
+            1440 STORE_FAST               7 (r)
+            1442 LOAD_GLOBAL             19 (NULL + str)
+            1452 LOAD_FAST                7 (r)
+            1454 CALL                     1
+            1462 LIST_APPEND              2
+            1464 JUMP_BACKWARD           15 (to 1436)
+         >> 1466 END_FOR
+            1468 STORE_FAST               4 (rows)
+            1470 STORE_FAST               7 (r)
+
+6748        1472 LOAD_CONST              27 ('Engine RPM')
+            1474 STORE_FAST              13 (row_lbl)
+
+6749     >> 1476 LOAD_FAST               11 (era_cfg)
+            1478 LOAD_CONST              28 ('slip_cols')
+            1480 BINARY_SUBSCR
+            1484 GET_ITER
+            1486 LOAD_FAST_AND_CLEAR     14 (s)
+            1488 SWAP                     2
+            1490 BUILD_LIST               0
+            1492 SWAP                     2
+         >> 1494 FOR_ITER                13 (to 1524)
+            1498 STORE_FAST              14 (s)
+            1500 LOAD_GLOBAL             19 (NULL + str)
+            1510 LOAD_FAST               14 (s)
+            1512 CALL                     1
+            1520 LIST_APPEND              2
+            1522 JUMP_BACKWARD           15 (to 1494)
+         >> 1524 END_FOR
+            1526 STORE_FAST               6 (cols)
+            1528 STORE_FAST              14 (s)
+
+6750        1530 LOAD_FAST                3 (data)
+            1532 LOAD_FAST                4 (rows)
+            1534 LOAD_FAST                6 (cols)
+            1536 LOAD_CONST               2 ('psi')
+
+6751        1538 LOAD_CONST              29 ('TCC Apply Pressure Ramp [')
+            1540 LOAD_FAST               10 (era)
+            1542 FORMAT_VALUE             0
+            1544 LOAD_CONST              30 (', ')
+            1546 LOAD_FAST               13 (row_lbl)
+            1548 FORMAT_VALUE             0
+            1550 LOAD_CONST              31 (' × Slip RPM Error]  Mode: ')
+
+6752        1552 LOAD_FAST                2 (mode)
+            1554 FORMAT_VALUE             0
+            1556 LOAD_CONST              32 ('  Intent: ')
+            1558 LOAD_FAST               12 (intent)
+            1560 FORMAT_VALUE             0
+
+6751        1562 BUILD_STRING             8
+
+6750        1564 BUILD_TUPLE              5
+            1566 RETURN_VALUE
+
+6754     >> 1568 LOAD_FAST                2 (mode)
+            1570 LOAD_FAST                0 (self)
+            1572 LOAD_ATTR               60 (pressure_tables)
+            1592 CONTAINS_OP              1
+            1594 POP_JUMP_IF_FALSE        7 (to 1610)
+
+6755        1596 BUILD_LIST               0
+            1598 BUILD_LIST               0
+            1600 BUILD_LIST               0
+            1602 LOAD_CONST               2 ('psi')
+            1604 LOAD_CONST              16 ('')
+            1606 BUILD_TUPLE              5
+            1608 RETURN_VALUE
+
+6756     >> 1610 LOAD_FAST                0 (self)
+            1612 LOAD_ATTR               60 (pressure_tables)
+            1632 LOAD_FAST                2 (mode)
+            1634 BINARY_SUBSCR
+            1638 STORE_FAST               3 (data)
+
+6757        1640 LOAD_FAST                0 (self)
+            1642 LOAD_ATTR               62 (mode_intents)
+            1662 LOAD_ATTR               11 (NULL|self + get)
+            1682 LOAD_FAST                2 (mode)
+            1684 LOAD_CONST              20 ('Daily')
+            1686 CALL                     2
+            1694 STORE_FAST              12 (intent)
+
+6758        1696 LOAD_FAST                3 (data)
+
+6759        1698 LOAD_GLOBAL             64 (PRESSURE_TEMP_ROWS)
+            1708 GET_ITER
+            1710 LOAD_FAST_AND_CLEAR      7 (r)
+            1712 SWAP                     2
+            1714 BUILD_LIST               0
+            1716 SWAP                     2
+         >> 1718 FOR_ITER                 7 (to 1736)
+            1722 STORE_FAST               7 (r)
+            1724 LOAD_FAST                7 (r)
+            1726 FORMAT_VALUE             0
+            1728 LOAD_CONST              10 ('°F')
+            1730 BUILD_STRING             2
+            1732 LIST_APPEND              2
+            1734 JUMP_BACKWARD            9 (to 1718)
+         >> 1736 END_FOR
+            1738 SWAP                     2
+            1740 STORE_FAST               7 (r)
+
+6760        1742 LOAD_FAST                0 (self)
+            1744 LOAD_ATTR               66 (torque_cols)
+            1764 GET_ITER
+            1766 LOAD_FAST_AND_CLEAR      5 (t)
+            1768 SWAP                     2
+            1770 BUILD_LIST               0
+            1772 SWAP                     2
+         >> 1774 FOR_ITER                13 (to 1804)
+            1778 STORE_FAST               5 (t)
+            1780 LOAD_GLOBAL             19 (NULL + str)
+            1790 LOAD_FAST                5 (t)
+            1792 CALL                     1
+            1800 LIST_APPEND              2
+            1802 JUMP_BACKWARD           15 (to 1774)
+         >> 1804 END_FOR
+            1806 SWAP                     2
+            1808 STORE_FAST               5 (t)
+
+6761        1810 LOAD_CONST               2 ('psi')
+
+6762        1812 LOAD_CONST              33 ('Pressure Intent: ')
+            1814 LOAD_FAST               12 (intent)
+            1816 FORMAT_VALUE             0
+            1818 LOAD_CONST              34 ('  (1-2 shift)')
+            1820 BUILD_STRING             3
+
+6758        1822 BUILD_TUPLE              5
+            1824 RETURN_VALUE
+         >> 1826 SWAP                     2
+            1828 POP_TOP
+
+6704        1830 SWAP                     2
+            1832 STORE_FAST               5 (t)
+            1834 RERAISE                  0
+         >> 1836 SWAP                     2
+            1838 POP_TOP
+
+6710        1840 SWAP                     2
+            1842 STORE_FAST               5 (t)
+            1844 RERAISE                  0
+         >> 1846 SWAP                     2
+            1848 POP_TOP
+
+6716        1850 SWAP                     2
+            1852 STORE_FAST               5 (t)
+            1854 RERAISE                  0
+         >> 1856 SWAP                     2
+            1858 POP_TOP
+
+6721        1860 SWAP                     2
+            1862 STORE_FAST               7 (r)
+            1864 RERAISE                  0
+         >> 1866 SWAP                     2
+            1868 POP_TOP
+
+6722        1870 SWAP                     2
+            1872 STORE_FAST               8 (p)
+            1874 RERAISE                  0
+         >> 1876 SWAP                     2
+            1878 POP_TOP
+
+6726        1880 SWAP                     2
+            1882 STORE_FAST               7 (r)
+            1884 RERAISE                  0
+         >> 1886 SWAP                     2
+            1888 POP_TOP
+
+6727        1890 SWAP                     2
+            1892 STORE_FAST               8 (p)
+            1894 RERAISE                  0
+         >> 1896 SWAP                     2
+            1898 POP_TOP
+
+6744        1900 SWAP                     2
+            1902 STORE_FAST               7 (r)
+            1904 RERAISE                  0
+         >> 1906 SWAP                     2
+            1908 POP_TOP
+
+6747        1910 SWAP                     2
+            1912 STORE_FAST               7 (r)
+            1914 RERAISE                  0
+         >> 1916 SWAP                     2
+            1918 POP_TOP
+
+6749        1920 SWAP                     2
+            1922 STORE_FAST              14 (s)
+            1924 RERAISE                  0
+         >> 1926 SWAP                     2
+            1928 POP_TOP
+
+6759        1930 SWAP                     2
+            1932 STORE_FAST               7 (r)
+            1934 RERAISE                  0
+         >> 1936 SWAP                     2
+            1938 POP_TOP
+
+6760        1940 SWAP                     2
+            1942 STORE_FAST               5 (t)
+            1944 RERAISE                  0
+ExceptionTable:
+  242 to 276 -> 1826 [2]
+  412 to 446 -> 1836 [2]
+  582 to 616 -> 1846 [2]
+  698 to 720 -> 1856 [2]
+  742 to 776 -> 1866 [2]
+  852 to 874 -> 1876 [2]
+  896 to 930 -> 1886 [2]
+  1386 to 1406 -> 1896 [2]
+  1432 to 1466 -> 1906 [2]
+  1490 to 1524 -> 1916 [2]
+  1714 to 1736 -> 1926 [3]
+  1770 to 1804 -> 1936 [4]

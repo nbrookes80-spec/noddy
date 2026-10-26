@@ -1,0 +1,99 @@
+9190           0 RESUME                   0
+
+9191           2 LOAD_FAST                1 (grid)
+               4 LOAD_ATTR                1 (NULL|self + setUpdatesEnabled)
+              24 LOAD_CONST               1 (False)
+              26 CALL                     1
+              34 POP_TOP
+
+9192          36 LOAD_GLOBAL              3 (NULL + range)
+              46 LOAD_FAST                3 (n_rows)
+              48 CALL                     1
+              56 GET_ITER
+         >>   58 FOR_ITER               172 (to 406)
+              62 STORE_FAST               6 (r)
+
+9193          64 LOAD_FAST                4 (color_rows)
+              66 POP_JUMP_IF_FALSE       25 (to 118)
+              68 LOAD_GLOBAL              4 (GEAR_COLORS)
+              78 LOAD_FAST                6 (r)
+              80 LOAD_GLOBAL              7 (NULL + len)
+              90 LOAD_GLOBAL              4 (GEAR_COLORS)
+             100 CALL                     1
+             108 BINARY_OP                6 (%)
+             112 BINARY_SUBSCR
+             116 JUMP_FORWARD             1 (to 120)
+         >>  118 LOAD_CONST               0 (None)
+         >>  120 STORE_FAST               7 (color)
+
+9194         122 LOAD_GLOBAL              3 (NULL + range)
+             132 LOAD_GLOBAL              8 (TPS_COLS)
+             142 CALL                     1
+             150 GET_ITER
+         >>  152 FOR_ITER               123 (to 402)
+             156 STORE_FAST               8 (c)
+
+9195         158 LOAD_FAST                2 (data)
+             160 LOAD_FAST                6 (r)
+             162 BINARY_SUBSCR
+             166 LOAD_FAST                8 (c)
+             168 BINARY_SUBSCR
+             172 STORE_FAST               9 (v)
+
+9197         174 LOAD_FAST                9 (v)
+             176 LOAD_CONST               2 (254.0)
+             178 COMPARE_OP              92 (>=)
+             182 POP_JUMP_IF_FALSE        2 (to 188)
+             184 LOAD_FAST                9 (v)
+             186 JUMP_FORWARD             4 (to 196)
+         >>  188 LOAD_FAST                9 (v)
+             190 LOAD_FAST                5 (scale)
+             192 BINARY_OP                5 (*)
+         >>  196 STORE_FAST              10 (disp)
+
+9198         198 LOAD_GLOBAL             11 (NULL + QTableWidgetItem)
+             208 LOAD_FAST               10 (disp)
+             210 LOAD_CONST               3 ('.1f')
+             212 FORMAT_VALUE             4 (with format)
+             214 CALL                     1
+             222 STORE_FAST              11 (item)
+
+9199         224 LOAD_FAST               11 (item)
+             226 LOAD_ATTR               13 (NULL|self + setTextAlignment)
+             246 LOAD_GLOBAL             14 (Qt)
+             256 LOAD_ATTR               16 (AlignmentFlag)
+             276 LOAD_ATTR               18 (AlignCenter)
+             296 CALL                     1
+             304 POP_TOP
+
+9200         306 LOAD_FAST                7 (color)
+             308 POP_JUMP_IF_FALSE       26 (to 362)
+
+9201         310 LOAD_FAST               11 (item)
+             312 LOAD_ATTR               21 (NULL|self + setForeground)
+             332 LOAD_GLOBAL             23 (NULL + QBrush)
+             342 LOAD_FAST                7 (color)
+             344 CALL                     1
+             352 CALL                     1
+             360 POP_TOP
+
+9202     >>  362 LOAD_FAST                1 (grid)
+             364 LOAD_ATTR               25 (NULL|self + setItem)
+             384 LOAD_FAST                6 (r)
+             386 LOAD_FAST                8 (c)
+             388 LOAD_FAST               11 (item)
+             390 CALL                     3
+             398 POP_TOP
+             400 JUMP_BACKWARD          125 (to 152)
+
+9194     >>  402 END_FOR
+             404 JUMP_BACKWARD          174 (to 58)
+
+9192     >>  406 END_FOR
+
+9203         408 LOAD_FAST                1 (grid)
+             410 LOAD_ATTR                1 (NULL|self + setUpdatesEnabled)
+             430 LOAD_CONST               4 (True)
+             432 CALL                     1
+             440 POP_TOP
+             442 RETURN_CONST             0 (None)

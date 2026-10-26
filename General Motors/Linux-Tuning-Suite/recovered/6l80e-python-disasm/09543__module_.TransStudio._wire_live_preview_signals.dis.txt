@@ -1,0 +1,114 @@
+9543           0 RESUME                   0
+
+9545           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (tire)
+              24 LOAD_FAST                0 (self)
+              26 LOAD_ATTR                2 (axle)
+              46 LOAD_FAST                0 (self)
+              48 LOAD_ATTR                4 (chain)
+              68 LOAD_FAST                0 (self)
+              70 LOAD_ATTR                6 (weight)
+              90 LOAD_FAST                0 (self)
+              92 LOAD_ATTR                8 (rwhp)
+
+9546         112 LOAD_FAST                0 (self)
+             114 LOAD_ATTR               10 (vss_count)
+             134 LOAD_FAST                0 (self)
+             136 LOAD_ATTR               12 (idle)
+             156 LOAD_FAST                0 (self)
+             158 LOAD_ATTR               14 (stall)
+             178 LOAD_FAST                0 (self)
+             180 LOAD_ATTR               16 (meas_slip)
+
+9547         200 LOAD_FAST                0 (self)
+             202 LOAD_ATTR               18 (shift_rpm)
+             222 LOAD_FAST                0 (self)
+             224 LOAD_ATTR               20 (drpm)
+             244 LOAD_FAST                0 (self)
+             246 LOAD_ATTR               22 (min_tcc_rpm)
+
+9548         266 LOAD_FAST                0 (self)
+             268 LOAD_ATTR               24 (min_tcc_gear)
+             288 LOAD_FAST                0 (self)
+             290 LOAD_ATTR               26 (accel_lock_gear)
+             310 LOAD_FAST                0 (self)
+             312 LOAD_ATTR               28 (wot_lock_gear)
+
+9549         332 LOAD_FAST                0 (self)
+             334 LOAD_ATTR               30 (tps_offset)
+             354 LOAD_FAST                0 (self)
+             356 LOAD_ATTR               32 (tps_factor)
+             376 LOAD_FAST                0 (self)
+             378 LOAD_ATTR               34 (upf)
+             398 LOAD_FAST                0 (self)
+             400 LOAD_ATTR               36 (downf)
+
+9550         420 LOAD_FAST                0 (self)
+             422 LOAD_ATTR               38 (s_up)
+             442 LOAD_FAST                0 (self)
+             444 LOAD_ATTR               40 (s_lock)
+             464 LOAD_FAST                0 (self)
+             466 LOAD_ATTR               42 (s_lockup)
+             486 LOAD_FAST                0 (self)
+             488 LOAD_ATTR               44 (s_unlock)
+
+9551         508 LOAD_FAST                0 (self)
+             510 LOAD_ATTR               46 (lead_val)
+             530 LOAD_FAST                0 (self)
+             532 LOAD_ATTR               48 (down_time)
+
+9545         552 BUILD_LIST              25
+             554 STORE_FAST               1 (spinboxes)
+
+9552         556 LOAD_FAST                1 (spinboxes)
+             558 GET_ITER
+         >>  560 FOR_ITER                39 (to 642)
+             564 STORE_FAST               2 (sb)
+
+9553         566 LOAD_FAST                2 (sb)
+             568 LOAD_ATTR               50 (valueChanged)
+             588 LOAD_ATTR               53 (NULL|self + connect)
+             608 LOAD_FAST                0 (self)
+             610 LOAD_ATTR               54 (_on_input_changed)
+             630 CALL                     1
+             638 POP_TOP
+             640 JUMP_BACKWARD           41 (to 560)
+
+9552     >>  642 END_FOR
+
+9554         644 LOAD_FAST                0 (self)
+             646 LOAD_ATTR               56 (trans)
+             666 LOAD_ATTR               58 (currentIndexChanged)
+             686 LOAD_ATTR               53 (NULL|self + connect)
+             706 LOAD_FAST                0 (self)
+             708 LOAD_ATTR               54 (_on_input_changed)
+             728 CALL                     1
+             736 POP_TOP
+
+9555         738 LOAD_FAST                0 (self)
+             740 LOAD_ATTR               60 (lead_rpm_rb)
+             760 LOAD_ATTR               62 (toggled)
+             780 LOAD_ATTR               53 (NULL|self + connect)
+             800 LOAD_FAST                0 (self)
+             802 LOAD_ATTR               54 (_on_input_changed)
+             822 CALL                     1
+             830 POP_TOP
+
+9556         832 LOAD_FAST                0 (self)
+             834 LOAD_ATTR               64 (lead_time_rb)
+             854 LOAD_ATTR               62 (toggled)
+             874 LOAD_ATTR               53 (NULL|self + connect)
+             894 LOAD_FAST                0 (self)
+             896 LOAD_ATTR               54 (_on_input_changed)
+             916 CALL                     1
+             924 POP_TOP
+
+9558         926 LOAD_FAST                0 (self)
+             928 LOAD_ATTR               18 (shift_rpm)
+             948 LOAD_ATTR               50 (valueChanged)
+             968 LOAD_ATTR               53 (NULL|self + connect)
+             988 LOAD_FAST                0 (self)
+             990 LOAD_ATTR               66 (_on_global_shift_rpm_changed)
+            1010 CALL                     1
+            1018 POP_TOP
+            1020 RETURN_CONST             1 (None)

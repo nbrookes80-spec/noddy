@@ -1,0 +1,289 @@
+10591           0 RESUME                   0
+
+10592           2 LOAD_GLOBAL              1 (NULL + QFileDialog)
+               12 LOAD_ATTR                2 (getSaveFileName)
+               32 LOAD_FAST                0 (self)
+               34 LOAD_CONST               1 ('Save Profile')
+
+10593          36 LOAD_CONST               2 ('trans_profile.json')
+               38 LOAD_CONST               3 ('JSON (*.json)')
+
+10592          40 CALL                     4
+               48 UNPACK_SEQUENCE          2
+               52 STORE_FAST               1 (path)
+               54 STORE_FAST               2 (_)
+
+10594          56 LOAD_FAST                1 (path)
+               58 POP_JUMP_IF_TRUE         1 (to 62)
+
+10595          60 RETURN_CONST             0 (None)
+
+10596     >>   62 LOAD_FAST                0 (self)
+               64 LOAD_ATTR                5 (NULL|self + _gather_config)
+               84 CALL                     0
+               92 STORE_FAST               3 (cfg)
+
+10597          94 LOAD_FAST                0 (self)
+               96 LOAD_ATTR                6 (trans)
+              116 LOAD_ATTR                9 (NULL|self + currentText)
+              136 CALL                     0
+              144 LOAD_FAST                3 (cfg)
+              146 LOAD_CONST               4 ('trans_name')
+              148 STORE_SUBSCR
+
+10598         152 LOAD_FAST                0 (self)
+              154 LOAD_ATTR               10 (lockup_flags)
+              174 LOAD_FAST                3 (cfg)
+              176 LOAD_CONST               5 ('lockup_flags')
+              178 STORE_SUBSCR
+
+10599         182 LOAD_FAST                0 (self)
+              184 LOAD_ATTR               12 (mode_overrides)
+              204 LOAD_FAST                3 (cfg)
+              206 LOAD_CONST               6 ('mode_overrides')
+              208 STORE_SUBSCR
+
+10600         212 LOAD_FAST                0 (self)
+              214 LOAD_ATTR               14 (multi_mode_enabled)
+              234 LOAD_FAST                3 (cfg)
+              236 LOAD_CONST               7 ('multi_mode_enabled')
+              238 STORE_SUBSCR
+
+10601         242 LOAD_GLOBAL             17 (NULL + getattr)
+
+10602         252 LOAD_FAST                0 (self)
+              254 LOAD_CONST               8 ('pressure_intent_overrides')
+              256 BUILD_MAP                0
+
+10601         258 CALL                     3
+              266 LOAD_FAST                3 (cfg)
+              268 LOAD_CONST               8 ('pressure_intent_overrides')
+              270 STORE_SUBSCR
+
+10603         274 LOAD_GLOBAL             17 (NULL + getattr)
+              284 LOAD_FAST                0 (self)
+              286 LOAD_CONST               9 ('_shudder_fix_level')
+              288 LOAD_CONST              10 ('Off')
+              290 CALL                     3
+              298 LOAD_FAST                3 (cfg)
+              300 LOAD_CONST              11 ('shudder_fix_level')
+              302 STORE_SUBSCR
+
+10606         306 LOAD_GLOBAL             19 (NULL + hasattr)
+              316 LOAD_FAST                0 (self)
+              318 LOAD_CONST              12 ('boost_enabled')
+              320 CALL                     2
+              328 POP_JUMP_IF_FALSE       26 (to 382)
+
+10605         330 LOAD_FAST                0 (self)
+              332 LOAD_ATTR               20 (boost_enabled)
+              352 LOAD_ATTR               23 (NULL|self + isChecked)
+              372 CALL                     0
+              380 JUMP_FORWARD             1 (to 384)
+
+10606     >>  382 LOAD_CONST              13 (False)
+
+10605     >>  384 LOAD_FAST                3 (cfg)
+              386 LOAD_CONST              12 ('boost_enabled')
+              388 STORE_SUBSCR
+
+10608         392 LOAD_GLOBAL             19 (NULL + hasattr)
+              402 LOAD_FAST                0 (self)
+              404 LOAD_CONST              14 ('boost_curve')
+              406 CALL                     2
+              414 POP_JUMP_IF_FALSE       38 (to 492)
+              416 LOAD_FAST                0 (self)
+              418 LOAD_ATTR               24 (boost_curve)
+              438 POP_JUMP_IF_FALSE       26 (to 492)
+
+10607         440 LOAD_FAST                0 (self)
+              442 LOAD_ATTR               24 (boost_curve)
+              462 LOAD_ATTR               27 (NULL|self + to_dict)
+              482 CALL                     0
+              490 JUMP_FORWARD             1 (to 494)
+
+10608     >>  492 BUILD_MAP                0
+
+10607     >>  494 LOAD_FAST                3 (cfg)
+              496 LOAD_CONST              14 ('boost_curve')
+              498 STORE_SUBSCR
+
+10609         502 LOAD_GLOBAL             28 (Theme)
+              512 LOAD_ATTR               30 (current_name)
+              532 LOAD_FAST                3 (cfg)
+              534 LOAD_CONST              15 ('theme')
+              536 STORE_SUBSCR
+
+10610         540 LOAD_FAST                0 (self)
+              542 LOAD_ATTR               32 (metric)
+              562 LOAD_FAST                3 (cfg)
+              564 LOAD_CONST              16 ('metric')
+              566 STORE_SUBSCR
+
+10611         570 LOAD_FAST                0 (self)
+              572 LOAD_ATTR               34 (tb_preset)
+              592 LOAD_ATTR                9 (NULL|self + currentText)
+              612 CALL                     0
+              620 LOAD_FAST                3 (cfg)
+              622 LOAD_CONST              17 ('tb_preset')
+              624 STORE_SUBSCR
+
+10613         628 LOAD_FAST                3 (cfg)
+              630 LOAD_ATTR               37 (NULL|self + pop)
+              650 LOAD_CONST              18 ('torque_curve')
+              652 LOAD_CONST               0 (None)
+              654 CALL                     2
+              662 STORE_FAST               4 (tc)
+
+10614         664 LOAD_FAST                4 (tc)
+              666 POP_JUMP_IF_NONE        31 (to 730)
+              668 LOAD_FAST                4 (tc)
+              670 LOAD_ATTR               38 (is_empty)
+              690 POP_JUMP_IF_TRUE        19 (to 730)
+
+10615         692 LOAD_FAST                4 (tc)
+              694 LOAD_ATTR               27 (NULL|self + to_dict)
+              714 CALL                     0
+              722 LOAD_FAST                3 (cfg)
+              724 LOAD_CONST              18 ('torque_curve')
+              726 STORE_SUBSCR
+
+10616     >>  730 LOAD_CONST              19 ('ratios')
+              732 LOAD_FAST                3 (cfg)
+              734 CONTAINS_OP              0
+              736 POP_JUMP_IF_FALSE        3 (to 744)
+
+10617         738 LOAD_FAST                3 (cfg)
+              740 LOAD_CONST              19 ('ratios')
+              742 DELETE_SUBSCR
+
+10619     >>  744 LOAD_CONST              20 (0)
+              746 LOAD_CONST              21 (('datetime',))
+              748 IMPORT_NAME             20 (datetime)
+              750 IMPORT_FROM             20 (datetime)
+              752 STORE_FAST               5 (datetime)
+              754 POP_TOP
+
+10620         756 LOAD_GLOBAL             43 (NULL + dict)
+              766 LOAD_FAST                0 (self)
+              768 LOAD_ATTR               44 (profile_metadata)
+              788 CALL                     1
+              796 STORE_FAST               6 (meta)
+
+10621         798 LOAD_CONST              22 ('2.1')
+              800 LOAD_FAST                6 (meta)
+              802 LOAD_CONST              23 ('tool_version')
+              804 STORE_SUBSCR
+
+10622         808 LOAD_FAST                5 (datetime)
+              810 LOAD_ATTR               47 (NULL|self + now)
+              830 CALL                     0
+              838 LOAD_ATTR               49 (NULL|self + isoformat)
+              858 LOAD_CONST              24 ('seconds')
+              860 KW_NAMES                25 (('timespec',))
+              862 CALL                     1
+              870 LOAD_FAST                6 (meta)
+              872 LOAD_CONST              26 ('saved_at')
+              874 STORE_SUBSCR
+
+10623         878 LOAD_FAST                6 (meta)
+              880 LOAD_FAST                3 (cfg)
+              882 LOAD_CONST              27 ('profile_metadata')
+              884 STORE_SUBSCR
+
+10627         888 NOP
+
+10628         890 LOAD_GLOBAL             51 (NULL + open)
+              900 LOAD_FAST                1 (path)
+              902 LOAD_CONST              28 ('w')
+              904 CALL                     2
+              912 BEFORE_WITH
+              914 STORE_FAST               7 (f)
+
+10629         916 LOAD_GLOBAL             53 (NULL + json)
+              926 LOAD_ATTR               54 (dump)
+              946 LOAD_FAST                3 (cfg)
+              948 LOAD_FAST                7 (f)
+              950 LOAD_CONST              29 (2)
+              952 LOAD_CONST              13 (False)
+              954 KW_NAMES                30 (('indent', 'allow_nan'))
+              956 CALL                     4
+              964 POP_TOP
+
+10628         966 LOAD_CONST               0 (None)
+              968 LOAD_CONST               0 (None)
+              970 LOAD_CONST               0 (None)
+              972 CALL                     2
+              980 POP_TOP
+
+10638     >>  982 LOAD_FAST                0 (self)
+              984 LOAD_ATTR               63 (NULL|self + statusBar)
+             1004 CALL                     0
+             1012 LOAD_ATTR               65 (NULL|self + showMessage)
+             1032 LOAD_CONST              34 ('Saved ')
+             1034 LOAD_FAST                1 (path)
+             1036 FORMAT_VALUE             0
+             1038 BUILD_STRING             2
+             1040 LOAD_CONST              35 (4000)
+             1042 CALL                     2
+             1050 POP_TOP
+             1052 RETURN_CONST             0 (None)
+
+10628     >> 1054 PUSH_EXC_INFO
+             1056 WITH_EXCEPT_START
+             1058 POP_JUMP_IF_TRUE         1 (to 1062)
+             1060 RERAISE                  2
+          >> 1062 POP_TOP
+             1064 POP_EXCEPT
+             1066 POP_TOP
+             1068 POP_TOP
+             1070 JUMP_BACKWARD           45 (to 982)
+          >> 1072 COPY                     3
+             1074 POP_EXCEPT
+             1076 RERAISE                  1
+          >> 1078 PUSH_EXC_INFO
+
+10630        1080 LOAD_GLOBAL             56 (ValueError)
+             1090 CHECK_EXC_MATCH
+             1092 POP_JUMP_IF_FALSE       37 (to 1168)
+             1094 STORE_FAST               8 (e)
+
+10631        1096 LOAD_GLOBAL             59 (NULL + QMessageBox)
+             1106 LOAD_ATTR               60 (critical)
+             1126 LOAD_FAST                0 (self)
+             1128 LOAD_CONST              31 ('Save Failed')
+
+10632        1130 LOAD_CONST              32 ('Profile contains invalid float values (NaN or Infinity).\n\nError: ')
+
+10633        1132 LOAD_FAST                8 (e)
+             1134 FORMAT_VALUE             0
+             1136 LOAD_CONST              33 ('\n\nThis usually means a calculation produced an invalid result. Run Calculate again and re-check input values (zero ratios, negative weights, etc.).')
+
+10632        1138 BUILD_STRING             3
+
+10631        1140 CALL                     3
+             1148 POP_TOP
+
+10637        1150 POP_EXCEPT
+             1152 LOAD_CONST               0 (None)
+             1154 STORE_FAST               8 (e)
+             1156 DELETE_FAST              8 (e)
+             1158 RETURN_CONST             0 (None)
+          >> 1160 LOAD_CONST               0 (None)
+             1162 STORE_FAST               8 (e)
+             1164 DELETE_FAST              8 (e)
+             1166 RERAISE                  1
+
+10630     >> 1168 RERAISE                  0
+          >> 1170 COPY                     3
+             1172 POP_EXCEPT
+             1174 RERAISE                  1
+ExceptionTable:
+  890 to 912 -> 1078 [0]
+  914 to 964 -> 1054 [1] lasti
+  966 to 980 -> 1078 [0]
+  1054 to 1062 -> 1072 [3] lasti
+  1064 to 1076 -> 1078 [0]
+  1078 to 1094 -> 1170 [1] lasti
+  1096 to 1148 -> 1160 [1] lasti
+  1160 to 1168 -> 1170 [1] lasti

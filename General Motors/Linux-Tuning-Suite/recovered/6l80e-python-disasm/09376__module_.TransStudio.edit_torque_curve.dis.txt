@@ -1,0 +1,75 @@
+9376           0 RESUME                   0
+
+9378           2 LOAD_GLOBAL              1 (NULL + TorqueCurveDialog)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_FAST                0 (self)
+              16 LOAD_ATTR                2 (torque_curve)
+              36 CALL                     2
+              44 STORE_FAST               1 (dlg)
+
+9379          46 LOAD_FAST                1 (dlg)
+              48 LOAD_ATTR                5 (NULL|self + exec)
+              68 CALL                     0
+              76 POP_JUMP_IF_FALSE      205 (to 488)
+
+9380          78 LOAD_FAST                1 (dlg)
+              80 LOAD_ATTR                7 (NULL|self + get_curve)
+             100 CALL                     0
+             108 LOAD_FAST                0 (self)
+             110 STORE_ATTR               1 (torque_curve)
+
+9381         120 LOAD_FAST                0 (self)
+             122 LOAD_ATTR                2 (torque_curve)
+             142 LOAD_ATTR                8 (is_empty)
+             162 POP_JUMP_IF_TRUE       129 (to 422)
+
+9383         164 LOAD_FAST                0 (self)
+             166 LOAD_ATTR               10 (rwhp)
+             186 LOAD_ATTR               13 (NULL|self + setValue)
+             206 LOAD_FAST                0 (self)
+             208 LOAD_ATTR                2 (torque_curve)
+             228 LOAD_ATTR               14 (peak_hp)
+             248 CALL                     1
+             256 POP_TOP
+
+9384         258 LOAD_FAST                0 (self)
+             260 LOAD_ATTR               17 (NULL|self + statusBar)
+             280 CALL                     0
+             288 LOAD_ATTR               19 (NULL|self + showMessage)
+
+9385         308 LOAD_CONST               1 ('Torque curve loaded: peak ')
+             310 LOAD_FAST                0 (self)
+             312 LOAD_ATTR                2 (torque_curve)
+             332 LOAD_ATTR               14 (peak_hp)
+             352 LOAD_CONST               2 ('.0f')
+             354 FORMAT_VALUE             4 (with format)
+             356 LOAD_CONST               3 (' HP / ')
+
+9386         358 LOAD_FAST                0 (self)
+             360 LOAD_ATTR                2 (torque_curve)
+             380 LOAD_ATTR               20 (peak_tq)
+             400 LOAD_CONST               2 ('.0f')
+             402 FORMAT_VALUE             4 (with format)
+             404 LOAD_CONST               4 (' lb·ft. Time-mode lead will now use full curve.')
+
+9385         406 BUILD_STRING             5
+
+9387         408 LOAD_CONST               5 (6000)
+
+9384         410 CALL                     2
+             418 POP_TOP
+             420 RETURN_CONST             8 (None)
+
+9390     >>  422 LOAD_FAST                0 (self)
+             424 LOAD_ATTR               17 (NULL|self + statusBar)
+             444 CALL                     0
+             452 LOAD_ATTR               19 (NULL|self + showMessage)
+
+9391         472 LOAD_CONST               6 ('Torque curve cleared. Time-mode lead uses RWHP scalar.')
+             474 LOAD_CONST               7 (4000)
+
+9390         476 CALL                     2
+             484 POP_TOP
+             486 RETURN_CONST             8 (None)
+
+9379     >>  488 RETURN_CONST             8 (None)

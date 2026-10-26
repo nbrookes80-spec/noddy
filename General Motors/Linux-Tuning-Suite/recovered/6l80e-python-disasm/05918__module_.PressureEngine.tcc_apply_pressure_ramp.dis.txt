@@ -1,0 +1,105 @@
+5918           0 RESUME                   0
+
+5931           2 LOAD_FAST                1 (era)
+               4 LOAD_GLOBAL              0 (TCC_RAMP_ERAS)
+              14 CONTAINS_OP              1
+              16 POP_JUMP_IF_FALSE        2 (to 22)
+
+5932          18 LOAD_CONST               1 ('2015+')
+              20 STORE_FAST               1 (era)
+
+5933     >>   22 LOAD_GLOBAL              0 (TCC_RAMP_ERAS)
+              32 LOAD_FAST                1 (era)
+              34 BINARY_SUBSCR
+              38 STORE_FAST               3 (cfg)
+
+5934          40 LOAD_FAST                3 (cfg)
+              42 LOAD_CONST               2 ('slip_cols')
+              44 BINARY_SUBSCR
+              48 STORE_FAST               4 (slip_cols)
+
+5935          50 LOAD_FAST                3 (cfg)
+              52 LOAD_ATTR                3 (NULL|self + get)
+              72 LOAD_CONST               3 ('max_psi')
+              74 LOAD_GLOBAL              4 (MAX_TCC_APPLY_PSI)
+              84 CALL                     2
+              92 STORE_FAST               5 (cap)
+
+5937          94 LOAD_GLOBAL              6 (TCC_APPLY_INTENTS)
+             104 LOAD_ATTR                3 (NULL|self + get)
+             124 LOAD_FAST                0 (intent_name)
+             126 LOAD_GLOBAL              6 (TCC_APPLY_INTENTS)
+             136 LOAD_CONST               4 ('Daily')
+             138 BINARY_SUBSCR
+             142 CALL                     2
+             150 STORE_FAST               6 (intent)
+
+5938         152 LOAD_FAST                6 (intent)
+             154 LOAD_CONST               3 ('max_psi')
+             156 BINARY_SUBSCR
+             160 LOAD_CONST               5 (110.0)
+             162 BINARY_OP               11 (/)
+             166 STORE_FAST               7 (intent_mult)
+
+5943         168 LOAD_FAST                0 (intent_name)
+             170 LOAD_CONST               6 ('Shudder Fix')
+             172 COMPARE_OP              40 (==)
+             176 POP_JUMP_IF_FALSE       54 (to 286)
+
+5944         178 LOAD_GLOBAL              8 (PressureEngine)
+             188 LOAD_ATTR               11 (NULL|self + _tcc_ramp_shudder_fix)
+
+5945         208 LOAD_FAST                3 (cfg)
+             210 LOAD_ATTR                3 (NULL|self + get)
+             230 LOAD_CONST               7 ('torque_rows')
+             232 CALL                     1
+             240 COPY                     1
+             242 POP_JUMP_IF_TRUE         5 (to 254)
+             244 POP_TOP
+             246 LOAD_FAST                3 (cfg)
+             248 LOAD_CONST               8 ('rpm_rows')
+             250 BINARY_SUBSCR
+         >>  254 LOAD_FAST                4 (slip_cols)
+             256 LOAD_FAST                5 (cap)
+
+5946         258 LOAD_FAST                3 (cfg)
+             260 LOAD_CONST               9 ('row_axis')
+             262 BINARY_SUBSCR
+             266 LOAD_FAST                6 (intent)
+             268 LOAD_CONST               3 ('max_psi')
+             270 BINARY_SUBSCR
+
+5944         274 KW_NAMES                10 (('intent_max_psi',))
+             276 CALL                     5
+             284 RETURN_VALUE
+
+5948     >>  286 LOAD_FAST                1 (era)
+             288 LOAD_CONST               1 ('2015+')
+             290 COMPARE_OP              40 (==)
+             294 POP_JUMP_IF_FALSE       27 (to 350)
+
+5949         296 LOAD_GLOBAL              8 (PressureEngine)
+             306 LOAD_ATTR               13 (NULL|self + _tcc_ramp_15_plus)
+
+5950         326 LOAD_FAST                3 (cfg)
+             328 LOAD_CONST               8 ('rpm_rows')
+             330 BINARY_SUBSCR
+             334 LOAD_FAST                4 (slip_cols)
+             336 LOAD_FAST                7 (intent_mult)
+             338 LOAD_FAST                5 (cap)
+
+5949         340 CALL                     4
+             348 RETURN_VALUE
+
+5952     >>  350 LOAD_GLOBAL              8 (PressureEngine)
+             360 LOAD_ATTR               15 (NULL|self + _tcc_ramp_07_14)
+
+5953         380 LOAD_FAST                3 (cfg)
+             382 LOAD_CONST               7 ('torque_rows')
+             384 BINARY_SUBSCR
+             388 LOAD_FAST                4 (slip_cols)
+             390 LOAD_FAST                7 (intent_mult)
+             392 LOAD_FAST                5 (cap)
+
+5952         394 CALL                     4
+             402 RETURN_VALUE

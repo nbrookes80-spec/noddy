@@ -1,0 +1,454 @@
+               0 MAKE_CELL                0 (self)
+
+2527           2 RESUME                   0
+
+2542           4 LOAD_DEREF               0 (self)
+               6 LOAD_ATTR                0 (dt)
+              26 LOAD_ATTR                3 (NULL|self + get)
+              46 LOAD_CONST               1 ('n_gears')
+              48 LOAD_CONST               2 (6)
+              50 CALL                     2
+              58 STORE_FAST               1 (n)
+
+2543          60 LOAD_FAST                1 (n)
+              62 LOAD_CONST               3 (1)
+              64 BINARY_OP               10 (-)
+              68 STORE_FAST               2 (n_shifts)
+
+2544          70 BUILD_LIST               0
+              72 STORE_FAST               3 (tables)
+
+2546          74 LOAD_CLOSURE             0 (self)
+              76 BUILD_TUPLE              1
+              78 LOAD_CONST               4 (<code object _ord at 0x73ab02a409b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2546>)
+              80 MAKE_FUNCTION            8 (closure)
+              82 STORE_FAST               4 (_ord)
+
+2549          84 LOAD_DEREF               0 (self)
+              86 LOAD_ATTR                4 (tcm_era)
+             106 LOAD_CONST               5 ('4spd')
+             108 COMPARE_OP              40 (==)
+             112 POP_JUMP_IF_FALSE      116 (to 346)
+
+2551         114 LOAD_FAST                3 (tables)
+             116 LOAD_ATTR                7 (NULL|self + append)
+             136 LOAD_CONST               6 ('Main Shift Table')
+             138 LOAD_CONST               7 ('shift_combined')
+             140 LOAD_GLOBAL              9 (NULL + list)
+             150 LOAD_GLOBAL             11 (NULL + range)
+             160 LOAD_FAST                2 (n_shifts)
+             162 CALL                     1
+             170 CALL                     1
+             178 BUILD_TUPLE              3
+             180 CALL                     1
+             188 POP_TOP
+
+2552         190 LOAD_FAST                3 (tables)
+             192 LOAD_ATTR                7 (NULL|self + append)
+             212 LOAD_CONST               8 ('WOT Shift Table')
+             214 LOAD_CONST               9 ('wot_shift_combined')
+             216 LOAD_GLOBAL              9 (NULL + list)
+             226 LOAD_GLOBAL             11 (NULL + range)
+             236 LOAD_FAST                2 (n_shifts)
+             238 CALL                     1
+             246 CALL                     1
+             254 BUILD_TUPLE              3
+             256 CALL                     1
+             264 POP_TOP
+
+2553         266 LOAD_FAST                3 (tables)
+             268 LOAD_ATTR                7 (NULL|self + append)
+             288 LOAD_CONST              10 ('WOT RPM Table')
+             290 LOAD_CONST              11 ('wot_rpm_group')
+             292 LOAD_GLOBAL              9 (NULL + list)
+             302 LOAD_GLOBAL             11 (NULL + range)
+             312 LOAD_FAST                2 (n_shifts)
+             314 CALL                     1
+             322 CALL                     1
+             330 BUILD_TUPLE              3
+             332 CALL                     1
+             340 POP_TOP
+             342 EXTENDED_ARG             2
+             344 JUMP_FORWARD           712 (to 1770)
+
+2555     >>  346 LOAD_DEREF               0 (self)
+             348 LOAD_ATTR                4 (tcm_era)
+             368 LOAD_CONST              12 ('07-13')
+             370 COMPARE_OP              40 (==)
+             374 EXTENDED_ARG             1
+             376 POP_JUMP_IF_FALSE      278 (to 934)
+
+2557         378 LOAD_GLOBAL             13 (NULL + min)
+             388 LOAD_CONST              13 (3)
+             390 LOAD_FAST                2 (n_shifts)
+             392 CALL                     2
+             400 STORE_FAST               5 (main_count)
+
+2558         402 LOAD_FAST                3 (tables)
+             404 LOAD_ATTR                7 (NULL|self + append)
+             424 LOAD_CONST              14 ('Main Shift Table (1-4)')
+             426 LOAD_CONST               7 ('shift_combined')
+
+2559         428 LOAD_GLOBAL              9 (NULL + list)
+             438 LOAD_GLOBAL             11 (NULL + range)
+             448 LOAD_FAST                5 (main_count)
+             450 CALL                     1
+             458 CALL                     1
+
+2558         466 BUILD_TUPLE              3
+             468 CALL                     1
+             476 POP_TOP
+
+2560         478 LOAD_GLOBAL             11 (NULL + range)
+             488 LOAD_CONST              13 (3)
+             490 LOAD_FAST                2 (n_shifts)
+             492 CALL                     2
+             500 GET_ITER
+         >>  502 FOR_ITER                35 (to 576)
+             506 STORE_FAST               6 (g_idx)
+
+2561         508 LOAD_FAST                3 (tables)
+             510 LOAD_ATTR                7 (NULL|self + append)
+             530 LOAD_CONST              15 ('Shift Speed ')
+             532 PUSH_NULL
+             534 LOAD_FAST                4 (_ord)
+             536 LOAD_FAST                6 (g_idx)
+             538 LOAD_CONST              16 (2)
+             540 BINARY_OP                0 (+)
+             544 CALL                     1
+             552 FORMAT_VALUE             0
+             554 BUILD_STRING             2
+
+2562         556 LOAD_CONST               7 ('shift_combined')
+             558 LOAD_FAST                6 (g_idx)
+             560 BUILD_LIST               1
+
+2561         562 BUILD_TUPLE              3
+             564 CALL                     1
+             572 POP_TOP
+             574 JUMP_BACKWARD           37 (to 502)
+
+2560     >>  576 END_FOR
+
+2565         578 LOAD_FAST                3 (tables)
+             580 LOAD_ATTR                7 (NULL|self + append)
+             600 LOAD_CONST              17 ('WOT Shift (1-4)')
+             602 LOAD_CONST               9 ('wot_shift_combined')
+
+2566         604 LOAD_GLOBAL              9 (NULL + list)
+             614 LOAD_GLOBAL             11 (NULL + range)
+             624 LOAD_FAST                5 (main_count)
+             626 CALL                     1
+             634 CALL                     1
+
+2565         642 BUILD_TUPLE              3
+             644 CALL                     1
+             652 POP_TOP
+
+2567         654 LOAD_GLOBAL             11 (NULL + range)
+             664 LOAD_CONST              13 (3)
+             666 LOAD_FAST                2 (n_shifts)
+             668 CALL                     2
+             676 GET_ITER
+         >>  678 FOR_ITER                35 (to 752)
+             682 STORE_FAST               6 (g_idx)
+
+2568         684 LOAD_FAST                3 (tables)
+             686 LOAD_ATTR                7 (NULL|self + append)
+             706 LOAD_CONST              18 ('WOT Shift ')
+             708 PUSH_NULL
+             710 LOAD_FAST                4 (_ord)
+             712 LOAD_FAST                6 (g_idx)
+             714 LOAD_CONST              16 (2)
+             716 BINARY_OP                0 (+)
+             720 CALL                     1
+             728 FORMAT_VALUE             0
+             730 BUILD_STRING             2
+
+2569         732 LOAD_CONST               9 ('wot_shift_combined')
+             734 LOAD_FAST                6 (g_idx)
+             736 BUILD_LIST               1
+
+2568         738 BUILD_TUPLE              3
+             740 CALL                     1
+             748 POP_TOP
+             750 JUMP_BACKWARD           37 (to 678)
+
+2567     >>  752 END_FOR
+
+2572         754 LOAD_FAST                3 (tables)
+             756 LOAD_ATTR                7 (NULL|self + append)
+             776 LOAD_CONST              19 ('WOT RPM (1-4)')
+             778 LOAD_CONST              11 ('wot_rpm_group')
+
+2573         780 LOAD_GLOBAL              9 (NULL + list)
+             790 LOAD_GLOBAL             11 (NULL + range)
+             800 LOAD_FAST                5 (main_count)
+             802 CALL                     1
+             810 CALL                     1
+
+2572         818 BUILD_TUPLE              3
+             820 CALL                     1
+             828 POP_TOP
+
+2574         830 LOAD_GLOBAL             11 (NULL + range)
+             840 LOAD_CONST              13 (3)
+             842 LOAD_FAST                2 (n_shifts)
+             844 CALL                     2
+             852 GET_ITER
+         >>  854 FOR_ITER                35 (to 928)
+             858 STORE_FAST               6 (g_idx)
+
+2575         860 LOAD_FAST                3 (tables)
+             862 LOAD_ATTR                7 (NULL|self + append)
+             882 LOAD_CONST              20 ('WOT RPM ')
+             884 PUSH_NULL
+             886 LOAD_FAST                4 (_ord)
+             888 LOAD_FAST                6 (g_idx)
+             890 LOAD_CONST              16 (2)
+             892 BINARY_OP                0 (+)
+             896 CALL                     1
+             904 FORMAT_VALUE             0
+             906 BUILD_STRING             2
+
+2576         908 LOAD_CONST              11 ('wot_rpm_group')
+             910 LOAD_FAST                6 (g_idx)
+             912 BUILD_LIST               1
+
+2575         914 BUILD_TUPLE              3
+             916 CALL                     1
+             924 POP_TOP
+             926 JUMP_BACKWARD           37 (to 854)
+
+2574     >>  928 END_FOR
+             930 EXTENDED_ARG             1
+             932 JUMP_FORWARD           418 (to 1770)
+
+2580     >>  934 LOAD_GLOBAL             13 (NULL + min)
+             944 LOAD_CONST              13 (3)
+             946 LOAD_FAST                2 (n_shifts)
+             948 CALL                     2
+             956 STORE_FAST               5 (main_count)
+
+2581         958 LOAD_FAST                3 (tables)
+             960 LOAD_ATTR                7 (NULL|self + append)
+             980 LOAD_CONST              21 ('Upshift (1-4)')
+             982 LOAD_CONST              22 ('upshift_only')
+
+2582         984 LOAD_GLOBAL              9 (NULL + list)
+             994 LOAD_GLOBAL             11 (NULL + range)
+            1004 LOAD_FAST                5 (main_count)
+            1006 CALL                     1
+            1014 CALL                     1
+
+2581        1022 BUILD_TUPLE              3
+            1024 CALL                     1
+            1032 POP_TOP
+
+2583        1034 LOAD_FAST                3 (tables)
+            1036 LOAD_ATTR                7 (NULL|self + append)
+            1056 LOAD_CONST              23 ('Downshift (1-4)')
+            1058 LOAD_CONST              24 ('downshift_only')
+
+2584        1060 LOAD_GLOBAL              9 (NULL + list)
+            1070 LOAD_GLOBAL             11 (NULL + range)
+            1080 LOAD_FAST                5 (main_count)
+            1082 CALL                     1
+            1090 CALL                     1
+
+2583        1098 BUILD_TUPLE              3
+            1100 CALL                     1
+            1108 POP_TOP
+
+2585        1110 LOAD_GLOBAL             11 (NULL + range)
+            1120 LOAD_CONST              13 (3)
+            1122 LOAD_FAST                2 (n_shifts)
+            1124 CALL                     2
+            1132 GET_ITER
+         >> 1134 FOR_ITER                68 (to 1274)
+            1138 STORE_FAST               6 (g_idx)
+
+2586        1140 LOAD_FAST                3 (tables)
+            1142 LOAD_ATTR                7 (NULL|self + append)
+            1162 LOAD_CONST              25 ('Upshift ')
+            1164 PUSH_NULL
+            1166 LOAD_FAST                4 (_ord)
+            1168 LOAD_FAST                6 (g_idx)
+            1170 LOAD_CONST              16 (2)
+            1172 BINARY_OP                0 (+)
+            1176 CALL                     1
+            1184 FORMAT_VALUE             0
+            1186 BUILD_STRING             2
+
+2587        1188 LOAD_CONST              22 ('upshift_only')
+            1190 LOAD_FAST                6 (g_idx)
+            1192 BUILD_LIST               1
+
+2586        1194 BUILD_TUPLE              3
+            1196 CALL                     1
+            1204 POP_TOP
+
+2588        1206 LOAD_FAST                3 (tables)
+            1208 LOAD_ATTR                7 (NULL|self + append)
+            1228 LOAD_CONST              26 ('Downshift ')
+            1230 PUSH_NULL
+            1232 LOAD_FAST                4 (_ord)
+            1234 LOAD_FAST                6 (g_idx)
+            1236 LOAD_CONST              16 (2)
+            1238 BINARY_OP                0 (+)
+            1242 CALL                     1
+            1250 FORMAT_VALUE             0
+            1252 BUILD_STRING             2
+
+2589        1254 LOAD_CONST              24 ('downshift_only')
+            1256 LOAD_FAST                6 (g_idx)
+            1258 BUILD_LIST               1
+
+2588        1260 BUILD_TUPLE              3
+            1262 CALL                     1
+            1270 POP_TOP
+            1272 JUMP_BACKWARD           70 (to 1134)
+
+2585     >> 1274 END_FOR
+
+2592        1276 LOAD_FAST                3 (tables)
+            1278 LOAD_ATTR                7 (NULL|self + append)
+            1298 LOAD_CONST              27 ('WOT Upshift (1-4)')
+            1300 LOAD_CONST              28 ('wot_upshift_only')
+
+2593        1302 LOAD_GLOBAL              9 (NULL + list)
+            1312 LOAD_GLOBAL             11 (NULL + range)
+            1322 LOAD_FAST                5 (main_count)
+            1324 CALL                     1
+            1332 CALL                     1
+
+2592        1340 BUILD_TUPLE              3
+            1342 CALL                     1
+            1350 POP_TOP
+
+2594        1352 LOAD_FAST                3 (tables)
+            1354 LOAD_ATTR                7 (NULL|self + append)
+            1374 LOAD_CONST              29 ('WOT Downshift (1-4)')
+            1376 LOAD_CONST              30 ('wot_downshift_only')
+
+2595        1378 LOAD_GLOBAL              9 (NULL + list)
+            1388 LOAD_GLOBAL             11 (NULL + range)
+            1398 LOAD_FAST                5 (main_count)
+            1400 CALL                     1
+            1408 CALL                     1
+
+2594        1416 BUILD_TUPLE              3
+            1418 CALL                     1
+            1426 POP_TOP
+
+2596        1428 LOAD_GLOBAL             11 (NULL + range)
+            1438 LOAD_CONST              13 (3)
+            1440 LOAD_FAST                2 (n_shifts)
+            1442 CALL                     2
+            1450 GET_ITER
+         >> 1452 FOR_ITER                68 (to 1592)
+            1456 STORE_FAST               6 (g_idx)
+
+2597        1458 LOAD_FAST                3 (tables)
+            1460 LOAD_ATTR                7 (NULL|self + append)
+            1480 LOAD_CONST              31 ('WOT Upshift ')
+            1482 PUSH_NULL
+            1484 LOAD_FAST                4 (_ord)
+            1486 LOAD_FAST                6 (g_idx)
+            1488 LOAD_CONST              16 (2)
+            1490 BINARY_OP                0 (+)
+            1494 CALL                     1
+            1502 FORMAT_VALUE             0
+            1504 BUILD_STRING             2
+
+2598        1506 LOAD_CONST              28 ('wot_upshift_only')
+            1508 LOAD_FAST                6 (g_idx)
+            1510 BUILD_LIST               1
+
+2597        1512 BUILD_TUPLE              3
+            1514 CALL                     1
+            1522 POP_TOP
+
+2599        1524 LOAD_FAST                3 (tables)
+            1526 LOAD_ATTR                7 (NULL|self + append)
+            1546 LOAD_CONST              32 ('WOT Downshift ')
+            1548 PUSH_NULL
+            1550 LOAD_FAST                4 (_ord)
+            1552 LOAD_FAST                6 (g_idx)
+            1554 LOAD_CONST              16 (2)
+            1556 BINARY_OP                0 (+)
+            1560 CALL                     1
+            1568 FORMAT_VALUE             0
+            1570 BUILD_STRING             2
+
+2600        1572 LOAD_CONST              30 ('wot_downshift_only')
+            1574 LOAD_FAST                6 (g_idx)
+            1576 BUILD_LIST               1
+
+2599        1578 BUILD_TUPLE              3
+            1580 CALL                     1
+            1588 POP_TOP
+            1590 JUMP_BACKWARD           70 (to 1452)
+
+2596     >> 1592 END_FOR
+
+2603        1594 LOAD_FAST                3 (tables)
+            1596 LOAD_ATTR                7 (NULL|self + append)
+            1616 LOAD_CONST              19 ('WOT RPM (1-4)')
+            1618 LOAD_CONST              11 ('wot_rpm_group')
+
+2604        1620 LOAD_GLOBAL              9 (NULL + list)
+            1630 LOAD_GLOBAL             11 (NULL + range)
+            1640 LOAD_FAST                5 (main_count)
+            1642 CALL                     1
+            1650 CALL                     1
+
+2603        1658 BUILD_TUPLE              3
+            1660 CALL                     1
+            1668 POP_TOP
+
+2605        1670 LOAD_GLOBAL             11 (NULL + range)
+            1680 LOAD_CONST              13 (3)
+            1682 LOAD_FAST                2 (n_shifts)
+            1684 CALL                     2
+            1692 GET_ITER
+         >> 1694 FOR_ITER                35 (to 1768)
+            1698 STORE_FAST               6 (g_idx)
+
+2606        1700 LOAD_FAST                3 (tables)
+            1702 LOAD_ATTR                7 (NULL|self + append)
+            1722 LOAD_CONST              20 ('WOT RPM ')
+            1724 PUSH_NULL
+            1726 LOAD_FAST                4 (_ord)
+            1728 LOAD_FAST                6 (g_idx)
+            1730 LOAD_CONST              16 (2)
+            1732 BINARY_OP                0 (+)
+            1736 CALL                     1
+            1744 FORMAT_VALUE             0
+            1746 BUILD_STRING             2
+
+2607        1748 LOAD_CONST              11 ('wot_rpm_group')
+            1750 LOAD_FAST                6 (g_idx)
+            1752 BUILD_LIST               1
+
+2606        1754 BUILD_TUPLE              3
+            1756 CALL                     1
+            1764 POP_TOP
+            1766 JUMP_BACKWARD           37 (to 1694)
+
+2605     >> 1768 END_FOR
+
+2610     >> 1770 LOAD_FAST                3 (tables)
+            1772 LOAD_ATTR                7 (NULL|self + append)
+            1792 LOAD_CONST              33 (('TCC Table', 'tcc', None))
+            1794 CALL                     1
+            1802 POP_TOP
+
+2611        1804 LOAD_FAST                3 (tables)
+            1806 LOAD_ATTR                7 (NULL|self + append)
+            1826 LOAD_CONST              34 (('TCC WOT Table', 'tcc_wot', None))
+            1828 CALL                     1
+            1836 POP_TOP
+
+2612        1838 LOAD_FAST                3 (tables)
+            1840 RETURN_VALUE

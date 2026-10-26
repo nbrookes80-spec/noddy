@@ -1,0 +1,150 @@
+8956           0 RESUME                   0
+
+8958           2 LOAD_GLOBAL              1 (NULL + hasattr)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_CONST               1 ('boost_enabled')
+              16 CALL                     2
+              24 POP_JUMP_IF_TRUE         1 (to 28)
+
+8959          26 RETURN_CONST             2 (None)
+
+8960     >>   28 LOAD_FAST                0 (self)
+              30 LOAD_ATTR                2 (boost_enabled)
+              50 LOAD_ATTR                5 (NULL|self + isChecked)
+              70 CALL                     0
+              78 STORE_FAST               1 (enabled)
+
+8962          80 LOAD_FAST                1 (enabled)
+              82 EXTENDED_ARG             1
+              84 POP_JUMP_IF_FALSE      360 (to 806)
+              86 LOAD_FAST                0 (self)
+              88 LOAD_ATTR                6 (boost_peak_psi)
+             108 LOAD_ATTR                9 (NULL|self + value)
+             128 CALL                     0
+             136 LOAD_CONST               3 (0)
+             138 COMPARE_OP              68 (>)
+             142 EXTENDED_ARG             1
+             144 POP_JUMP_IF_FALSE      330 (to 806)
+
+8963         146 LOAD_GLOBAL             11 (NULL + BoostCurve)
+
+8964         156 LOAD_FAST                0 (self)
+             158 LOAD_ATTR               12 (boost_spool_rpm)
+             178 LOAD_ATTR                9 (NULL|self + value)
+             198 CALL                     0
+
+8965         206 LOAD_FAST                0 (self)
+             208 LOAD_ATTR                6 (boost_peak_psi)
+             228 LOAD_ATTR                9 (NULL|self + value)
+             248 CALL                     0
+
+8966         256 LOAD_FAST                0 (self)
+             258 LOAD_ATTR               14 (boost_peak_rpm)
+             278 LOAD_ATTR                9 (NULL|self + value)
+             298 CALL                     0
+
+8967         306 LOAD_FAST                0 (self)
+             308 LOAD_ATTR               16 (boost_redline_psi)
+             328 LOAD_ATTR                9 (NULL|self + value)
+             348 CALL                     0
+
+8968         356 LOAD_FAST                0 (self)
+             358 LOAD_ATTR               18 (boost_tq_per_psi)
+             378 LOAD_ATTR                9 (NULL|self + value)
+             398 CALL                     0
+
+8963         406 KW_NAMES                 4 (('spool_rpm', 'peak_psi', 'peak_rpm', 'redline_psi', 'torque_per_psi_pct'))
+             408 CALL                     5
+             416 LOAD_FAST                0 (self)
+             418 STORE_ATTR              10 (boost_curve)
+
+8971         428 LOAD_GLOBAL              1 (NULL + hasattr)
+             438 LOAD_FAST                0 (self)
+             440 LOAD_CONST               5 ('torque_curve')
+             442 CALL                     2
+             450 POP_JUMP_IF_FALSE       39 (to 530)
+             452 LOAD_FAST                0 (self)
+             454 LOAD_ATTR               22 (torque_curve)
+             474 POP_JUMP_IF_NONE        27 (to 530)
+
+8972         476 LOAD_FAST                0 (self)
+             478 LOAD_ATTR               20 (boost_curve)
+             498 LOAD_FAST                0 (self)
+             500 LOAD_ATTR               22 (torque_curve)
+             520 STORE_ATTR              10 (boost_curve)
+
+8974     >>  530 LOAD_CONST               6 (1)
+             532 LOAD_FAST                0 (self)
+             534 LOAD_ATTR                6 (boost_peak_psi)
+             554 LOAD_ATTR                9 (NULL|self + value)
+             574 CALL                     0
+             582 LOAD_FAST                0 (self)
+             584 LOAD_ATTR               18 (boost_tq_per_psi)
+             604 LOAD_ATTR                9 (NULL|self + value)
+             624 CALL                     0
+             632 BINARY_OP                5 (*)
+             636 LOAD_CONST               7 (100)
+             638 BINARY_OP               11 (/)
+             642 BINARY_OP                0 (+)
+             646 STORE_FAST               2 (peak_mult)
+
+8975         648 LOAD_FAST                0 (self)
+             650 LOAD_ATTR               24 (boost_summary)
+             670 LOAD_ATTR               27 (NULL|self + setText)
+
+8976         690 LOAD_CONST               8 ('Effective peak: +')
+             692 LOAD_FAST                2 (peak_mult)
+             694 LOAD_CONST               6 (1)
+             696 BINARY_OP               10 (-)
+             700 LOAD_CONST               7 (100)
+             702 BINARY_OP                5 (*)
+             706 LOAD_CONST               9 ('.1f')
+             708 FORMAT_VALUE             4 (with format)
+             710 LOAD_CONST              10 ('% torque at ')
+
+8977         712 LOAD_GLOBAL             29 (NULL + int)
+             722 LOAD_FAST                0 (self)
+             724 LOAD_ATTR               14 (boost_peak_rpm)
+             744 LOAD_ATTR                9 (NULL|self + value)
+             764 CALL                     0
+             772 CALL                     1
+             780 FORMAT_VALUE             0
+             782 LOAD_CONST              11 (' RPM. Multiplier curve: 1.00× @ idle → ')
+
+8978         784 LOAD_FAST                2 (peak_mult)
+             786 LOAD_CONST              12 ('.2f')
+             788 FORMAT_VALUE             4 (with format)
+             790 LOAD_CONST              13 ('× @ peak.')
+
+8976         792 BUILD_STRING             7
+
+8975         794 CALL                     1
+             802 POP_TOP
+             804 RETURN_CONST             2 (None)
+
+8981     >>  806 LOAD_GLOBAL             11 (NULL + BoostCurve)
+             816 CALL                     0
+             824 LOAD_FAST                0 (self)
+             826 STORE_ATTR              10 (boost_curve)
+
+8982         836 LOAD_GLOBAL              1 (NULL + hasattr)
+             846 LOAD_FAST                0 (self)
+             848 LOAD_CONST               5 ('torque_curve')
+             850 CALL                     2
+             858 POP_JUMP_IF_FALSE       29 (to 918)
+             860 LOAD_FAST                0 (self)
+             862 LOAD_ATTR               22 (torque_curve)
+             882 POP_JUMP_IF_NONE        17 (to 918)
+
+8983         884 LOAD_CONST               2 (None)
+             886 LOAD_FAST                0 (self)
+             888 LOAD_ATTR               22 (torque_curve)
+             908 STORE_ATTR              10 (boost_curve)
+
+8984     >>  918 LOAD_FAST                0 (self)
+             920 LOAD_ATTR               24 (boost_summary)
+             940 LOAD_ATTR               27 (NULL|self + setText)
+             960 LOAD_CONST              14 ('Boost disabled (naturally aspirated mode).')
+             962 CALL                     1
+             970 POP_TOP
+             972 RETURN_CONST             2 (None)

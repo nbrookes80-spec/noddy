@@ -1,0 +1,5061 @@
+[
+ {
+  "name": "<module>",
+  "line": 1,
+  "ops": 2951,
+  "strings": [
+   "\nPro Transmission Calibration Studio\nGM 1996-Current shift point calculator (RWD, FWD, Allison, Aisin)\n\nOutput is TPS x Gear matrices compatible with HP Tuners VCM Editor and\nTunerPro paste. All math in MPH/imperial; metric toggle available.\n",
+   "Custom",
+   "75-78mm Cable TB (LT1, early LS1)",
+   "78-85mm Cable TB (LS1 stock)",
+   "90-92mm Cable TB (NCS/LS6 upgrade)",
+   "102mm+ Cable TB (race only)",
+   "97-04 C5 Vette ETC",
+   "05-13 C6 Vette / Z06 ETC",
+   "09-13 C6 ZR1 LS9 Supercharged ETC",
+   "05-06 LS2 GTO ETC",
+   "08-09 Pontiac G8 GT/GXP ETC",
+   "08-14 CTS-V LSA Supercharged ETC",
+   "10-15 5th Gen Camaro SS L99/LS3",
+   "06-09 Solstice GXP / Sky Redline",
+   "02-03 GMT800 LM7/LQ4 Early ETC",
+   "04-07 GMT800 LM7/LH6/LQ9 Late ETC",
+   "07-10 GMT900 LY5/LMG/LFA 5.3",
+   "07-10 GMT900 L92/L9H 6.0/6.2",
+   "11-14 GMT900 L20/L96 6.0 HD",
+   "02-09 GMT360 4.2L Atlas I6 (LL8)",
+   "03-14 Express/Savana Van ETC",
+   "07-09 Hummer H2/H3 ETC",
+   "14-19 C7 Vette LT1 ETC",
+   "15-19 C7 Z06 LT4 Supercharged ETC",
+   "20+ C8 Mid-Engine LT2 ETC",
+   "16-23 6th Gen Camaro SS LT1 ETC",
+   "12-15 5th Gen ZL1 LSA ETC",
+   "17-24 6th Gen ZL1 LT4 ETC",
+   "16-19 CTS-V Gen3 LT4 ETC",
+   "22+ CT5-V Blackwing LT4 ETC",
+   "14-18 GMTK2 L83/L86 5.3/6.2 ETC",
+   "19+ T1XX L82/L84 5.3 ETC",
+   "19+ T1XX L87 6.2 ETC",
+   "20+ T1XX L8T 6.6 Gas HD ETC",
+   "17+ Colorado/Canyon LGZ V6 ETC",
+   "(Custom \u2014 enter manually)",
+   "26\u00d710\u00d715 M/T ET Street SS",
+   "26\u00d711.5\u00d715 M/T ET Street",
+   "28\u00d710\u00d715 M/T Sportsman SR",
+   "28\u00d711.5\u00d715 M/T ET Street",
+   "29\u00d710.5\u00d715 M/T ET Street R",
+   "30\u00d79\u00d715 Hoosier Quick Time",
+   "275/60R15 M/T DR",
+   "315/60R15 M/T DR",
+   "275/40R20 Nitto NT05R",
+   "305/35R20 NT555R",
+   "245/45R18 (LS1 Camaro stock)",
+   "245/45R20",
+   "255/35R20",
+   "255/40R18",
+   "255/40R19",
+   "275/35R19",
+   "275/35R20",
+   "275/40R20",
+   "285/35R20 (Camaro SS rear)",
+   "295/30R20",
+   "305/30R20",
+   "305/35R20",
+   "295/30R19",
+   "335/30R20 (ZR1/ZL1 rear)",
+   "245/75R16 (LD truck stock)",
+   "265/65R17 (1500 stock)",
+   "265/70R17",
+   "275/55R20 (1500 22\" stock)",
+   "275/65R18",
+   "275/60R20",
+   "285/45R22",
+   "285/65R18",
+   "275/65R20",
+   "305/55R20",
+   "31\u00d710.5\u00d715 (BFG A/T)",
+   "32\u00d711.5\u00d715",
+   "33\u00d712.5R17",
+   "35\u00d712.5R17",
+   "37\u00d712.5R17",
+   "LT265/70R17",
+   "LT285/70R17",
+   "LT295/70R17",
+   "LT315/70R17",
+   "LT325/65R18",
+   "LT285/75R16",
+   "LT35\u00d712.5R20",
+   "LT265/70R18 (3/4 ton stock)",
+   "LT275/65R20 (HD stock)",
+   "LT235/85R16 (1-ton stock)",
+   "Racing",
+   "Eco",
+   "Hot ATF Protection",
+   "Cruise / Light Foot",
+   "1-2",
+   "2-3",
+   "3-4",
+   "4-5",
+   "5-6",
+   "6-7",
+   "7-8",
+   "8-9",
+   "9-10",
+   "1-3",
+   "2-4",
+   "3-5",
+   "4-6",
+   "5-7",
+   "6-8",
+   "7-9",
+   "8-10",
+   "Racing / Drag",
+   "Towing / Heavy Load",
+   "Eco / Cruise",
+   "torque",
+   "rpm",
+   "trans_name",
+   "4L60E (1993-2013)",
+   "tire_dia",
+   "axle",
+   "chain",
+   "weight",
+   "rwhp",
+   "vss_count",
+   "idle_rpm",
+   "stall_rpm",
+   "shift_rpm",
+   "downshift_rpm",
+   "min_tcc_rpm",
+   "min_tcc_gear",
+   "accel_lock_gear",
+   "wot_lock_gear",
+   "tps_preset",
+   "spread_up",
+   "6L80 (2006-Current)",
+   "8L90 (2014-Current)",
+   "10L90 (2017-Current)",
+   "10L80 (2017-Current)",
+   "Allison 1000 6-Spd (2006-Current)",
+   "06-07 LBZ Duramax ETC",
+   "17+ L5P Duramax ETC",
+   "RWD",
+   "4L65E (2001-2013)",
+   "4L70E (2006-2013)",
+   "4L80E (1991-2013)",
+   "4L85E (2002-2013)",
+   "6L45 (2007-2013)",
+   "6L50 (2007-Current)",
+   "6L90 (2007-Current)",
+   "8L45 (2015-Current)",
+   "4T40E (1995-2005)",
+   "FWD",
+   "4T45E (1997-2011)",
+   "4T60E (1991-1999)",
+   "4T65E (1997-2009)",
+   "XDFAxis",
+   "XDFParameter",
+   "XDFDefinition",
+   "BinReader",
+   "BoostCurve",
+   "TorqueCurve",
+   "LogImporter",
+   "DragSimulator",
+   "CalcEngine",
+   "ExportDialog",
+   "ProfileMetadataDialog",
+   "LockupConfigDialog",
+   "DragRunPlot",
+   "LogImportWorker",
+   "LogImportDialog",
+   "PerfSimDialog",
+   "TorqueCurveDialog",
+   "BinXdfDialog",
+   "DelayDialog",
+   "ModeOverridesDialog",
+   "ImportTableDialog",
+   "ShiftCurvePlot",
+   "PressureEngine",
+   "ShiftTimeEngine",
+   "TCCDutyEngine",
+   "PressureTab",
+   "CompareDialog",
+   "GearCalculatorPlot",
+   "GearCalculatorTab",
+   "Theme",
+   "TransStudio",
+   "__main__"
+  ]
+ },
+ {
+  "name": "<module>.resource_path",
+  "line": 30,
+  "ops": 29,
+  "strings": [
+   " Get absolute path to resource, works for dev and for PyInstaller ",
+   "."
+  ]
+ },
+ {
+  "name": "<module>.get_pattern_shifts",
+  "line": 569,
+  "ops": 81,
+  "strings": [
+   "Return shift-name list for given trans (sequential + common skips).",
+   "-"
+  ]
+ },
+ {
+  "name": "<module>.XDFAxis",
+  "line": 905,
+  "ops": 22,
+  "strings": [
+   "XDFAxis",
+   "Single axis (x, y, or z) from an XDF table or scalar."
+  ]
+ },
+ {
+  "name": "<module>.XDFAxis.__init__",
+  "line": 911,
+  "ops": 32,
+  "strings": [
+   "",
+   "X"
+  ]
+ },
+ {
+  "name": "<module>.XDFAxis._read_one",
+  "line": 923,
+  "ops": 43,
+  "strings": [
+   "Read a single value at offset, apply MATH conversion.",
+   "little",
+   "big"
+  ]
+ },
+ {
+  "name": "<module>.XDFAxis._apply_math",
+  "line": 933,
+  "ops": 74,
+  "strings": [
+   "Safely evaluate MATH equation with X = raw_value. Returns float.",
+   "X",
+   "(",
+   ")",
+   "0123456789.+-*/() eE",
+   "__builtins__"
+  ]
+ },
+ {
+  "name": "<module>.XDFAxis.read_table",
+  "line": 948,
+  "ops": 74,
+  "strings": [
+   "Read full 1D or 2D grid from BIN. Returns list[list[float]]."
+  ]
+ },
+ {
+  "name": "<module>.XDFParameter",
+  "line": 962,
+  "ops": 14,
+  "strings": [
+   "XDFParameter",
+   "A scalar or table from an XDF definition."
+  ]
+ },
+ {
+  "name": "<module>.XDFParameter.__init__",
+  "line": 964,
+  "ops": 29,
+  "strings": [
+   "scalar",
+   ""
+  ]
+ },
+ {
+  "name": "<module>.XDFParameter.read",
+  "line": 975,
+  "ops": 141,
+  "strings": [
+   "Returns float (scalar) or dict {'z':[[...]], 'x_breakpoints':...}",
+   "scalar",
+   "x_breakpoints",
+   "y_breakpoints",
+   "z"
+  ]
+ },
+ {
+  "name": "<module>.XDFDefinition",
+  "line": 993,
+  "ops": 55,
+  "strings": [
+   "XDFDefinition",
+   "Parsed XDF document \u2014 collection of XDFParameter objects.\n\n    Usage:\n        xdf = XDFDefinition.from_file(\"e38_6l80.xdf\")\n        param = xdf.find(\"Base Shift Pressure\")\n        data = param.read(bin_bytes)\n    "
+  ]
+ },
+ {
+  "name": "<module>.XDFDefinition.__init__",
+  "line": 1001,
+  "ops": 11,
+  "strings": [
+   ""
+  ]
+ },
+ {
+  "name": "<module>.XDFDefinition.find",
+  "line": 1006,
+  "ops": 24,
+  "strings": []
+ },
+ {
+  "name": "<module>.XDFDefinition.find_all",
+  "line": 1013,
+  "ops": 34,
+  "strings": []
+ },
+ {
+  "name": "<module>.XDFDefinition.categories",
+  "line": 1017,
+  "ops": 12,
+  "strings": []
+ },
+ {
+  "name": "<module>.XDFDefinition.categories.<genexpr>",
+  "line": 1018,
+  "ops": 20,
+  "strings": []
+ },
+ {
+  "name": "<module>.XDFDefinition.from_file",
+  "line": 1020,
+  "ops": 44,
+  "strings": [
+   "Invalid XDF XML: "
+  ]
+ },
+ {
+  "name": "<module>.XDFDefinition.from_string",
+  "line": 1029,
+  "ops": 18,
+  "strings": []
+ },
+ {
+  "name": "<module>.XDFDefinition._from_element",
+  "line": 1034,
+  "ops": 93,
+  "strings": [
+   "XDFHEADER",
+   "deftitle",
+   "BASEOFFSET",
+   "offset",
+   "0",
+   "XDFCONSTANT",
+   "XDFTABLE"
+  ]
+ },
+ {
+  "name": "<module>.XDFDefinition._parse_int",
+  "line": 1056,
+  "ops": 36,
+  "strings": [
+   "0x"
+  ]
+ },
+ {
+  "name": "<module>.XDFDefinition._parse_axis",
+  "line": 1068,
+  "ops": 178,
+  "strings": [
+   "EMBEDDEDDATA",
+   "mmedaddress",
+   "0",
+   "mmedelementsizebits",
+   "16",
+   "mmedmajorstridebits",
+   "mmedrowcount",
+   "1",
+   "mmedcolcount",
+   "mmedtypeflags",
+   "MATH",
+   "equation",
+   "X",
+   "units",
+   "indexcount",
+   "x",
+   "y"
+  ]
+ },
+ {
+  "name": "<module>.XDFDefinition._parse_scalar",
+  "line": 1102,
+  "ops": 109,
+  "strings": [
+   "scalar",
+   "uniqueid",
+   "",
+   "title",
+   "CATEGORYMEM",
+   "category",
+   "index",
+   "description",
+   "units",
+   "z"
+  ]
+ },
+ {
+  "name": "<module>.XDFDefinition._parse_table",
+  "line": 1125,
+  "ops": 148,
+  "strings": [
+   "uniqueid",
+   "",
+   "title",
+   "CATEGORYMEM",
+   "category",
+   "index",
+   "XDFAXIS",
+   "id",
+   "x",
+   "y",
+   "z",
+   "units",
+   "table_2d",
+   "table_1d",
+   "scalar"
+  ]
+ },
+ {
+  "name": "<module>.BinReader",
+  "line": 1160,
+  "ops": 30,
+  "strings": [
+   "BinReader",
+   "Reads a raw .BIN flash dump file and exposes parameter lookups via an\n    XDFDefinition.\n\n    Usage:\n        reader = BinReader.from_file(\"dump.bin\", xdf)\n        stall = reader.read(\"Stall Speed\")             # scalar\n        table = reader.read_table(\"Base Shift Pressure\")  # 2D list\n    "
+  ]
+ },
+ {
+  "name": "<module>.BinReader.__init__",
+  "line": 1169,
+  "ops": 13,
+  "strings": []
+ },
+ {
+  "name": "<module>.BinReader.from_file",
+  "line": 1174,
+  "ops": 34,
+  "strings": [
+   "rb"
+  ]
+ },
+ {
+  "name": "<module>.BinReader.attach_xdf",
+  "line": 1180,
+  "ops": 5,
+  "strings": []
+ },
+ {
+  "name": "<module>.BinReader.read",
+  "line": 1183,
+  "ops": 21,
+  "strings": []
+ },
+ {
+  "name": "<module>.BinReader.read_table",
+  "line": 1189,
+  "ops": 17,
+  "strings": [
+   "z"
+  ]
+ },
+ {
+  "name": "<module>.BinReader.info",
+  "line": 1195,
+  "ops": 77,
+  "strings": [
+   "BIN size: ",
+   " bytes (",
+   " KB)",
+   "\nXDF: ",
+   "\nParameters: ",
+   "\nCategories: ",
+   ", ",
+   " (+",
+   " more)",
+   ""
+  ]
+ },
+ {
+  "name": "<module>.BoostCurve",
+  "line": 1214,
+  "ops": 33,
+  "strings": [
+   "BoostCurve",
+   "Parameterized boost-vs-RPM curve for forced-induction engines.\n\n    Model: smooth ramp from 0 PSI at low RPM, reaching peak_psi at peak_rpm,\n    then either holding flat or tapering to redline_psi. Used to multiply\n    base engine torque in CalcEngine acceleration sim.\n\n    Effective torque: engine_tq * (1 + psi_at(rpm) * torque_per_psi_pct/100)\n\n    Defaults represent a moderate ~10 PSI turbo on a 5.3L LS-truck setup.\n    "
+  ]
+ },
+ {
+  "name": "<module>.BoostCurve.__init__",
+  "line": 1225,
+  "ops": 32,
+  "strings": []
+ },
+ {
+  "name": "<module>.BoostCurve.is_empty",
+  "line": 1234,
+  "ops": 6,
+  "strings": []
+ },
+ {
+  "name": "<module>.BoostCurve.psi_at",
+  "line": 1238,
+  "ops": 105,
+  "strings": [
+   "RPM-dependent boost PSI. Three regions:\n          - rpm < spool: linear ramp 0 \u2192 0.5 PSI (pre-spool/turbo lag)\n          - spool \u2264 rpm < peak: cubic ramp 0.5 \u2192 peak_psi (boost building)\n          - rpm \u2265 peak: linear interp peak_psi \u2192 redline_psi\n        "
+  ]
+ },
+ {
+  "name": "<module>.BoostCurve.torque_mult",
+  "line": 1264,
+  "ops": 17,
+  "strings": [
+   "Multiplier to apply to NA torque to get boosted torque.\n        torque_mult(rpm) = 1 + psi_at(rpm) * (pct_per_psi / 100)"
+  ]
+ },
+ {
+  "name": "<module>.BoostCurve.to_dict",
+  "line": 1271,
+  "ops": 14,
+  "strings": []
+ },
+ {
+  "name": "<module>.BoostCurve.from_dict",
+  "line": 1280,
+  "ops": 36,
+  "strings": [
+   "spool_rpm",
+   "peak_psi",
+   "peak_rpm",
+   "redline_psi",
+   "torque_per_psi_pct"
+  ]
+ },
+ {
+  "name": "<module>.TorqueCurve",
+  "line": 1293,
+  "ops": 64,
+  "strings": [
+   "TorqueCurve",
+   "Stores RPM-indexed HP/TQ pairs and provides interpolated lookups.\n\n    Storage: sorted list of (rpm, hp, tq) tuples. RPM strictly increasing.\n    Empty curve falls back to flat RWHP scalar mode.\n    "
+  ]
+ },
+ {
+  "name": "<module>.TorqueCurve.__init__",
+  "line": 1300,
+  "ops": 63,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurve.__init__.<lambda>",
+  "line": 1302,
+  "ops": 5,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurve.is_empty",
+  "line": 1313,
+  "ops": 8,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurve.peak_hp",
+  "line": 1317,
+  "ops": 69,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurve.peak_hp.<genexpr>",
+  "line": 1322,
+  "ops": 17,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurve.peak_tq",
+  "line": 1333,
+  "ops": 69,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurve.peak_tq.<genexpr>",
+  "line": 1338,
+  "ops": 17,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurve.peak_hp_rpm",
+  "line": 1348,
+  "ops": 74,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurve.peak_hp_rpm.<lambda>",
+  "line": 1353,
+  "ops": 5,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurve.peak_tq_rpm",
+  "line": 1364,
+  "ops": 74,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurve.peak_tq_rpm.<lambda>",
+  "line": 1369,
+  "ops": 5,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurve.rpm_range",
+  "line": 1380,
+  "ops": 19,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurve.hp_at",
+  "line": 1386,
+  "ops": 122,
+  "strings": [
+   "Linear interpolation between data points; clamps to endpoints.\n        Boost multiplier applied if boost_curve set."
+  ]
+ },
+ {
+  "name": "<module>.TorqueCurve.tq_at",
+  "line": 1410,
+  "ops": 122,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurve.avg_hp",
+  "line": 1432,
+  "ops": 59,
+  "strings": [
+   "Average HP across an RPM range (trapezoidal). Useful for shift-lead\n        math: predict acceleration during the shift interval RPM band."
+  ]
+ },
+ {
+  "name": "<module>.TorqueCurve.to_dict",
+  "line": 1447,
+  "ops": 26,
+  "strings": [
+   "For JSON profile save.",
+   "points"
+  ]
+ },
+ {
+  "name": "<module>.TorqueCurve.from_dict",
+  "line": 1451,
+  "ops": 38,
+  "strings": [
+   "points"
+  ]
+ },
+ {
+  "name": "<module>.TorqueCurve.from_csv",
+  "line": 1457,
+  "ops": 136,
+  "strings": [
+   "Parse a dyno CSV. Expected: 1-3 columns (RPM, HP[, TQ]) with header.\n        Tolerant of common dyno formats. Returns TorqueCurve.",
+   "r"
+  ]
+ },
+ {
+  "name": "<module>.LogImporter",
+  "line": 1499,
+  "ops": 95,
+  "strings": [
+   "LogImporter",
+   "Reads a dyno log CSV and analyzes against calc predictions.\n\n    Column-name matching is fuzzy (case-insensitive substring match) to\n    handle the wide variation across VCM Scanner / EFILive / OBDLink / etc.\n    Common aliases are listed below; first match wins.\n    "
+  ]
+ },
+ {
+  "name": "<module>.LogImporter.__init__",
+  "line": 1520,
+  "ops": 14,
+  "strings": []
+ },
+ {
+  "name": "<module>.LogImporter.from_csv",
+  "line": 1526,
+  "ops": 409,
+  "strings": [
+   "Parse a CSV file. Auto-detects header row + column mapping.\n        Returns a LogImporter instance.\n\n        progress_cb : optional callable(int 0-100) for UI feedback\n        target_hz   : if set, downsample to this rate (10 Hz typical = 10\u00d7 speedup\n                      and no analytical loss for shift detection / slip averaging)\n\n        Uses pandas if available (10-50\u00d7 faster on large files), else falls back\n        to csv module.\n        ",
+   "ignore",
+   "r"
+  ]
+ },
+ {
+  "name": "<module>.LogImporter.from_csv.<genexpr>",
+  "line": 1590,
+  "ops": 18,
+  "strings": []
+ },
+ {
+  "name": "<module>.LogImporter._sniff_header_row",
+  "line": 1620,
+  "ops": 104,
+  "strings": [
+   "Return the 0-indexed line number containing the header.",
+   "r",
+   "ignore"
+  ]
+ },
+ {
+  "name": "<module>.LogImporter._sniff_header_row.<genexpr>",
+  "line": 1636,
+  "ops": 25,
+  "strings": []
+ },
+ {
+  "name": "<module>.LogImporter._is_number",
+  "line": 1642,
+  "ops": 20,
+  "strings": []
+ },
+ {
+  "name": "<module>.LogImporter.from_dataframe",
+  "line": 1650,
+  "ops": 231,
+  "strings": [
+   "Build a LogImporter from a pre-parsed pandas DataFrame.\n        ~10-50\u00d7 faster than from_csv for files >1MB because pandas uses\n        a C-backed CSV parser.",
+   "object",
+   "coerce"
+  ]
+ },
+ {
+  "name": "<module>.LogImporter._build_column_map",
+  "line": 1692,
+  "ops": 104,
+  "strings": [
+   "Map each normalized column name \u2192 actual column index.",
+   "rpm",
+   "mph",
+   "kph",
+   "tps",
+   "gear",
+   "trans_temp",
+   "input_spd",
+   "output_spd",
+   "tcc_dc"
+  ]
+ },
+ {
+  "name": "<module>.LogImporter._find_col",
+  "line": 1717,
+  "ops": 33,
+  "strings": []
+ },
+ {
+  "name": "<module>.LogImporter.get_col",
+  "line": 1725,
+  "ops": 20,
+  "strings": [
+   "Safely fetch a value by normalized key from a row."
+  ]
+ },
+ {
+  "name": "<module>.LogImporter.is_empty",
+  "line": 1732,
+  "ops": 8,
+  "strings": []
+ },
+ {
+  "name": "<module>.LogImporter.n_samples",
+  "line": 1736,
+  "ops": 6,
+  "strings": []
+ },
+ {
+  "name": "<module>.LogImporter.detected_columns",
+  "line": 1740,
+  "ops": 34,
+  "strings": [
+   "Return a list of (normalized_name, actual_header) for the UI."
+  ]
+ },
+ {
+  "name": "<module>.LogImporter.analyze",
+  "line": 1749,
+  "ops": 458,
+  "strings": [
+   "Extract measured shift points, stall RPM, WOT slip%, ATF temp range.\n        Compares to predicted values from cfg.\n\n        Returns dict with:\n          shift_events:    list of {gear_from, gear_to, mph, rpm, tps}\n          stall_peak_rpm:  highest engine RPM observed while v < 5 mph and TPS > 80%\n          wot_slip_pct:    average slip % at TPS > 90%, by computing\n                           (engine_rpm - wheel_coupled_rpm) / engine_rpm \u00d7 100\n          temp_range:      (min, max) ATF temp \u00b0F\n          n_samples:       row count\n          warnings:        list of strings noting columns not detected\n        ",
+   "warnings",
+   "Log is empty",
+   "Missing column: ",
+   " \u2014 analysis will be partial",
+   "gear",
+   "tps",
+   "mph",
+   "rpm",
+   "shift_events",
+   "No gear column \u2014 can't detect shift events. VCM Scanner: enable PID 'Current Gear' (TCM).",
+   "stall_peak_rpm",
+   "ratios",
+   "axle",
+   "chain",
+   "tire_dia",
+   "wot_slip_pct",
+   "trans_temp",
+   "temp_range"
+  ]
+ },
+ {
+  "name": "<module>.LogImporter.analyze.<genexpr>",
+  "line": 1821,
+  "ops": 19,
+  "strings": []
+ },
+ {
+  "name": "<module>.LogImporter.analyze.<genexpr>",
+  "line": 1831,
+  "ops": 17,
+  "strings": []
+ },
+ {
+  "name": "<module>.DragSimulator",
+  "line": 1863,
+  "ops": 44,
+  "strings": [
+   "DragSimulator",
+   "Newton-integration vehicle dynamics simulator.\n\n    Forces:\n      F_drive = engine_tq \u00d7 ratio \u00d7 final_drive \u00d7 \u03b7 / r_tire\n      F_aero  = 0.5 \u00d7 \u03c1 \u00d7 Cd\u00d7A \u00d7 v\u00b2\n      F_roll  = Crr \u00d7 W\n      a       = (F_drive \u2212 F_aero \u2212 F_roll) \u00d7 g / W\n\n    Launch: engine sits at stall_rpm \u00d7 0.7 until vehicle speed catches up to\n    rigid-coupling RPM (models converter flash but not full slip dynamics).\n    Shifts: 0.4s torque interruption per shift event.\n    "
+  ]
+ },
+ {
+  "name": "<module>.DragSimulator.__init__",
+  "line": 1883,
+  "ops": 137,
+  "strings": [
+   "torque_curve",
+   "ratios",
+   "axle",
+   "chain",
+   "tire_dia",
+   "weight",
+   "stall_rpm",
+   "idle_rpm",
+   "shift_rpm",
+   "per_gear_rpm"
+  ]
+ },
+ {
+  "name": "<module>.DragSimulator._slip_for_gear",
+  "line": 1931,
+  "ops": 18,
+  "strings": [
+   "Return fractional slip (0.06 = 6%) for gear at WOT, locked-converter-\n        unaware. Used to reduce effective drive torque at the wheels."
+  ]
+ },
+ {
+  "name": "<module>.DragSimulator._shift_time_for",
+  "line": 1938,
+  "ops": 29,
+  "strings": [
+   "Dynamic shift time. Real GM shifts:\n          - WOT in 1st-2nd:    0.50-0.65s (most torque to manage)\n          - WOT in 3rd-4th:    0.40-0.50s\n          - WOT in upper:      0.30-0.40s\n          - Light throttle:    0.15-0.25s (any gear)\n\n        Returns seconds. torque_load_frac is 0-1, where 1 = WOT at peak HP.\n        "
+  ]
+ },
+ {
+  "name": "<module>.DragSimulator.mph_to_rpm",
+  "line": 1954,
+  "ops": 16,
+  "strings": []
+ },
+ {
+  "name": "<module>.DragSimulator.rpm_to_mph",
+  "line": 1957,
+  "ops": 16,
+  "strings": []
+ },
+ {
+  "name": "<module>.DragSimulator.simulate",
+  "line": 1960,
+  "ops": 489,
+  "strings": [
+   "Run the simulation. Returns dict with traces and timing results.",
+   "t_0_30",
+   "t_0_60",
+   "t_0_100",
+   "t_0_120",
+   "t_eighth",
+   "v_eighth",
+   "t_quarter",
+   "v_quarter",
+   "\u2192",
+   "trace_t",
+   "trace_v",
+   "trace_rpm",
+   "trace_gear",
+   "trace_dist",
+   "shift_events",
+   "max_v"
+  ]
+ },
+ {
+  "name": "<module>.CalcEngine",
+  "line": 2106,
+  "ops": 44,
+  "strings": [
+   "CalcEngine",
+   "\n    Pure shift point calculator. Takes a config dict, returns numpy-like\n    nested-list tables. UI binds inputs to this; logic is testable in isolation.\n    "
+  ]
+ },
+ {
+  "name": "<module>.CalcEngine.mph",
+  "line": 2112,
+  "ops": 20,
+  "strings": []
+ },
+ {
+  "name": "<module>.CalcEngine.stall_slip",
+  "line": 2118,
+  "ops": 9,
+  "strings": [
+   "Converter slip fraction at WOT"
+  ]
+ },
+ {
+  "name": "<module>.CalcEngine.base_slope",
+  "line": 2123,
+  "ops": 23,
+  "strings": [
+   "Lock/unlock base curve: (TPS/100)^factor with offset shift."
+  ]
+ },
+ {
+  "name": "<module>.CalcEngine.upshift_slope",
+  "line": 2129,
+  "ops": 58,
+  "strings": [
+   "\n        Upshift curve: base + (aggressive - base) * blend[col].\n        Aggressive uses (1-(1-x)^(factor + upf/10)) to keep WOT shifts firm\n        while preserving smooth part-throttle. Column-dependent blend prevents\n        overly early mid-throttle shifts.\n        "
+  ]
+ },
+ {
+  "name": "<module>.CalcEngine.downshift_slope",
+  "line": 2144,
+  "ops": 33,
+  "strings": [
+   "Downshift slope: x^(factor + 0.1 + (10-downf)/5).\n\n        downf high (e.g. 10) \u2192 exp small \u2192 slope LARGE \u2192 downshift cell at\n        HIGH MPH \u2192 kickdown triggers readily even at cruise speed (aggressive).\n\n        downf low (e.g. 1) \u2192 exp large \u2192 slope SMALL \u2192 downshift cell at\n        LOW MPH \u2192 engine must lug down before PCM drops a gear (lazy).\n\n        Behavioral inverse of upshift firmness \u2014 high downf = snappy kickdown,\n        low downf = hunt-free cruise."
+  ]
+ },
+ {
+  "name": "<module>.CalcEngine.vss_calibration",
+  "line": 2160,
+  "ops": 98,
+  "strings": [
+   "\n        Compute speedometer calibration values per BC's Update_VSS logic.\n        Returns dict of label->value pairs (for display in Export dialog).\n        - tire_rev_per_mile = 63360 / (tire * \u03c0)\n        - trans_rev_per_mile = tire_rev \u00d7 axle_ratio\n        - Pulses/Mile = trans_rev \u00d7 VSS_count (or VSS/axle for tailshaft pickup)\n        ",
+   "Tire Rev/Km",
+   "Tire Rev/M",
+   "VSS Count",
+   "Gear Ratio"
+  ]
+ },
+ {
+  "name": "<module>.CalcEngine.calculate",
+  "line": 2209,
+  "ops": 1310,
+  "strings": [
+   "\n        Main entry point. cfg is a dict with all calibration parameters.\n        Returns dict of 2D tables: up_shift, down_shift, tcc_lock, tcc_unlock,\n        speed_summary (per-gear WOT references).\n        ",
+   "ratios",
+   "tire_dia",
+   "axle",
+   "chain",
+   "idle_rpm",
+   "stall_rpm",
+   "shift_rpm",
+   "downshift_rpm",
+   "weight",
+   "rwhp",
+   "tps_offset",
+   "tps_factor",
+   "up_firmness",
+   "down_firmness",
+   "spread_up",
+   "spread_lock",
+   "spread_lock_up",
+   "spread_unlock_dn",
+   "lead_mode",
+   "lead_value",
+   "down_time",
+   "delays",
+   "per_gear_rpm",
+   "rpm",
+   "torque_curve",
+   "min_tcc_gear",
+   "accel_lock_gear",
+   "wot_lock_gear",
+   "stall_lock_logic",
+   "init_lock_logic",
+   "min_tcc_rpm"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog",
+  "line": 2485,
+  "ops": 133,
+  "strings": [
+   "ExportDialog",
+   "\n      - Left: Speedometer Cal (Gen III/IV variants with computed VSS values)\n      - Right: Shift Tables cycle (Previous/Next), 2 Column WOT, Copy Table\n      - Heatmap visualization (white -> royal blue gradient by intensity)\n    "
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._detect_tcm_era",
+  "line": 2509,
+  "ops": 17,
+  "strings": [
+   "Default-map a trans to TCM era. User can override via the radio\n        buttons in the export dialog.\n        4-spd is its own thing \u2014 return '4spd' so we skip era logic entirely.\n        ",
+   "4spd",
+   "14+",
+   "07-13"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._build_table_list",
+  "line": 2527,
+  "ops": 379,
+  "strings": [
+   "Return list of (display_name, kind, gear_indices) describing the\n        shift tables for the current TCM era. gear_indices are 0-indexed shift\n        positions (0 = 1\u21922, 1 = 2\u21923, etc.).\n\n        kind values:\n          'shift_combined'      \u2014 Up+Dn stacked, full TPS sweep    (07-13)\n          'upshift_only'        \u2014 Up rows only,  full TPS sweep    (14+)\n          'downshift_only'      \u2014 Dn rows only,  full TPS sweep    (14+)\n          'wot_shift_combined'  \u2014 Up+Dn at col 16 (WOT) only       (07-13)\n          'wot_upshift_only'    \u2014 Up at col 16 only                (14+)\n          'wot_downshift_only'  \u2014 Dn at col 16 only                (14+)\n          'wot_rpm_group'       \u2014 Target shift RPM per shift\n          'tcc', 'tcc_wot'      \u2014 TCC tables (unchanged across eras)\n        ",
+   "n_gears",
+   "4spd",
+   "Main Shift Table",
+   "shift_combined",
+   "WOT Shift Table",
+   "wot_shift_combined",
+   "WOT RPM Table",
+   "wot_rpm_group",
+   "07-13",
+   "Main Shift Table (1-4)",
+   "Shift Speed ",
+   "WOT Shift (1-4)",
+   "WOT Shift ",
+   "WOT RPM (1-4)",
+   "WOT RPM ",
+   "Upshift (1-4)",
+   "upshift_only",
+   "Downshift (1-4)",
+   "downshift_only",
+   "Upshift ",
+   "Downshift ",
+   "WOT Upshift (1-4)",
+   "wot_upshift_only",
+   "WOT Downshift (1-4)",
+   "wot_downshift_only",
+   "WOT Upshift ",
+   "WOT Downshift "
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._build_table_list._ord",
+  "line": 2546,
+  "ops": 23,
+  "strings": [
+   "th"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog.__init__",
+  "line": 2620,
+  "ops": 198,
+  "strings": [
+   "\n        mode_tables : dict {mode_name: {upshift, downshift, tcc_lock, tcc_unlock, result}}.\n                      Must have \"Normal\" key.\n        calc_result : the full Normal-mode result dict.\n        drivetrain  : {'tire':, 'axle':, 'vss_count':, 'n_gears':, 'metric':}\n        pressure_per_shift : 6+ spd {mode_name: {shift_name: 2D PSI table}}\n        pressure_torque_cols : 6+ spd list of 5 torque breakpoints\n        pressure_mode_intents : 6+ spd {mode_name: intent_str}\n        tcc_apply_tables : 6+ spd {mode_name: 2D table}    [for live intent regen]\n        coast_tables     : 6+ spd {mode_name: 2D table}    [for live intent regen]\n        garage_tables    : 6+ spd {mode_name: {direction: 1D list}}\n        max_tq           : trans rated torque (lb-ft) \u2014 for live regeneration\n        pressure_4spd  : 4-spd {mode_name: 2D table [3 shifts][33 torque cols]}\n        shift_time_4spd: 4-spd {mode_name: 2D table [3 shifts][17 torque cols]}\n        tcc_duty_4spd  : 4-spd single 2D table [5 temp rows][17 line PSI cols]\n        ",
+   "Export Data",
+   "Normal",
+   "result",
+   "1-2",
+   "Base Shift",
+   "n_gears",
+   "Base Shift Pressure",
+   "trans_name",
+   ""
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._build_left_panel",
+  "line": 2700,
+  "ops": 49,
+  "strings": [
+   "Keep window on top (for VCM Editor paste)"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._toggle_always_on_top",
+  "line": 2714,
+  "ops": 14,
+  "strings": []
+ },
+ {
+  "name": "<module>.ExportDialog._build_pattern_panels",
+  "line": 2723,
+  "ops": 353,
+  "strings": [
+   "4-spd Mode",
+   "Normal",
+   "Performance",
+   "QPushButton { padding: 6px; text-align: left; }QPushButton:checked { background: #2864A0; color: #fff; font-weight: bold; }",
+   "4-spd Tables",
+   "  \u2022 ",
+   "color: #aaa; padding: 2px;",
+   "Use the Table dropdown on the right to switch between\nthe three 4-spd TCM tables. TCC DC Max is single-table\n(no Normal/Performance variants).",
+   "color: #888; font-size: 9pt; padding: 4px;",
+   "Pattern ",
+   " \u2014 ",
+   "QPushButton { padding: 4px; }QPushButton:checked { background: #2864A0; color: #fff; }"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._build_pattern_panels.<lambda>",
+  "line": 2743,
+  "ops": 7,
+  "strings": []
+ },
+ {
+  "name": "<module>.ExportDialog._build_pattern_panels.<lambda>",
+  "line": 2789,
+  "ops": 8,
+  "strings": []
+ },
+ {
+  "name": "<module>.ExportDialog._select_4spd_mode",
+  "line": 2808,
+  "ops": 49,
+  "strings": [
+   "User clicked a 4-spd mode button (Normal/Performance/etc.).",
+   "pres_mode_combo",
+   "pres_intent_combo"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._mark_selected_4spd_button",
+  "line": 2822,
+  "ops": 25,
+  "strings": [
+   "fspd_mode_buttons"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._select_pressure",
+  "line": 2827,
+  "ops": 52,
+  "strings": [
+   "User clicked a Pattern shift button \u2014 update displayed pressure.",
+   "pres_mode_combo",
+   "pres_intent_combo"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._mark_selected_pattern_button",
+  "line": 2842,
+  "ops": 36,
+  "strings": [
+   "Set the checked state of all buttons to reflect current selection."
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._build_right_panel",
+  "line": 2852,
+  "ops": 22,
+  "strings": []
+ },
+ {
+  "name": "<module>.ExportDialog._build_pressure_panel",
+  "line": 2859,
+  "ops": 432,
+  "strings": [
+   "TCM Pressure Tables",
+   "Table:",
+   "Base Shift",
+   "TCC Apply",
+   "  Mode:",
+   "Normal",
+   "Performance",
+   "  Pressure Intent:",
+   "Override the pressure intent for the selected mode.\nLive-regenerates the table \u2014 exported values reflect this choice.",
+   "  Era:",
+   "2015+",
+   "TCC Apply Pressure Ramp table layout (TCM 15235):\n  2007-2010: 17 torque rows \u00d7 17 slip cols\n  2011-2014: 17 torque rows \u00d7 17 slip cols (different breakpoints)\n  2015+:     9 engine RPM rows \u00d7 17 slip cols",
+   "  Unit:",
+   "PSI",
+   "kPa",
+   "Copy Table",
+   "",
+   "font-weight: bold; padding: 4px;",
+   "QTableWidget { background: #1e1e1e; color: #fff; gridline-color: #444; }QHeaderView::section { background: #303030; color: #fff; padding: 2px 6px; border: 1px solid #555; font-weight: bold; }QTableCornerButton::section { background: #303030; border: 1px solid #555; }",
+   "Consolas",
+   "Run Calculate (F5) in the main window first to generate tables.",
+   "color: #888; padding: 20px;"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._populate_pres_intent_combo",
+  "line": 2985,
+  "ops": 167,
+  "strings": [
+   "Populate the Pressure Intent dropdown based on current table type\n        and pre-select the current mode's intent.",
+   "Base Shift Pressure",
+   "Desired Shift Time",
+   "(single table)",
+   "TCC Apply",
+   "Coast",
+   "Garage",
+   "Daily"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._on_pres_table_type_changed",
+  "line": 3024,
+  "ops": 51,
+  "strings": [
+   "TCC Apply",
+   "tcc_era_combo"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._on_pres_mode_changed",
+  "line": 3037,
+  "ops": 34,
+  "strings": []
+ },
+ {
+  "name": "<module>.ExportDialog._on_pres_intent_changed",
+  "line": 3049,
+  "ops": 142,
+  "strings": [
+   "User picked a different pressure intent. Regenerate the displayed\n        mode's table using this intent and update the export tables. The\n        regenerated data is what gets copied/pasted.",
+   "(single table)",
+   "Base Shift Pressure",
+   "Desired Shift Time",
+   "Normal",
+   "n_gears",
+   "Base Shift"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._on_4spd_table_changed",
+  "line": 3089,
+  "ops": 9,
+  "strings": []
+ },
+ {
+  "name": "<module>.ExportDialog._get_4spd_current_table",
+  "line": 3093,
+  "ops": 163,
+  "strings": [
+   "Return (data, row_labels, col_labels, value_kind, header_text).",
+   "Base Shift Pressure",
+   "psi_4spd",
+   " \u2014 Base Shift Pressure (4-spd)",
+   "Desired Shift Time",
+   "sec",
+   " \u2014 Desired Shift Time",
+   "TCC DC Maximum",
+   "\u00b0F",
+   "pct",
+   "TCC DC Maximum \u2014 Trans Oil Temp \u00d7 Line Pressure",
+   "psi",
+   ""
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._refresh_pressure_table",
+  "line": 3115,
+  "ops": 927,
+  "strings": [
+   "Render the currently-selected pressure/shift-time/tcc table.",
+   "",
+   "pressure_unit_combo",
+   "PSI",
+   "psi_4spd",
+   "kPa",
+   "sec",
+   "   [Cap: ",
+   ".0f",
+   " ",
+   "]",
+   "   [seconds \u2014 lower = faster shift]",
+   " (",
+   ")",
+   "{:.3f}",
+   "{:.1f}",
+   "pct",
+   "current_pressure_table_type",
+   "Base Shift",
+   "pres_mode_combo",
+   "Normal",
+   "Daily",
+   "(no data for ",
+   " / ",
+   "\u00b0F",
+   " Base Shift Pressure",
+   "TCC Apply",
+   "tcc_era_combo",
+   "2015+",
+   "row_axis",
+   "torque",
+   "torque_rows",
+   ".1f",
+   "Torque (lb\u00b7ft)",
+   "rpm_rows",
+   "Engine RPM",
+   "slip_cols",
+   "max_psi",
+   "TCC Apply Pressure Ramp [",
+   ", ",
+   " \u00d7 Slip RPM Error]",
+   " \u2014 ",
+   ")   [Intent: ",
+   "  |  Cap: "
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._copy_pressure_table",
+  "line": 3261,
+  "ops": 199,
+  "strings": [
+   "pressure_unit_combo",
+   "PSI",
+   "psi_4spd",
+   "kPa",
+   "sec",
+   "{:.3f}",
+   "{:.1f}",
+   "\n",
+   "current_pressure_table_type",
+   "Base Shift",
+   "pres_mode_combo",
+   "TCC Apply",
+   "_tcc_ramp_current",
+   "tcc_era_combo",
+   "2015+",
+   "Daily"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._copy_pressure_table.<genexpr>",
+  "line": 3269,
+  "ops": 26,
+  "strings": [
+   "\t"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._copy_pressure_table.<genexpr>.<genexpr>",
+  "line": 3269,
+  "ops": 21,
+  "strings": []
+ },
+ {
+  "name": "<module>.ExportDialog._copy_pressure_table.<genexpr>",
+  "line": 3295,
+  "ops": 25,
+  "strings": [
+   "\t"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._copy_pressure_table.<genexpr>.<genexpr>",
+  "line": 3295,
+  "ops": 20,
+  "strings": [
+   ".1f"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._build_speedo_panel",
+  "line": 3301,
+  "ops": 156,
+  "strings": [
+   "Speedometer Cal",
+   "Mode:",
+   "vss_count",
+   "VSS Count (input):",
+   "",
+   "QLineEdit { background: #ffffff; color: #000000; border: 1px solid #888; padding: 2px; }"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._refresh_speedo",
+  "line": 3337,
+  "ops": 112,
+  "strings": [
+   "tire",
+   "axle",
+   "metric",
+   ":",
+   ".3f"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._build_shift_panel",
+  "line": 3360,
+  "ops": 338,
+  "strings": [
+   "Shift Tables",
+   "4spd",
+   "HP Tuners Layout:",
+   "07-13 (combined Up+Dn per gear)",
+   "14+ (separate Up & Dn tables)",
+   "07-13 6L family (15000/15050/15051 style):\n  \u2022 Main Shift Table: 1\u21922, 2\u21923, 3\u21924 + downshifts stacked\n  \u2022 5th Shift Speed: 4\u21925 + 5\u21924 stacked\n  \u2022 6th Shift Speed: 5\u21926 + 6\u21925 stacked\nUse this for 6L80/6L90/6L45/6L50 in pre-2014 vehicles.",
+   "14+ all trans (15028/15034/15337/15338... style):\n  \u2022 Upshift 1-4 + Downshift 1-4 as separate tables\n  \u2022 Each gear 5+ has its own Up + Down tables\nUse for 6L80/6L90 in 14+ vehicles, all 8L/9T/10L families.",
+   "07-13",
+   "Mode:",
+   "Select which mode's tables to view/export. Normal is the main calc;\nextra modes (Performance, Hot, Cruise, Pattern A/B) appear here when\nconfigured via Tools > Multi-Mode Tables Setup.",
+   "\u25c0 Previous",
+   "",
+   "font-weight: bold;",
+   "Next \u25b6",
+   "2 Column WOT",
+   "Copy Table",
+   "Save CSV",
+   "QTableWidget { gridline-color: #888; selection-background-color: #C32626; background: #1e1e1e; color: #ffffff; }QHeaderView::section { background: #303030; color: #ffffff; padding: 2px 6px; border: 1px solid #555; font-weight: bold; }QTableCornerButton::section { background: #303030; border: 1px solid #555; }",
+   "Consolas"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._build_shift_panel.<lambda>",
+  "line": 3390,
+  "ops": 11,
+  "strings": [
+   "07-13"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._build_shift_panel.<lambda>",
+  "line": 3392,
+  "ops": 11,
+  "strings": [
+   "14+"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._switch_mode",
+  "line": 3462,
+  "ops": 29,
+  "strings": [
+   "Switch the displayed mode's tables.",
+   "result"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._switch_era",
+  "line": 3471,
+  "ops": 18,
+  "strings": [
+   "User toggled the TCM era radio. Rebuild table list and jump back\n        to the first shift table so the index isn't pointing at a now-stale\n        position in the new layout."
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._current_table_list",
+  "line": 3482,
+  "ops": 5,
+  "strings": [
+   "Compute (or recompute) the table list based on current era setting."
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._prev_table",
+  "line": 3486,
+  "ops": 20,
+  "strings": []
+ },
+ {
+  "name": "<module>.ExportDialog._next_table",
+  "line": 3491,
+  "ops": 20,
+  "strings": []
+ },
+ {
+  "name": "<module>.ExportDialog._build_current_table",
+  "line": 3496,
+  "ops": 526,
+  "strings": [
+   "Return (label, 2D list, is_rpm) for current table_idx. Uses\n        dynamic table list keyed off TCM era.",
+   "upshift",
+   "downshift",
+   "tcc_lock",
+   "tcc_unlock",
+   "shift_combined",
+   "upshift_only",
+   "downshift_only",
+   "wot_shift_combined",
+   "wot_upshift_only",
+   "wot_downshift_only",
+   "wot_rpm_group",
+   "rpm_targets",
+   "tcc",
+   "tcc_wot"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._refresh_shift_table",
+  "line": 3575,
+  "ops": 307,
+  "strings": [
+   " \u2014 ",
+   ".1f",
+   "WOT",
+   "Norm",
+   "Perf",
+   "{:.0f}",
+   "{:.1f}"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._label_rows",
+  "line": 3627,
+  "ops": 282,
+  "strings": [
+   "Look up the current table descriptor and produce row labels that\n        match the table's kind + included gear indices.",
+   "upshift",
+   "\u2192",
+   " Shift",
+   "wot_rpm_group",
+   "n_gears",
+   "Lock G",
+   "Unlock G"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._table_as_text",
+  "line": 3660,
+  "ops": 28,
+  "strings": [
+   "{:.0f}",
+   "{:.1f}",
+   "\n"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._table_as_text.<genexpr>",
+  "line": 3663,
+  "ops": 25,
+  "strings": []
+ },
+ {
+  "name": "<module>.ExportDialog._table_as_text.<genexpr>.<genexpr>",
+  "line": 3663,
+  "ops": 19,
+  "strings": []
+ },
+ {
+  "name": "<module>.ExportDialog._copy_table",
+  "line": 3665,
+  "ops": 18,
+  "strings": [
+   "\t",
+   "QTableWidget { gridline-color: #888; selection-background-color: #C32626; background: #1e1e1e; color: #ffffff; }QHeaderView::section { background: #2a6a2a; color: #ffffff; padding: 2px 6px; border: 1px solid #555; font-weight: bold; }QTableCornerButton::section { background: #2a6a2a; border: 1px solid #555; }"
+  ]
+ },
+ {
+  "name": "<module>.ExportDialog._save_table",
+  "line": 3677,
+  "ops": 70,
+  "strings": [
+   "Save Table",
+   " ",
+   "_",
+   ".csv",
+   "CSV (*.csv);;Tab-delimited (*.txt)",
+   ",",
+   "\t",
+   "w"
+  ]
+ },
+ {
+  "name": "<module>.ProfileMetadataDialog",
+  "line": 3695,
+  "ops": 20,
+  "strings": [
+   "ProfileMetadataDialog",
+   "Edit identifying metadata embedded in saved tune profiles.\n    Survives JSON round-trip via cfg[\"profile_metadata\"]. Useful for sharing\n    profiles between tuners and tracking iterations over time."
+  ]
+ },
+ {
+  "name": "<module>.ProfileMetadataDialog.__init__",
+  "line": 3700,
+  "ops": 230,
+  "strings": [
+   "Profile Metadata",
+   "Identifying info embedded in saved tune profiles. Useful for\nshared tunes, customer build documentation, and tune history.",
+   "vehicle_name",
+   "Vehicle:",
+   "e.g. '2014 Silverado 6.2L 6L80E' \u2014 used as a label/title in PDF exports",
+   "vin",
+   "VIN (optional):",
+   "Full VIN. Helps disambiguate when shipping multiple profiles per truck",
+   "mileage",
+   "Mileage:",
+   "Current mileage on the trans. Useful when revisiting an old tune",
+   "tuner_name",
+   "Tuner:",
+   "Your name / shop. Embedded in profile so customers can trace authorship",
+   "customer",
+   "Customer:",
+   "Optional \u2014 the customer or vehicle owner name",
+   "build_date",
+   "Build Date:",
+   "When this tune was built. Free-form (YYYY-MM-DD recommended)",
+   "dyno_date",
+   "Dyno Date:",
+   "When the torque curve / measured slip was last validated on a dyno",
+   "hp_estimate",
+   "Power (HP):",
+   "Estimated/measured RWHP. Note: full torque curve via Tools \u2192 Torque Curve.",
+   "converter",
+   "Converter:",
+   "Stall RPM / brand / model (e.g. '2800 Yank LS1100')",
+   "",
+   "Notes (free-form):",
+   "notes",
+   "Free-form notes \u2014 build details, calibration log, things to revisit, etc.",
+   "OK",
+   "Cancel"
+  ]
+ },
+ {
+  "name": "<module>.ProfileMetadataDialog.get_metadata",
+  "line": 3766,
+  "ops": 42,
+  "strings": [
+   "notes"
+  ]
+ },
+ {
+  "name": "<module>.LockupConfigDialog",
+  "line": 3778,
+  "ops": 20,
+  "strings": [
+   "LockupConfigDialog",
+   "\n    Toggles for advanced TCC behavior:\n      - Stall Lock Logic: force lock above (Stall \u00d7 0.66) RPM equivalent\n      - Init Lock Logic: enforce lock above the upshift INTO this gear (iterative)\n      - 4L60E Allow WOT 4th Lockup: stock GM disabled this; turn on for street/dyno\n      - Lock-Stay-Unlock: prevents oscillation in the TCC by widening hysteresis\n    "
+  ]
+ },
+ {
+  "name": "<module>.LockupConfigDialog.__init__",
+  "line": 3786,
+  "ops": 173,
+  "strings": [
+   "Lockup Config",
+   "Advanced TCC behavior options. These add constraints on top of\nthe Min/Accel/WOT gear gates set in the Torque Converter group.",
+   "Stall Lock Logic \u2014 force lock above 66% of stall RPM\n(prevents excessive slip with high-stall converters)",
+   "Init Lock Logic \u2014 TCC must lock above the upshift into this gear\n(matches BC's InitLock; aggressive but smooth)",
+   "4L60E: Allow WOT 4th Lockup\n(GM disables stock \u2014 enable for street tuning, NOT towing)",
+   "6L80/90: Disable 2nd Gear Coast-Down TCC\n(reduces cruise lockup hunting)",
+   "stall_lock",
+   "init_lock",
+   "wot_4th_4l60",
+   "no_2ct_6l",
+   "OK",
+   "Cancel"
+  ]
+ },
+ {
+  "name": "<module>.LockupConfigDialog.get_flags",
+  "line": 3836,
+  "ops": 20,
+  "strings": []
+ },
+ {
+  "name": "<module>.DragRunPlot",
+  "line": 3849,
+  "ops": 23,
+  "strings": [
+   "DragRunPlot",
+   "QPainter widget \u2014 velocity vs time with shift markers + RPM trace overlay."
+  ]
+ },
+ {
+  "name": "<module>.DragRunPlot.__init__",
+  "line": 3852,
+  "ops": 22,
+  "strings": [
+   "background: #1e1e1e;"
+  ]
+ },
+ {
+  "name": "<module>.DragRunPlot.set_results",
+  "line": 3858,
+  "ops": 9,
+  "strings": []
+ },
+ {
+  "name": "<module>.DragRunPlot.paintEvent",
+  "line": 3862,
+  "ops": 741,
+  "strings": [
+   "trace_t",
+   "Sans",
+   "Click 'Run Simulation' to plot velocity vs time",
+   "trace_v",
+   "trace_rpm",
+   " mph",
+   "k",
+   "s",
+   "shift_events",
+   "t",
+   "shift_name",
+   "MPH",
+   "RPM"
+  ]
+ },
+ {
+  "name": "<module>.LogImportWorker",
+  "line": 3970,
+  "ops": 36,
+  "strings": [
+   "LogImportWorker",
+   "Runs LogImporter.from_csv() on a worker thread so the UI stays\n    responsive during multi-second imports of large logs.\n\n    Uses the QObject + moveToThread pattern (Qt6 preferred) rather than\n    subclassing QThread, for cleaner lifecycle management.\n    "
+  ]
+ },
+ {
+  "name": "<module>.LogImportWorker.__init__",
+  "line": 3982,
+  "ops": 15,
+  "strings": []
+ },
+ {
+  "name": "<module>.LogImportWorker.run",
+  "line": 3987,
+  "ops": 63,
+  "strings": [
+   ": "
+  ]
+ },
+ {
+  "name": "<module>.LogImportWorker.run.<lambda>",
+  "line": 3991,
+  "ops": 8,
+  "strings": []
+ },
+ {
+  "name": "<module>.LogImportDialog",
+  "line": 4001,
+  "ops": 35,
+  "strings": [
+   "LogImportDialog",
+   "Import a dyno log CSV, run analysis, compare to predicted values."
+  ]
+ },
+ {
+  "name": "<module>.LogImportDialog.__init__",
+  "line": 4004,
+  "ops": 385,
+  "strings": [
+   "Log Import / Validation",
+   "Import a VCM Scanner / EFILive / OBDLink CSV log to validate the\ncalculated tune against actual measured behavior. The tool will\nauto-detect column names and compute deltas against predictions.",
+   "(no file loaded)",
+   "color: #aaa; padding: 4px;",
+   "Downsample to:",
+   "VCM Scanner logs at 30-100 Hz produce huge files. Analysis only\nneeds ~10 Hz for shift detection / slip averaging \u2014 downsampling\ngives a 10\u00d7 speedup with no accuracy loss.",
+   "Load CSV\u2026",
+   "Detected Columns",
+   "(load a file first)",
+   "font-family: Consolas; color: #ccc; padding: 6px; background: #2a2a2a; border-radius: 3px;",
+   "Measured vs Predicted",
+   "Measured Shift Events (WOT only \u2014 TPS > 70%)",
+   "",
+   "color: #f0a060; padding: 4px;",
+   "Apply Measured Slip to Stall RPM",
+   "If measured WOT slip% disagrees with stall-predicted slip%,\nback-solve the stall RPM that would produce the measured slip\nand apply it to the main window's Stall RPM field.",
+   "Close"
+  ]
+ },
+ {
+  "name": "<module>.LogImportDialog._load_file",
+  "line": 4111,
+  "ops": 163,
+  "strings": [
+   "Import Log CSV",
+   "",
+   "CSV (*.csv);;All files (*.*)",
+   "Loading\u2026",
+   "Parsing ",
+   "/",
+   "\u2026"
+  ]
+ },
+ {
+  "name": "<module>.LogImportDialog._load_file.<lambda>",
+  "line": 4139,
+  "ops": 8,
+  "strings": []
+ },
+ {
+  "name": "<module>.LogImportDialog._restore_ui",
+  "line": 4149,
+  "ops": 20,
+  "strings": [
+   "Load CSV\u2026"
+  ]
+ },
+ {
+  "name": "<module>.LogImportDialog._on_import_error",
+  "line": 4154,
+  "ops": 19,
+  "strings": [
+   "Import Error",
+   "(import failed)"
+  ]
+ },
+ {
+  "name": "<module>.LogImportDialog._on_import_complete",
+  "line": 4159,
+  "ops": 114,
+  "strings": [
+   "Worker finished \u2014 receive LogImporter back on the main thread,\n        then run the (fast) analyze() step inline.",
+   "Empty Log",
+   "No data rows found. Check that the CSV has at least a header row and one data row.",
+   "(empty log)",
+   "/",
+   " \u2014 ",
+   " samples, ~",
+   ".1f",
+   " Hz",
+   "\n",
+   "(no recognized columns detected)",
+   "Analysis Error"
+  ]
+ },
+ {
+  "name": "<module>.LogImportDialog._on_import_complete.<genexpr>",
+  "line": 4179,
+  "ops": 25,
+  "strings": [
+   "  ",
+   "14s",
+   " \u2192 '",
+   "'"
+  ]
+ },
+ {
+  "name": "<module>.LogImportDialog._populate_comparison",
+  "line": 4192,
+  "ops": 461,
+  "strings": [
+   "Fill the Measured vs Predicted table + Shift events table.",
+   "stall_rpm",
+   "stall_peak_rpm",
+   "Stall RPM (foot-brake)",
+   ".0f",
+   "+.0f",
+   " RPM",
+   " \u2713",
+   " \u26a0",
+   "\u2014",
+   "(no <5 MPH samples at TPS>80%)",
+   "slip_pct",
+   "wot_slip_pct",
+   "WOT Slip %",
+   ".1f",
+   "%",
+   "+.1f",
+   "(no WOT samples \u2014 need TPS>90%, MPH>10)",
+   "temp_range",
+   "ATF Temp Range",
+   " - ",
+   " \u00b0F",
+   "\u2713 in normal range",
+   "\u26a0 ran hot (>",
+   " \u00b0F)",
+   "Samples",
+   "n_samples",
+   "",
+   "shift_events",
+   "upshift",
+   "gear_from",
+   "mph",
+   "\u2192",
+   "gear_to",
+   "rpm",
+   "warnings",
+   "\u26a0 ",
+   "\n\u26a0 "
+  ]
+ },
+ {
+  "name": "<module>.LogImportDialog._apply_slip",
+  "line": 4303,
+  "ops": 86,
+  "strings": [
+   "Back-solve the stall RPM that would produce measured slip,\n        then write it to the parent's stall_rpm field.",
+   "_measured_slip",
+   "stall",
+   "Stall RPM updated to ",
+   ".0f",
+   " to match measured WOT slip of ",
+   ".1f",
+   "%",
+   "Applied",
+   "Stall RPM set to ",
+   ".\nRe-run Calculate (F5) to update tables with new stall value."
+  ]
+ },
+ {
+  "name": "<module>.PerfSimDialog",
+  "line": 4324,
+  "ops": 21,
+  "strings": [
+   "PerfSimDialog",
+   "Performance simulator combining drag-run prediction (#9) and\n    shift-point timing analysis (#6)."
+  ]
+ },
+ {
+  "name": "<module>.PerfSimDialog.__init__",
+  "line": 4328,
+  "ops": 535,
+  "strings": [
+   "Performance Simulator",
+   "Inputs",
+   "torque_curve",
+   "Trans:",
+   "ratios",
+   "-spd, ratios ",
+   ".2f",
+   "Drivetrain:",
+   "tire_dia",
+   ".1f",
+   "\u2033 tire \u00d7 ",
+   "axle",
+   " axle \u00d7 ",
+   "chain",
+   " t-case = ",
+   ".3f",
+   " final",
+   "Weight:",
+   "weight",
+   ".0f",
+   " lb",
+   "Stall RPM:",
+   "stall_rpm",
+   "Torque Curve:",
+   "Peak ",
+   " HP @ ",
+   " / ",
+   " lb\u00b7ft @ ",
+   "\u26a0 No torque curve loaded \u2014 load via Tools \u2192 Torque Curve",
+   "color: #f0a060;",
+   "Drag area Cd \u00d7 A (ft\u00b2). Typical values:\n  \u2022 Sports car (Vette, GT):       6-8\n  \u2022 Sedan (CTS, G8):              8-10\n  \u2022 Truck (Silverado/Sierra):    12-16\n  \u2022 SUV (Tahoe, Suburban):       14-18\n  \u2022 Brick (Hummer H2):           22-28",
+   "Drag Cd\u00d7A (ft\u00b2):",
+   "Rolling resistance coefficient. Typical:\n  \u2022 Drag radials / slicks:  0.008-0.010\n  \u2022 Performance street:     0.011-0.013\n  \u2022 All-season:             0.013-0.015\n  \u2022 Truck A/T or M/T tires: 0.015-0.020",
+   "Rolling Resist:",
+   "Tire grip limit in g. This is the dominant correction for\nhigh-HP launches \u2014 caps acceleration where engine torque\nexceeds rear tire grip. Typical values:\n  \u2022 Slicks:               1.40-1.60\n  \u2022 Drag radials:         1.20-1.30\n  \u2022 Performance street:   0.95-1.10\n  \u2022 All-season:           0.75-0.85\n  \u2022 Truck A/T:            0.65-0.75",
+   "Launch Grip (g):",
+   "Drivetrain efficiency (engine TQ \u2192 wheel TQ ratio).\n  \u2022 4-spd auto:   0.78-0.82 (older, more losses)\n  \u2022 6-spd auto:   0.83-0.87\n  \u2022 8/10-spd:     0.86-0.88 (modern design)\n  \u2022 FWD:          add ~0.02 (shorter driveline)\n  \u2022 Manual:       0.90-0.93",
+   "Drivetrain Eff:",
+   "\u25b6 Run Simulation",
+   "QPushButton { font-weight: bold; background: #005A9E; color: white; }QPushButton:hover { background: #0073C7; }",
+   "(Run simulation to populate)",
+   "background: #2a2a2a; color: #ddd; padding: 8px; border-radius: 3px;font-family: Consolas; font-size: 10pt;",
+   "Shift Point Timing (#6 \u2014 verify shifts don't bump rev limiter)",
+   "Close"
+  ]
+ },
+ {
+  "name": "<module>.PerfSimDialog._run",
+  "line": 4472,
+  "ops": 326,
+  "strings": [
+   "torque_curve",
+   "No torque curve",
+   "Performance sim requires a torque curve.\nLoad one via Tools \u2192 Torque Curve, then re-run.",
+   "Simulation failed",
+   "  0-30: ",
+   "t_0_30",
+   "     0-60: ",
+   "t_0_60",
+   "     0-100: ",
+   "t_0_100",
+   "     0-120: ",
+   "t_0_120",
+   "\n  1/8 mile: ",
+   "t_eighth",
+   "  @  ",
+   "v_eighth",
+   "\n  1/4 mile: ",
+   "t_quarter",
+   "v_quarter",
+   "    (top speed in trace: ",
+   "max_v",
+   ".1f",
+   " mph)",
+   "shift_events",
+   "per_gear_rpm",
+   "shift_rpm",
+   "ratios",
+   "rpm_init",
+   "+",
+   ".0f",
+   "rpm_post",
+   "shift_name",
+   "mph_init",
+   "-"
+  ]
+ },
+ {
+  "name": "<module>.PerfSimDialog._run.fmt",
+  "line": 4492,
+  "ops": 11,
+  "strings": [
+   "5.2f",
+   "s",
+   "  \u2014  "
+  ]
+ },
+ {
+  "name": "<module>.PerfSimDialog._run.fmtmph",
+  "line": 4494,
+  "ops": 11,
+  "strings": [
+   "5.1f",
+   " mph",
+   "  \u2014  "
+  ]
+ },
+ {
+  "name": "<module>.TorqueCurveDialog",
+  "line": 4539,
+  "ops": 78,
+  "strings": [
+   "TorqueCurveDialog",
+   "Edit/import a HP/TQ vs RPM curve.\n\n    Supports:\n      - CSV import (1-3 cols: RPM[, HP[, TQ]])\n      - Manual entry via editable table\n      - Quick presets (LS3, LT4, LBZ, etc.) \u2014 built-in starting points\n      - Auto-fill TQ from HP (or vice-versa) using TQ = HP \u00d7 5252 / RPM\n    "
+  ]
+ },
+ {
+  "name": "<module>.TorqueCurveDialog.__init__",
+  "line": 4586,
+  "ops": 320,
+  "strings": [
+   "Torque Curve",
+   "Enter HP and Torque vs RPM. Used in Time-mode WOT shift lead for\naccurate acceleration prediction across the shift band.\nLeave empty to fall back to the single RWHP scalar mode.",
+   "Preset:",
+   "Import CSV\u2026",
+   "Import HP/TQ vs RPM from CSV. Expected columns: RPM, HP, [TQ].\nHeader row is optional. Tolerant of common dyno export formats.",
+   "Add Row",
+   "Delete Selected",
+   "Auto-fill TQ from HP",
+   "Fill missing TQ values using TQ = HP \u00d7 5252 / RPM. Useful if you only have HP from a dyno trace.",
+   "",
+   "color: #ccc; padding: 6px; background: #2a2a2a; border-radius: 3px;",
+   "Clear (use RWHP scalar)",
+   "OK",
+   "Cancel"
+  ]
+ },
+ {
+  "name": "<module>.TorqueCurveDialog._load_curve_into_table",
+  "line": 4664,
+  "ops": 64,
+  "strings": [
+   ".1f"
+  ]
+ },
+ {
+  "name": "<module>.TorqueCurveDialog._apply_preset",
+  "line": 4671,
+  "ops": 24,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurveDialog._import_csv",
+  "line": 4679,
+  "ops": 88,
+  "strings": [
+   "Import Torque Curve CSV",
+   "",
+   "CSV (*.csv);;All files (*.*)",
+   "Import",
+   "No valid (RPM, HP) rows found in the CSV.\nExpected format: RPM, HP, TQ (with optional header row).",
+   "(Manual entry)",
+   "Import error"
+  ]
+ },
+ {
+  "name": "<module>.TorqueCurveDialog._add_row",
+  "line": 4702,
+  "ops": 99,
+  "strings": [
+   "0",
+   "1500"
+  ]
+ },
+ {
+  "name": "<module>.TorqueCurveDialog._del_row",
+  "line": 4717,
+  "ops": 47,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurveDialog._autofill_tq",
+  "line": 4723,
+  "ops": 79,
+  "strings": [
+   ".1f"
+  ]
+ },
+ {
+  "name": "<module>.TorqueCurveDialog._clear",
+  "line": 4735,
+  "ops": 16,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurveDialog._sync_curve_from_table",
+  "line": 4740,
+  "ops": 83,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurveDialog._update_summary",
+  "line": 4754,
+  "ops": 77,
+  "strings": [
+   "No torque curve loaded. Time-mode WOT lead will use the\nsingle RWHP scalar from the Drivetrain panel.",
+   "  Peak HP : ",
+   ".1f",
+   " @ ",
+   ".0f",
+   " RPM\n  Peak TQ : ",
+   " lb\u00b7ft @ ",
+   " RPM\n  RPM band: ",
+   " \u2013 ",
+   "  (",
+   " points)\n  Avg HP across shift band (3000\u20136000): "
+  ]
+ },
+ {
+  "name": "<module>.TorqueCurveDialog._sync_curve_from_table_silent",
+  "line": 4771,
+  "ops": 79,
+  "strings": []
+ },
+ {
+  "name": "<module>.TorqueCurveDialog.get_curve",
+  "line": 4785,
+  "ops": 8,
+  "strings": []
+ },
+ {
+  "name": "<module>.BinXdfDialog",
+  "line": 4790,
+  "ops": 39,
+  "strings": [
+   "BinXdfDialog",
+   "Load a .BIN flash dump + matching TunerPro .XDF definition, browse\n    parameters, view extracted values. Foundation for full BIN \u2194 studio diff\n    (next round).\n\n    Layout:\n      Top:    Load BIN button | BIN path label | Load XDF button | XDF path\n      Left:   Parameter list (filterable by category + search)\n      Right:  Selected parameter detail + value preview (scalar or table)\n    "
+  ]
+ },
+ {
+  "name": "<module>.BinXdfDialog.__init__",
+  "line": 4800,
+  "ops": 435,
+  "strings": [
+   "BIN / XDF Reader",
+   "Load .BIN\u2026",
+   "(no BIN loaded)",
+   "color: #aaa; padding: 0 8px;",
+   "Load .XDF\u2026",
+   "(no XDF loaded)",
+   "Load a BIN and matching XDF to begin.",
+   "color: #6cc; background: #2a2a2a; padding: 6px; border-radius: 4px;",
+   "Filter:",
+   "type to search\u2026",
+   "Category:",
+   "(all)",
+   "QTableWidget { background: #1e1e1e; color: #fff; gridline-color: #444; selection-background-color: #2864A0; }QHeaderView::section { background: #303030; color: #fff; padding: 2px 6px; border: 1px solid #555; font-weight: bold; }",
+   "(no parameter selected)",
+   "color: #fff; font-weight: bold; font-size: 12pt; padding: 4px;",
+   "",
+   "color: #aaa; padding: 4px; font-family: Consolas, monospace;",
+   "QTableWidget { background: #1e1e1e; color: #fff; gridline-color: #444; }QHeaderView::section { background: #303030; color: #fff; padding: 2px 6px; border: 1px solid #555; font-weight: bold; }",
+   "Copy Table (TSV)",
+   "Copy selected parameter's values to clipboard as TSV (paste-compatible with HP Tuners VCM Editor).",
+   "Close"
+  ]
+ },
+ {
+  "name": "<module>.BinXdfDialog._load_bin",
+  "line": 4909,
+  "ops": 81,
+  "strings": [
+   "Select .BIN flash dump",
+   "",
+   "BIN files (*.bin *.dat);;All files (*)",
+   "BIN Load Failed"
+  ]
+ },
+ {
+  "name": "<module>.BinXdfDialog._load_xdf",
+  "line": 4928,
+  "ops": 127,
+  "strings": [
+   "Select TunerPro .XDF definition",
+   "",
+   "XDF files (*.xdf);;XML files (*.xml);;All files (*)",
+   "XDF Load Failed",
+   "(all)"
+  ]
+ },
+ {
+  "name": "<module>.BinXdfDialog._update_status",
+  "line": 4955,
+  "ops": 64,
+  "strings": [
+   "BIN: ",
+   " KB",
+   "XDF: ",
+   "(untitled)",
+   " parameters",
+   " | ",
+   "Load a BIN and matching XDF to begin."
+  ]
+ },
+ {
+  "name": "<module>.BinXdfDialog._refresh_param_list",
+  "line": 4965,
+  "ops": 146,
+  "strings": [
+   "(all)",
+   "0x",
+   "X",
+   ""
+  ]
+ },
+ {
+  "name": "<module>.BinXdfDialog._on_param_selected",
+  "line": 4987,
+  "ops": 54,
+  "strings": [
+   "_filtered_params"
+  ]
+ },
+ {
+  "name": "<module>.BinXdfDialog._render_param_detail",
+  "line": 5000,
+  "ops": 476,
+  "strings": [
+   "<b>Kind:</b> ",
+   "<b>Category:</b> ",
+   "(none)",
+   "<b>Units:</b> ",
+   "\u2014",
+   "<b>Address:</b> 0x",
+   "X",
+   " (",
+   ")",
+   "<b>Element:</b> ",
+   "-bit ",
+   "signed",
+   "unsigned",
+   " ",
+   "LE",
+   "BE",
+   "<b>Math:</b> <tt>",
+   "</tt>",
+   "<b>Dimensions:</b> ",
+   "r \u00d7 ",
+   "c",
+   "<i>",
+   "</i>",
+   "<br>",
+   "Read failed: ",
+   "scalar",
+   "Value",
+   "",
+   ".3f",
+   "z",
+   "x_breakpoints",
+   "y_breakpoints",
+   ".2f"
+  ]
+ },
+ {
+  "name": "<module>.BinXdfDialog._copy_table",
+  "line": 5072,
+  "ops": 70,
+  "strings": [
+   "_current_data",
+   "\t",
+   "\n",
+   "Copied ",
+   " rows \u00d7 ",
+   " cols to clipboard."
+  ]
+ },
+ {
+  "name": "<module>.BinXdfDialog._copy_table.<genexpr>",
+  "line": 5079,
+  "ops": 17,
+  "strings": [
+   ".3f"
+  ]
+ },
+ {
+  "name": "<module>.DelayDialog",
+  "line": 5086,
+  "ops": 18,
+  "strings": [
+   "DelayDialog"
+  ]
+ },
+ {
+  "name": "<module>.DelayDialog.__init__",
+  "line": 5087,
+  "ops": 194,
+  "strings": [
+   "Per-Gear Shift Delays (Time Lead Mode)",
+   "Up Delay = time (s) PCM takes to command shift\nDown Delay = time (s) shift takes to complete\nBoth are summed and multiplied by accel rate to get lead distance.",
+   "Up Delay (s)",
+   "Down Delay (s)",
+   "->",
+   ".2f",
+   "OK",
+   "Cancel"
+  ]
+ },
+ {
+  "name": "<module>.DelayDialog.get_delays",
+  "line": 5122,
+  "ops": 63,
+  "strings": []
+ },
+ {
+  "name": "<module>.intent_to_overrides",
+  "line": 5154,
+  "ops": 93,
+  "strings": [
+   "Translate an intent preset name into a concrete override dict\n    (absolute values, ready to merge into a calc config). Returns {} for\n    Custom or unknown intents.",
+   "_delta",
+   "_abs"
+  ]
+ },
+ {
+  "name": "<module>.nelder_mead",
+  "line": 5184,
+  "ops": 118,
+  "strings": [
+   "Minimize f via Nelder-Mead. Returns (best_x, best_f).\n    Uses scipy.optimize.minimize (C-backed, 10-30\u00d7 faster) when available;\n    falls back to the pure-Python implementation otherwise.",
+   "Nelder-Mead"
+  ]
+ },
+ {
+  "name": "<module>._nelder_mead_pure",
+  "line": 5215,
+  "ops": 450,
+  "strings": [
+   "Pure-Python Nelder-Mead. f: vec -> scalar. Returns (best_x, best_f)."
+  ]
+ },
+ {
+  "name": "<module>._nelder_mead_pure.<lambda>",
+  "line": 5227,
+  "ops": 6,
+  "strings": []
+ },
+ {
+  "name": "<module>._nelder_mead_pure.<genexpr>",
+  "line": 5233,
+  "ops": 18,
+  "strings": []
+ },
+ {
+  "name": "<module>.ModeOverridesDialog",
+  "line": 5271,
+  "ops": 43,
+  "strings": [
+   "ModeOverridesDialog",
+   "Configure up to 3 extra shift table modes besides Normal.\n    Mode names depend on trans type (4-spd vs 6+spd).\n    Each mode has: Enabled, Intent dropdown, manual field overrides."
+  ]
+ },
+ {
+  "name": "<module>.ModeOverridesDialog.__init__",
+  "line": 5292,
+  "ops": 429,
+  "strings": [
+   "\n        mode_names: list of 3 strings (e.g. [\"Performance\", \"Hot Trans\", \"Cruise\"])\n        current_overrides: {mode_name: {\"enabled\": bool, \"intent\": str, \"fields\": {...}}}\n        normal_cfg: current Normal-mode config (for delta computation)\n        ",
+   "Multi-Mode Tables Setup",
+   "enabled",
+   "intent",
+   "Racing",
+   "fields",
+   "Configure extra shift table modes alongside Normal. Pick an Intent\nto auto-fill the override fields, or set them manually. When at\nleast one mode is enabled, Calculate runs the engine once per mode\nand the Export dialog can cycle through each mode's tables.\nLeave a field blank (or zero) to inherit the Normal value.",
+   "Generate this mode's tables",
+   "Intent:",
+   "Apply Intent",
+   "Save as\u2026",
+   "Save the current field values as a new named intent preset.",
+   ":",
+   "(Normal)",
+   "Clear All Fields",
+   "OK",
+   "Cancel"
+  ]
+ },
+ {
+  "name": "<module>.ModeOverridesDialog.__init__.<lambda>",
+  "line": 5350,
+  "ops": 7,
+  "strings": []
+ },
+ {
+  "name": "<module>.ModeOverridesDialog.__init__.<lambda>",
+  "line": 5354,
+  "ops": 7,
+  "strings": []
+ },
+ {
+  "name": "<module>.ModeOverridesDialog._apply_intent",
+  "line": 5390,
+  "ops": 76,
+  "strings": [
+   "Fill this mode's fields from the selected intent preset + Normal cfg.",
+   "g"
+  ]
+ },
+ {
+  "name": "<module>.ModeOverridesDialog._clear_all",
+  "line": 5405,
+  "ops": 15,
+  "strings": []
+ },
+ {
+  "name": "<module>.ModeOverridesDialog._save_as_intent",
+  "line": 5409,
+  "ops": 183,
+  "strings": [
+   "Capture this mode's current field values as a new named intent.\n        Stored as absolutes (not deltas) so the user gets exactly what they see.",
+   "Save Intent",
+   "Intent name (no leading parens; will be prefixed with 'User:'):",
+   "User: ",
+   "Overwrite?",
+   "Intent '",
+   "' already exists. Overwrite?",
+   "_abs",
+   "Empty Intent",
+   "No field values to save. Fill in at least one field first.",
+   "Saved",
+   "Saved intent '",
+   "'."
+  ]
+ },
+ {
+  "name": "<module>.ModeOverridesDialog.get_overrides",
+  "line": 5455,
+  "ops": 93,
+  "strings": [
+   "Return current state in storage format: {mode: {enabled, intent, fields}}"
+  ]
+ },
+ {
+  "name": "<module>.ImportTableDialog",
+  "line": 5485,
+  "ops": 26,
+  "strings": [
+   "ImportTableDialog",
+   "Paste a 17-column upshift table; the solver finds Factor/Offset/UpF/\n    shift_rpm that best match. User can apply the result to the main UI."
+  ]
+ },
+ {
+  "name": "<module>.ImportTableDialog.__init__",
+  "line": 5488,
+  "ops": 202,
+  "strings": [
+   "Reverse Import \u2014 Solve Params from Table",
+   "Paste an UPSHIFT table (17 columns \u00d7 N-1 rows, tab- or space-\ndelimited). The solver will find the Factor / Offset / Up Firmness\n/ WOT Shift RPM that best match the table for the currently-\nselected trans and drivetrain.\n\nCurrently set: {} | Tire {}\" | Axle {}",
+   "trans",
+   "?",
+   "tire_dia",
+   "axle",
+   "Consolas",
+   "Paste table here...",
+   "Solve",
+   "Clear",
+   "",
+   "background: #1e1e1e; color: #fff; padding: 8px; border: 1px solid #555; font-family: Consolas;",
+   "Apply to Main UI",
+   "Close"
+  ]
+ },
+ {
+  "name": "<module>.ImportTableDialog._parse_table",
+  "line": 5539,
+  "ops": 72,
+  "strings": [
+   "\n",
+   ",",
+   " "
+  ]
+ },
+ {
+  "name": "<module>.ImportTableDialog._solve",
+  "line": 5551,
+  "ops": 173,
+  "strings": [
+   "Couldn't parse a table with 17 numeric columns.",
+   "tps_factor",
+   "tps_offset",
+   "up_firmness",
+   "shift_rpm",
+   "RMS error: ",
+   ".2f",
+   " MPH per cell\n  TPS Factor:    ",
+   "\n  TPS Offset:    ",
+   "\n  Up Firmness:   ",
+   "\n  WOT Shift RPM: ",
+   "\n\nClick 'Apply to Main UI' to push these values into the main fields."
+  ]
+ },
+ {
+  "name": "<module>.ImportTableDialog._solve.objective",
+  "line": 5560,
+  "ops": 134,
+  "strings": [
+   "tps_factor",
+   "tps_offset",
+   "up_firmness",
+   "shift_rpm",
+   "upshift"
+  ]
+ },
+ {
+  "name": "<module>.ImportTableDialog.get_result",
+  "line": 5611,
+  "ops": 4,
+  "strings": []
+ },
+ {
+  "name": "<module>.ShiftCurvePlot",
+  "line": 5619,
+  "ops": 67,
+  "strings": [
+   "ShiftCurvePlot",
+   "Overlay plot of all upshift curves (TPS \u00d7 MPH per gear). Pure QPainter,\n    no chart-lib deps. Updated by main window after each calc.\n\n    Multi-mode overlay: when set_mode_overlays() is called with results for\n    enabled modes, each non-Normal mode is drawn with a distinct pen style\n    so user can compare shift patterns across modes in one view.",
+   "Normal",
+   "Pattern A",
+   "Performance",
+   "Pattern B",
+   "Cruise",
+   "Hot Trans"
+  ]
+ },
+ {
+  "name": "<module>.ShiftCurvePlot.__init__",
+  "line": 5636,
+  "ops": 45,
+  "strings": [
+   "MPH"
+  ]
+ },
+ {
+  "name": "<module>.ShiftCurvePlot.set_data",
+  "line": 5651,
+  "ops": 28,
+  "strings": []
+ },
+ {
+  "name": "<module>.ShiftCurvePlot.set_mode_overlays",
+  "line": 5661,
+  "ops": 40,
+  "strings": [
+   "Pass {mode_name: {\"upshift\": 2D, \"downshift\": 2D}} for enabled modes.\n        Normal mode is excluded from overlays (it's already the primary curve).",
+   "Normal"
+  ]
+ },
+ {
+  "name": "<module>.ShiftCurvePlot.paintEvent",
+  "line": 5667,
+  "ops": 929,
+  "strings": [
+   "Run Calculate to see shift curves",
+   "upshift",
+   "downshift",
+   "5.0f",
+   ".0f",
+   "%",
+   "Shift Speed (",
+   ")",
+   "TPS (%)",
+   "\u2192",
+   "  @ ",
+   " RPM",
+   "Modes:",
+   "Normal"
+  ]
+ },
+ {
+  "name": "<module>.ShiftCurvePlot.paintEvent.plot_table",
+  "line": 5732,
+  "ops": 154,
+  "strings": []
+ },
+ {
+  "name": "<module>.PressureEngine",
+  "line": 5805,
+  "ops": 75,
+  "strings": [
+   "PressureEngine",
+   "Pure-logic generator for Base Shift Pressure tables.\n    Output: 2D list [temp_idx][torque_idx] \u2192 PSI.\n\n    Model:\n      1. Hot-side base curve: psi(tq) = base + (peak - base) * (tq/tq_max)^curve\n      2. Cold preload (additive, saturates with torque):\n         cold_factor = max(0, (68 - temp) / 90)        # 1.0 at -22\u00b0F, 0 at 68\u00b0F\n         cold_add    = cold_preload * cold_factor * (1 - 0.82 * t_norm)\n      3. Hot-side temp comp (intent-scaled, only > 68\u00b0F):\n         hot_dev_pct = clamp((temp-68)/(257-68), 0, 1) * 0.18\n         hot_mult    = 1 + hot_dev_pct * hot_scale\n      4. Per-shift multiplier on base+peak\n      5. Cap at MAX_PRESSURE_PSI (296 stock; raise if user has lifted Max Pressure)\n    "
+  ]
+ },
+ {
+  "name": "<module>.PressureEngine.torque_cols",
+  "line": 5821,
+  "ops": 27,
+  "strings": [
+   "5 torque breakpoints, 0/25/50/75/100% of trans rated torque (lb\u00b7ft)."
+  ]
+ },
+ {
+  "name": "<module>.PressureEngine.base_shift_pressure",
+  "line": 5826,
+  "ops": 149,
+  "strings": [
+   "Generate one Base Shift Pressure table for the given intent/shift.\n\n        intent_name: key into PRESSURE_INTENTS\n        max_torque:  trans torque rating (lb\u00b7ft)\n        shift_name:  e.g. \"1-2\", \"1-3\", \"5-6\"\n        max_pressure_psi: hard ceiling (defaults to MAX_PRESSURE_PSI=296)\n        Returns: 2D list [temp_idx][torque_idx] \u2192 PSI.\n        ",
+   "Daily",
+   "base_psi",
+   "max_psi",
+   "cold_preload",
+   "hot_scale",
+   "torque_curve"
+  ]
+ },
+ {
+  "name": "<module>.PressureEngine.tcc_apply_pressure",
+  "line": 5874,
+  "ops": 137,
+  "strings": [
+   "Generate TCC Apply Pressure table (Gen IV+ converter clutch).\n\n        Same 5\u00d75 axis as Base Shift Pressure (temp \u00d7 torque) but uses TCC-\n        specific intent profiles and a lower default cap (200 PSI). The\n        converter clutch only needs to overcome slip torque, not full clutch\n        pack capacity, so apply pressure runs ~30-180 PSI vs line pressure\n        which runs ~95-296 PSI.\n\n        Model is identical to base_shift_pressure() \u2014 same cold-preload\n        lookup, same hot_scale formula \u2014 just different intent values and\n        cap. No shift_mult since apply pressure is not per-shift.\n        ",
+   "Daily",
+   "base_psi",
+   "max_psi",
+   "cold_preload",
+   "hot_scale",
+   "torque_curve"
+  ]
+ },
+ {
+  "name": "<module>.PressureEngine.tcc_apply_pressure_ramp",
+  "line": 5918,
+  "ops": 86,
+  "strings": [
+   "Generate the TCC Apply Pressure Ramp table per HP Tuners layout.\n\n        Stock GM control strategy by era:\n        - 07-14: Smooth-ramp with spike at very negative slip (relief).\n                 Pattern: tq<0 row low spike (~17 PSI), 0-90 tq HIGH spike\n                 (148 PSI cap), 110+ tq moderate (~60 PSI). Cap 148 PSI.\n        - 15+:   RPM-correlated correction deltas (8L90/8L45 EC3SS strategy).\n                 0-50 PSI range, scales with engine RPM both directions.\n\n        Returns 2D list [n_rows][n_cols] of PSI values.\n        ",
+   "2015+",
+   "slip_cols",
+   "max_psi",
+   "Daily",
+   "Shudder Fix",
+   "torque_rows",
+   "rpm_rows",
+   "row_axis"
+  ]
+ },
+ {
+  "name": "<module>.PressureEngine._tcc_ramp_07_14",
+  "line": 5955,
+  "ops": 333,
+  "strings": [
+   "07-14 era: spike at very negative slip (TCC release), smooth ramp.\n        Spike pattern (verified vs stock screenshot):\n          tq < 0:        engine brake row stays relatively flat (15-18 PSI)\n                         across the negative-spike zone\n          0 \u2264 tq < 100:  HIGH spike at -30 (148 PSI cap), drops rapidly to\n                         ~30 at -25, ~20 at -20, ~3 at -17\n          tq \u2265 110:      moderate (~60 PSI) at -30, slight non-monotonic\n                         variation in -25/-20 cells\n        Slip in [-15, -2] \u2192 very low band (~1-5 PSI)\n        Slip = 0 \u2192 minimum (~0.15)\n        Slip > 0 \u2192 mild ramp scaled by torque\n        "
+  ]
+ },
+ {
+  "name": "<module>.PressureEngine._tcc_ramp_15_plus",
+  "line": 6046,
+  "ops": 136,
+  "strings": [
+   "2015+ era: RPM-correlated correction values, 0-50 PSI range.\n        Both negative and positive slip scale with engine RPM."
+  ]
+ },
+ {
+  "name": "<module>.PressureEngine._tcc_ramp_shudder_fix",
+  "line": 6071,
+  "ops": 192,
+  "strings": [
+   "Shudder Fix preset: maintains a constant plateau across ALL\n        positive slip cells, preventing the slip-stick harmonic that\n        causes TCC shudder. Common fix for 6L80 Gen-1 / worn converters.\n\n        Plateau height scales with intent_max_psi so Shudder Fix Levels\n        produce progressively firmer lockup:\n          Mild       (max_psi=148) \u2192 ~65 PSI plateau (light fix)\n          Moderate   (max_psi=165) \u2192 ~85 PSI plateau (mid-grade)\n          Aggressive (max_psi=195) \u2192 ~110 PSI plateau (full lock)\n\n        Pattern:\n          slip < 0:  small relief (decay toward 0 as slip \u2192 0)\n          slip \u2265 0:  PLATEAU at intent-scaled PSI\n          slip > 60: torque-scaled ramp on top of plateau\n\n        Cap respected (148 stock 07-14, 200 newer trans).\n        ",
+   "rpm",
+   "torque"
+  ]
+ },
+ {
+  "name": "<module>.PressureEngine.coast_pressure",
+  "line": 6135,
+  "ops": 137,
+  "strings": [
+   "Generate Coast-Down Pressure table for deceleration / lift-off.\n\n        Same 5\u00d75 axis as Base Shift Pressure (temp \u00d7 torque). Different intent\n        values: coast pressure is typically 60-75% of accel pressure since\n        engine braking torque is much lower than drive torque. Towing intent\n        actually runs HIGHER than its accel pressure to control decel under\n        heavy load (engine brake reliance).\n\n        Same cold-preload + hot-scale math as base_shift_pressure. Cap at\n        MAX_COAST_PRESSURE_PSI (250 PSI default).\n        ",
+   "Daily",
+   "base_psi",
+   "max_psi",
+   "cold_preload",
+   "hot_scale",
+   "torque_curve"
+  ]
+ },
+ {
+  "name": "<module>.PressureEngine.garage_shift_pressure",
+  "line": 6179,
+  "ops": 55,
+  "strings": [
+   "Generate Garage Shift Pressure tables.\n\n        Returns a dict keyed by direction (PD/PR/ND/NR), each value is a\n        list of 5 PSI values (one per ATF temp). No torque axis \u2014 engagement\n        always happens at idle torque, so single value per direction per temp.\n        Cold ATF needs more pressure (sluggish valves); hot ATF needs less\n        (thinner fluid grabs less, also cooler-protection mindset).\n        ",
+   "Daily"
+  ]
+ },
+ {
+  "name": "<module>.PressureEngine.base_shift_pressure_4spd",
+  "line": 6206,
+  "ops": 104,
+  "strings": [
+   "Generate 4-spd Base Shift Pressure table.\n        Returns: 2D list [3 shifts][33 torque cols] -> PSI.\n        Axes: rows = [\"1-2\",\"2-3\",\"3-4\"]; cols = PRESSURE_4SPD_TORQUE_COLS.\n        4-spd uses a single torque-axis table per mode (no ATF temp axis).\n        ",
+   "Normal",
+   "base",
+   "max_psi",
+   "curve",
+   "threshold"
+  ]
+ },
+ {
+  "name": "<module>.PressureEngine.brake_shift_pressure_4spd",
+  "line": 6242,
+  "ops": 132,
+  "strings": [
+   "Generate 4-spd Brake Shift Pressure table (3 shifts \u00d7 32 torque cols).\n\n        Shape per shift: starts at base_high (e.g. 90 PSI) at 0 torque, dips\n        to valley_psi around valley_center torque, then ramps to high_end_psi\n        at max torque. Reflects PCM strategy of relieving pressure for\n        normal driving, then clamping firmly under heavy load or aggressive\n        downshifts.\n        ",
+   "Normal",
+   "base_high",
+   "valley_psi",
+   "valley_center",
+   "high_end_psi"
+  ]
+ },
+ {
+  "name": "<module>.PressureEngine.force_motor_current",
+  "line": 6284,
+  "ops": 88,
+  "strings": [
+   "Generate Force Motor Current table (17 ATF temp rows \u00d7 18 PSI cols).\n        Values in mA. PSI=0 \u2192 ~1069 mA; PSI=100 \u2192 ~98 mA."
+  ]
+ },
+ {
+  "name": "<module>.ShiftTimeEngine",
+  "line": 6308,
+  "ops": 13,
+  "strings": [
+   "ShiftTimeEngine",
+   "Desired Shift Time tables for 4-spd transmissions.\n    Output: 2D list [3 shifts][17 torque cols] -> seconds."
+  ]
+ },
+ {
+  "name": "<module>.ShiftTimeEngine.desired_shift_time_4spd",
+  "line": 6312,
+  "ops": 93,
+  "strings": [
+   "Normal",
+   "max_s",
+   "min_s",
+   "curve"
+  ]
+ },
+ {
+  "name": "<module>.TCCDutyEngine",
+  "line": 6341,
+  "ops": 13,
+  "strings": [
+   "TCCDutyEngine",
+   "Generate TCC DC Maximum table.\n    Output: 2D list [5 temp rows][17 line PSI cols] -> % duty cycle."
+  ]
+ },
+ {
+  "name": "<module>.TCCDutyEngine.max_duty_cycle",
+  "line": 6345,
+  "ops": 96,
+  "strings": [
+   "Default template \u2014 values cluster at 95-97% per GM stock.\n        Slight curvature: lower at very low line pressure (low cooler flow),\n        slight dip mid-pressure at hot ATF (cooler limited)."
+  ]
+ },
+ {
+  "name": "<module>.PressureTab",
+  "line": 6379,
+  "ops": 64,
+  "strings": [
+   "PressureTab",
+   "Display TCM tables per mode.\n\n    Two layouts:\n      - 6+ spd: Base Shift Pressure (torque \u00d7 ATF temp), per mode\n      - 4-spd:  Base Shift Pressure (3 shifts \u00d7 torque), Desired Shift Time\n                (3 shifts \u00d7 torque), TCC DC Maximum (temp \u00d7 line PSI) \u2014\n                user toggles via Table dropdown.\n    "
+  ]
+ },
+ {
+  "name": "<module>.PressureTab.__init__",
+  "line": 6389,
+  "ops": 456,
+  "strings": [
+   "PSI",
+   "Table:",
+   "  Mode:",
+   "  Pressure Intent:",
+   "Pressure intent for this mode. By default, it auto-maps from\nthe shift intent (e.g., 'Racing' shift \u2192 'Racing / Drag'\npressure). You can override here to mix-and-match \u2014 e.g.\nRacing shift schedule with Daily pressure intent.",
+   "  Era:",
+   "2015+",
+   "TCC Apply Pressure Ramp table layout (TCM 15235):\n  2007-2010: 17 torque \u00d7 17 slip cols (cap 148 PSI)\n  2011-2014: 17 torque \u00d7 17 slip cols, slight breakpoint variant\n  2015+:     9 RPM \u00d7 17 slip cols (correction deltas)",
+   "  Unit:",
+   "kPa",
+   "",
+   "font-weight: bold; color: #ddd;",
+   "color: #888; font-size: 9pt; padding: 4px;",
+   "QTableWidget { background: #1e1e1e; color: #fff; gridline-color: #444; selection-background-color: #C32626; }QHeaderView::section { background: #303030; color: #fff; padding: 2px 6px; border: 1px solid #555; font-weight: bold; }QTableCornerButton::section { background: #303030; border: 1px solid #555; }",
+   "Consolas",
+   "Run Calculate (F5) to generate TCM tables.",
+   "color: #888; padding: 40px;",
+   "Copy Table",
+   "Save CSV"
+  ]
+ },
+ {
+  "name": "<module>.PressureTab.__init__.<lambda>",
+  "line": 6449,
+  "ops": 6,
+  "strings": []
+ },
+ {
+  "name": "<module>.PressureTab._configure_table_combo",
+  "line": 6518,
+  "ops": 48,
+  "strings": [
+   "Populate the table-type dropdown based on current trans type.",
+   "Base Shift Pressure (6+ spd master)",
+   "TCC Apply Pressure Ramp"
+  ]
+ },
+ {
+  "name": "<module>.PressureTab._on_table_type_changed",
+  "line": 6537,
+  "ops": 44,
+  "strings": [
+   "TCC Apply",
+   "tcc_era_combo"
+  ]
+ },
+ {
+  "name": "<module>.PressureTab._refresh_mode_combo",
+  "line": 6549,
+  "ops": 129,
+  "strings": [
+   "Base Shift Pressure",
+   "Brake Shift Pressure",
+   "Desired Shift Time",
+   "TCC DC",
+   "(single table)",
+   "Force Motor Current",
+   "TCC Apply"
+  ]
+ },
+ {
+  "name": "<module>.PressureTab.set_pressure_tables",
+  "line": 6573,
+  "ops": 127,
+  "strings": [
+   "pressure_intent_per_mode"
+  ]
+ },
+ {
+  "name": "<module>.PressureTab.set_4spd_tables",
+  "line": 6606,
+  "ops": 97,
+  "strings": []
+ },
+ {
+  "name": "<module>.PressureTab._on_unit_changed",
+  "line": 6631,
+  "ops": 9,
+  "strings": []
+ },
+ {
+  "name": "<module>.PressureTab._on_mode_changed",
+  "line": 6635,
+  "ops": 10,
+  "strings": [
+   "User switched mode dropdown. Refresh intent combo to show this\n        mode's pressure intent, then refresh table."
+  ]
+ },
+ {
+  "name": "<module>.PressureTab._populate_intent_combo",
+  "line": 6641,
+  "ops": 193,
+  "strings": [
+   "Show the available pressure intents for the current table type\n        and pre-select the current mode's pressure intent.",
+   "Base Shift Pressure",
+   "Brake Shift Pressure",
+   "Desired Shift Time",
+   "(single table)",
+   "TCC Apply",
+   "Daily"
+  ]
+ },
+ {
+  "name": "<module>.PressureTab._on_intent_changed",
+  "line": 6680,
+  "ops": 30,
+  "strings": [
+   "User explicitly picked a different pressure intent. Notify the\n        main window via callback so it can regenerate the table + persist.",
+   "(single table)"
+  ]
+ },
+ {
+  "name": "<module>.PressureTab.set_intent_override_callback",
+  "line": 6691,
+  "ops": 5,
+  "strings": [
+   "Main window installs a callback (mode, intent) \u2192 regenerate + persist."
+  ]
+ },
+ {
+  "name": "<module>.PressureTab._get_current_table_data",
+  "line": 6695,
+  "ops": 513,
+  "strings": [
+   "Resolve (data, row_labels, col_labels, value_kind, intent_label).\n        value_kind: 'psi' / 'sec' / 'pct' / 'ma' \u2014 drives formatting.",
+   "Base Shift Pressure",
+   "psi",
+   "4-spd Base Shift Pressure / ",
+   "Brake Shift Pressure",
+   "4-spd Brake Shift Pressure (downshift) / ",
+   "Desired Shift Time",
+   "sec",
+   "Desired Shift Time / ",
+   "TCC DC",
+   "\u00b0F",
+   "pct",
+   "TCC DC Maximum",
+   "Force Motor Current",
+   "ma",
+   "Force Motor Current vs. Line PSI vs. ATF Temp",
+   "",
+   "TCC Apply",
+   "tcc_era_combo",
+   "2015+",
+   "Daily",
+   "row_axis",
+   "torque",
+   "torque_rows",
+   ".1f",
+   "Torque (lb\u00b7ft)",
+   "rpm_rows",
+   "Engine RPM",
+   "slip_cols",
+   "TCC Apply Pressure Ramp [",
+   ", ",
+   " \u00d7 Slip RPM Error]  Mode: ",
+   "  Intent: ",
+   "Pressure Intent: ",
+   "  (1-2 shift)"
+  ]
+ },
+ {
+  "name": "<module>.PressureTab._refresh",
+  "line": 6764,
+  "ops": 326,
+  "strings": [
+   "",
+   "psi",
+   "kPa",
+   "PSI",
+   "sec",
+   "ma",
+   "mA",
+   "%",
+   "  [",
+   "]",
+   "{:.3f}",
+   "{:.0f}",
+   "{:.1f}",
+   "pct"
+  ]
+ },
+ {
+  "name": "<module>.PressureTab._copy",
+  "line": 6823,
+  "ops": 56,
+  "strings": [
+   "psi",
+   "kPa",
+   "sec",
+   "{:.3f}",
+   "{:.1f}",
+   "\n"
+  ]
+ },
+ {
+  "name": "<module>.PressureTab._copy.<genexpr>",
+  "line": 6829,
+  "ops": 26,
+  "strings": [
+   "\t"
+  ]
+ },
+ {
+  "name": "<module>.PressureTab._copy.<genexpr>.<genexpr>",
+  "line": 6829,
+  "ops": 21,
+  "strings": []
+ },
+ {
+  "name": "<module>.PressureTab._save",
+  "line": 6833,
+  "ops": 164,
+  "strings": [
+   " ",
+   "_",
+   "/",
+   ":",
+   "",
+   "psi",
+   "kPa",
+   "_kPa",
+   "sec",
+   "_sec",
+   "pct",
+   "_pct",
+   "Save Table CSV",
+   ".csv",
+   "CSV (*.csv)",
+   "{:.3f}",
+   "{:.2f}",
+   "w",
+   ",",
+   "\n"
+  ]
+ },
+ {
+  "name": "<module>.PressureTab._save.<genexpr>",
+  "line": 6852,
+  "ops": 21,
+  "strings": []
+ },
+ {
+  "name": "<module>.CompareDialog",
+  "line": 6859,
+  "ops": 23,
+  "strings": [
+   "CompareDialog",
+   "Show cell-level deltas between two calc results (Current vs Compared).\n    Color: green = compared LOWER than current; red = compared HIGHER."
+  ]
+ },
+ {
+  "name": "<module>.CompareDialog.__init__",
+  "line": 6863,
+  "ops": 116,
+  "strings": [
+   "Tune Comparison \u2014 vs ",
+   "Cell-level delta: Compared (",
+   ") \u2212 Current.\nRed = compared is HIGHER (shifts later); Green = compared is LOWER (shifts earlier).",
+   "QLabel { background: #1e1e1e; color: #e0e0e0; padding: 8px; font-family: Consolas; border: 1px solid #555; }",
+   "Close"
+  ]
+ },
+ {
+  "name": "<module>.CompareDialog._fill_diff",
+  "line": 6901,
+  "ops": 381,
+  "strings": [
+   ".1f",
+   "Row ",
+   "QTableWidget { background: #1e1e1e; color: #fff; gridline-color: #444; }QHeaderView::section { background: #303030; color: #fff; padding: 2px 6px; border: 1px solid #555; font-weight: bold; }QTableCornerButton::section { background: #303030; border: 1px solid #555; }",
+   "\u2014",
+   "+",
+   ""
+  ]
+ },
+ {
+  "name": "<module>.CompareDialog._compute_summary",
+  "line": 6945,
+  "ops": 126,
+  "strings": [
+   "12",
+   " mean \u0394 ",
+   "+6.2f",
+   "  range [",
+   " .. ",
+   "] MPH",
+   "\n"
+  ]
+ },
+ {
+  "name": "<module>.GearCalculatorPlot",
+  "line": 6982,
+  "ops": 28,
+  "strings": [
+   "GearCalculatorPlot",
+   "MPH-vs-RPM line plot \u2014 one line per gear at a given axle ratio.\n    Pure QPainter, no chart-lib deps."
+  ]
+ },
+ {
+  "name": "<module>.GearCalculatorPlot.__init__",
+  "line": 6985,
+  "ops": 42,
+  "strings": [
+   "MPH"
+  ]
+ },
+ {
+  "name": "<module>.GearCalculatorPlot.set_data",
+  "line": 6998,
+  "ops": 33,
+  "strings": []
+ },
+ {
+  "name": "<module>.GearCalculatorPlot._mph_at",
+  "line": 7011,
+  "ops": 20,
+  "strings": [
+   "MPH = (RPM * tire_dia) / (336.13 * axle * gear_ratio)"
+  ]
+ },
+ {
+  "name": "<module>.GearCalculatorPlot.paintEvent",
+  "line": 7018,
+  "ops": 743,
+  "strings": [
+   "No gear ratios \u2014 select a trans on Basics tab",
+   "5.0f",
+   ".0f",
+   "Engine RPM",
+   "Redline ",
+   "Target ",
+   "Cruise ",
+   "Gears:",
+   ": ",
+   ".3f"
+  ]
+ },
+ {
+  "name": "<module>.GearCalculatorTab",
+  "line": 7123,
+  "ops": 42,
+  "strings": [
+   "GearCalculatorTab",
+   "Side-by-side: input controls + comparison table + plot.\n    Pulls trans gears, tire, redline from the main window via callback."
+  ]
+ },
+ {
+  "name": "<module>.GearCalculatorTab.__init__",
+  "line": 7126,
+  "ops": 471,
+  "strings": [
+   "",
+   "Inputs",
+   "Tire Diameter (in):",
+   "Redline RPM:",
+   "Idle RPM:",
+   "Cruise Speed (MPH):",
+   "Target Top MPH:",
+   "Target Cruise RPM:",
+   "Top MPH",
+   "0-60",
+   "Economy",
+   "Priority:",
+   "(no trans selected)",
+   "color: #6cc; padding: 4px;",
+   "color: #fff; background: #2864A0; padding: 6px; border-radius: 4px; font-weight: bold;",
+   "Apply Recommended Axle Ratio",
+   "Sets the axle ratio on the Basics tab and triggers a recalc.",
+   "Axle Ratio Comparison",
+   "QTableWidget { background: #1e1e1e; color: #fff; gridline-color: #444; selection-background-color: #C32626; }QHeaderView::section { background: #303030; color: #fff; padding: 2px 6px; border: 1px solid #555; font-weight: bold; }",
+   "MPH vs. RPM Ladder Plot"
+  ]
+ },
+ {
+  "name": "<module>.GearCalculatorTab._dsb",
+  "line": 7236,
+  "ops": 36,
+  "strings": []
+ },
+ {
+  "name": "<module>.GearCalculatorTab._isb",
+  "line": 7244,
+  "ops": 22,
+  "strings": []
+ },
+ {
+  "name": "<module>.GearCalculatorTab.set_trans",
+  "line": 7251,
+  "ops": 51,
+  "strings": [
+   "Called from main window when trans changes.",
+   " | ",
+   "<b>",
+   "</b>: ",
+   "-spd<br>",
+   "(no trans selected)"
+  ]
+ },
+ {
+  "name": "<module>.GearCalculatorTab.set_trans.<genexpr>",
+  "line": 7256,
+  "ops": 17,
+  "strings": [
+   ".3f"
+  ]
+ },
+ {
+  "name": "<module>.GearCalculatorTab.set_current_axle",
+  "line": 7263,
+  "ops": 44,
+  "strings": [
+   "Sync inputs from main Basics tab."
+  ]
+ },
+ {
+  "name": "<module>.GearCalculatorTab._refresh",
+  "line": 7273,
+  "ops": 417,
+  "strings": [
+   "Select a transmission on the Basics tab.",
+   "Axle",
+   "Top MPH @ Redline",
+   "RPM @ ",
+   ".0f",
+   " MPH",
+   "1st @ 30 MPH",
+   "Notes",
+   "\u2192 matches target top",
+   "\u2192 matches cruise RPM",
+   "highway cruiser",
+   "accel-focused",
+   "low gearing",
+   "tall first",
+   ", ",
+   "\u2014",
+   ".2f",
+   ".1f",
+   "Top MPH",
+   "0-60",
+   "Economy",
+   "Recommended for ",
+   ": <b>",
+   ":1</b><br>Top: ",
+   " MPH | Cruise: ",
+   " RPM",
+   "No suitable ratio found in common set."
+  ]
+ },
+ {
+  "name": "<module>.GearCalculatorTab._refresh.top_speed",
+  "line": 7286,
+  "ops": 12,
+  "strings": []
+ },
+ {
+  "name": "<module>.GearCalculatorTab._refresh.cruise_rpm",
+  "line": 7289,
+  "ops": 12,
+  "strings": []
+ },
+ {
+  "name": "<module>.GearCalculatorTab._pick_best",
+  "line": 7368,
+  "ops": 121,
+  "strings": [
+   "Choose best ratio for the active priority."
+  ]
+ },
+ {
+  "name": "<module>.GearCalculatorTab._pick_best.<lambda>",
+  "line": 7376,
+  "ops": 10,
+  "strings": []
+ },
+ {
+  "name": "<module>.GearCalculatorTab._pick_best.<lambda>",
+  "line": 7378,
+  "ops": 5,
+  "strings": []
+ },
+ {
+  "name": "<module>.GearCalculatorTab._pick_best.<lambda>",
+  "line": 7383,
+  "ops": 5,
+  "strings": []
+ },
+ {
+  "name": "<module>.GearCalculatorTab._pick_best.<lambda>",
+  "line": 7384,
+  "ops": 5,
+  "strings": []
+ },
+ {
+  "name": "<module>.GearCalculatorTab._pick_best.<lambda>",
+  "line": 7386,
+  "ops": 10,
+  "strings": []
+ },
+ {
+  "name": "<module>.GearCalculatorTab._on_table_selection",
+  "line": 7388,
+  "ops": 48,
+  "strings": []
+ },
+ {
+  "name": "<module>.GearCalculatorTab._on_apply",
+  "line": 7398,
+  "ops": 16,
+  "strings": []
+ },
+ {
+  "name": "<module>.Theme",
+  "line": 7412,
+  "ops": 56,
+  "strings": [
+   "Theme",
+   "Theme manager. Static-only; tracks current_name in class attr.",
+   "Dark",
+   "#252525",
+   "#e0e0e0",
+   "#1e1e1e",
+   "#2a2a2a",
+   "#353535",
+   "#2864A0",
+   "#ffffff",
+   "#303030",
+   "#404040",
+   "#555",
+   "#f2f2f2",
+   "#1a1a1a",
+   "#eef2f6",
+   "#3D7DC4",
+   "#dadada",
+   "#a0a0a0"
+  ]
+ },
+ {
+  "name": "<module>.Theme.apply",
+  "line": 7447,
+  "ops": 215,
+  "strings": [
+   "Dark",
+   "window",
+   "window_text",
+   "base",
+   "alt_base",
+   "button",
+   "button_text",
+   "text",
+   "highlight",
+   "highlight_text",
+   "\n            QTabBar::tab {\n                background: ",
+   "tab_bg",
+   ";\n                color: ",
+   ";\n                padding: 6px 14px;\n                border: 1px solid ",
+   "groupbox_border",
+   ";\n            }\n            QTabBar::tab:selected {\n                background: ",
+   "tab_active",
+   ";\n                font-weight: bold;\n            }\n            QGroupBox {\n                border: 1px solid ",
+   ";\n                border-radius: 4px;\n                margin-top: 8px;\n                padding-top: 10px;\n            }\n            QGroupBox::title {\n                subcontrol-origin: margin;\n                left: 8px;\n                padding: 0 4px;\n            }\n        "
+  ]
+ },
+ {
+  "name": "<module>.Theme.bg_color",
+  "line": 7494,
+  "ops": 18,
+  "strings": [
+   "base"
+  ]
+ },
+ {
+  "name": "<module>.Theme.text_color",
+  "line": 7499,
+  "ops": 18,
+  "strings": [
+   "text"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio",
+  "line": 7505,
+  "ops": 226,
+  "strings": [
+   "TransStudio"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.__init__",
+  "line": 7506,
+  "ops": 189,
+  "strings": [
+   "Ewalt's Auto Tuning Transmission Calibration Studio v2.1",
+   "icon.ico",
+   "~",
+   ".transtudio_intents.json",
+   ".transtudio_last.json"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._build_toolbar",
+  "line": 7596,
+  "ops": 650,
+  "strings": [
+   "Build a menu bar (File / Setup / Tools / Options) \u2014 replaces toolbar.",
+   "&File",
+   "&Load Profile\u2026",
+   "Ctrl+O",
+   "&Save Profile\u2026",
+   "Ctrl+S",
+   "Export &PDF Report\u2026",
+   "Ctrl+P",
+   "Generate a single PDF containing all profile settings, shift tables, pressure tables, and validation warnings.",
+   "Profile &Metadata\u2026",
+   "Edit vehicle/tuner info embedded in saved profiles",
+   "Load &Preset",
+   "E&xit",
+   "Ctrl+Q",
+   "&Setup",
+   "&Tools",
+   "Edit Shift &Delays\u2026",
+   "&Lockup Config\u2026",
+   "Multi-&Mode Tables Setup\u2026",
+   "Reverse-&Import Table\u2026",
+   "&Torque Curve\u2026",
+   "Load HP/TQ vs RPM curve for accurate Time-mode WOT lead",
+   "&Performance Simulator\u2026",
+   "F7",
+   "0-60 / 0-100 / 1/4 mile prediction + shift point timing analysis.\nRequires a loaded torque curve (Tools \u2192 Torque Curve).",
+   "&BIN / XDF Reader\u2026",
+   "Ctrl+B",
+   "Open a TunerPro XDF definition and a raw .BIN flash dump to read\ncurrent calibration values from your stock or modified tune.\nFoundation for diff-style review against generated tables.",
+   "&Calculate All Tables",
+   "F5",
+   "&Export Tables\u2026",
+   "F6",
+   "&Options",
+   "&Metric Units (KPH / mm)",
+   "Generate &Multi-Mode Tables",
+   "&Live Preview (auto-recalc on edit)",
+   "Ctrl+L",
+   "&View",
+   "Generate &HTML Report\u2026",
+   "Generate &PDF Tune Sheet\u2026",
+   "Generate a professional PDF tune sheet for sharing with customers.\nIncludes all tables + config + performance prediction.\nRequires reportlab (pip install reportlab).",
+   "&Compare with Profile\u2026",
+   "Import &Log CSV\u2026",
+   "F8",
+   "Import VCM Scanner / EFILive CSV log, compare measured shift\npoints and slip% against predictions, identify deltas."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._build_toolbar.<lambda>",
+  "line": 7629,
+  "ops": 7,
+  "strings": []
+ },
+ {
+  "name": "<module>.TransStudio._build_toolbar.<lambda>",
+  "line": 7647,
+  "ops": 8,
+  "strings": []
+ },
+ {
+  "name": "<module>.TransStudio._build_toolbar.<lambda>",
+  "line": 7732,
+  "ops": 7,
+  "strings": []
+ },
+ {
+  "name": "<module>.TransStudio._build_left_panel",
+  "line": 7765,
+  "ops": 1605,
+  "strings": [
+   "\n        Tabbed settings panel \u2014 fixes vertical-cramped layout.\n        Tab 1: Basics \u2014 Transmission + Drivetrain (most-changed)\n        Tab 2: Engine & Converter \u2014 Engine RPM + Torque Converter\n        Tab 3: Shift Curve \u2014 TPS Slope + Spreads + WOT Lead\n        Calculate / Export buttons live below the tabs (always visible).\n        ",
+   "Transmission",
+   "GM transmission family (1996-current). Selecting a model loads its forward gear ratios and sets RWD/FWD-appropriate defaults.",
+   "",
+   "color: #888;",
+   "Model:",
+   "Drivetrain",
+   "Quick-select common drag/street/truck tire sizes. Selecting one auto-fills the Tire Dia (in) field. Pick '(Custom)' to enter manually.",
+   "Loaded tire diameter in inches (NOT sidewall spec \u2014 measure or use tire-size calculator). Affects every speed calculation. 275/55R20 \u2248 31.9\u2033, 33\u00d712.5R17 \u2248 33.0\u2033, 26\u00d711\u00d714 slick \u2248 26.0\u2033.\n\nHPT table: General \u2192 Speedometer \u2192 Tire Revolutions / Mile (Gen III/IV)\n          General \u2192 Speedometer \u2192 Tire Size (Gen V LT)",
+   "Rear axle (or front, for FWD) final drive ratio. Tag on the housing or check VIN. Common GM: 3.08, 3.23, 3.42, 3.73, 4.10.\n\nHPT table: General \u2192 Speedometer \u2192 Final Drive Ratio (all gens)\nAlso flows into TCM's gear-ratio detection (P0730 windows)",
+   "Transfer case / chain reduction. 1.00 for 2WD or 4x4 in HI range. Use the LO-range ratio for off-road tunes (e.g. NP246 LO = 2.72).",
+   "Vehicle curb weight in lb. Used only in Time-mode WOT lead to compute acceleration rate per gear. Doesn't matter in RPM mode.",
+   "Estimated rear-wheel HP (dyno or dyno-jet calculator). Used only in Time-mode lead. Crank HP * 0.85 is a reasonable estimate if no dyno.",
+   "VSS pulses per output-shaft revolution as configured in the PCM. Used to compute speedometer calibration in the Export dialog. Typical GM: 40 (most RWD), 16 (some FWD).\n\nHPT table: General \u2192 Speedometer \u2192 VSS Count (Gen III/IV)\n           General \u2192 Speedometer \u2192 Pulses Per Mile (computed)",
+   "Tire Preset:",
+   "Tire Dia (in):",
+   "Axle Ratio:",
+   "T-Case/Chain:",
+   "Vehicle Weight (lb):",
+   "RWHP (estimated):",
+   "VSS Count (pulses/rev):",
+   "Multi-Mode Tables Setup\u2026",
+   "Configure extra shift table modes (Performance/Hot/Cruise for 4-spd, Pattern A/B/Hot for 6+ spd). Pick a Racing/Towing/Eco intent or override fields manually. Also accessible from Tools menu.",
+   "TCC Shudder Fix",
+   "Shudder originates in the partial-lockup zone (30-60 MPH, light\nthrottle, ~1200-2000 RPM) where TCC engages with too little\npressure \u2014 clutch material slip-sticks producing harmonic\nvibration. Each level raises minimum apply pressure and\nrestricts lockup to conditions where partial slip can't develop.",
+   "Eliminates 6L80 TCC harmonic shudder by restricting partial\nlockup. Applies to the TCC Apply Pressure Ramp + min TCC RPM\n+ accel lock gear on next Calculate (F5).",
+   "color: #aaa; font-size: 10px;",
+   "Off  \u2014  no shudder fix applied",
+   "Mild  \u2014  65 PSI plateau, +200 RPM min TCC",
+   "Moderate  \u2014  90 PSI plateau, +400 RPM min TCC, +1 lock gear",
+   "Aggressive  \u2014  full lock (110 PSI), restrict to cruise+WOT only",
+   "color: #6cc; font-size: 10px; padding: 4px;",
+   "Off",
+   "Basics",
+   "Engine RPM",
+   "Hot-engine idle RPM. Used to compute min-speed-per-gear (MinSpeed = idle + 400 RPM). Default 650 fits most LS/LT engines.",
+   "Target engine RPM at the 100% TPS upshift point. Set below redline to leave headroom for shift inertia. LS1=6200, LS3=6600, LT1=6500, ZR1/ZL1=6500, stock truck=5800, diesel=3200.\n\nHPT table: Transmission \u2192 Auto Shift Properties \u2192 WOT RPM (per shift)\n           Or: Transmission \u2192 General \u2192 Maximum Engine Speed",
+   "Maximum allowable engine RPM at any WOT downshift. Caps the downshift speed so a 3-2 kickdown doesn't overrev. Set 1500-2000 below shift_rpm so post-downshift RPM stays under redline.\n\nHPT table: Transmission \u2192 Auto Shift Properties \u2192 Max Downshift RPM",
+   "Minimum engine RPM at which TCC is allowed to lock per gear. Becomes a per-gear MPH floor in the TCC tables. Stock GM ~1100-1200, performance ~1400, towing ~1600 (more slip for torque multiplication).\n\nHPT table: Transmission \u2192 Torque Converter \u2192 Minimum Lock RPM\n           Indirectly: TCC Lock vs TPS (per gear)",
+   "Idle RPM:",
+   "WOT Shift RPM:",
+   "Max Downshift RPM:",
+   "Min TCC Lock RPM:",
+   "Torque Converter",
+   "Torque converter stall speed (foot-braked, WOT). Drives the slip model: slip% = (stall/1000)^1.7. Stock LS1=1800-2000, mild performance=2400-2800, race=3200+.\n\nHPT informational only \u2014 no PCM table directly stores stall RPM.\nAffects: TCC Apply Pressure schedules + WOT shift point lead math.",
+   "OPTIONAL: dyno-measured WOT slip % at the stall RPM (engine RPM minus driveshaft RPM, divided by engine RPM \u00d7 100). Leave at 0.0 to skip. When set, the validation banner will compare your measured slip vs the formula prediction and warn if stall RPM looks wrong.",
+   "Lowest gear that TCC is allowed to lock in. Gears BELOW this are forced to 255 MPH (disabled sentinel). Setting higher than the top gear disables lockup completely. Default 2 (gear 1 unlocked). Raising this will auto-raise Accel and WOT Gear to match.",
+   "Lowest gear where TCC engages aggressively under acceleration. At/above this gear, lock is pulled close to the upshift speed. Performance tune: 2-3. Tow tune: 4+ (lets converter multiply torque). Cannot be lower than Min Gear (auto-enforced).",
+   "Lowest gear that locks TCC through a WOT shift. The 100% TPS cell of lock is pulled up to upshift_OUT - spread. Top gear uses upshift_INTO + spread (locks right after the shift). Typical: 6L80=5, 8L90=7, 10L80=8. Cannot be lower than Min Gear (auto-enforced).",
+   "Lockup Config\u2026",
+   "Open advanced TCC behavior flags (stall lock logic, init lock, etc.)",
+   "Stall RPM:",
+   "Measured Slip %:",
+   "Min Gear:",
+   "Accel Gear:",
+   "WOT Gear:",
+   "Per-Gear WOT Shift RPM (override)",
+   "Per-gear WOT shift RPM. Override the global WOT Shift RPM to keep the engine in its powerband across the gear stack (e.g. 6500 in 1-2 for full power, 6100 in 5-6 for cruise).",
+   "color: #888; font-size: 9pt;",
+   "Shift RPM",
+   "Edit each gear's WOT upshift RPM. Values feed into the calc as per-gear overrides. Click 'Reset to Global' to revert to the WOT Shift RPM spinbox value.",
+   "Reset to Global",
+   "Set all per-shift values to match the WOT Shift RPM spinbox. Clears per-shift customization (per_gear_rpm = None).",
+   "Step \u2212200/shift",
+   "Start at the global WOT Shift RPM for 1\u21922, then drop 200 RPM\nper subsequent shift. Common pattern for boosted builds: full\npower on launch, taper for cruise gears (e.g. 6800/6600/6400\u2026).",
+   "Match Torque Curve",
+   "If a torque curve is loaded, set each shift RPM such that the\nengine lands in its peak-HP band after the shift. Picks the\nRPM that maximizes the next gear's avg HP across its band.\nFalls back to the global RPM if no curve is loaded.",
+   "color: #4a9eff; font-size: 9pt; padding: 2px;",
+   "Forced Induction (Boost Curve)",
+   "Modify engine torque/HP at WOT for turbo or supercharged setups.\nMultiplier: effective_tq = base_tq * (1 + boost_psi * pct/100)\nTypical: turbo 7-9% per PSI, supercharger 5-6% per PSI.",
+   "Enable boost-aware torque scaling",
+   "Toggle whether boost contributes to torque/HP at runtime.\nOFF = naturally aspirated (no scaling).\nON = base curve \u00d7 boost multiplier per RPM.",
+   "RPM at which boost begins to rise meaningfully (above turbo lag).\nTypical: small turbo ~2000-2500, large single ~3000-3800.",
+   "Spool RPM:",
+   "Peak boost in PSI. Set 0 to disable boost contribution.\nTypical: stock turbo 6-10 PSI, mid build 12-18 PSI, race 20+ PSI.",
+   "Peak Boost PSI:",
+   "RPM at which peak boost is achieved.\nTypical: small turbo ~3500-4500, supercharger nearly immediate.",
+   "Peak RPM:",
+   "Boost PSI at redline. Equal to Peak PSI = flat shelf (stock).\nLess than Peak PSI = boost taper (common on small turbos or for\nexhaust-heat / wastegate creep reasons). Greater = unlikely.",
+   "Redline PSI:",
+   "% torque gain per PSI of boost. Empirical multiplier \u2014 varies\nby engine, ICAT, fuel, octane:\n  Turbo, intercooled, pump 91: ~7-8% per PSI\n  Turbo, race fuel/E85:        ~8-9% per PSI\n  Supercharger, intercooled:   ~5-6% per PSI (parasitic loss)",
+   "% Torque per PSI:",
+   "color: #6cc; font-size: 9pt; padding: 4px;",
+   "Engine / TC",
+   "TPS Slope Curve",
+   "Throttle body / pedal-mapping preset. Overwrites the 4 sliders below. ETC offsets are positive because drive-by-wire blades don't open until ~8-15% pedal. Cable TBs are 1:1 (offset 0). 'Custom' = no-op.",
+   "Pedal % at which the slope curve starts rising (compensates for ETC dead zone). 0 = curve starts at 0% pedal (cable TBs). Higher = curve shifted right (ETC). Negative = aggressive low-TPS shifts.",
+   "Exponent of the TPS slope curve: (TPS/100)^factor. 1.0 = linear. >1 = held longer at low throttle, climbs sharper near WOT. <1 = early upshifts, lazy WOT. Default 1.35 fits stock LS tuning.",
+   "Upshift firmness 0-10. Blends an aggressive curve into the base. 0 = mushy / late shifts. 10 = quick, firm WOT shifts. Performance: 7-10. Tow/economy: 3-5.",
+   "Downshift firmness 0-10. Controls kickdown aggressiveness.\n  \u2022 HIGHER (7-10): downshift triggers at HIGHER speed \u2014 pressing\n    throttle drops a gear readily even at cruise speed (snappy\n    kickdown for racing/towing/spirited driving)\n  \u2022 LOWER (1-4):   downshift only at LOWER speed \u2014 engine has to\n    lug down before PCM drops a gear (eco / hunt-free cruise)\n  \u2022 5 = balanced default\nTip: if Normal feels lazy on throttle pickup, bump this to 7-8.",
+   "Preset:",
+   "TPS Offset (%):",
+   "Curve Factor:",
+   "Up Firmness (0-10):",
+   "Down Firmness (0-10):",
+   "Spreads / Hysteresis (MPH)",
+   "Minimum MPH gap between upshift and downshift in a given gear. Prevents shift hunting. Default 4.5. Higher for tight ratios (8L90/10L80: 5-6), lower for wide ratios (4L60E: 3-4).",
+   "Minimum MPH gap between TCC Lock and Unlock (hysteresis).\nStops the converter from oscillating around the lock point.\nStock GM uses 2-3 \u2014 TOO TIGHT for worn fluid or aftermarket\nconverters; expect lock/unlock hunting. Recommended:\n  4-5 MPH: street build, fresh fluid\n  5-7 MPH: high-mile build or aftermarket converter\n  7-8 MPH: race converter with low stall",
+   "Minimum MPH gap between Upshift and TCC Lock. Ensures TCC locks BEFORE the upshift fires. Too tight = lock and shift overlap (rough feel). Default 3.0.",
+   "Minimum MPH gap between TCC Unlock and the downshift speed. Stops you from unlocking and immediately downshifting. Default 3.5. Increase to 4-5 for smoother cruise.",
+   "Upshift > Downshift:",
+   "Lock > Unlock:",
+   "Upshift > Lock:",
+   "Unlock > Downshift:",
+   "WOT Shift Lead",
+   "RPM Mode (geometric)",
+   "Geometric lead \u2014 early shift derived from gear ratio. Higher ratio = more inertia = more lead. Ignores Weight/RWHP.",
+   "Time Mode (RWHP-based)",
+   "Physics-based lead \u2014 accel rate = RWHP*0.75*375 / V / Weight (MPH/s). Uses per-gear shift delays (Tools > Edit Shift Delays). More accurate but requires accurate weight + RWHP inputs.",
+   "RPM-mode lead magnitude (1-8). Higher = shift earlier. 6L80: 2.5, 8L90: 2.0, 10L80: 1.5 (tighter ratios need less lead). Time-mode ignores this \u2014 uses per-gear delay table instead.",
+   "Total downshift response time (seconds) \u2014 sum of command delay and clutch fill time. Stock GM: 0.30-0.50. Aftermarket valve body: 0.15-0.25. Used in Time-mode lead only.",
+   "Mode:",
+   "Lead Value (1-8):",
+   "Down Shift Time (s):",
+   "Shift Curve",
+   "CALCULATE ALL TABLES",
+   "QPushButton { font-weight: bold; background: #005A9E; color: white; }QPushButton:hover { background: #0073C7; }",
+   "Export Tables"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._build_left_panel.<lambda>",
+  "line": 8065,
+  "ops": 7,
+  "strings": []
+ },
+ {
+  "name": "<module>.TransStudio._build_right_panel",
+  "line": 8311,
+  "ops": 298,
+  "strings": [
+   "",
+   "QLabel { background: #1e1e1e; color: #aaa; border: 1px solid #444; padding: 4px 8px; font-size: 10pt; }",
+   "Run Calculate (F5) to generate tables. Tooltips on every input.",
+   "QTableWidget { selection-background-color: #2864A0; }",
+   "Upshift (MPH)",
+   "Downshift (MPH)",
+   "TCC Lock (MPH)",
+   "TCC Unlock (MPH)",
+   "WOT Summary",
+   "Overlay all enabled modes",
+   "When checked, draws Pattern A / Pattern B / Hot Trans / etc.\nshift curves alongside the Normal mode for visual comparison.\nEach mode uses a distinct line style (dash, dot, dash-dot).",
+   "Show downshift curves",
+   "Shift Curve Plot",
+   "TCM Pressures",
+   "Gear Calculator"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._dsb",
+  "line": 8391,
+  "ops": 33,
+  "strings": []
+ },
+ {
+  "name": "<module>.TransStudio._spin",
+  "line": 8400,
+  "ops": 17,
+  "strings": []
+ },
+ {
+  "name": "<module>.TransStudio._enforce_tcc_gear_hierarchy",
+  "line": 8408,
+  "ops": 19,
+  "strings": [
+   "Accel and WOT lock gears cannot be set lower than Min TCC Gear.\n        QSpinBox.setMinimum() auto-clamps the current value if it falls below\n        the new floor, so this both prevents future bad input and corrects\n        any existing value that violates the constraint."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.on_trans_change",
+  "line": 8418,
+  "ops": 289,
+  "strings": [
+   "ratios",
+   "-spd  |  ",
+   "type",
+   "  |  ~",
+   "torque",
+   " lb\u00b7ft rating\nRatios: ",
+   ", ",
+   "FWD",
+   "min_tcc_gear",
+   "per_gear_rpm_table",
+   "4spd",
+   "6plus",
+   "mode_overrides",
+   "_last_results_modes",
+   "Normal",
+   "pressure_tab"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.on_trans_change.<genexpr>",
+  "line": 8424,
+  "ops": 17,
+  "strings": [
+   ".3f"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._init_grid_structure",
+  "line": 8468,
+  "ops": 275,
+  "strings": [
+   ".2f",
+   "->",
+   "Gear "
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._gather_config",
+  "line": 8507,
+  "ops": 176,
+  "strings": [
+   "ratios",
+   "tire_dia",
+   "axle",
+   "chain",
+   "weight",
+   "rwhp",
+   "vss_count",
+   "idle_rpm",
+   "stall_rpm",
+   "meas_slip",
+   "shift_rpm",
+   "downshift_rpm",
+   "min_tcc_rpm",
+   "min_tcc_gear",
+   "accel_lock_gear",
+   "wot_lock_gear",
+   "stall_lock_logic",
+   "stall_lock",
+   "init_lock",
+   "rpm",
+   "time"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._apply_tb_preset",
+  "line": 8545,
+  "ops": 45,
+  "strings": [
+   "Apply selected throttle body preset to the four TPS sliders.\n        'Custom' is a no-op so user values are preserved."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._apply_tire_preset",
+  "line": 8558,
+  "ops": 21,
+  "strings": [
+   "Set tire diameter from the selected tire-DB entry."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._rebuild_per_gear_rpm_table",
+  "line": 8567,
+  "ops": 112,
+  "strings": [
+   "Resize the per-gear RPM table when the transmission changes.\n        Preserves existing values where possible; pads with global shift_rpm.",
+   "\u2192"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._refresh_per_gear_highlight",
+  "line": 8583,
+  "ops": 149,
+  "strings": [
+   "Highlight cells whose value differs from global WOT Shift RPM.\n        Updates the status label with override count.",
+   "All shifts using global (",
+   " RPM)",
+   "color: #888; font-size: 9pt; padding: 2px;",
+   " shift",
+   "s",
+   "",
+   " overriding global (",
+   "color: #4a9eff; font-size: 9pt; padding: 2px; font-weight: bold;"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._quickfill_stepped",
+  "line": 8617,
+  "ops": 60,
+  "strings": [
+   "Fill table with stepped RPM: row 0 = global, row 1 = global+step, etc.\n        step_rpm typically negative (drop per shift) but any value works."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._quickfill_from_curve",
+  "line": 8629,
+  "ops": 147,
+  "strings": [
+   "For each shift, pick the shift RPM that maximizes the NEXT gear's\n        avg HP across its post-shift band. Requires a loaded torque curve.\n        Falls back to global RPM if no curve.\n        Algorithm: for shift g\u2192g+1, the post-shift RPM in gear g+1 equals\n        (current_RPM \u00d7 ratio[g+1] / ratio[g]). We want to land in peak-HP\n        band. Pick shift RPM such that post-shift RPM is near peak_HP_rpm.\n        ",
+   "No torque curve",
+   "Load a torque curve first via Tools \u2192 Torque Curve. Without it, this just picks the global RPM.",
+   "ratios",
+   "Per-shift RPMs set to land near peak HP (",
+   ".0f",
+   " RPM) after each shift."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._on_per_gear_rpm_changed",
+  "line": 8670,
+  "ops": 94,
+  "strings": [
+   "User edited a cell \u2014 push to self.per_gear_rpm and trigger live recalc."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._on_per_gear_rpm_changed.<genexpr>",
+  "line": 8684,
+  "ops": 22,
+  "strings": []
+ },
+ {
+  "name": "<module>.TransStudio._on_global_shift_rpm_changed",
+  "line": 8691,
+  "ops": 53,
+  "strings": [
+   "When global WOT Shift RPM changes, refresh inline table only if the\n        user hasn't customized it (per_gear_rpm is None).",
+   "per_gear_rpm_table"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._reset_per_gear_rpm",
+  "line": 8702,
+  "ops": 50,
+  "strings": [
+   "Clear per-gear customization \u2014 all rows back to global shift_rpm."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.calculate",
+  "line": 8714,
+  "ops": 538,
+  "strings": [
+   "Calculation Error",
+   "Normal",
+   "enabled",
+   "fields",
+   "intent",
+   "(Custom \u2014 keep current overrides)",
+   "shift_rpm",
+   "per_gear_rpm",
+   "Mode ",
+   " Failed",
+   "Normal pass OK, ",
+   " error: ",
+   "n_gears",
+   "KPH",
+   "MPH",
+   "upshift",
+   "downshift",
+   "tcc_lock",
+   "tcc_unlock",
+   "Upshift (",
+   ")",
+   "Downshift (",
+   "TCC Lock (",
+   "TCC Unlock (",
+   "Min ",
+   " (idle)",
+   "Redline ",
+   "WOT ",
+   " (slip)",
+   "Upshift @ WOT",
+   "Downshift @ WOT",
+   "min_speed",
+   "speed_summary",
+   ".1f",
+   "rpm_targets"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._on_shudder_level_changed",
+  "line": 8826,
+  "ops": 46,
+  "strings": [
+   "Off",
+   "Mild",
+   "Moderate",
+   "Aggressive"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._apply_shudder_fix",
+  "line": 8841,
+  "ops": 277,
+  "strings": [
+   "Apply / revert TCC shudder fix based on current radio selection.\n        Modifies pressure_intent_overrides for Normal mode and a few shift\n        parameters on the Engine/TC tab. Recalculates immediately so the\n        result is visible without an extra F5.",
+   "Off",
+   "Normal",
+   "pressure_intent_overrides",
+   "min_tcc_rpm",
+   "accel_lock_gear",
+   "wot_lock_gear",
+   "pressure_intent_overrides_Normal",
+   "Shudder fix Off \u2014 baselines restored.",
+   "Mild",
+   "Shudder Fix",
+   "Mild: TCC plateau 65 PSI, min TCC +200 RPM.\nBest starting point \u2014 light shudder, daily driving.",
+   "Moderate",
+   "max_psi",
+   "Moderate: 90 PSI plateau, min TCC +400 RPM, lock +1 gear.\nMid-grade fix \u2014 noticeable shudder under part throttle.",
+   "Aggressive",
+   "Aggressive: 110 PSI plateau, lock only top gear + WOT.\nMaximum fix \u2014 sacrifices fuel economy. For severe shudder\n(worn clutch material, bad fluid history)."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._max_gear",
+  "line": 8913,
+  "ops": 24,
+  "strings": [
+   "Return total number of forward gears for current trans.",
+   "ratios"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._on_plot_overlay_toggle",
+  "line": 8919,
+  "ops": 11,
+  "strings": []
+ },
+ {
+  "name": "<module>.TransStudio._on_plot_downshift_toggle",
+  "line": 8923,
+  "ops": 11,
+  "strings": []
+ },
+ {
+  "name": "<module>.TransStudio._apply_axle_from_calc",
+  "line": 8927,
+  "ops": 12,
+  "strings": [
+   "Called by GearCalculatorTab when user clicks Apply. Sets axle ratio\n        on Basics tab and triggers a recalc."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._sync_gear_calc",
+  "line": 8933,
+  "ops": 49,
+  "strings": [
+   "Push current trans + tire + redline state to gear calc tab.\n        Called on trans change AND after calculate.",
+   "gear_calc_tab",
+   "ratios"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._on_theme_change",
+  "line": 8945,
+  "ops": 45,
+  "strings": [
+   "Switch app theme at runtime. Updates QPalette + global QSS.",
+   "_theme_actions"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._on_boost_changed",
+  "line": 8956,
+  "ops": 126,
+  "strings": [
+   "Rebuild BoostCurve from UI fields and attach to torque_curve.",
+   "boost_enabled",
+   "torque_curve",
+   "Effective peak: +",
+   ".1f",
+   "% torque at ",
+   " RPM. Multiplier curve: 1.00\u00d7 @ idle \u2192 ",
+   ".2f",
+   "\u00d7 @ peak.",
+   "Boost disabled (naturally aspirated mode)."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._on_pressure_intent_override",
+  "line": 8986,
+  "ops": 45,
+  "strings": [
+   "Pressure tab notified us: user picked Intent X for Mode Y.\n        Store the override, regenerate just the affected pressure tables, then\n        push them back to the tab. No need to re-run the shift calc.\n        Persists via profile save (see save_profile).",
+   "pressure_intent_overrides",
+   "n_gears",
+   "Pressure intent for '",
+   "' set to '",
+   "'. Table updated; export will use this value."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._generate_pressure_tables",
+  "line": 9002,
+  "ops": 255,
+  "strings": [
+   "Build per-mode pressure / shift-time / TCC tables.\n\n        For 6+ spd:\n          self._pressure_per_shift = {mode: {shift_name: 2D_table}}\n          self._pressure_torque_cols, self._pressure_mode_intents\n\n        For 4-spd:\n          self._pressure_4spd = {mode: 2D_table}    # Base Shift Pressure\n          self._shift_time_4spd = {mode: 2D_table}  # Desired Shift Time\n          self._tcc_duty_4spd = 2D_table            # TCC DC Maximum\n        ",
+   "torque",
+   "pressure_intent_overrides",
+   "Normal",
+   "Daily",
+   "enabled",
+   "Hot Trans",
+   "intent",
+   "",
+   "User: ",
+   " \u2014",
+   "1-2"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._generate_pressure_tables.build_for_intent",
+  "line": 9036,
+  "ops": 28,
+  "strings": []
+ },
+ {
+  "name": "<module>.TransStudio._generate_4spd_tables",
+  "line": 9077,
+  "ops": 131,
+  "strings": [
+   "Generate 4-spd-specific tables: Base Shift Pressure, Brake Shift\n        Pressure, Desired Shift Time (each per Normal/Performance/Towing),\n        TCC DC Maximum, and Force Motor Current (singles).",
+   "Normal",
+   "Performance",
+   "enabled",
+   "Hot Trans",
+   "intent",
+   "",
+   "User: ",
+   " \u2014"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._validate",
+  "line": 9111,
+  "ops": 339,
+  "strings": [
+   "Return a list of warning strings about the current config/results.",
+   "n_gears",
+   "upshift",
+   "min_speed",
+   "G",
+   "\u2192G",
+   ": WOT upshift below min speed \u2014 check ratios/RPM.",
+   ": WOT upshift < idle upshift \u2014 slope inverted.",
+   "stall_rpm",
+   "min_tcc_rpm",
+   "Stall RPM (",
+   ".0f",
+   ") within 200 of Min TCC Lock RPM (",
+   ") \u2014 converter will hunt cruising in top gears.",
+   "downshift_rpm",
+   "shift_rpm",
+   "Max Downshift RPM (",
+   ") too close to WOT Shift RPM (",
+   ") \u2014 downshift kick may overrev.",
+   "min_tcc_gear",
+   "Min TCC Gear (",
+   ") > top gear (",
+   ") \u2014 TCC fully disabled.",
+   "accel_lock_gear",
+   "Accel Lock Gear (",
+   ") \u2014 Accel Lock unused.",
+   "wot_lock_gear",
+   "WOT Lock Gear (",
+   ") \u2014 WOT Lock unused.",
+   "spread_up",
+   "Upshift>Downshift spread (",
+   ".1f",
+   ") tight \u2014 shift hunting risk. Recommend \u22653.5.",
+   "spread_lock",
+   "Lock>Unlock spread (",
+   ") tight \u2014 TCC oscillation likely on worn fluid/converter. Recommend \u22654.0.",
+   "spread_lock_up",
+   "Upshift>Lock spread (",
+   ") tight \u2014 lock may overlap upshift firing.",
+   "spread_unlock_dn",
+   "Unlock>Downshift spread (",
+   ") tight \u2014 risk of unlock-then-immediate-downshift.",
+   "slip_pct",
+   "Measured slip ",
+   "% disagrees with stall-predicted ",
+   "% (\u0394 ",
+   "%). Stall RPM ~",
+   " would match your measured value."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._update_banner",
+  "line": 9169,
+  "ops": 94,
+  "strings": [
+   "Slip ",
+   "slip_pct",
+   ".1f",
+   "%",
+   "Lead ",
+   "lead_mode",
+   " | MULTI-MODE (",
+   " extra)",
+   "",
+   " | METRIC",
+   "\u2713 Calculated. ",
+   "  |  ",
+   "QLabel { background: #1a3a1a; color: #b8e0b8; border: 1px solid #2a6a2a; padding: 4px 8px; font-size: 10pt; }",
+   "QLabel { background: #3a2a1a; color: #f0c898; border: 1px solid #8a5a2a; padding: 4px 8px; font-size: 10pt; }",
+   "\n\u26a0 "
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._fill_grid",
+  "line": 9190,
+  "ops": 85,
+  "strings": [
+   ".1f"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._apply_safety_overlay",
+  "line": 9206,
+  "ops": 231,
+  "strings": [
+   "Color-code cells that violate physical / logical constraints.\n        Errors (red bg): hard violations that would cause a CEL or bad shift.\n        Warnings (orange bg): suspect values that may be intentional.\n\n        Rules (refined to avoid false positives at low TPS):\n          - Downshift > Upshift - spread_up  \u2192 ERROR (illegal hysteresis)\n          - TCC Lock < TCC Unlock + spread   \u2192 ERROR (no hysteresis margin)\n          - Cell > 200 MPH                   \u2192 WARN (probably wrong tire/axle/ratio)\n          - Cell < 0                         \u2192 ERROR (negative speed)\n\n        Removed (caused false positives at low TPS):\n          - \"Downshift within 1 MPH of upshift floor\" \u2014 at TPS 0% the natural\n            curve shape compresses the gap to exactly spread_up, which is the\n            ENFORCED minimum, not a hunting risk.\n          - \"Lock > Upshift OUT speed\" \u2014 at low TPS this is intentional (don't\n            lock in this gear, upshift first). At WOT in top gears it's also\n            intentional (unlock before shift, relock after).\n        ",
+   "upshift",
+   "downshift",
+   "tcc_lock",
+   "tcc_unlock",
+   "spread_up",
+   "spread_lock",
+   "Negative speed \u2014 check ratio/RPM",
+   ".0f",
+   " MPH is very high \u2014 verify tire/axle/ratio",
+   "Downshift ",
+   ".1f",
+   " \u2265 Upshift ",
+   " - spread ",
+   " = ",
+   " (illegal)",
+   "Lock ",
+   " \u2264 Unlock ",
+   " \u2014 no hysteresis (TCC will oscillate)"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._apply_safety_overlay.paint",
+  "line": 9237,
+  "ops": 33,
+  "strings": []
+ },
+ {
+  "name": "<module>.TransStudio.export",
+  "line": 9287,
+  "ops": 259,
+  "strings": [
+   "_last_result",
+   "Calculate first",
+   "Run Calculate before exporting.",
+   "Normal",
+   "upshift",
+   "downshift",
+   "tcc_lock",
+   "tcc_unlock",
+   "n_gears",
+   "_pressure_per_shift",
+   "_pressure_torque_cols",
+   "_pressure_mode_intents",
+   "_tcc_apply_tables",
+   "_coast_tables",
+   "_garage_tables",
+   "torque",
+   "_pressure_4spd",
+   "_shift_time_4spd",
+   "_tcc_duty_4spd"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.export.grab",
+  "line": 9295,
+  "ops": 68,
+  "strings": []
+ },
+ {
+  "name": "<module>.TransStudio.edit_delays",
+  "line": 9352,
+  "ops": 42,
+  "strings": [
+   "ratios"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.edit_lockup_config",
+  "line": 9359,
+  "ops": 18,
+  "strings": []
+ },
+ {
+  "name": "<module>.TransStudio.edit_profile_metadata",
+  "line": 9365,
+  "ops": 44,
+  "strings": [
+   "Edit metadata embedded in saved profiles.",
+   "Profile metadata updated (",
+   " field",
+   "s",
+   "",
+   ")"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.edit_torque_curve",
+  "line": 9376,
+  "ops": 60,
+  "strings": [
+   "Open torque curve editor; saves into self.torque_curve.",
+   "Torque curve loaded: peak ",
+   ".0f",
+   " HP / ",
+   " lb\u00b7ft. Time-mode lead will now use full curve.",
+   "Torque curve cleared. Time-mode lead uses RWHP scalar."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.open_bin_xdf_dialog",
+  "line": 9395,
+  "ops": 30,
+  "strings": [
+   "Launch BIN/XDF reader dialog. Non-modal \u2014 stays open while user\n        compares values against the main window's calc output.",
+   "_bin_xdf_dialog"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.open_perf_sim",
+  "line": 9405,
+  "ops": 69,
+  "strings": [
+   "Launch the Performance Simulator (#6 + #9). Uses last calc result\n        for the WOT upshift MPH per gear so the sim shifts at the same\n        speeds the user's calibration would command.",
+   "Load Torque Curve First",
+   "Performance Simulator needs a torque curve to predict acceleration.\n\nOpen Tools \u2192 Torque Curve and either:\n  \u2022 Pick a preset (LS3 / LT4 / LBZ / etc.)\n  \u2022 Import a dyno CSV (RPM, HP, [TQ] columns)\nThen re-open Performance Simulator.",
+   "_last_result",
+   "upshift"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.import_log_csv",
+  "line": 9432,
+  "ops": 33,
+  "strings": [
+   "Launch log import / validation dialog (feature #3).",
+   "_last_result",
+   "Calculate First",
+   "Run Calculate (F5) before importing logs so we have predicted values to compare against."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.edit_mode_overrides",
+  "line": 9444,
+  "ops": 78,
+  "strings": [
+   "Open the multi-mode tables setup dialog.",
+   "ratios",
+   "4spd",
+   "6plus"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.edit_mode_overrides.<genexpr>",
+  "line": 9454,
+  "ops": 18,
+  "strings": [
+   "enabled"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._load_custom_intents",
+  "line": 9459,
+  "ops": 61,
+  "strings": [
+   "Load user-saved intent presets from disk and merge into INTENT_PRESETS."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._save_custom_intents",
+  "line": 9471,
+  "ops": 79,
+  "strings": [
+   "Write the user-only entries of INTENT_PRESETS to disk.\n        Built-ins are identified by being in the original BUILTIN_INTENT_NAMES set.",
+   "w"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.reverse_import_table",
+  "line": 9483,
+  "ops": 91,
+  "strings": [
+   "tps_factor",
+   "tps_offset",
+   "up_firmness",
+   "shift_rpm",
+   "Custom",
+   "Applied solved params: factor=",
+   " offset=",
+   " upf=",
+   " shiftRPM="
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.load_starter_profile",
+  "line": 9500,
+  "ops": 189,
+  "strings": [
+   "trans_name",
+   "tps_preset",
+   "tire_dia",
+   "axle",
+   "chain",
+   "weight",
+   "rwhp",
+   "vss_count",
+   "idle_rpm",
+   "stall_rpm",
+   "shift_rpm",
+   "downshift_rpm",
+   "min_tcc_rpm",
+   "min_tcc_gear",
+   "accel_lock_gear",
+   "wot_lock_gear",
+   "spread_up",
+   "spread_lock",
+   "spread_lock_up",
+   "lead_mode",
+   "time",
+   "Loaded preset: "
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._toggle_metric",
+  "line": 9536,
+  "ops": 13,
+  "strings": []
+ },
+ {
+  "name": "<module>.TransStudio._wire_live_preview_signals",
+  "line": 9543,
+  "ops": 99,
+  "strings": [
+   "Connect every numeric input to a debounced recalc trigger."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._on_input_changed",
+  "line": 9560,
+  "ops": 11,
+  "strings": [
+   "Restart the live-preview debounce timer if enabled."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._live_recalc",
+  "line": 9565,
+  "ops": 18,
+  "strings": [
+   "Fired by debounce timer; safe-recalculates if results exist."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._toggle_live_preview",
+  "line": 9572,
+  "ops": 29,
+  "strings": [
+   "Live preview ON \u2014 auto-recalc on changes",
+   "Live preview OFF \u2014 manual Calculate required"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.generate_html_report",
+  "line": 9581,
+  "ops": 110,
+  "strings": [
+   "Build a self-contained HTML report of the current calc (feature C).\n        Includes config snapshot, all tables, validation findings, and a\n        simple SVG plot. Saves to user-chosen file.",
+   "Calculate first",
+   "Run Calculate before generating a report.",
+   "Save HTML Report",
+   "trans_report_",
+   ".html",
+   "HTML (*.html)",
+   "w",
+   "utf-8",
+   "Report saved: ",
+   "Report Failed"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.generate_pdf_report",
+  "line": 9604,
+  "ops": 179,
+  "strings": [
+   "Build a multi-page PDF tune sheet for sharing with customers /\n        documenting builds. Requires reportlab (pip install reportlab).\n        Falls back to suggesting HTML report if reportlab not available.",
+   "Calculate first",
+   "Run Calculate before generating a report.",
+   "reportlab Required",
+   "PDF export requires the 'reportlab' library.\n\nInstall via:  pip install reportlab\n\nAlternatively, use File \u2192 Generate HTML Report which works without extra dependencies.",
+   "tune_sheet_",
+   ".pdf",
+   "profile_metadata",
+   "vehicle_name",
+   " ",
+   "_",
+   "Save PDF Tune Sheet",
+   "PDF (*.pdf)",
+   "PDF saved: ",
+   "PDF Failed"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._build_pdf_report",
+  "line": 9648,
+  "ops": 1092,
+  "strings": [
+   "Generate the multi-page PDF. Sections:\n          1. Cover: vehicle/tuner info, config summary\n          2. Shift speed tables (Upshift + Downshift)\n          3. TCC tables (Lock + Unlock)\n          4. WOT summary + per-gear data\n          5. TCM pressures (6+ spd only)\n          6. Performance prediction (if torque curve loaded)",
+   "profile_metadata",
+   "n_gears",
+   "Title2",
+   "Title",
+   "H2",
+   "Heading2",
+   "Mono",
+   "BodyText",
+   "Courier",
+   "Transmission Calibration Tune Sheet",
+   "vehicle_name",
+   " \u2014 Tune Sheet",
+   "Trans:",
+   "Tuner:",
+   "tuner_name",
+   "\u2014",
+   "Customer:",
+   "customer",
+   "Vehicle:",
+   "Build Date:",
+   "build_date",
+   "%Y-%m-%d",
+   "Generated:",
+   "%Y-%m-%d %H:%M",
+   "Configuration",
+   "Drivetrain",
+   "tire_dia",
+   ".1f",
+   "\u2033 tire \u00d7 ",
+   "axle",
+   ".2f",
+   " axle \u00d7 ",
+   "chain",
+   " t-case",
+   "Weight / RWHP",
+   "weight",
+   ".0f",
+   " lb / ",
+   "rwhp",
+   " HP",
+   "RPM",
+   "Idle ",
+   "idle_rpm",
+   " | Stall ",
+   "stall_rpm",
+   " | Shift ",
+   "shift_rpm",
+   " | Down ",
+   "downshift_rpm",
+   " | Min TCC ",
+   "min_tcc_rpm",
+   "TPS Curve",
+   "Offset ",
+   "tps_offset",
+   " | Factor ",
+   "tps_factor",
+   " | Up Firm ",
+   "up_firmness",
+   " | Down Firm ",
+   "down_firmness",
+   "Spreads (MPH)",
+   "Up>Dn ",
+   "spread_up",
+   " | Lock>Unlk ",
+   "spread_lock",
+   " | Up>Lk ",
+   "spread_lock_up",
+   " | Unlk>Dn ",
+   "spread_unlock_dn",
+   "WOT Lead",
+   "lead_mode",
+   " mode, value ",
+   "lead_value",
+   ", down time ",
+   "down_time",
+   "s",
+   "TCC Gates",
+   "Min gear ",
+   "min_tcc_gear",
+   " | Accel gear ",
+   "accel_lock_gear",
+   " | WOT gear ",
+   "wot_lock_gear",
+   "notes",
+   "Notes",
+   "BACKGROUND",
+   "#e8e8e8",
+   "INNERGRID",
+   "BOX",
+   "Upshift (MPH)",
+   "upshift",
+   "\u2192",
+   "Downshift (MPH)",
+   "downshift",
+   "TCC Lock (MPH)",
+   "tcc_lock",
+   "Gear ",
+   "TCC Unlock (MPH)",
+   "tcc_unlock",
+   "WOT Summary",
+   "rpm_targets",
+   "min_speed",
+   "speed_summary",
+   "#404060",
+   "TEXTCOLOR",
+   "torque_curve",
+   "Performance Prediction (infinite-traction simulation)",
+   "0-30",
+   "t_0_30",
+   "0-60",
+   "t_0_60",
+   "0-100",
+   "t_0_100",
+   "1/8 mile",
+   "t_eighth",
+   "  @  ",
+   "v_eighth",
+   "1/4 mile",
+   "t_quarter",
+   "v_quarter",
+   "<i>Note: simulator assumes infinite tire grip \u2014 real-world 0-60 typically 0.2-0.5s slower for high-HP gas builds.</i>",
+   "Note",
+   "<font size='7' color='#888'>Generated by Ewalt's Auto Tuning Transmission Calibration Studio \u00b7 ",
+   "</font>"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._build_pdf_report.shift_table",
+  "line": 9758,
+  "ops": 168,
+  "strings": [
+   "H2",
+   "",
+   ".1f",
+   "\u2014",
+   "BACKGROUND",
+   "#404060",
+   "TEXTCOLOR",
+   "INNERGRID",
+   "BOX"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._build_pdf_report.f",
+  "line": 9846,
+  "ops": 11,
+  "strings": [
+   ".2f",
+   "s",
+   "\u2014"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._build_pdf_report.fmph",
+  "line": 9847,
+  "ops": 11,
+  "strings": [
+   ".1f",
+   " mph",
+   "\u2014"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._build_html_report",
+  "line": 9887,
+  "ops": 432,
+  "strings": [
+   "KPH",
+   "MPH",
+   "n_gears",
+   ".1f",
+   "Up ",
+   "\u2192",
+   "Dn ",
+   "Gear ",
+   "Transmission",
+   "Tire Dia",
+   "tire_dia",
+   ".2f",
+   " in",
+   "Axle Ratio",
+   "axle",
+   "T-Case Ratio",
+   "chain",
+   "Vehicle Weight",
+   "weight",
+   ".0f",
+   " lb",
+   "RWHP",
+   "rwhp",
+   "Idle RPM",
+   "idle_rpm",
+   "Stall RPM",
+   "stall_rpm",
+   " (slip ",
+   "slip_pct",
+   "%)",
+   "WOT Shift RPM",
+   "shift_rpm",
+   "Min TCC RPM",
+   "min_tcc_rpm",
+   "TPS Factor / Offset",
+   "tps_factor",
+   " / ",
+   "tps_offset",
+   "Up/Down Firmness",
+   "up_firmness",
+   "down_firmness",
+   "Lead Mode",
+   "lead_mode",
+   " (",
+   "lead_value",
+   ")",
+   "TCC Min/Accel/WOT Gear",
+   "min_tcc_gear",
+   "accel_lock_gear",
+   "wot_lock_gear",
+   "<table class='cfg'>",
+   "",
+   "</table>",
+   "<div class='warn'><b>\u26a0 Validation findings:</b><ul>",
+   "</ul></div>",
+   "<div class='ok'>\u2713 All validation checks pass.</div>",
+   "upshift",
+   "downshift",
+   "tcc_lock",
+   "tcc_unlock",
+   "%Y-%m-%d %H:%M",
+   "<!DOCTYPE html>\n<html><head><meta charset=\"utf-8\">\n<title>Transmission Tune Report \u2014 ",
+   "</title>\n<style>\n  body { font-family: -apple-system, Segoe UI, Roboto, sans-serif;\n          background: #fff; color: #222; padding: 24px; max-width: 1400px; margin: auto; }\n  h1 { border-bottom: 2px solid #005A9E; padding-bottom: 6px; }\n  h2 { color: #005A9E; margin-top: 30px; border-bottom: 1px solid #ccc; padding-bottom: 4px; }\n  table { border-collapse: collapse; margin: 10px 0; font-size: 11pt; }\n  th, td { border: 1px solid #ccc; padding: 4px 8px; text-align: center; }\n  th { background: #eef; font-weight: bold; }\n  .cfg th { background: #f4f4f4; text-align: left; }\n  .cfg td { text-align: left; font-family: Consolas, monospace; }\n  .shift-table { font-family: Consolas, monospace; font-size: 9pt; }\n  .shift-table td { padding: 2px 6px; }\n  .warn { background: #fff4e0; border: 1px solid #c80; padding: 10px; margin: 12px 0;\n           border-radius: 4px; }\n  .ok { background: #e0ffe0; border: 1px solid #2a2; padding: 10px; margin: 12px 0;\n         border-radius: 4px; }\n  .meta { color: #888; font-size: 9pt; margin-top: 30px; }\n  svg { background: #fafafa; border: 1px solid #ccc; margin: 10px 0; }\n</style></head>\n<body>\n<h1>Transmission Tune Report</h1>\n<p>",
+   " \u2014 generated ",
+   "</p>\n<h2>Configuration</h2>\n",
+   "\n",
+   "\n<h2>Shift Curve Plot</h2>\n",
+   "\n<h2>Upshift Table (",
+   ")</h2>\n",
+   "\n<h2>Downshift Table (",
+   "\n<h2>TCC Lock Table (",
+   "\n<h2>TCC Unlock Table (",
+   "\n<div class='meta'>\n  Generated by Ewalt's Auto Tuning Transmission Calibration Studio.\n</div>\n</body></html>"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._build_html_report.fmt_table",
+  "line": 9896,
+  "ops": 189,
+  "strings": [
+   "{:.0f}",
+   "{:.1f}",
+   "<tr><th></th>",
+   "",
+   "</tr>",
+   "#fff",
+   "#000",
+   "<td style=\"background:rgb(",
+   ",",
+   ");color:",
+   "\">",
+   "</td>",
+   "<tr><th>",
+   "</th>",
+   "<table class='shift-table'>",
+   "</table>"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._build_html_report.fmt_table.<genexpr>",
+  "line": 9901,
+  "ops": 19,
+  "strings": [
+   "<th>",
+   "</th>"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._build_html_report.<genexpr>",
+  "line": 9940,
+  "ops": 24,
+  "strings": [
+   "<tr><th>",
+   "</th><td>",
+   "</td></tr>"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._build_html_report.<genexpr>",
+  "line": 9945,
+  "ops": 19,
+  "strings": [
+   "<li>",
+   "</li>"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._build_svg_plot",
+  "line": 10001,
+  "ops": 413,
+  "strings": [
+   "upshift",
+   ".1f",
+   ",",
+   "<polyline points=\"",
+   " ",
+   "\" fill=\"none\" stroke=\"",
+   "\" stroke-width=\"2.2\"/>",
+   "\u2192",
+   "rpm_targets",
+   " (",
+   ")",
+   "<text x=\"",
+   "\" y=\"",
+   "\" fill=\"",
+   "\" font-size=\"11\" font-family=\"Consolas\">",
+   "</text>",
+   "<line x1=\"",
+   "\" y1=\"",
+   "\" x2=\"",
+   "\" y2=\"",
+   "\" stroke=\"#666\"/><line x1=\"",
+   "\" stroke=\"#666\"/>",
+   "<text x=\"6\" y=\"",
+   "\" font-size=\"10\" fill=\"#555\">",
+   ".0f",
+   "</text><line x1=\"",
+   "\" stroke=\"#eee\"/>",
+   "%</text>",
+   "\" font-size=\"11\" fill=\"#222\">Shift Speed (",
+   ")</text><text x=\"",
+   "\" font-size=\"11\" fill=\"#222\">TPS (%)</text>",
+   "<svg width=\"",
+   "\" height=\"",
+   "\" xmlns=\"http://www.w3.org/2000/svg\">",
+   "",
+   "</svg>"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.compare_profiles",
+  "line": 10060,
+  "ops": 154,
+  "strings": [
+   "Tune diff (feature A): load a second profile and show per-cell deltas.",
+   "Calculate first",
+   "Run Calculate on the current config first.",
+   "Compare with Profile",
+   "",
+   "JSON (*.json)",
+   "trans_name",
+   "ratios",
+   "lead_mode",
+   "Compare Failed"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._toggle_dual_mode",
+  "line": 10095,
+  "ops": 33,
+  "strings": [
+   "Multi-Mode",
+   "Multi-mode enabled but no extra modes configured. Open Tools > Multi-Mode Tables Setup\u2026 to configure."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._toggle_dual_mode.<genexpr>",
+  "line": 10097,
+  "ops": 18,
+  "strings": [
+   "enabled"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.closeEvent",
+  "line": 10105,
+  "ops": 158,
+  "strings": [
+   "Auto-save state on close (feature 2). Mirrors save_profile's\n        serialization (torque_curve \u2192 dict, NaN/Inf rejection) so the resulting\n        file is always loadable on next start.",
+   "trans_name",
+   "lockup_flags",
+   "mode_overrides",
+   "multi_mode_enabled",
+   "metric",
+   "tb_preset",
+   "torque_curve",
+   "ratios",
+   ".tmp",
+   "w"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._load_last_session",
+  "line": 10140,
+  "ops": 203,
+  "strings": [
+   "Auto-load state on startup (feature 2). Called at end of __init__.\n        On JSON parse failure: back up the corrupt file as .bad and start fresh\n        so the app remains usable. Logs the underlying error to status bar.",
+   ".bad",
+   "Auto-save file was corrupt (JSON error: ",
+   " at line ",
+   "). Backed up to ",
+   " and starting fresh.",
+   "Auto-load failed: ",
+   ". Could not back up: ",
+   "Restored previous session",
+   "Auto-load partial: ",
+   ". Some settings may be at defaults."
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._apply_loaded_config",
+  "line": 10182,
+  "ops": 522,
+  "strings": [
+   "Shared config-applier used by load_profile and _load_last_session.",
+   "trans_name",
+   "tb_preset",
+   "tire_dia",
+   "axle",
+   "chain",
+   "weight",
+   "rwhp",
+   "vss_count",
+   "idle_rpm",
+   "stall_rpm",
+   "meas_slip",
+   "shift_rpm",
+   "downshift_rpm",
+   "min_tcc_rpm",
+   "min_tcc_gear",
+   "accel_lock_gear",
+   "wot_lock_gear",
+   "tps_offset",
+   "tps_factor",
+   "lockup_flags",
+   "mode_overrides",
+   "perf_overrides",
+   "Performance",
+   "(Custom \u2014 keep current overrides)",
+   "pressure_intent_overrides",
+   "shudder_fix_level",
+   "Off",
+   "shudder_off_rb",
+   "shudder_mild_rb",
+   "shudder_moderate_rb",
+   "shudder_aggressive_rb",
+   "multi_mode_enabled",
+   "dual_mode_enabled",
+   "metric",
+   "lead_mode",
+   "time",
+   "delays",
+   "per_gear_rpm",
+   "torque_curve",
+   "boost_curve",
+   "boost_enabled",
+   "spool_rpm",
+   "peak_psi",
+   "peak_rpm",
+   "redline_psi",
+   "torque_per_psi_pct",
+   "theme",
+   "profile_metadata",
+   "vehicle_name",
+   "",
+   "Ewalt's Auto Tuning Transmission Calibration Studio v2.1 \u2014 "
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.export_pdf_report",
+  "line": 10286,
+  "ops": 170,
+  "strings": [
+   "No Data",
+   "Run Calculate (F5) first \u2014 there's nothing to report.",
+   "Export PDF Report",
+   "trans_calibration_report.pdf",
+   "PDF (*.pdf)",
+   "PDF Export Failed",
+   "PDF writer not available: ",
+   "Transmission Calibration Report",
+   "Ewalt's Auto Tuning Transmission Calibration Studio",
+   "Could not open painter for PDF \u2014 file may be open elsewhere.",
+   "PDF Exported",
+   "Report saved to:\n"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._render_pdf_pages",
+  "line": 10326,
+  "ops": 1102,
+  "strings": [
+   "Multi-page render. Uses writer.newPage() between pages.",
+   "Arial",
+   "Consolas",
+   "Transmission Calibration Report",
+   "metadata",
+   "vehicle",
+   "",
+   "tuner",
+   "%Y-%m-%d %H:%M",
+   "Date:       ",
+   "Vehicle:    ",
+   "(unspecified)",
+   "Tuner:      ",
+   "Trans:      ",
+   "Engine:     RWHP ",
+   "rwhp",
+   "?",
+   " | Weight ",
+   "weight_lb",
+   " lb",
+   "Drivetrain: Axle ",
+   "axle_ratio",
+   " | Tire ",
+   "tire_dia_in",
+   "\" | T-Case ",
+   "tcase",
+   " | VSS ",
+   "vss_count",
+   " pulses/rev",
+   "Multi-mode: ",
+   "multi_mode_enabled",
+   "Yes",
+   "No",
+   "_shudder_fix_level",
+   "Off",
+   "TCC Shudder Fix: ",
+   "Settings Summary",
+   "\u2014",
+   ": ",
+   "Validation Warnings",
+   "\u2022 ",
+   "Upshift Table (MPH)",
+   "KPH",
+   "MPH",
+   "Mode: ",
+   " (",
+   ")",
+   "upshift",
+   "n_gears",
+   "\u2192",
+   ".1f",
+   "Downshift Table (MPH)",
+   "downshift",
+   "TCM Base Shift Pressure (PSI)",
+   "_pressure_torque_cols",
+   "\u00b0F",
+   "Daily",
+   "  |  Intent: ",
+   "1-2",
+   "TCC Apply Pressure Ramp (PSI)",
+   "  |  Era: 2015+",
+   "2015+",
+   "tcc_era_combo",
+   "torque",
+   "row_axis",
+   "torque_rows",
+   "rpm_rows",
+   "slip_cols"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._render_pdf_pages.new_page",
+  "line": 10348,
+  "ops": 8,
+  "strings": []
+ },
+ {
+  "name": "<module>.TransStudio._render_pdf_pages.draw_text",
+  "line": 10352,
+  "ops": 42,
+  "strings": []
+ },
+ {
+  "name": "<module>.TransStudio._render_pdf_pages.line_height",
+  "line": 10360,
+  "ops": 12,
+  "strings": []
+ },
+ {
+  "name": "<module>.TransStudio._render_pdf_pages.<lambda>",
+  "line": 10457,
+  "ops": 8,
+  "strings": [
+   ".1f"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._render_pdf_pages.<lambda>",
+  "line": 10475,
+  "ops": 14,
+  "strings": [
+   ".1f",
+   "OFF"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._render_pdf_pages.<lambda>",
+  "line": 10501,
+  "ops": 5,
+  "strings": [
+   ".1f"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._render_pdf_pages.<lambda>",
+  "line": 10534,
+  "ops": 5,
+  "strings": [
+   ".1f"
+  ]
+ },
+ {
+  "name": "<module>.TransStudio._draw_table_pdf",
+  "line": 10542,
+  "ops": 331,
+  "strings": [
+   "Draw a single grid table. Returns updated y after table.\n        Auto-calculates column widths to fit page width.",
+   "999\u00b0F  "
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.save_profile",
+  "line": 10591,
+  "ops": 231,
+  "strings": [
+   "Save Profile",
+   "trans_profile.json",
+   "JSON (*.json)",
+   "trans_name",
+   "lockup_flags",
+   "mode_overrides",
+   "multi_mode_enabled",
+   "pressure_intent_overrides",
+   "_shudder_fix_level",
+   "Off",
+   "shudder_fix_level",
+   "boost_enabled",
+   "boost_curve",
+   "theme",
+   "metric",
+   "tb_preset",
+   "torque_curve",
+   "ratios",
+   "2.1",
+   "tool_version",
+   "seconds",
+   "saved_at",
+   "profile_metadata",
+   "w",
+   "Save Failed",
+   "Profile contains invalid float values (NaN or Infinity).\n\nError: ",
+   "\n\nThis usually means a calculation produced an invalid result. Run Calculate again and re-check input values (zero ratios, negative weights, etc.).",
+   "Saved "
+  ]
+ },
+ {
+  "name": "<module>.TransStudio.load_profile",
+  "line": 10640,
+  "ops": 151,
+  "strings": [
+   "Load Profile",
+   "",
+   "JSON (*.json)",
+   "Load Failed",
+   "Profile file is corrupt or not valid JSON.\n\nError: ",
+   "\nLocation: line ",
+   ", column ",
+   "\n\nOpen the file in a text editor to inspect/repair, or choose a different profile.",
+   "Cannot read file:\n",
+   "Loaded ",
+   "Partial Load",
+   "Profile loaded but some settings could not be applied:\n\n",
+   "\n\nDefaults will be used where missing."
+  ]
+ },
+ {
+  "name": "<module>.main",
+  "line": 10672,
+  "ops": 32,
+  "strings": [
+   "Fusion",
+   "Dark"
+  ]
+ }
+]

@@ -1,0 +1,58 @@
+8933           0 RESUME                   0
+
+8936           2 LOAD_GLOBAL              1 (NULL + hasattr)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_CONST               1 ('gear_calc_tab')
+              16 CALL                     2
+              24 POP_JUMP_IF_TRUE         1 (to 28)
+
+8937          26 RETURN_CONST             2 (None)
+
+8938     >>   28 LOAD_FAST                0 (self)
+              30 LOAD_ATTR                2 (trans)
+              50 LOAD_ATTR                5 (NULL|self + currentText)
+              70 CALL                     0
+              78 STORE_FAST               1 (trans_name)
+
+8939          80 LOAD_GLOBAL              6 (TRANS_DB)
+              90 LOAD_ATTR                9 (NULL|self + get)
+             110 LOAD_FAST                1 (trans_name)
+             112 BUILD_MAP                0
+             114 CALL                     2
+             122 STORE_FAST               2 (spec)
+
+8940         124 LOAD_FAST                2 (spec)
+             126 LOAD_ATTR                9 (NULL|self + get)
+             146 LOAD_CONST               3 ('ratios')
+             148 BUILD_LIST               0
+             150 CALL                     2
+             158 STORE_FAST               3 (ratios)
+
+8941         160 LOAD_FAST                0 (self)
+             162 LOAD_ATTR               10 (gear_calc_tab)
+             182 LOAD_ATTR               13 (NULL|self + set_trans)
+             202 LOAD_FAST                1 (trans_name)
+             204 LOAD_FAST                3 (ratios)
+             206 CALL                     2
+             214 POP_TOP
+
+8942         216 LOAD_FAST                0 (self)
+             218 LOAD_ATTR               10 (gear_calc_tab)
+             238 LOAD_ATTR               15 (NULL|self + set_current_axle)
+
+8943         258 LOAD_FAST                0 (self)
+             260 LOAD_ATTR               16 (axle)
+             280 LOAD_ATTR               19 (NULL|self + value)
+             300 CALL                     0
+             308 LOAD_FAST                0 (self)
+             310 LOAD_ATTR               20 (tire)
+             330 LOAD_ATTR               19 (NULL|self + value)
+             350 CALL                     0
+             358 LOAD_FAST                0 (self)
+             360 LOAD_ATTR               22 (shift_rpm)
+             380 LOAD_ATTR               19 (NULL|self + value)
+             400 CALL                     0
+
+8942         408 CALL                     3
+             416 POP_TOP
+             418 RETURN_CONST             2 (None)

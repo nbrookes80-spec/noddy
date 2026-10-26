@@ -1,0 +1,117 @@
+6345           0 RESUME                   0
+
+6350           2 LOAD_CONST               1 (97.0)
+               4 STORE_FAST               0 (base)
+
+6351           6 BUILD_LIST               0
+               8 STORE_FAST               1 (rows)
+
+6352          10 LOAD_GLOBAL              0 (TCC_DC_TEMP_ROWS)
+              20 GET_ITER
+         >>   22 FOR_ITER               149 (to 324)
+              26 STORE_FAST               2 (temp)
+
+6353          28 BUILD_LIST               0
+              30 STORE_FAST               3 (row)
+
+6355          32 LOAD_FAST                2 (temp)
+              34 LOAD_CONST               2 (32)
+              36 BINARY_OP               10 (-)
+              40 LOAD_CONST               3 (238)
+              42 BINARY_OP               11 (/)
+              46 STORE_FAST               4 (temp_norm)
+
+6356          48 LOAD_CONST               4 (-1.0)
+              50 LOAD_FAST                4 (temp_norm)
+              52 BINARY_OP                5 (*)
+              56 STORE_FAST               5 (row_offset)
+
+6357          58 LOAD_GLOBAL              2 (TCC_DC_LINE_PSI_COLS)
+              68 GET_ITER
+         >>   70 FOR_ITER               106 (to 286)
+              74 STORE_FAST               6 (psi)
+
+6359          76 LOAD_GLOBAL              5 (NULL + min)
+              86 LOAD_CONST               5 (1.0)
+              88 LOAD_FAST                6 (psi)
+              90 LOAD_CONST               6 (60.0)
+              92 BINARY_OP               11 (/)
+              96 CALL                     2
+             104 STORE_FAST               7 (psi_norm)
+
+6360         106 LOAD_CONST               7 (-1.5)
+             108 LOAD_CONST               5 (1.0)
+             110 LOAD_FAST                7 (psi_norm)
+             112 BINARY_OP               10 (-)
+             116 BINARY_OP                5 (*)
+             120 STORE_FAST               8 (pressure_offset)
+
+6362         122 LOAD_CONST               8 (0.0)
+             124 STORE_FAST               9 (mid_dip)
+
+6363         126 LOAD_FAST                2 (temp)
+             128 LOAD_CONST               9 (151)
+             130 COMPARE_OP              92 (>=)
+             134 POP_JUMP_IF_FALSE       24 (to 184)
+
+6365         136 LOAD_FAST                6 (psi)
+             138 LOAD_CONST              10 (96.0)
+             140 BINARY_OP               11 (/)
+             144 STORE_FAST              10 (psi_frac)
+
+6366         146 LOAD_CONST              11 (0.25)
+             148 LOAD_FAST               10 (psi_frac)
+             150 SWAP                     2
+             152 COPY                     2
+             154 COMPARE_OP               2 (<)
+             158 POP_JUMP_IF_FALSE        5 (to 170)
+             160 LOAD_CONST              12 (0.65)
+             162 COMPARE_OP               2 (<)
+             166 POP_JUMP_IF_FALSE        8 (to 184)
+             168 JUMP_FORWARD             2 (to 174)
+         >>  170 POP_TOP
+             172 JUMP_FORWARD             5 (to 184)
+
+6367     >>  174 LOAD_CONST              13 (-0.5)
+             176 LOAD_FAST                4 (temp_norm)
+             178 BINARY_OP                5 (*)
+             182 STORE_FAST               9 (mid_dip)
+
+6368     >>  184 LOAD_FAST                0 (base)
+             186 LOAD_FAST                5 (row_offset)
+             188 BINARY_OP                0 (+)
+             192 LOAD_FAST                8 (pressure_offset)
+             194 BINARY_OP                0 (+)
+             198 LOAD_FAST                9 (mid_dip)
+             200 BINARY_OP                0 (+)
+             204 STORE_FAST              11 (duty)
+
+6369         206 LOAD_GLOBAL              7 (NULL + max)
+             216 LOAD_CONST              14 (90.0)
+             218 LOAD_GLOBAL              5 (NULL + min)
+             228 LOAD_CONST              15 (98.0)
+             230 LOAD_FAST               11 (duty)
+             232 CALL                     2
+             240 CALL                     2
+             248 STORE_FAST              11 (duty)
+
+6370         250 LOAD_FAST                3 (row)
+             252 LOAD_ATTR                9 (NULL|self + append)
+             272 LOAD_FAST               11 (duty)
+             274 CALL                     1
+             282 POP_TOP
+             284 JUMP_BACKWARD          108 (to 70)
+
+6357     >>  286 END_FOR
+
+6371         288 LOAD_FAST                1 (rows)
+             290 LOAD_ATTR                9 (NULL|self + append)
+             310 LOAD_FAST                3 (row)
+             312 CALL                     1
+             320 POP_TOP
+             322 JUMP_BACKWARD          151 (to 22)
+
+6352     >>  324 END_FOR
+
+6372         326 LOAD_FAST                1 (rows)
+             328 RETURN_VALUE

@@ -1,0 +1,41 @@
+9237           0 RESUME                   0
+
+9238           2 LOAD_FAST                0 (grid)
+               4 LOAD_ATTR                1 (NULL|self + item)
+              24 LOAD_FAST                1 (r)
+              26 LOAD_FAST                2 (c)
+              28 CALL                     2
+              36 STORE_FAST               6 (it)
+
+9239          38 LOAD_FAST                6 (it)
+              40 POP_JUMP_IF_NOT_NONE     1 (to 44)
+
+9240          42 RETURN_CONST             0 (None)
+
+9241     >>   44 LOAD_FAST                6 (it)
+              46 LOAD_ATTR                3 (NULL|self + setBackground)
+              66 LOAD_GLOBAL              5 (NULL + QBrush)
+              76 LOAD_FAST                3 (bg)
+              78 CALL                     1
+              86 CALL                     1
+              94 POP_TOP
+
+9242          96 LOAD_FAST                6 (it)
+              98 LOAD_ATTR                7 (NULL|self + setForeground)
+             118 LOAD_GLOBAL              5 (NULL + QBrush)
+             128 LOAD_FAST                4 (fg)
+             130 CALL                     1
+             138 CALL                     1
+             146 POP_TOP
+
+9243         148 LOAD_FAST                5 (suffix)
+             150 POP_JUMP_IF_FALSE       18 (to 188)
+
+9244         152 LOAD_FAST                6 (it)
+             154 LOAD_ATTR                9 (NULL|self + setToolTip)
+             174 LOAD_FAST                5 (suffix)
+             176 CALL                     1
+             184 POP_TOP
+             186 RETURN_CONST             0 (None)
+
+9243     >>  188 RETURN_CONST             0 (None)

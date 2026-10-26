@@ -1,0 +1,104 @@
+4909           0 RESUME                   0
+
+4910           2 LOAD_GLOBAL              1 (NULL + QFileDialog)
+              12 LOAD_ATTR                2 (getOpenFileName)
+
+4911          32 LOAD_FAST                0 (self)
+              34 LOAD_CONST               1 ('Select .BIN flash dump')
+              36 LOAD_CONST               2 ('')
+
+4912          38 LOAD_CONST               3 ('BIN files (*.bin *.dat);;All files (*)')
+
+4910          40 CALL                     4
+              48 UNPACK_SEQUENCE          2
+              52 STORE_FAST               1 (path)
+              54 STORE_FAST               2 (_)
+
+4913          56 LOAD_FAST                1 (path)
+              58 POP_JUMP_IF_TRUE         1 (to 62)
+
+4914          60 RETURN_CONST             0 (None)
+
+4915     >>   62 NOP
+
+4916          64 LOAD_GLOBAL              4 (BinReader)
+              74 LOAD_ATTR                7 (NULL|self + from_file)
+              94 LOAD_FAST                1 (path)
+              96 LOAD_FAST                0 (self)
+              98 LOAD_ATTR                8 (xdf)
+             118 CALL                     2
+             126 LOAD_FAST                0 (self)
+             128 STORE_ATTR               5 (reader)
+
+4921         138 LOAD_CONST               5 (0)
+             140 LOAD_CONST               0 (None)
+             142 IMPORT_NAME             10 (os)
+             144 STORE_FAST               4 (os)
+
+4922         146 LOAD_FAST                4 (os)
+             148 LOAD_ATTR               22 (path)
+             168 LOAD_ATTR               25 (NULL|self + basename)
+             188 LOAD_FAST                1 (path)
+             190 CALL                     1
+             198 STORE_FAST               5 (fname)
+
+4923         200 LOAD_FAST                0 (self)
+             202 LOAD_ATTR               26 (bin_path_lbl)
+             222 LOAD_ATTR               29 (NULL|self + setText)
+             242 LOAD_FAST                5 (fname)
+             244 CALL                     1
+             252 POP_TOP
+
+4924         254 LOAD_FAST                0 (self)
+             256 LOAD_ATTR               26 (bin_path_lbl)
+             276 LOAD_ATTR               31 (NULL|self + setToolTip)
+             296 LOAD_FAST                1 (path)
+             298 CALL                     1
+             306 POP_TOP
+
+4925         308 LOAD_FAST                0 (self)
+             310 LOAD_ATTR               33 (NULL|self + _update_status)
+             330 CALL                     0
+             338 POP_TOP
+
+4926         340 LOAD_FAST                0 (self)
+             342 LOAD_ATTR               35 (NULL|self + _refresh_param_list)
+             362 CALL                     0
+             370 POP_TOP
+             372 RETURN_CONST             0 (None)
+         >>  374 PUSH_EXC_INFO
+
+4917         376 LOAD_GLOBAL             12 (Exception)
+             386 CHECK_EXC_MATCH
+             388 POP_JUMP_IF_FALSE       42 (to 474)
+             390 STORE_FAST               3 (e)
+
+4918         392 LOAD_GLOBAL             15 (NULL + QMessageBox)
+             402 LOAD_ATTR               16 (critical)
+             422 LOAD_FAST                0 (self)
+             424 LOAD_CONST               4 ('BIN Load Failed')
+             426 LOAD_GLOBAL             19 (NULL + str)
+             436 LOAD_FAST                3 (e)
+             438 CALL                     1
+             446 CALL                     3
+             454 POP_TOP
+
+4919         456 POP_EXCEPT
+             458 LOAD_CONST               0 (None)
+             460 STORE_FAST               3 (e)
+             462 DELETE_FAST              3 (e)
+             464 RETURN_CONST             0 (None)
+         >>  466 LOAD_CONST               0 (None)
+             468 STORE_FAST               3 (e)
+             470 DELETE_FAST              3 (e)
+             472 RERAISE                  1
+
+4917     >>  474 RERAISE                  0
+         >>  476 COPY                     3
+             478 POP_EXCEPT
+             480 RERAISE                  1
+ExceptionTable:
+  64 to 136 -> 374 [0]
+  374 to 390 -> 476 [1] lasti
+  392 to 454 -> 466 [1] lasti
+  466 to 474 -> 476 [1] lasti

@@ -1,0 +1,31 @@
+               0 COPY_FREE_VARS           2
+
+3269           2 RETURN_GENERATOR
+               4 POP_TOP
+               6 RESUME                   0
+               8 LOAD_FAST                0 (.0)
+         >>   10 FOR_ITER                31 (to 76)
+
+3270          14 STORE_FAST               1 (row)
+
+3269          16 LOAD_CONST               0 ('\t')
+              18 LOAD_ATTR                1 (NULL|self + join)
+              38 LOAD_CLOSURE             2 (fmt)
+              40 LOAD_CLOSURE             3 (scale)
+              42 BUILD_TUPLE              2
+              44 LOAD_CONST               1 (<code object <genexpr> at 0x73ab02a06780, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3269>)
+              46 MAKE_FUNCTION            8 (closure)
+              48 LOAD_FAST                1 (row)
+              50 GET_ITER
+              52 CALL                     0
+              60 CALL                     1
+              68 YIELD_VALUE              1
+              70 RESUME                   1
+              72 POP_TOP
+              74 JUMP_BACKWARD           33 (to 10)
+         >>   76 END_FOR
+              78 RETURN_CONST             2 (None)
+         >>   80 CALL_INTRINSIC_1         3 (INTRINSIC_STOPITERATION_ERROR)
+              82 RERAISE                  1
+ExceptionTable:
+  6 to 78 -> 80 [0] lasti

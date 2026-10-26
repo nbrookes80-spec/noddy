@@ -1,0 +1,164 @@
+               0 COPY_FREE_VARS           3
+
+5560           2 RESUME                   0
+
+5561           4 LOAD_FAST                0 (x)
+               6 UNPACK_SEQUENCE          4
+              10 STORE_FAST               1 (factor)
+              12 STORE_FAST               2 (offset)
+              14 STORE_FAST               3 (upf)
+              16 STORE_FAST               4 (shift_rpm)
+
+5562          18 LOAD_FAST                1 (factor)
+              20 LOAD_CONST               1 (0.3)
+              22 COMPARE_OP               2 (<)
+              26 POP_JUMP_IF_TRUE         5 (to 38)
+              28 LOAD_FAST                1 (factor)
+              30 LOAD_CONST               2 (5.0)
+              32 COMPARE_OP              68 (>)
+              36 POP_JUMP_IF_FALSE        1 (to 40)
+         >>   38 RETURN_CONST             3 (1000000000.0)
+
+5563     >>   40 LOAD_FAST                2 (offset)
+              42 LOAD_CONST               4 (-30)
+              44 COMPARE_OP               2 (<)
+              48 POP_JUMP_IF_TRUE         5 (to 60)
+              50 LOAD_FAST                2 (offset)
+              52 LOAD_CONST               5 (60)
+              54 COMPARE_OP              68 (>)
+              58 POP_JUMP_IF_FALSE        1 (to 62)
+         >>   60 RETURN_CONST             3 (1000000000.0)
+
+5564     >>   62 LOAD_FAST                3 (upf)
+              64 LOAD_CONST               6 (0)
+              66 COMPARE_OP               2 (<)
+              70 POP_JUMP_IF_TRUE         5 (to 82)
+              72 LOAD_FAST                3 (upf)
+              74 LOAD_CONST               7 (12)
+              76 COMPARE_OP              68 (>)
+              80 POP_JUMP_IF_FALSE        1 (to 84)
+         >>   82 RETURN_CONST             3 (1000000000.0)
+
+5565     >>   84 LOAD_FAST                4 (shift_rpm)
+              86 LOAD_CONST               8 (2000)
+              88 COMPARE_OP               2 (<)
+              92 POP_JUMP_IF_TRUE         5 (to 104)
+              94 LOAD_FAST                4 (shift_rpm)
+              96 LOAD_CONST               9 (9500)
+              98 COMPARE_OP              68 (>)
+             102 POP_JUMP_IF_FALSE        1 (to 106)
+         >>  104 RETURN_CONST             3 (1000000000.0)
+
+5566     >>  106 LOAD_GLOBAL              1 (NULL + dict)
+             116 LOAD_DEREF              13 (base_cfg)
+             118 CALL                     1
+             126 STORE_FAST               5 (c)
+
+5567         128 LOAD_FAST                1 (factor)
+             130 LOAD_FAST                5 (c)
+             132 LOAD_CONST              10 ('tps_factor')
+             134 STORE_SUBSCR
+
+5568         138 LOAD_FAST                2 (offset)
+             140 LOAD_FAST                5 (c)
+             142 LOAD_CONST              11 ('tps_offset')
+             144 STORE_SUBSCR
+
+5569         148 LOAD_FAST                3 (upf)
+             150 LOAD_FAST                5 (c)
+             152 LOAD_CONST              12 ('up_firmness')
+             154 STORE_SUBSCR
+
+5570         158 LOAD_FAST                4 (shift_rpm)
+             160 LOAD_FAST                5 (c)
+             162 LOAD_CONST              13 ('shift_rpm')
+             164 STORE_SUBSCR
+
+5571         168 NOP
+
+5572         170 LOAD_GLOBAL              2 (CalcEngine)
+             180 LOAD_ATTR                5 (NULL|self + calculate)
+             200 LOAD_FAST                5 (c)
+             202 CALL                     1
+             210 STORE_FAST               6 (r)
+
+5575         212 LOAD_FAST                6 (r)
+             214 LOAD_CONST              14 ('upshift')
+             216 BINARY_SUBSCR
+             220 STORE_FAST               7 (up)
+
+5576         222 LOAD_CONST              15 (0.0)
+             224 STORE_FAST               8 (err)
+
+5577         226 LOAD_GLOBAL              9 (NULL + min)
+             236 LOAD_GLOBAL             11 (NULL + len)
+             246 LOAD_FAST                7 (up)
+             248 CALL                     1
+             256 LOAD_DEREF              14 (n_shifts_target)
+             258 CALL                     2
+             266 STORE_FAST               9 (n)
+
+5578         268 LOAD_GLOBAL             13 (NULL + range)
+             278 LOAD_FAST                9 (n)
+             280 CALL                     1
+             288 GET_ITER
+         >>  290 FOR_ITER                47 (to 388)
+             294 STORE_FAST              10 (g)
+
+5579         296 LOAD_GLOBAL             13 (NULL + range)
+             306 LOAD_GLOBAL             14 (TPS_COLS)
+             316 CALL                     1
+             324 GET_ITER
+         >>  326 FOR_ITER                27 (to 384)
+             330 STORE_FAST              11 (col)
+
+5580         332 LOAD_FAST                7 (up)
+             334 LOAD_FAST               10 (g)
+             336 BINARY_SUBSCR
+             340 LOAD_FAST               11 (col)
+             342 BINARY_SUBSCR
+             346 LOAD_DEREF              15 (target)
+             348 LOAD_FAST               10 (g)
+             350 BINARY_SUBSCR
+             354 LOAD_FAST               11 (col)
+             356 BINARY_SUBSCR
+             360 BINARY_OP               10 (-)
+             364 STORE_FAST              12 (d)
+
+5581         366 LOAD_FAST                8 (err)
+             368 LOAD_FAST               12 (d)
+             370 LOAD_FAST               12 (d)
+             372 BINARY_OP                5 (*)
+             376 BINARY_OP               13 (+=)
+             380 STORE_FAST               8 (err)
+             382 JUMP_BACKWARD           29 (to 326)
+
+5579     >>  384 END_FOR
+             386 JUMP_BACKWARD           49 (to 290)
+
+5578     >>  388 END_FOR
+
+5582         390 LOAD_FAST                8 (err)
+             392 LOAD_FAST                9 (n)
+             394 LOAD_GLOBAL             14 (TPS_COLS)
+             404 BINARY_OP                5 (*)
+             408 BINARY_OP               11 (/)
+             412 RETURN_VALUE
+         >>  414 PUSH_EXC_INFO
+
+5573         416 LOAD_GLOBAL              6 (Exception)
+             426 CHECK_EXC_MATCH
+             428 POP_JUMP_IF_FALSE        3 (to 436)
+             430 POP_TOP
+
+5574         432 POP_EXCEPT
+             434 RETURN_CONST             3 (1000000000.0)
+
+5573     >>  436 RERAISE                  0
+         >>  438 COPY                     3
+             440 POP_EXCEPT
+             442 RERAISE                  1
+ExceptionTable:
+  170 to 210 -> 414 [0]
+  414 to 430 -> 438 [1] lasti
+  436 to 436 -> 438 [1] lasti

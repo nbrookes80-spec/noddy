@@ -1,0 +1,8 @@
+               0 COPY_FREE_VARS           1
+
+7629           2 RESUME                   0
+               4 LOAD_DEREF               2 (self)
+               6 LOAD_ATTR                1 (NULL|self + load_starter_profile)
+              26 LOAD_FAST                1 (n)
+              28 CALL                     1
+              36 RETURN_VALUE

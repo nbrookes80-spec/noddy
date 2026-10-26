@@ -1,0 +1,28 @@
+905           0 RESUME                   0
+              2 LOAD_NAME                0 (__name__)
+              4 STORE_NAME               1 (__module__)
+              6 LOAD_CONST               0 ('XDFAxis')
+              8 STORE_NAME               2 (__qualname__)
+
+906          10 LOAD_CONST               1 ('Single axis (x, y, or z) from an XDF table or scalar.')
+             12 STORE_NAME               3 (__doc__)
+
+907          14 LOAD_CONST               2 (('axis_id', 'address', 'size_bits', 'stride_bits', 'row_count', 'col_count', 'signed', 'little_endian', 'math_eq', 'label_units'))
+             16 STORE_NAME               4 (__slots__)
+
+911          18 LOAD_CONST               3 (<code object __init__ at 0x73ab02bd8570, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 911>)
+             20 MAKE_FUNCTION            0
+             22 STORE_NAME               5 (__init__)
+
+923          24 LOAD_CONST               4 (<code object _read_one at 0x73ab034a5a30, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 923>)
+             26 MAKE_FUNCTION            0
+             28 STORE_NAME               6 (_read_one)
+
+933          30 LOAD_CONST               5 (<code object _apply_math at 0x30bfe970, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 933>)
+             32 MAKE_FUNCTION            0
+             34 STORE_NAME               7 (_apply_math)
+
+948          36 LOAD_CONST               6 (<code object read_table at 0x30bf0290, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 948>)
+             38 MAKE_FUNCTION            0
+             40 STORE_NAME               8 (read_table)
+             42 RETURN_CONST             7 (None)

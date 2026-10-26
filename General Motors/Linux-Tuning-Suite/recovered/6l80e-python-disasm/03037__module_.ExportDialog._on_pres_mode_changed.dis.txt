@@ -1,0 +1,43 @@
+3037           0 RESUME                   0
+
+3038           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (_suppress_pres_combo_signals)
+              24 POP_JUMP_IF_TRUE         2 (to 30)
+              26 LOAD_FAST                1 (mode)
+              28 POP_JUMP_IF_TRUE         1 (to 32)
+
+3039     >>   30 RETURN_CONST             0 (None)
+
+3040     >>   32 LOAD_FAST                0 (self)
+              34 LOAD_ATTR                2 (is_4spd)
+              54 POP_JUMP_IF_FALSE       24 (to 104)
+
+3041          56 LOAD_FAST                1 (mode)
+              58 LOAD_FAST                0 (self)
+              60 STORE_ATTR               2 (current_4spd_mode)
+
+3042          70 LOAD_FAST                0 (self)
+              72 LOAD_ATTR                7 (NULL|self + _mark_selected_4spd_button)
+              92 CALL                     0
+             100 POP_TOP
+             102 JUMP_FORWARD            23 (to 150)
+
+3044     >>  104 LOAD_FAST                1 (mode)
+             106 LOAD_FAST                0 (self)
+             108 STORE_ATTR               4 (current_pressure_pattern)
+
+3045         118 LOAD_FAST                0 (self)
+             120 LOAD_ATTR               11 (NULL|self + _mark_selected_pattern_button)
+             140 CALL                     0
+             148 POP_TOP
+
+3046     >>  150 LOAD_FAST                0 (self)
+             152 LOAD_ATTR               13 (NULL|self + _populate_pres_intent_combo)
+             172 CALL                     0
+             180 POP_TOP
+
+3047         182 LOAD_FAST                0 (self)
+             184 LOAD_ATTR               15 (NULL|self + _refresh_pressure_table)
+             204 CALL                     0
+             212 POP_TOP
+             214 RETURN_CONST             0 (None)

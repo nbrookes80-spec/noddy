@@ -1,0 +1,22 @@
+1380           0 RESUME                   0
+
+1382           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (is_empty)
+              24 POP_JUMP_IF_FALSE        1 (to 28)
+
+1383          26 RETURN_CONST             1 ((0, 0))
+
+1384     >>   28 LOAD_FAST                0 (self)
+              30 LOAD_ATTR                2 (points)
+              50 LOAD_CONST               2 (0)
+              52 BINARY_SUBSCR
+              56 LOAD_CONST               2 (0)
+              58 BINARY_SUBSCR
+              62 LOAD_FAST                0 (self)
+              64 LOAD_ATTR                2 (points)
+              84 LOAD_CONST               3 (-1)
+              86 BINARY_SUBSCR
+              90 LOAD_CONST               2 (0)
+              92 BINARY_SUBSCR
+              96 BUILD_TUPLE              2
+              98 RETURN_VALUE

@@ -1,0 +1,20 @@
+7494           0 RESUME                   0
+
+7496           2 LOAD_CONST               1 (0)
+               4 LOAD_CONST               2 (('QColor',))
+               6 IMPORT_NAME              0 (PyQt6.QtGui)
+               8 IMPORT_FROM              1 (QColor)
+              10 STORE_FAST               1 (_QC)
+              12 POP_TOP
+
+7497          14 PUSH_NULL
+              16 LOAD_FAST                1 (_QC)
+              18 LOAD_FAST                0 (cls)
+              20 LOAD_ATTR                4 (_PALETTES)
+              40 LOAD_FAST                0 (cls)
+              42 LOAD_ATTR                6 (current_name)
+              62 BINARY_SUBSCR
+              66 LOAD_CONST               3 ('base')
+              68 BINARY_SUBSCR
+              72 CALL                     1
+              80 RETURN_VALUE

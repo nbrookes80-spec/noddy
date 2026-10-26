@@ -1,0 +1,10 @@
+2118           0 RESUME                   0
+
+2121           2 LOAD_FAST                0 (stall_rpm)
+               4 LOAD_CONST               1 (1000.0)
+               6 BINARY_OP               11 (/)
+              10 LOAD_CONST               2 (1.7)
+              12 BINARY_OP                8 (**)
+              16 LOAD_CONST               3 (100.0)
+              18 BINARY_OP               11 (/)
+              22 RETURN_VALUE

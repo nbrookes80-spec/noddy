@@ -1,0 +1,21 @@
+               0 MAKE_CELL                0 (__class__)
+
+5086           2 RESUME                   0
+               4 LOAD_NAME                0 (__name__)
+               6 STORE_NAME               1 (__module__)
+               8 LOAD_CONST               0 ('DelayDialog')
+              10 STORE_NAME               2 (__qualname__)
+
+5087          12 LOAD_CLOSURE             0 (__class__)
+              14 BUILD_TUPLE              1
+              16 LOAD_CONST               1 (<code object __init__ at 0x30c2bd90, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5087>)
+              18 MAKE_FUNCTION            8 (closure)
+              20 STORE_NAME               3 (__init__)
+
+5122          22 LOAD_CONST               2 (<code object get_delays at 0x30c2c340, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5122>)
+              24 MAKE_FUNCTION            0
+              26 STORE_NAME               4 (get_delays)
+              28 LOAD_CLOSURE             0 (__class__)
+              30 COPY                     1
+              32 STORE_NAME               5 (__classcell__)
+              34 RETURN_VALUE

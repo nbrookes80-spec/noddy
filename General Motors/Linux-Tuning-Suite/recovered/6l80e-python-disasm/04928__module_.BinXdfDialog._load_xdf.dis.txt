@@ -1,0 +1,159 @@
+4928           0 RESUME                   0
+
+4929           2 LOAD_GLOBAL              1 (NULL + QFileDialog)
+              12 LOAD_ATTR                2 (getOpenFileName)
+
+4930          32 LOAD_FAST                0 (self)
+              34 LOAD_CONST               1 ('Select TunerPro .XDF definition')
+              36 LOAD_CONST               2 ('')
+
+4931          38 LOAD_CONST               3 ('XDF files (*.xdf);;XML files (*.xml);;All files (*)')
+
+4929          40 CALL                     4
+              48 UNPACK_SEQUENCE          2
+              52 STORE_FAST               1 (path)
+              54 STORE_FAST               2 (_)
+
+4932          56 LOAD_FAST                1 (path)
+              58 POP_JUMP_IF_TRUE         1 (to 62)
+
+4933          60 RETURN_CONST             0 (None)
+
+4934     >>   62 NOP
+
+4935          64 LOAD_GLOBAL              4 (XDFDefinition)
+              74 LOAD_ATTR                7 (NULL|self + from_file)
+              94 LOAD_FAST                1 (path)
+              96 CALL                     1
+             104 LOAD_FAST                0 (self)
+             106 STORE_ATTR               4 (xdf)
+
+4939         116 LOAD_CONST               5 (0)
+             118 LOAD_CONST               0 (None)
+             120 IMPORT_NAME              9 (os)
+             122 STORE_FAST               4 (os)
+
+4940         124 LOAD_FAST                4 (os)
+             126 LOAD_ATTR               20 (path)
+             146 LOAD_ATTR               23 (NULL|self + basename)
+             166 LOAD_FAST                1 (path)
+             168 CALL                     1
+             176 STORE_FAST               5 (fname)
+
+4941         178 LOAD_FAST                0 (self)
+             180 LOAD_ATTR               24 (xdf_path_lbl)
+             200 LOAD_ATTR               27 (NULL|self + setText)
+             220 LOAD_FAST                5 (fname)
+             222 CALL                     1
+             230 POP_TOP
+
+4942         232 LOAD_FAST                0 (self)
+             234 LOAD_ATTR               24 (xdf_path_lbl)
+             254 LOAD_ATTR               29 (NULL|self + setToolTip)
+             274 LOAD_FAST                1 (path)
+             276 CALL                     1
+             284 POP_TOP
+
+4943         286 LOAD_FAST                0 (self)
+             288 LOAD_ATTR               30 (reader)
+             308 POP_JUMP_IF_NONE        37 (to 384)
+
+4944         310 LOAD_FAST                0 (self)
+             312 LOAD_ATTR               30 (reader)
+             332 LOAD_ATTR               33 (NULL|self + attach_xdf)
+             352 LOAD_FAST                0 (self)
+             354 LOAD_ATTR                8 (xdf)
+             374 CALL                     1
+             382 POP_TOP
+
+4946     >>  384 LOAD_FAST                0 (self)
+             386 LOAD_ATTR               34 (cat_combo)
+             406 LOAD_ATTR               37 (NULL|self + blockSignals)
+             426 LOAD_CONST               6 (True)
+             428 CALL                     1
+             436 POP_TOP
+
+4947         438 LOAD_FAST                0 (self)
+             440 LOAD_ATTR               34 (cat_combo)
+             460 LOAD_ATTR               39 (NULL|self + clear)
+             480 CALL                     0
+             488 POP_TOP
+
+4948         490 LOAD_FAST                0 (self)
+             492 LOAD_ATTR               34 (cat_combo)
+             512 LOAD_ATTR               41 (NULL|self + addItem)
+             532 LOAD_CONST               7 ('(all)')
+             534 CALL                     1
+             542 POP_TOP
+
+4949         544 LOAD_FAST                0 (self)
+             546 LOAD_ATTR                8 (xdf)
+             566 LOAD_ATTR               43 (NULL|self + categories)
+             586 CALL                     0
+             594 GET_ITER
+         >>  596 FOR_ITER                29 (to 658)
+             600 STORE_FAST               6 (cat)
+
+4950         602 LOAD_FAST                0 (self)
+             604 LOAD_ATTR               34 (cat_combo)
+             624 LOAD_ATTR               41 (NULL|self + addItem)
+             644 LOAD_FAST                6 (cat)
+             646 CALL                     1
+             654 POP_TOP
+             656 JUMP_BACKWARD           31 (to 596)
+
+4949     >>  658 END_FOR
+
+4951         660 LOAD_FAST                0 (self)
+             662 LOAD_ATTR               34 (cat_combo)
+             682 LOAD_ATTR               37 (NULL|self + blockSignals)
+             702 LOAD_CONST               8 (False)
+             704 CALL                     1
+             712 POP_TOP
+
+4952         714 LOAD_FAST                0 (self)
+             716 LOAD_ATTR               45 (NULL|self + _update_status)
+             736 CALL                     0
+             744 POP_TOP
+
+4953         746 LOAD_FAST                0 (self)
+             748 LOAD_ATTR               47 (NULL|self + _refresh_param_list)
+             768 CALL                     0
+             776 POP_TOP
+             778 RETURN_CONST             0 (None)
+         >>  780 PUSH_EXC_INFO
+
+4936         782 LOAD_GLOBAL             10 (Exception)
+             792 CHECK_EXC_MATCH
+             794 POP_JUMP_IF_FALSE       42 (to 880)
+             796 STORE_FAST               3 (e)
+
+4937         798 LOAD_GLOBAL             13 (NULL + QMessageBox)
+             808 LOAD_ATTR               14 (critical)
+             828 LOAD_FAST                0 (self)
+             830 LOAD_CONST               4 ('XDF Load Failed')
+             832 LOAD_GLOBAL             17 (NULL + str)
+             842 LOAD_FAST                3 (e)
+             844 CALL                     1
+             852 CALL                     3
+             860 POP_TOP
+
+4938         862 POP_EXCEPT
+             864 LOAD_CONST               0 (None)
+             866 STORE_FAST               3 (e)
+             868 DELETE_FAST              3 (e)
+             870 RETURN_CONST             0 (None)
+         >>  872 LOAD_CONST               0 (None)
+             874 STORE_FAST               3 (e)
+             876 DELETE_FAST              3 (e)
+             878 RERAISE                  1
+
+4936     >>  880 RERAISE                  0
+         >>  882 COPY                     3
+             884 POP_EXCEPT
+             886 RERAISE                  1
+ExceptionTable:
+  64 to 114 -> 780 [0]
+  780 to 796 -> 882 [1] lasti
+  798 to 860 -> 872 [1] lasti
+  872 to 880 -> 882 [1] lasti

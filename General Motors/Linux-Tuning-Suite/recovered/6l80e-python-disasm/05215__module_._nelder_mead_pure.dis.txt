@@ -1,0 +1,511 @@
+               0 MAKE_CELL               16 (j)
+               2 MAKE_CELL               24 (fvals)
+
+5215           4 RESUME                   0
+
+5217           6 LOAD_GLOBAL              1 (NULL + len)
+              16 LOAD_FAST                1 (x0)
+              18 CALL                     1
+              26 STORE_FAST               5 (n)
+
+5218          28 LOAD_GLOBAL              3 (NULL + list)
+              38 LOAD_FAST                1 (x0)
+              40 CALL                     1
+              48 BUILD_LIST               1
+              50 STORE_FAST               6 (simplex)
+
+5219          52 LOAD_GLOBAL              5 (NULL + range)
+              62 LOAD_FAST                5 (n)
+              64 CALL                     1
+              72 GET_ITER
+         >>   74 FOR_ITER                53 (to 184)
+              78 STORE_FAST               7 (i)
+
+5220          80 LOAD_GLOBAL              3 (NULL + list)
+              90 LOAD_FAST                1 (x0)
+              92 CALL                     1
+             100 STORE_FAST               8 (x)
+
+5221         102 LOAD_FAST                8 (x)
+             104 LOAD_FAST                7 (i)
+             106 COPY                     2
+             108 COPY                     2
+             110 BINARY_SUBSCR
+             114 LOAD_FAST                8 (x)
+             116 LOAD_FAST                7 (i)
+             118 BINARY_SUBSCR
+             122 LOAD_CONST               1 (0)
+             124 COMPARE_OP              55 (!=)
+             128 POP_JUMP_IF_FALSE        2 (to 134)
+             130 LOAD_FAST                4 (init_step)
+             132 JUMP_FORWARD             1 (to 136)
+         >>  134 LOAD_CONST               2 (0.05)
+         >>  136 BINARY_OP               13 (+=)
+             140 SWAP                     3
+             142 SWAP                     2
+             144 STORE_SUBSCR
+
+5222         148 LOAD_FAST                6 (simplex)
+             150 LOAD_ATTR                7 (NULL|self + append)
+             170 LOAD_FAST                8 (x)
+             172 CALL                     1
+             180 POP_TOP
+             182 JUMP_BACKWARD           55 (to 74)
+
+5219     >>  184 END_FOR
+
+5223         186 LOAD_FAST                6 (simplex)
+             188 GET_ITER
+             190 LOAD_FAST_AND_CLEAR      9 (s)
+             192 SWAP                     2
+             194 BUILD_LIST               0
+             196 SWAP                     2
+         >>  198 FOR_ITER                10 (to 222)
+             202 STORE_FAST               9 (s)
+             204 PUSH_NULL
+             206 LOAD_FAST                0 (f)
+             208 LOAD_FAST                9 (s)
+             210 CALL                     1
+             218 LIST_APPEND              2
+             220 JUMP_BACKWARD           12 (to 198)
+         >>  222 END_FOR
+             224 SWAP                     2
+             226 STORE_FAST               9 (s)
+             228 STORE_DEREF             24 (fvals)
+
+5225         230 LOAD_CONST               3 ((1.0, 2.0, 0.5, 0.5))
+             232 UNPACK_SEQUENCE          4
+             236 STORE_FAST              10 (alpha)
+             238 STORE_FAST              11 (gamma)
+             240 STORE_FAST              12 (rho)
+             242 STORE_FAST              13 (sigma)
+
+5226         244 LOAD_GLOBAL              5 (NULL + range)
+             254 LOAD_FAST                2 (max_iter)
+             256 CALL                     1
+             264 GET_ITER
+         >>  266 EXTENDED_ARG             1
+             268 FOR_ITER               475 (to 1222)
+             272 STORE_FAST              14 (_)
+
+5227         274 LOAD_GLOBAL              9 (NULL + sorted)
+             284 LOAD_GLOBAL              5 (NULL + range)
+             294 LOAD_FAST                5 (n)
+             296 LOAD_CONST               4 (1)
+             298 BINARY_OP                0 (+)
+             302 CALL                     1
+             310 LOAD_CLOSURE            24 (fvals)
+             312 BUILD_TUPLE              1
+             314 LOAD_CONST               5 (<code object <lambda> at 0x73ab02bfe3f0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5227>)
+             316 MAKE_FUNCTION            8 (closure)
+             318 KW_NAMES                 6 (('key',))
+             320 CALL                     2
+             328 STORE_FAST              15 (order)
+
+5228         330 LOAD_FAST               15 (order)
+             332 GET_ITER
+             334 LOAD_FAST_AND_CLEAR      7 (i)
+             336 SWAP                     2
+             338 BUILD_LIST               0
+             340 SWAP                     2
+         >>  342 FOR_ITER                 7 (to 360)
+             346 STORE_FAST               7 (i)
+             348 LOAD_FAST                6 (simplex)
+             350 LOAD_FAST                7 (i)
+             352 BINARY_SUBSCR
+             356 LIST_APPEND              2
+             358 JUMP_BACKWARD            9 (to 342)
+         >>  360 END_FOR
+             362 STORE_FAST               6 (simplex)
+             364 STORE_FAST               7 (i)
+
+5229         366 LOAD_FAST               15 (order)
+             368 GET_ITER
+             370 LOAD_FAST_AND_CLEAR      7 (i)
+             372 SWAP                     2
+             374 BUILD_LIST               0
+             376 SWAP                     2
+         >>  378 FOR_ITER                 7 (to 396)
+             382 STORE_FAST               7 (i)
+             384 LOAD_DEREF              24 (fvals)
+             386 LOAD_FAST                7 (i)
+             388 BINARY_SUBSCR
+             392 LIST_APPEND              2
+             394 JUMP_BACKWARD            9 (to 378)
+         >>  396 END_FOR
+             398 SWAP                     2
+             400 STORE_FAST               7 (i)
+             402 STORE_DEREF             24 (fvals)
+
+5230         404 LOAD_GLOBAL             11 (NULL + abs)
+             414 LOAD_DEREF              24 (fvals)
+             416 LOAD_CONST               7 (-1)
+             418 BINARY_SUBSCR
+             422 LOAD_DEREF              24 (fvals)
+             424 LOAD_CONST               1 (0)
+             426 BINARY_SUBSCR
+             430 BINARY_OP               10 (-)
+             434 CALL                     1
+             442 LOAD_FAST                3 (tol)
+             444 COMPARE_OP               2 (<)
+             448 POP_JUMP_IF_FALSE        3 (to 456)
+
+5231         450 POP_TOP
+             452 EXTENDED_ARG             1
+             454 JUMP_FORWARD           384 (to 1224)
+
+5233     >>  456 LOAD_GLOBAL              5 (NULL + range)
+             466 LOAD_FAST                5 (n)
+             468 CALL                     1
+             476 GET_ITER
+             478 LOAD_FAST_AND_CLEAR     16 (j)
+             480 MAKE_CELL               16 (j)
+             482 SWAP                     2
+             484 BUILD_LIST               0
+             486 SWAP                     2
+         >>  488 FOR_ITER                28 (to 548)
+             492 STORE_DEREF             16 (j)
+             494 LOAD_GLOBAL             13 (NULL + sum)
+             504 LOAD_CLOSURE            16 (j)
+             506 BUILD_TUPLE              1
+             508 LOAD_CONST               8 (<code object <genexpr> at 0x73ab02a12c40, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5233>)
+             510 MAKE_FUNCTION            8 (closure)
+             512 LOAD_FAST                6 (simplex)
+             514 LOAD_CONST               9 (None)
+             516 LOAD_CONST               7 (-1)
+             518 BINARY_SLICE
+             520 GET_ITER
+             522 CALL                     0
+             530 CALL                     1
+             538 LOAD_FAST                5 (n)
+             540 BINARY_OP               11 (/)
+             544 LIST_APPEND              2
+             546 JUMP_BACKWARD           30 (to 488)
+         >>  548 END_FOR
+             550 STORE_FAST              17 (centroid)
+             552 STORE_FAST              16 (j)
+
+5235         554 LOAD_GLOBAL              5 (NULL + range)
+             564 LOAD_FAST                5 (n)
+             566 CALL                     1
+             574 GET_ITER
+             576 LOAD_FAST_AND_CLEAR     16 (j)
+             578 SWAP                     2
+             580 BUILD_LIST               0
+             582 SWAP                     2
+         >>  584 FOR_ITER                25 (to 638)
+             588 STORE_FAST              16 (j)
+             590 LOAD_FAST               17 (centroid)
+             592 LOAD_FAST               16 (j)
+             594 BINARY_SUBSCR
+             598 LOAD_FAST               10 (alpha)
+             600 LOAD_FAST               17 (centroid)
+             602 LOAD_FAST               16 (j)
+             604 BINARY_SUBSCR
+             608 LOAD_FAST                6 (simplex)
+             610 LOAD_CONST               7 (-1)
+             612 BINARY_SUBSCR
+             616 LOAD_FAST               16 (j)
+             618 BINARY_SUBSCR
+             622 BINARY_OP               10 (-)
+             626 BINARY_OP                5 (*)
+             630 BINARY_OP                0 (+)
+             634 LIST_APPEND              2
+             636 JUMP_BACKWARD           27 (to 584)
+         >>  638 END_FOR
+             640 STORE_FAST              18 (reflected)
+             642 STORE_FAST              16 (j)
+
+5236         644 PUSH_NULL
+             646 LOAD_FAST                0 (f)
+             648 LOAD_FAST               18 (reflected)
+             650 CALL                     1
+             658 STORE_FAST              19 (f_refl)
+
+5237         660 LOAD_DEREF              24 (fvals)
+             662 LOAD_CONST               1 (0)
+             664 BINARY_SUBSCR
+             668 LOAD_FAST               19 (f_refl)
+             670 SWAP                     2
+             672 COPY                     2
+             674 COMPARE_OP              26 (<=)
+             678 POP_JUMP_IF_FALSE        8 (to 696)
+             680 LOAD_DEREF              24 (fvals)
+             682 LOAD_CONST              10 (-2)
+             684 BINARY_SUBSCR
+             688 COMPARE_OP               2 (<)
+             692 POP_JUMP_IF_FALSE       14 (to 722)
+             694 JUMP_FORWARD             2 (to 700)
+         >>  696 POP_TOP
+             698 JUMP_FORWARD            11 (to 722)
+
+5238     >>  700 LOAD_FAST               18 (reflected)
+             702 LOAD_FAST                6 (simplex)
+             704 LOAD_CONST               7 (-1)
+             706 STORE_SUBSCR
+
+5239         710 LOAD_FAST               19 (f_refl)
+             712 LOAD_DEREF              24 (fvals)
+             714 LOAD_CONST               7 (-1)
+             716 STORE_SUBSCR
+
+5240         720 JUMP_BACKWARD          228 (to 266)
+
+5241     >>  722 LOAD_FAST               19 (f_refl)
+             724 LOAD_DEREF              24 (fvals)
+             726 LOAD_CONST               1 (0)
+             728 BINARY_SUBSCR
+             732 COMPARE_OP               2 (<)
+             736 POP_JUMP_IF_FALSE       78 (to 894)
+
+5242         738 LOAD_GLOBAL              5 (NULL + range)
+             748 LOAD_FAST                5 (n)
+             750 CALL                     1
+             758 GET_ITER
+             760 LOAD_FAST_AND_CLEAR     16 (j)
+             762 SWAP                     2
+             764 BUILD_LIST               0
+             766 SWAP                     2
+         >>  768 FOR_ITER                22 (to 816)
+             772 STORE_FAST              16 (j)
+             774 LOAD_FAST               17 (centroid)
+             776 LOAD_FAST               16 (j)
+             778 BINARY_SUBSCR
+             782 LOAD_FAST               11 (gamma)
+             784 LOAD_FAST               18 (reflected)
+             786 LOAD_FAST               16 (j)
+             788 BINARY_SUBSCR
+             792 LOAD_FAST               17 (centroid)
+             794 LOAD_FAST               16 (j)
+             796 BINARY_SUBSCR
+             800 BINARY_OP               10 (-)
+             804 BINARY_OP                5 (*)
+             808 BINARY_OP                0 (+)
+             812 LIST_APPEND              2
+             814 JUMP_BACKWARD           24 (to 768)
+         >>  816 END_FOR
+             818 STORE_FAST              20 (expanded)
+             820 STORE_FAST              16 (j)
+
+5243         822 PUSH_NULL
+             824 LOAD_FAST                0 (f)
+             826 LOAD_FAST               20 (expanded)
+             828 CALL                     1
+             836 STORE_FAST              21 (f_exp)
+
+5244         838 LOAD_FAST               21 (f_exp)
+             840 LOAD_FAST               19 (f_refl)
+             842 COMPARE_OP               2 (<)
+             846 POP_JUMP_IF_FALSE       11 (to 870)
+
+5245         848 LOAD_FAST               20 (expanded)
+             850 LOAD_FAST                6 (simplex)
+             852 LOAD_CONST               7 (-1)
+             854 STORE_SUBSCR
+
+5246         858 LOAD_FAST               21 (f_exp)
+             860 LOAD_DEREF              24 (fvals)
+             862 LOAD_CONST               7 (-1)
+             864 STORE_SUBSCR
+             868 JUMP_FORWARD            10 (to 890)
+
+5248     >>  870 LOAD_FAST               18 (reflected)
+             872 LOAD_FAST                6 (simplex)
+             874 LOAD_CONST               7 (-1)
+             876 STORE_SUBSCR
+
+5249         880 LOAD_FAST               19 (f_refl)
+             882 LOAD_DEREF              24 (fvals)
+             884 LOAD_CONST               7 (-1)
+             886 STORE_SUBSCR
+
+5250     >>  890 EXTENDED_ARG             1
+             892 JUMP_BACKWARD          314 (to 266)
+
+5252     >>  894 LOAD_GLOBAL              5 (NULL + range)
+             904 LOAD_FAST                5 (n)
+             906 CALL                     1
+             914 GET_ITER
+             916 LOAD_FAST_AND_CLEAR     16 (j)
+             918 SWAP                     2
+             920 BUILD_LIST               0
+             922 SWAP                     2
+         >>  924 FOR_ITER                25 (to 978)
+             928 STORE_FAST              16 (j)
+             930 LOAD_FAST               17 (centroid)
+             932 LOAD_FAST               16 (j)
+             934 BINARY_SUBSCR
+             938 LOAD_FAST               12 (rho)
+             940 LOAD_FAST                6 (simplex)
+             942 LOAD_CONST               7 (-1)
+             944 BINARY_SUBSCR
+             948 LOAD_FAST               16 (j)
+             950 BINARY_SUBSCR
+             954 LOAD_FAST               17 (centroid)
+             956 LOAD_FAST               16 (j)
+             958 BINARY_SUBSCR
+             962 BINARY_OP               10 (-)
+             966 BINARY_OP                5 (*)
+             970 BINARY_OP                0 (+)
+             974 LIST_APPEND              2
+             976 JUMP_BACKWARD           27 (to 924)
+         >>  978 END_FOR
+             980 STORE_FAST              22 (contracted)
+             982 STORE_FAST              16 (j)
+
+5253         984 PUSH_NULL
+             986 LOAD_FAST                0 (f)
+             988 LOAD_FAST               22 (contracted)
+             990 CALL                     1
+             998 STORE_FAST              23 (f_con)
+
+5254        1000 LOAD_FAST               23 (f_con)
+            1002 LOAD_DEREF              24 (fvals)
+            1004 LOAD_CONST               7 (-1)
+            1006 BINARY_SUBSCR
+            1010 COMPARE_OP               2 (<)
+            1014 POP_JUMP_IF_FALSE       12 (to 1040)
+
+5255        1016 LOAD_FAST               22 (contracted)
+            1018 LOAD_FAST                6 (simplex)
+            1020 LOAD_CONST               7 (-1)
+            1022 STORE_SUBSCR
+
+5256        1026 LOAD_FAST               23 (f_con)
+            1028 LOAD_DEREF              24 (fvals)
+            1030 LOAD_CONST               7 (-1)
+            1032 STORE_SUBSCR
+
+5257        1036 EXTENDED_ARG             1
+            1038 JUMP_BACKWARD          387 (to 266)
+
+5259     >> 1040 LOAD_GLOBAL              5 (NULL + range)
+            1050 LOAD_CONST               4 (1)
+            1052 LOAD_FAST                5 (n)
+            1054 LOAD_CONST               4 (1)
+            1056 BINARY_OP                0 (+)
+            1060 CALL                     2
+            1068 GET_ITER
+         >> 1070 FOR_ITER                71 (to 1216)
+            1074 STORE_FAST               7 (i)
+
+5260        1076 LOAD_GLOBAL              5 (NULL + range)
+            1086 LOAD_FAST                5 (n)
+            1088 CALL                     1
+            1096 GET_ITER
+            1098 LOAD_FAST_AND_CLEAR     16 (j)
+            1100 SWAP                     2
+            1102 BUILD_LIST               0
+            1104 SWAP                     2
+         >> 1106 FOR_ITER                31 (to 1172)
+            1110 STORE_FAST              16 (j)
+            1112 LOAD_FAST                6 (simplex)
+            1114 LOAD_CONST               1 (0)
+            1116 BINARY_SUBSCR
+            1120 LOAD_FAST               16 (j)
+            1122 BINARY_SUBSCR
+            1126 LOAD_FAST               13 (sigma)
+            1128 LOAD_FAST                6 (simplex)
+            1130 LOAD_FAST                7 (i)
+            1132 BINARY_SUBSCR
+            1136 LOAD_FAST               16 (j)
+            1138 BINARY_SUBSCR
+            1142 LOAD_FAST                6 (simplex)
+            1144 LOAD_CONST               1 (0)
+            1146 BINARY_SUBSCR
+            1150 LOAD_FAST               16 (j)
+            1152 BINARY_SUBSCR
+            1156 BINARY_OP               10 (-)
+            1160 BINARY_OP                5 (*)
+            1164 BINARY_OP                0 (+)
+            1168 LIST_APPEND              2
+            1170 JUMP_BACKWARD           33 (to 1106)
+         >> 1172 END_FOR
+            1174 SWAP                     2
+            1176 STORE_FAST              16 (j)
+            1178 LOAD_FAST                6 (simplex)
+            1180 LOAD_FAST                7 (i)
+            1182 STORE_SUBSCR
+
+5261        1186 PUSH_NULL
+            1188 LOAD_FAST                0 (f)
+            1190 LOAD_FAST                6 (simplex)
+            1192 LOAD_FAST                7 (i)
+            1194 BINARY_SUBSCR
+            1198 CALL                     1
+            1206 LOAD_DEREF              24 (fvals)
+            1208 LOAD_FAST                7 (i)
+            1210 STORE_SUBSCR
+            1214 JUMP_BACKWARD           73 (to 1070)
+
+5259     >> 1216 END_FOR
+            1218 EXTENDED_ARG             1
+            1220 JUMP_BACKWARD          478 (to 266)
+
+5226     >> 1222 END_FOR
+
+5262     >> 1224 LOAD_FAST                6 (simplex)
+            1226 LOAD_CONST               1 (0)
+            1228 BINARY_SUBSCR
+            1232 LOAD_DEREF              24 (fvals)
+            1234 LOAD_CONST               1 (0)
+            1236 BINARY_SUBSCR
+            1240 BUILD_TUPLE              2
+            1242 RETURN_VALUE
+         >> 1244 SWAP                     2
+            1246 POP_TOP
+
+5223        1248 SWAP                     2
+            1250 STORE_FAST               9 (s)
+            1252 RERAISE                  0
+         >> 1254 SWAP                     2
+            1256 POP_TOP
+
+5228        1258 SWAP                     2
+            1260 STORE_FAST               7 (i)
+            1262 RERAISE                  0
+         >> 1264 SWAP                     2
+            1266 POP_TOP
+
+5229        1268 SWAP                     2
+            1270 STORE_FAST               7 (i)
+            1272 RERAISE                  0
+         >> 1274 SWAP                     2
+            1276 POP_TOP
+
+5233        1278 SWAP                     2
+            1280 STORE_FAST              16 (j)
+            1282 RERAISE                  0
+         >> 1284 SWAP                     2
+            1286 POP_TOP
+
+5235        1288 SWAP                     2
+            1290 STORE_FAST              16 (j)
+            1292 RERAISE                  0
+         >> 1294 SWAP                     2
+            1296 POP_TOP
+
+5242        1298 SWAP                     2
+            1300 STORE_FAST              16 (j)
+            1302 RERAISE                  0
+         >> 1304 SWAP                     2
+            1306 POP_TOP
+
+5252        1308 SWAP                     2
+            1310 STORE_FAST              16 (j)
+            1312 RERAISE                  0
+         >> 1314 SWAP                     2
+            1316 POP_TOP
+
+5260        1318 SWAP                     2
+            1320 STORE_FAST              16 (j)
+            1322 RERAISE                  0
+ExceptionTable:
+  194 to 222 -> 1244 [2]
+  338 to 360 -> 1254 [3]
+  374 to 396 -> 1264 [3]
+  484 to 548 -> 1274 [3]
+  580 to 638 -> 1284 [3]
+  764 to 816 -> 1294 [3]
+  920 to 978 -> 1304 [3]
+  1102 to 1172 -> 1314 [4]

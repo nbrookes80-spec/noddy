@@ -1,0 +1,122 @@
+5455           0 RESUME                   0
+
+5457           2 BUILD_MAP                0
+               4 STORE_FAST               1 (out)
+
+5458           6 LOAD_FAST                0 (self)
+               8 LOAD_ATTR                0 (mode_names)
+              28 GET_ITER
+         >>   30 FOR_ITER               178 (to 390)
+              34 STORE_FAST               2 (mode)
+
+5459          36 BUILD_MAP                0
+              38 STORE_FAST               3 (fields)
+
+5460          40 LOAD_FAST                0 (self)
+              42 LOAD_ATTR                2 (FIELDS)
+              62 GET_ITER
+         >>   64 FOR_ITER                96 (to 260)
+              68 UNPACK_SEQUENCE          3
+              72 STORE_FAST               4 (key)
+              74 STORE_FAST               5 (_)
+              76 STORE_FAST               5 (_)
+
+5461          78 LOAD_FAST                0 (self)
+              80 LOAD_ATTR                4 (field_widgets)
+             100 LOAD_FAST                2 (mode)
+             102 LOAD_FAST                4 (key)
+             104 BUILD_TUPLE              2
+             106 BINARY_SUBSCR
+             110 LOAD_ATTR                7 (NULL|self + text)
+             130 CALL                     0
+             138 LOAD_ATTR                9 (NULL|self + strip)
+             158 CALL                     0
+             166 STORE_FAST               6 (txt)
+
+5462         168 LOAD_FAST                6 (txt)
+             170 POP_JUMP_IF_TRUE         1 (to 174)
+
+5463         172 JUMP_BACKWARD           55 (to 64)
+
+5464     >>  174 NOP
+
+5465         176 LOAD_GLOBAL             11 (NULL + float)
+             186 LOAD_FAST                6 (txt)
+             188 CALL                     1
+             196 STORE_FAST               7 (v)
+
+5466         198 LOAD_FAST                7 (v)
+             200 LOAD_CONST               1 (0)
+             202 COMPARE_OP              40 (==)
+             206 POP_JUMP_IF_FALSE        5 (to 218)
+             208 LOAD_FAST                4 (key)
+             210 LOAD_CONST               2 (('tps_offset',))
+             212 CONTAINS_OP              1
+             214 POP_JUMP_IF_FALSE        1 (to 218)
+
+5467         216 JUMP_BACKWARD           77 (to 64)
+
+5468     >>  218 LOAD_FAST                4 (key)
+             220 LOAD_CONST               3 (('accel_lock_gear', 'wot_lock_gear'))
+             222 CONTAINS_OP              0
+             224 POP_JUMP_IF_FALSE       11 (to 248)
+
+5469         226 LOAD_GLOBAL             13 (NULL + int)
+             236 LOAD_FAST                7 (v)
+             238 CALL                     1
+             246 STORE_FAST               7 (v)
+
+5470     >>  248 LOAD_FAST                7 (v)
+             250 LOAD_FAST                3 (fields)
+             252 LOAD_FAST                4 (key)
+             254 STORE_SUBSCR
+             258 JUMP_BACKWARD           98 (to 64)
+
+5460     >>  260 END_FOR
+
+5474         262 LOAD_FAST                0 (self)
+             264 LOAD_ATTR               16 (enabled_boxes)
+             284 LOAD_FAST                2 (mode)
+             286 BINARY_SUBSCR
+             290 LOAD_ATTR               19 (NULL|self + isChecked)
+             310 CALL                     0
+
+5475         318 LOAD_FAST                0 (self)
+             320 LOAD_ATTR               20 (intent_combos)
+             340 LOAD_FAST                2 (mode)
+             342 BINARY_SUBSCR
+             346 LOAD_ATTR               23 (NULL|self + currentText)
+             366 CALL                     0
+
+5476         374 LOAD_FAST                3 (fields)
+
+5473         376 LOAD_CONST               4 (('enabled', 'intent', 'fields'))
+             378 BUILD_CONST_KEY_MAP      3
+             380 LOAD_FAST                1 (out)
+             382 LOAD_FAST                2 (mode)
+             384 STORE_SUBSCR
+             388 JUMP_BACKWARD          180 (to 30)
+
+5458     >>  390 END_FOR
+
+5478         392 LOAD_FAST                1 (out)
+             394 RETURN_VALUE
+         >>  396 PUSH_EXC_INFO
+
+5471         398 LOAD_GLOBAL             14 (ValueError)
+             408 CHECK_EXC_MATCH
+             410 POP_JUMP_IF_FALSE        3 (to 418)
+             412 POP_TOP
+
+5472         414 POP_EXCEPT
+             416 JUMP_BACKWARD          177 (to 64)
+
+5471     >>  418 RERAISE                  0
+         >>  420 COPY                     3
+             422 POP_EXCEPT
+             424 RERAISE                  1
+ExceptionTable:
+  176 to 214 -> 396 [2]
+  218 to 256 -> 396 [2]
+  396 to 412 -> 420 [3] lasti
+  418 to 418 -> 420 [3] lasti

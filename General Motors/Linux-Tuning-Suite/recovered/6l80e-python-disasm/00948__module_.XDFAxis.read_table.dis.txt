@@ -1,0 +1,86 @@
+948           0 RESUME                   0
+
+950           2 LOAD_FAST                0 (self)
+              4 LOAD_ATTR                0 (stride_bits)
+             24 COPY                     1
+             26 POP_JUMP_IF_TRUE        25 (to 78)
+             28 POP_TOP
+             30 LOAD_FAST                0 (self)
+             32 LOAD_ATTR                2 (size_bits)
+             52 LOAD_FAST                0 (self)
+             54 LOAD_ATTR                4 (col_count)
+             74 BINARY_OP                5 (*)
+        >>   78 STORE_FAST               2 (stride_bits)
+
+951          80 BUILD_LIST               0
+             82 STORE_FAST               3 (out)
+
+952          84 LOAD_GLOBAL              7 (NULL + range)
+             94 LOAD_GLOBAL              9 (NULL + max)
+            104 LOAD_CONST               1 (1)
+            106 LOAD_FAST                0 (self)
+            108 LOAD_ATTR               10 (row_count)
+            128 CALL                     2
+            136 CALL                     1
+            144 GET_ITER
+        >>  146 FOR_ITER               132 (to 414)
+            150 STORE_FAST               4 (r)
+
+953         152 BUILD_LIST               0
+            154 STORE_FAST               5 (row)
+
+954         156 LOAD_FAST                0 (self)
+            158 LOAD_ATTR               12 (address)
+            178 LOAD_FAST                4 (r)
+            180 LOAD_FAST                2 (stride_bits)
+            182 BINARY_OP                5 (*)
+            186 LOAD_CONST               2 (8)
+            188 BINARY_OP                2 (//)
+            192 BINARY_OP                0 (+)
+            196 STORE_FAST               6 (row_byte_start)
+
+955         198 LOAD_GLOBAL              7 (NULL + range)
+            208 LOAD_GLOBAL              9 (NULL + max)
+            218 LOAD_CONST               1 (1)
+            220 LOAD_FAST                0 (self)
+            222 LOAD_ATTR                4 (col_count)
+            242 CALL                     2
+            250 CALL                     1
+            258 GET_ITER
+        >>  260 FOR_ITER                56 (to 376)
+            264 STORE_FAST               7 (c)
+
+956         266 LOAD_FAST                6 (row_byte_start)
+            268 LOAD_FAST                7 (c)
+            270 LOAD_FAST                0 (self)
+            272 LOAD_ATTR                2 (size_bits)
+            292 LOAD_CONST               2 (8)
+            294 BINARY_OP                2 (//)
+            298 BINARY_OP                5 (*)
+            302 BINARY_OP                0 (+)
+            306 STORE_FAST               8 (offset)
+
+957         308 LOAD_FAST                5 (row)
+            310 LOAD_ATTR               15 (NULL|self + append)
+            330 LOAD_FAST                0 (self)
+            332 LOAD_ATTR               17 (NULL|self + _read_one)
+            352 LOAD_FAST                1 (bin_data)
+            354 LOAD_FAST                8 (offset)
+            356 CALL                     2
+            364 CALL                     1
+            372 POP_TOP
+            374 JUMP_BACKWARD           58 (to 260)
+
+955     >>  376 END_FOR
+
+958         378 LOAD_FAST                3 (out)
+            380 LOAD_ATTR               15 (NULL|self + append)
+            400 LOAD_FAST                5 (row)
+            402 CALL                     1
+            410 POP_TOP
+            412 JUMP_BACKWARD          134 (to 146)
+
+952     >>  414 END_FOR
+
+959         416 LOAD_FAST                3 (out)
+            418 RETURN_VALUE

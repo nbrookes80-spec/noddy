@@ -1,0 +1,25 @@
+               0 COPY_FREE_VARS           1
+
+2546           2 RESUME                   0
+
+2547           4 LOAD_FAST                0 (gear_into)
+               6 LOAD_CONST               1 (1)
+               8 BINARY_OP               10 (-)
+              12 LOAD_GLOBAL              1 (NULL + len)
+              22 LOAD_DEREF               1 (self)
+              24 LOAD_ATTR                2 (ORDINAL)
+              44 CALL                     1
+              52 COMPARE_OP               2 (<)
+              56 POP_JUMP_IF_FALSE       18 (to 94)
+              58 LOAD_DEREF               1 (self)
+              60 LOAD_ATTR                2 (ORDINAL)
+              80 LOAD_FAST                0 (gear_into)
+              82 LOAD_CONST               1 (1)
+              84 BINARY_OP               10 (-)
+              88 BINARY_SUBSCR
+              92 RETURN_VALUE
+         >>   94 LOAD_FAST                0 (gear_into)
+              96 FORMAT_VALUE             0
+              98 LOAD_CONST               2 ('th')
+             100 BUILD_STRING             2
+             102 RETURN_VALUE

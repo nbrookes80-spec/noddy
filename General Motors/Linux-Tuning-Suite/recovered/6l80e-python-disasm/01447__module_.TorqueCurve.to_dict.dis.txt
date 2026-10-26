@@ -1,0 +1,29 @@
+1447           0 RESUME                   0
+
+1449           2 LOAD_CONST               1 ('points')
+               4 LOAD_FAST                0 (self)
+               6 LOAD_ATTR                0 (points)
+              26 GET_ITER
+              28 LOAD_FAST_AND_CLEAR      1 (p)
+              30 SWAP                     2
+              32 BUILD_LIST               0
+              34 SWAP                     2
+         >>   36 FOR_ITER                13 (to 66)
+              40 STORE_FAST               1 (p)
+              42 LOAD_GLOBAL              3 (NULL + list)
+              52 LOAD_FAST                1 (p)
+              54 CALL                     1
+              62 LIST_APPEND              2
+              64 JUMP_BACKWARD           15 (to 36)
+         >>   66 END_FOR
+              68 SWAP                     2
+              70 STORE_FAST               1 (p)
+              72 BUILD_MAP                1
+              74 RETURN_VALUE
+         >>   76 SWAP                     2
+              78 POP_TOP
+              80 SWAP                     2
+              82 STORE_FAST               1 (p)
+              84 RERAISE                  0
+ExceptionTable:
+  32 to 66 -> 76 [3]

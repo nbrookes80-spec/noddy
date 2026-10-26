@@ -1,0 +1,12 @@
+4492           0 RESUME                   0
+
+4493           2 LOAD_FAST                0 (t)
+               4 POP_JUMP_IF_NONE         6 (to 18)
+               6 LOAD_FAST                0 (t)
+               8 LOAD_CONST               1 ('5.2f')
+              10 FORMAT_VALUE             4 (with format)
+              12 LOAD_CONST               2 ('s')
+              14 BUILD_STRING             2
+              16 RETURN_VALUE
+         >>   18 LOAD_CONST               3 ('  —  ')
+              20 RETURN_VALUE

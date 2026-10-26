@@ -1,0 +1,101 @@
+4740           0 RESUME                   0
+
+4741           2 BUILD_LIST               0
+               4 STORE_FAST               1 (points)
+
+4742           6 LOAD_GLOBAL              1 (NULL + range)
+              16 LOAD_FAST                0 (self)
+              18 LOAD_ATTR                2 (tbl)
+              38 LOAD_ATTR                5 (NULL|self + rowCount)
+              58 CALL                     0
+              66 CALL                     1
+              74 GET_ITER
+         >>   76 FOR_ITER               181 (to 442)
+              80 STORE_FAST               2 (r)
+
+4743          82 NOP
+
+4744          84 LOAD_GLOBAL              7 (NULL + float)
+              94 LOAD_FAST                0 (self)
+              96 LOAD_ATTR                2 (tbl)
+             116 LOAD_ATTR                9 (NULL|self + item)
+             136 LOAD_FAST                2 (r)
+             138 LOAD_CONST               1 (0)
+             140 CALL                     2
+             148 LOAD_ATTR               11 (NULL|self + text)
+             168 CALL                     0
+             176 CALL                     1
+             184 STORE_FAST               3 (rpm)
+
+4745         186 LOAD_GLOBAL              7 (NULL + float)
+             196 LOAD_FAST                0 (self)
+             198 LOAD_ATTR                2 (tbl)
+             218 LOAD_ATTR                9 (NULL|self + item)
+             238 LOAD_FAST                2 (r)
+             240 LOAD_CONST               2 (1)
+             242 CALL                     2
+             250 LOAD_ATTR               11 (NULL|self + text)
+             270 CALL                     0
+             278 CALL                     1
+             286 STORE_FAST               4 (hp)
+
+4746         288 LOAD_GLOBAL              7 (NULL + float)
+             298 LOAD_FAST                0 (self)
+             300 LOAD_ATTR                2 (tbl)
+             320 LOAD_ATTR                9 (NULL|self + item)
+             340 LOAD_FAST                2 (r)
+             342 LOAD_CONST               3 (2)
+             344 CALL                     2
+             352 LOAD_ATTR               11 (NULL|self + text)
+             372 CALL                     0
+             380 CALL                     1
+             388 STORE_FAST               5 (tq)
+
+4747         390 LOAD_FAST                3 (rpm)
+             392 LOAD_CONST               1 (0)
+             394 COMPARE_OP              68 (>)
+             398 POP_JUMP_IF_FALSE       20 (to 440)
+
+4748         400 LOAD_FAST                1 (points)
+             402 LOAD_ATTR               13 (NULL|self + append)
+             422 LOAD_FAST                3 (rpm)
+             424 LOAD_FAST                4 (hp)
+             426 LOAD_FAST                5 (tq)
+             428 BUILD_TUPLE              3
+             430 CALL                     1
+             438 POP_TOP
+         >>  440 JUMP_BACKWARD          183 (to 76)
+
+4742     >>  442 END_FOR
+
+4751         444 LOAD_GLOBAL             19 (NULL + TorqueCurve)
+             454 LOAD_FAST                1 (points)
+             456 CALL                     1
+             464 LOAD_FAST                0 (self)
+             466 STORE_ATTR              10 (curve)
+
+4752         476 LOAD_FAST                0 (self)
+             478 LOAD_ATTR               23 (NULL|self + _update_summary)
+             498 CALL                     0
+             506 POP_TOP
+             508 RETURN_CONST             0 (None)
+         >>  510 PUSH_EXC_INFO
+
+4749         512 LOAD_GLOBAL             14 (ValueError)
+             522 LOAD_GLOBAL             16 (AttributeError)
+             532 BUILD_TUPLE              2
+             534 CHECK_EXC_MATCH
+             536 POP_JUMP_IF_FALSE        3 (to 544)
+             538 POP_TOP
+
+4750         540 POP_EXCEPT
+             542 JUMP_BACKWARD          234 (to 76)
+
+4749     >>  544 RERAISE                  0
+         >>  546 COPY                     3
+             548 POP_EXCEPT
+             550 RERAISE                  1
+ExceptionTable:
+  84 to 438 -> 510 [1]
+  510 to 538 -> 546 [2] lasti
+  544 to 544 -> 546 [2] lasti

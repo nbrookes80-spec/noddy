@@ -1,0 +1,29 @@
+4179           0 RETURN_GENERATOR
+               2 POP_TOP
+               4 RESUME                   0
+               6 LOAD_FAST                0 (.0)
+         >>    8 FOR_ITER                17 (to 46)
+
+4180          12 UNPACK_SEQUENCE          2
+              16 STORE_FAST               1 (k)
+              18 STORE_FAST               2 (h)
+              20 LOAD_CONST               0 ('  ')
+              22 LOAD_FAST                1 (k)
+              24 LOAD_CONST               1 ('14s')
+              26 FORMAT_VALUE             4 (with format)
+              28 LOAD_CONST               2 (" → '")
+              30 LOAD_FAST                2 (h)
+              32 FORMAT_VALUE             0
+              34 LOAD_CONST               3 ("'")
+              36 BUILD_STRING             5
+              38 YIELD_VALUE              1
+              40 RESUME                   1
+              42 POP_TOP
+              44 JUMP_BACKWARD           19 (to 8)
+
+4179     >>   46 END_FOR
+              48 RETURN_CONST             4 (None)
+         >>   50 CALL_INTRINSIC_1         3 (INTRINSIC_STOPITERATION_ERROR)
+              52 RERAISE                  1
+ExceptionTable:
+  4 to 48 -> 50 [0] lasti

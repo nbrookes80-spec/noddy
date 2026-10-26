@@ -1,0 +1,27 @@
+8913           0 RESUME                   0
+
+8915           2 LOAD_GLOBAL              0 (TRANS_DB)
+              12 LOAD_ATTR                3 (NULL|self + get)
+              32 LOAD_FAST                0 (self)
+              34 LOAD_ATTR                4 (trans)
+              54 LOAD_ATTR                7 (NULL|self + currentText)
+              74 CALL                     0
+              82 BUILD_MAP                0
+              84 CALL                     2
+              92 STORE_FAST               1 (trans)
+
+8916          94 LOAD_FAST                1 (trans)
+              96 LOAD_ATTR                3 (NULL|self + get)
+             116 LOAD_CONST               1 ('ratios')
+             118 BUILD_LIST               0
+             120 CALL                     2
+             128 STORE_FAST               2 (ratios)
+
+8917         130 LOAD_FAST                2 (ratios)
+             132 POP_JUMP_IF_FALSE       11 (to 156)
+             134 LOAD_GLOBAL              9 (NULL + len)
+             144 LOAD_FAST                2 (ratios)
+             146 CALL                     1
+             154 RETURN_VALUE
+         >>  156 LOAD_CONST               2 (6)
+             158 RETURN_VALUE

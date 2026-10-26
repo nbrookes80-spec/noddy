@@ -1,0 +1,27 @@
+7244           0 RESUME                   0
+
+7245           2 LOAD_GLOBAL              1 (NULL + QSpinBox)
+              12 CALL                     0
+              20 STORE_FAST               5 (w)
+
+7246          22 LOAD_FAST                5 (w)
+              24 LOAD_ATTR                3 (NULL|self + setRange)
+              44 LOAD_FAST                2 (lo)
+              46 LOAD_FAST                3 (hi)
+              48 CALL                     2
+              56 POP_TOP
+
+7247          58 LOAD_FAST                5 (w)
+              60 LOAD_ATTR                5 (NULL|self + setSingleStep)
+              80 LOAD_FAST                4 (step)
+              82 CALL                     1
+              90 POP_TOP
+
+7248          92 LOAD_FAST                5 (w)
+              94 LOAD_ATTR                7 (NULL|self + setValue)
+             114 LOAD_FAST                1 (default)
+             116 CALL                     1
+             124 POP_TOP
+
+7249         126 LOAD_FAST                5 (w)
+             128 RETURN_VALUE

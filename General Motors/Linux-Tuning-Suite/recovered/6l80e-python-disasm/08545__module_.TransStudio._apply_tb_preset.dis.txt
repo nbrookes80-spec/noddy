@@ -1,0 +1,54 @@
+8545           0 RESUME                   0
+
+8548           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (tb_preset)
+              24 LOAD_ATTR                3 (NULL|self + currentText)
+              44 CALL                     0
+              52 STORE_FAST               1 (name)
+
+8549          54 LOAD_GLOBAL              4 (TB_PRESETS)
+              64 LOAD_ATTR                7 (NULL|self + get)
+              84 LOAD_FAST                1 (name)
+              86 CALL                     1
+              94 STORE_FAST               2 (preset)
+
+8550          96 LOAD_FAST                2 (preset)
+              98 POP_JUMP_IF_NOT_NONE     1 (to 102)
+
+8551         100 RETURN_CONST             1 (None)
+
+8552     >>  102 LOAD_FAST                2 (preset)
+             104 UNPACK_SEQUENCE          4
+             108 STORE_FAST               3 (factor)
+             110 STORE_FAST               4 (offset)
+             112 STORE_FAST               5 (upf)
+             114 STORE_FAST               6 (downf)
+
+8553         116 LOAD_FAST                0 (self)
+             118 LOAD_ATTR                8 (tps_factor)
+             138 LOAD_ATTR               11 (NULL|self + setValue)
+             158 LOAD_FAST                3 (factor)
+             160 CALL                     1
+             168 POP_TOP
+
+8554         170 LOAD_FAST                0 (self)
+             172 LOAD_ATTR               12 (tps_offset)
+             192 LOAD_ATTR               11 (NULL|self + setValue)
+             212 LOAD_FAST                4 (offset)
+             214 CALL                     1
+             222 POP_TOP
+
+8555         224 LOAD_FAST                0 (self)
+             226 LOAD_ATTR               14 (upf)
+             246 LOAD_ATTR               11 (NULL|self + setValue)
+             266 LOAD_FAST                5 (upf)
+             268 CALL                     1
+             276 POP_TOP
+
+8556         278 LOAD_FAST                0 (self)
+             280 LOAD_ATTR               16 (downf)
+             300 LOAD_ATTR               11 (NULL|self + setValue)
+             320 LOAD_FAST                6 (downf)
+             322 CALL                     1
+             330 POP_TOP
+             332 RETURN_CONST             1 (None)

@@ -1,0 +1,23 @@
+1018           0 RETURN_GENERATOR
+               2 POP_TOP
+               4 RESUME                   0
+               6 LOAD_FAST                0 (.0)
+         >>    8 FOR_ITER                29 (to 70)
+              12 STORE_FAST               1 (p)
+              14 LOAD_FAST                1 (p)
+              16 LOAD_ATTR                0 (category)
+              36 POP_JUMP_IF_TRUE         1 (to 40)
+              38 JUMP_BACKWARD           16 (to 8)
+         >>   40 LOAD_FAST                1 (p)
+              42 LOAD_ATTR                0 (category)
+              62 YIELD_VALUE              1
+              64 RESUME                   1
+              66 POP_TOP
+              68 JUMP_BACKWARD           31 (to 8)
+         >>   70 END_FOR
+              72 RETURN_CONST             0 (None)
+         >>   74 CALL_INTRINSIC_1         3 (INTRINSIC_STOPITERATION_ERROR)
+              76 RERAISE                  1
+ExceptionTable:
+  4 to 36 -> 74 [0] lasti
+  40 to 72 -> 74 [0] lasti

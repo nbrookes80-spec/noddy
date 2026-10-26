@@ -1,0 +1,225 @@
+               0 COPY_FREE_VARS           1
+
+5087           2 RESUME                   0
+
+5088           4 LOAD_GLOBAL              0 (super)
+              14 LOAD_DEREF              11 (__class__)
+              16 LOAD_FAST                0 (self)
+              18 LOAD_SUPER_ATTR          5 (NULL|self + __init__)
+              22 LOAD_FAST                1 (parent)
+              24 CALL                     1
+              32 POP_TOP
+
+5089          34 LOAD_FAST                0 (self)
+              36 LOAD_ATTR                5 (NULL|self + setWindowTitle)
+              56 LOAD_CONST               1 ('Per-Gear Shift Delays (Time Lead Mode)')
+              58 CALL                     1
+              66 POP_TOP
+
+5090          68 LOAD_FAST                0 (self)
+              70 LOAD_ATTR                7 (NULL|self + resize)
+              90 LOAD_CONST               2 (400)
+              92 LOAD_CONST               2 (400)
+              94 CALL                     2
+             102 POP_TOP
+
+5091         104 LOAD_GLOBAL              9 (NULL + deepcopy)
+             114 LOAD_FAST                3 (delays)
+             116 CALL                     1
+             124 LOAD_FAST                0 (self)
+             126 STORE_ATTR               5 (delays)
+
+5093         136 LOAD_GLOBAL             13 (NULL + QVBoxLayout)
+             146 LOAD_FAST                0 (self)
+             148 CALL                     1
+             156 STORE_FAST               4 (layout)
+
+5094         158 LOAD_FAST                4 (layout)
+             160 LOAD_ATTR               15 (NULL|self + addWidget)
+             180 LOAD_GLOBAL             17 (NULL + QLabel)
+
+5095         190 LOAD_CONST               3 ('Up Delay = time (s) PCM takes to command shift\nDown Delay = time (s) shift takes to complete\nBoth are summed and multiplied by accel rate to get lead distance.')
+
+5094         192 CALL                     1
+             200 CALL                     1
+             208 POP_TOP
+
+5100         210 LOAD_GLOBAL             19 (NULL + QTableWidget)
+             220 LOAD_FAST                2 (n_shifts)
+             222 LOAD_CONST               4 (2)
+             224 CALL                     2
+             232 LOAD_FAST                0 (self)
+             234 STORE_ATTR              10 (tbl)
+
+5101         244 LOAD_FAST                0 (self)
+             246 LOAD_ATTR               20 (tbl)
+             266 LOAD_ATTR               23 (NULL|self + setHorizontalHeaderLabels)
+             286 LOAD_CONST               5 ('Up Delay (s)')
+             288 LOAD_CONST               6 ('Down Delay (s)')
+             290 BUILD_LIST               2
+             292 CALL                     1
+             300 POP_TOP
+
+5102         302 LOAD_FAST                0 (self)
+             304 LOAD_ATTR               20 (tbl)
+             324 LOAD_ATTR               25 (NULL|self + setVerticalHeaderLabels)
+             344 LOAD_GLOBAL             27 (NULL + range)
+             354 LOAD_FAST                2 (n_shifts)
+             356 CALL                     1
+             364 GET_ITER
+             366 LOAD_FAST_AND_CLEAR      5 (i)
+             368 SWAP                     2
+             370 BUILD_LIST               0
+             372 SWAP                     2
+         >>  374 FOR_ITER                15 (to 408)
+             378 STORE_FAST               5 (i)
+             380 LOAD_FAST                5 (i)
+             382 LOAD_CONST               7 (1)
+             384 BINARY_OP                0 (+)
+             388 FORMAT_VALUE             0
+             390 LOAD_CONST               8 ('->')
+             392 LOAD_FAST                5 (i)
+             394 LOAD_CONST               4 (2)
+             396 BINARY_OP                0 (+)
+             400 FORMAT_VALUE             0
+             402 BUILD_STRING             3
+             404 LIST_APPEND              2
+             406 JUMP_BACKWARD           17 (to 374)
+         >>  408 END_FOR
+             410 SWAP                     2
+             412 STORE_FAST               5 (i)
+             414 CALL                     1
+             422 POP_TOP
+
+5103         424 LOAD_FAST                0 (self)
+             426 LOAD_ATTR               20 (tbl)
+             446 LOAD_ATTR               29 (NULL|self + horizontalHeader)
+             466 CALL                     0
+             474 LOAD_ATTR               31 (NULL|self + setSectionResizeMode)
+             494 LOAD_GLOBAL             32 (QHeaderView)
+             504 LOAD_ATTR               34 (ResizeMode)
+             524 LOAD_ATTR               36 (Stretch)
+             544 CALL                     1
+             552 POP_TOP
+
+5105         554 LOAD_GLOBAL             27 (NULL + range)
+             564 LOAD_FAST                2 (n_shifts)
+             566 CALL                     1
+             574 GET_ITER
+         >>  576 FOR_ITER               126 (to 832)
+             580 STORE_FAST               5 (i)
+
+5106         582 LOAD_FAST                5 (i)
+             584 LOAD_GLOBAL             39 (NULL + len)
+             594 LOAD_FAST                0 (self)
+             596 LOAD_ATTR               10 (delays)
+             616 CALL                     1
+             624 COMPARE_OP               2 (<)
+             628 POP_JUMP_IF_FALSE       15 (to 660)
+             630 LOAD_FAST                0 (self)
+             632 LOAD_ATTR               10 (delays)
+             652 LOAD_FAST                5 (i)
+             654 BINARY_SUBSCR
+             658 JUMP_FORWARD             1 (to 662)
+         >>  660 LOAD_CONST               9 ((0.5, 0.15))
+         >>  662 UNPACK_SEQUENCE          2
+             666 STORE_FAST               6 (up_d)
+             668 STORE_FAST               7 (dn_d)
+
+5107         670 LOAD_FAST                0 (self)
+             672 LOAD_ATTR               20 (tbl)
+             692 LOAD_ATTR               41 (NULL|self + setItem)
+             712 LOAD_FAST                5 (i)
+             714 LOAD_CONST              10 (0)
+             716 LOAD_GLOBAL             43 (NULL + QTableWidgetItem)
+             726 LOAD_FAST                6 (up_d)
+             728 LOAD_CONST              11 ('.2f')
+             730 FORMAT_VALUE             4 (with format)
+             732 CALL                     1
+             740 CALL                     3
+             748 POP_TOP
+
+5108         750 LOAD_FAST                0 (self)
+             752 LOAD_ATTR               20 (tbl)
+             772 LOAD_ATTR               41 (NULL|self + setItem)
+             792 LOAD_FAST                5 (i)
+             794 LOAD_CONST               7 (1)
+             796 LOAD_GLOBAL             43 (NULL + QTableWidgetItem)
+             806 LOAD_FAST                7 (dn_d)
+             808 LOAD_CONST              11 ('.2f')
+             810 FORMAT_VALUE             4 (with format)
+             812 CALL                     1
+             820 CALL                     3
+             828 POP_TOP
+             830 JUMP_BACKWARD          128 (to 576)
+
+5105     >>  832 END_FOR
+
+5110         834 LOAD_FAST                4 (layout)
+             836 LOAD_ATTR               15 (NULL|self + addWidget)
+             856 LOAD_FAST                0 (self)
+             858 LOAD_ATTR               20 (tbl)
+             878 CALL                     1
+             886 POP_TOP
+
+5112         888 LOAD_GLOBAL             45 (NULL + QHBoxLayout)
+             898 CALL                     0
+             906 STORE_FAST               8 (btn_row)
+
+5113         908 LOAD_GLOBAL             47 (NULL + QPushButton)
+             918 LOAD_CONST              12 ('OK')
+             920 CALL                     1
+             928 STORE_FAST               9 (ok)
+
+5114         930 LOAD_FAST                9 (ok)
+             932 LOAD_ATTR               48 (clicked)
+             952 LOAD_ATTR               51 (NULL|self + connect)
+             972 LOAD_FAST                0 (self)
+             974 LOAD_ATTR               52 (accept)
+             994 CALL                     1
+            1002 POP_TOP
+
+5115        1004 LOAD_GLOBAL             47 (NULL + QPushButton)
+            1014 LOAD_CONST              13 ('Cancel')
+            1016 CALL                     1
+            1024 STORE_FAST              10 (cancel)
+
+5116        1026 LOAD_FAST               10 (cancel)
+            1028 LOAD_ATTR               48 (clicked)
+            1048 LOAD_ATTR               51 (NULL|self + connect)
+            1068 LOAD_FAST                0 (self)
+            1070 LOAD_ATTR               54 (reject)
+            1090 CALL                     1
+            1098 POP_TOP
+
+5117        1100 LOAD_FAST                8 (btn_row)
+            1102 LOAD_ATTR               57 (NULL|self + addStretch)
+            1122 CALL                     0
+            1130 POP_TOP
+
+5118        1132 LOAD_FAST                8 (btn_row)
+            1134 LOAD_ATTR               15 (NULL|self + addWidget)
+            1154 LOAD_FAST                9 (ok)
+            1156 CALL                     1
+            1164 POP_TOP
+
+5119        1166 LOAD_FAST                8 (btn_row)
+            1168 LOAD_ATTR               15 (NULL|self + addWidget)
+            1188 LOAD_FAST               10 (cancel)
+            1190 CALL                     1
+            1198 POP_TOP
+
+5120        1200 LOAD_FAST                4 (layout)
+            1202 LOAD_ATTR               59 (NULL|self + addLayout)
+            1222 LOAD_FAST                8 (btn_row)
+            1224 CALL                     1
+            1232 POP_TOP
+            1234 RETURN_CONST             0 (None)
+         >> 1236 SWAP                     2
+            1238 POP_TOP
+
+5102        1240 SWAP                     2
+            1242 STORE_FAST               5 (i)
+            1244 RERAISE                  0
+ExceptionTable:
+  370 to 408 -> 1236 [4]

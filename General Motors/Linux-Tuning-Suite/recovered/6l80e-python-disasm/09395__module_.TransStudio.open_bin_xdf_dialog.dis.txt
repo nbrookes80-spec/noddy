@@ -1,0 +1,35 @@
+9395           0 RESUME                   0
+
+9399           2 LOAD_GLOBAL              1 (NULL + hasattr)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_CONST               1 ('_bin_xdf_dialog')
+              16 CALL                     2
+              24 POP_JUMP_IF_FALSE       12 (to 50)
+              26 LOAD_FAST                0 (self)
+              28 LOAD_ATTR                2 (_bin_xdf_dialog)
+              48 POP_JUMP_IF_NOT_NONE    16 (to 82)
+
+9400     >>   50 LOAD_GLOBAL              5 (NULL + BinXdfDialog)
+              60 LOAD_FAST                0 (self)
+              62 CALL                     1
+              70 LOAD_FAST                0 (self)
+              72 STORE_ATTR               1 (_bin_xdf_dialog)
+
+9401     >>   82 LOAD_FAST                0 (self)
+              84 LOAD_ATTR                2 (_bin_xdf_dialog)
+             104 LOAD_ATTR                7 (NULL|self + show)
+             124 CALL                     0
+             132 POP_TOP
+
+9402         134 LOAD_FAST                0 (self)
+             136 LOAD_ATTR                2 (_bin_xdf_dialog)
+             156 LOAD_ATTR                9 (NULL|self + raise_)
+             176 CALL                     0
+             184 POP_TOP
+
+9403         186 LOAD_FAST                0 (self)
+             188 LOAD_ATTR                2 (_bin_xdf_dialog)
+             208 LOAD_ATTR               11 (NULL|self + activateWindow)
+             228 CALL                     0
+             236 POP_TOP
+             238 RETURN_CONST             2 (None)

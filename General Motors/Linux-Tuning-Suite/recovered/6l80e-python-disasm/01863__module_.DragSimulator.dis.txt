@@ -1,0 +1,59 @@
+1863           0 RESUME                   0
+               2 LOAD_NAME                0 (__name__)
+               4 STORE_NAME               1 (__module__)
+               6 LOAD_CONST               0 ('DragSimulator')
+               8 STORE_NAME               2 (__qualname__)
+
+1864          10 LOAD_CONST               1 ('Newton-integration vehicle dynamics simulator.\n\n    Forces:\n      F_drive = engine_tq × ratio × final_drive × η / r_tire\n      F_aero  = 0.5 × ρ × Cd×A × v²\n      F_roll  = Crr × W\n      a       = (F_drive − F_aero − F_roll) × g / W\n\n    Launch: engine sits at stall_rpm × 0.7 until vehicle speed catches up to\n    rigid-coupling RPM (models converter flash but not full slip dynamics).\n    Shifts: 0.4s torque interruption per shift event.\n    ')
+              12 STORE_NAME               3 (__doc__)
+
+1877          14 LOAD_CONST               2 (32.174)
+              16 STORE_NAME               4 (GRAVITY)
+
+1878          18 LOAD_CONST               3 (0.00237)
+              20 STORE_NAME               5 (AIR_DENSITY)
+
+1879          22 LOAD_CONST               4 (0.85)
+              24 STORE_NAME               6 (DRIVETRAIN_EFF)
+
+1880          26 LOAD_CONST               5 (0.4)
+              28 STORE_NAME               7 (SHIFT_TIME)
+
+1881          30 LOAD_CONST               6 (0.7)
+              32 STORE_NAME               8 (LAUNCH_FACTOR)
+
+1883          34 NOP
+
+1884          36 NOP
+
+1883          38 LOAD_CONST              15 ((None, 9.0, 0.012, 1.1, None))
+              40 LOAD_CONST               8 (<code object __init__ at 0x30c0bda0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1883>)
+              42 MAKE_FUNCTION            1 (defaults)
+              44 STORE_NAME               9 (__init__)
+
+1928          46 BUILD_LIST               0
+              48 LOAD_CONST               9 ((0.035, 0.018, 0.01, 0.005, 0.003, 0.002, 0.001, 0.001, 0.001, 0.001))
+              50 LIST_EXTEND              1
+              52 STORE_NAME              10 (GEAR_SLIP_PCT)
+
+1931          54 LOAD_CONST              10 (<code object _slip_for_gear at 0x73ab02a40290, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1931>)
+              56 MAKE_FUNCTION            0
+              58 STORE_NAME              11 (_slip_for_gear)
+
+1938          60 LOAD_CONST              11 (<code object _shift_time_for at 0x73ab02a343f0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1938>)
+              62 MAKE_FUNCTION            0
+              64 STORE_NAME              12 (_shift_time_for)
+
+1954          66 LOAD_CONST              12 (<code object mph_to_rpm at 0x73ab02a403c0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1954>)
+              68 MAKE_FUNCTION            0
+              70 STORE_NAME              13 (mph_to_rpm)
+
+1957          72 LOAD_CONST              13 (<code object rpm_to_mph at 0x73ab02a404f0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1957>)
+              74 MAKE_FUNCTION            0
+              76 STORE_NAME              14 (rpm_to_mph)
+
+1960          78 LOAD_CONST              16 ((25.0, 0.02, 1320))
+              80 LOAD_CONST              14 (<code object simulate at 0x30c09d00, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1960>)
+              82 MAKE_FUNCTION            1 (defaults)
+              84 STORE_NAME              15 (simulate)
+              86 RETURN_CONST             7 (None)

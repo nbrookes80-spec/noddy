@@ -1,0 +1,505 @@
+1526           0 RESUME                   0
+
+1539           2 NOP
+
+1540           4 LOAD_CONST               1 (0)
+               6 LOAD_CONST               2 (None)
+               8 IMPORT_NAME              0 (pandas)
+              10 STORE_FAST               4 (pd)
+
+1541          12 LOAD_FAST                2 (progress_cb)
+              14 POP_JUMP_IF_FALSE        8 (to 32)
+
+1542          16 PUSH_NULL
+              18 LOAD_FAST                2 (progress_cb)
+              20 LOAD_CONST               3 (5)
+              22 CALL                     1
+              30 POP_TOP
+
+1544     >>   32 LOAD_FAST                0 (cls)
+              34 LOAD_ATTR                3 (NULL|self + _sniff_header_row)
+              54 LOAD_FAST                1 (path)
+              56 CALL                     1
+              64 STORE_FAST               5 (header_idx)
+
+1545          66 LOAD_FAST                2 (progress_cb)
+              68 POP_JUMP_IF_FALSE        8 (to 86)
+
+1546          70 PUSH_NULL
+              72 LOAD_FAST                2 (progress_cb)
+              74 LOAD_CONST               4 (15)
+              76 CALL                     1
+              84 POP_TOP
+
+1547     >>   86 LOAD_FAST                4 (pd)
+              88 LOAD_ATTR                5 (NULL|self + read_csv)
+             108 LOAD_FAST                1 (path)
+             110 LOAD_FAST                5 (header_idx)
+             112 LOAD_CONST               5 (False)
+
+1548         114 LOAD_CONST               6 ('ignore')
+
+1547         116 KW_NAMES                 7 (('skiprows', 'low_memory', 'encoding_errors'))
+             118 CALL                     4
+             126 STORE_FAST               6 (df)
+
+1549         128 LOAD_FAST                2 (progress_cb)
+             130 POP_JUMP_IF_FALSE        8 (to 148)
+
+1550         132 PUSH_NULL
+             134 LOAD_FAST                2 (progress_cb)
+             136 LOAD_CONST               8 (70)
+             138 CALL                     1
+             146 POP_TOP
+
+1551     >>  148 LOAD_FAST                0 (cls)
+             150 LOAD_ATTR                7 (NULL|self + from_dataframe)
+             170 LOAD_FAST                6 (df)
+             172 LOAD_FAST                3 (target_hz)
+             174 KW_NAMES                 9 (('target_hz',))
+             176 CALL                     2
+             184 STORE_FAST               7 (imp)
+
+1552         186 LOAD_FAST                2 (progress_cb)
+             188 POP_JUMP_IF_FALSE        8 (to 206)
+
+1553         190 PUSH_NULL
+             192 LOAD_FAST                2 (progress_cb)
+             194 LOAD_CONST              10 (100)
+             196 CALL                     1
+             204 POP_TOP
+
+1554     >>  206 LOAD_FAST                7 (imp)
+             208 RETURN_VALUE
+         >>  210 PUSH_EXC_INFO
+
+1555         212 LOAD_GLOBAL              8 (ImportError)
+             222 CHECK_EXC_MATCH
+             224 POP_JUMP_IF_FALSE        3 (to 232)
+             226 POP_TOP
+
+1557         228 POP_EXCEPT
+             230 JUMP_FORWARD            14 (to 260)
+
+1558     >>  232 LOAD_GLOBAL             10 (Exception)
+             242 CHECK_EXC_MATCH
+             244 POP_JUMP_IF_FALSE        3 (to 252)
+             246 POP_TOP
+
+1560         248 POP_EXCEPT
+             250 JUMP_FORWARD             4 (to 260)
+
+1558     >>  252 RERAISE                  0
+         >>  254 COPY                     3
+             256 POP_EXCEPT
+             258 RERAISE                  1
+
+1563     >>  260 LOAD_CONST               1 (0)
+             262 LOAD_CONST               2 (None)
+             264 IMPORT_NAME              6 (csv)
+             266 STORE_FAST               8 (_csv)
+
+1564         268 PUSH_NULL
+             270 LOAD_FAST                0 (cls)
+             272 CALL                     0
+             280 STORE_FAST               7 (imp)
+
+1565         282 LOAD_GLOBAL             15 (NULL + open)
+             292 LOAD_FAST                1 (path)
+             294 LOAD_CONST              11 ('r')
+             296 LOAD_CONST               6 ('ignore')
+             298 KW_NAMES                12 (('errors',))
+             300 CALL                     3
+             308 BEFORE_WITH
+             310 STORE_FAST               9 (f)
+
+1566         312 LOAD_FAST                8 (_csv)
+             314 LOAD_ATTR               17 (NULL|self + reader)
+             334 LOAD_FAST                9 (f)
+             336 CALL                     1
+             344 STORE_FAST              10 (reader)
+
+1567         346 LOAD_GLOBAL             19 (NULL + list)
+             356 LOAD_FAST               10 (reader)
+             358 CALL                     1
+             366 STORE_FAST              11 (rows)
+
+1565         368 LOAD_CONST               2 (None)
+             370 LOAD_CONST               2 (None)
+             372 LOAD_CONST               2 (None)
+             374 CALL                     2
+             382 POP_TOP
+             384 JUMP_FORWARD            12 (to 410)
+         >>  386 PUSH_EXC_INFO
+             388 WITH_EXCEPT_START
+             390 POP_JUMP_IF_TRUE         1 (to 394)
+             392 RERAISE                  2
+         >>  394 POP_TOP
+             396 POP_EXCEPT
+             398 POP_TOP
+             400 POP_TOP
+             402 JUMP_FORWARD             3 (to 410)
+         >>  404 COPY                     3
+             406 POP_EXCEPT
+             408 RERAISE                  1
+
+1568     >>  410 LOAD_FAST_CHECK         11 (rows)
+             412 POP_JUMP_IF_TRUE         2 (to 418)
+
+1569         414 LOAD_FAST                7 (imp)
+             416 RETURN_VALUE
+
+1570     >>  418 LOAD_FAST                2 (progress_cb)
+             420 POP_JUMP_IF_FALSE        8 (to 438)
+
+1571         422 PUSH_NULL
+             424 LOAD_FAST                2 (progress_cb)
+             426 LOAD_CONST              13 (20)
+             428 CALL                     1
+             436 POP_TOP
+
+1573     >>  438 LOAD_CONST               1 (0)
+             440 STORE_FAST               5 (header_idx)
+
+1574         442 LOAD_GLOBAL             21 (NULL + enumerate)
+             452 LOAD_FAST               11 (rows)
+             454 LOAD_CONST               2 (None)
+             456 LOAD_CONST               3 (5)
+             458 BINARY_SLICE
+             460 CALL                     1
+             468 GET_ITER
+         >>  470 FOR_ITER                55 (to 584)
+             474 UNPACK_SEQUENCE          2
+             478 STORE_FAST              12 (i)
+             480 STORE_FAST              13 (row)
+
+1575         482 LOAD_CONST               1 (0)
+             484 STORE_FAST              14 (non_numeric)
+
+1576         486 LOAD_FAST               13 (row)
+             488 GET_ITER
+         >>  490 FOR_ITER                34 (to 562)
+             494 STORE_FAST              15 (cell)
+
+1577         496 NOP
+
+1578         498 LOAD_GLOBAL             23 (NULL + float)
+             508 LOAD_FAST               15 (cell)
+             510 CALL                     1
+             518 POP_TOP
+             520 JUMP_BACKWARD           16 (to 490)
+         >>  522 PUSH_EXC_INFO
+
+1579         524 LOAD_GLOBAL             24 (ValueError)
+             534 CHECK_EXC_MATCH
+             536 POP_JUMP_IF_FALSE        8 (to 554)
+             538 POP_TOP
+
+1580         540 LOAD_FAST               14 (non_numeric)
+             542 LOAD_CONST              14 (1)
+             544 BINARY_OP               13 (+=)
+             548 STORE_FAST              14 (non_numeric)
+             550 POP_EXCEPT
+             552 JUMP_BACKWARD           32 (to 490)
+
+1579     >>  554 RERAISE                  0
+         >>  556 COPY                     3
+             558 POP_EXCEPT
+             560 RERAISE                  1
+
+1576     >>  562 END_FOR
+
+1581         564 LOAD_FAST               14 (non_numeric)
+             566 LOAD_CONST              15 (2)
+             568 COMPARE_OP              92 (>=)
+             572 POP_JUMP_IF_TRUE         1 (to 576)
+             574 JUMP_BACKWARD           53 (to 470)
+
+1582     >>  576 LOAD_FAST               12 (i)
+             578 STORE_FAST               5 (header_idx)
+
+1583         580 POP_TOP
+             582 JUMP_FORWARD             1 (to 586)
+
+1574     >>  584 END_FOR
+
+1585     >>  586 LOAD_FAST               11 (rows)
+             588 LOAD_FAST                5 (header_idx)
+             590 BINARY_SUBSCR
+             594 GET_ITER
+             596 LOAD_FAST_AND_CLEAR     16 (h)
+             598 SWAP                     2
+             600 BUILD_LIST               0
+             602 SWAP                     2
+         >>  604 FOR_ITER                18 (to 644)
+             608 STORE_FAST              16 (h)
+             610 LOAD_FAST               16 (h)
+             612 LOAD_ATTR               27 (NULL|self + strip)
+             632 CALL                     0
+             640 LIST_APPEND              2
+             642 JUMP_BACKWARD           20 (to 604)
+         >>  644 END_FOR
+             646 JUMP_FORWARD             5 (to 658)
+         >>  648 SWAP                     2
+             650 POP_TOP
+             652 SWAP                     2
+             654 STORE_FAST              16 (h)
+             656 RERAISE                  0
+         >>  658 SWAP                     2
+             660 STORE_FAST              16 (h)
+             662 LOAD_FAST                7 (imp)
+             664 STORE_ATTR              14 (headers)
+
+1586         674 LOAD_FAST                7 (imp)
+             676 LOAD_ATTR               31 (NULL|self + _build_column_map)
+             696 LOAD_FAST                7 (imp)
+             698 LOAD_ATTR               28 (headers)
+             718 CALL                     1
+             726 LOAD_FAST                7 (imp)
+             728 STORE_ATTR              16 (col_map)
+
+1588         738 LOAD_GLOBAL             35 (NULL + len)
+             748 LOAD_FAST               11 (rows)
+             750 CALL                     1
+             758 LOAD_FAST                5 (header_idx)
+             760 BINARY_OP               10 (-)
+             764 LOAD_CONST              14 (1)
+             766 BINARY_OP               10 (-)
+             770 STORE_FAST              17 (n_total)
+
+1589         772 LOAD_GLOBAL             21 (NULL + enumerate)
+             782 LOAD_FAST               11 (rows)
+             784 LOAD_FAST                5 (header_idx)
+             786 LOAD_CONST              14 (1)
+             788 BINARY_OP                0 (+)
+             792 LOAD_CONST               2 (None)
+             794 BINARY_SLICE
+             796 CALL                     1
+             804 GET_ITER
+         >>  806 FOR_ITER               165 (to 1140)
+             810 UNPACK_SEQUENCE          2
+             814 STORE_FAST              12 (i)
+             816 STORE_FAST              13 (row)
+
+1590         818 LOAD_FAST               13 (row)
+             820 POP_JUMP_IF_FALSE       18 (to 858)
+             822 LOAD_GLOBAL             37 (NULL + all)
+             832 LOAD_CONST              16 (<code object <genexpr> at 0x73ab02bcb130, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1590>)
+             834 MAKE_FUNCTION            0
+             836 LOAD_FAST               13 (row)
+             838 GET_ITER
+             840 CALL                     0
+             848 CALL                     1
+             856 POP_JUMP_IF_FALSE        1 (to 860)
+
+1591     >>  858 JUMP_BACKWARD           27 (to 806)
+
+1592     >>  860 BUILD_LIST               0
+             862 STORE_FAST              18 (parsed)
+
+1593         864 LOAD_FAST               13 (row)
+             866 GET_ITER
+         >>  868 FOR_ITER                61 (to 994)
+             872 STORE_FAST              15 (cell)
+
+1594         874 NOP
+
+1595         876 LOAD_FAST               18 (parsed)
+             878 LOAD_ATTR               39 (NULL|self + append)
+             898 LOAD_GLOBAL             23 (NULL + float)
+             908 LOAD_FAST               15 (cell)
+             910 CALL                     1
+             918 CALL                     1
+             926 POP_TOP
+             928 JUMP_BACKWARD           31 (to 868)
+         >>  930 PUSH_EXC_INFO
+
+1596         932 LOAD_GLOBAL             24 (ValueError)
+             942 CHECK_EXC_MATCH
+             944 POP_JUMP_IF_FALSE       20 (to 986)
+             946 POP_TOP
+
+1597         948 LOAD_FAST               18 (parsed)
+             950 LOAD_ATTR               39 (NULL|self + append)
+             970 LOAD_CONST               2 (None)
+             972 CALL                     1
+             980 POP_TOP
+             982 POP_EXCEPT
+             984 JUMP_BACKWARD           59 (to 868)
+
+1596     >>  986 RERAISE                  0
+         >>  988 COPY                     3
+             990 POP_EXCEPT
+             992 RERAISE                  1
+
+1593     >>  994 END_FOR
+
+1598         996 LOAD_FAST                7 (imp)
+             998 LOAD_ATTR               40 (rows)
+            1018 LOAD_ATTR               39 (NULL|self + append)
+            1038 LOAD_FAST               18 (parsed)
+            1040 CALL                     1
+            1048 POP_TOP
+
+1599        1050 LOAD_FAST                2 (progress_cb)
+            1052 POP_JUMP_IF_TRUE         1 (to 1056)
+            1054 JUMP_BACKWARD          125 (to 806)
+         >> 1056 LOAD_FAST               17 (n_total)
+            1058 LOAD_CONST               1 (0)
+            1060 COMPARE_OP              68 (>)
+            1064 POP_JUMP_IF_TRUE         1 (to 1068)
+            1066 JUMP_BACKWARD          131 (to 806)
+         >> 1068 LOAD_FAST               12 (i)
+            1070 LOAD_CONST              17 (5000)
+            1072 BINARY_OP                6 (%)
+            1076 LOAD_CONST               1 (0)
+            1078 COMPARE_OP              40 (==)
+            1082 POP_JUMP_IF_TRUE         1 (to 1086)
+            1084 JUMP_BACKWARD          140 (to 806)
+
+1600     >> 1086 PUSH_NULL
+            1088 LOAD_FAST                2 (progress_cb)
+            1090 LOAD_CONST              13 (20)
+            1092 LOAD_GLOBAL             43 (NULL + int)
+            1102 LOAD_CONST               8 (70)
+            1104 LOAD_FAST               12 (i)
+            1106 BINARY_OP                5 (*)
+            1110 LOAD_FAST               17 (n_total)
+            1112 BINARY_OP               11 (/)
+            1116 CALL                     1
+            1124 BINARY_OP                0 (+)
+            1128 CALL                     1
+            1136 POP_TOP
+            1138 JUMP_BACKWARD          167 (to 806)
+
+1589     >> 1140 END_FOR
+
+1602        1142 LOAD_FAST                7 (imp)
+            1144 LOAD_ATTR               45 (NULL|self + _find_col)
+            1164 BUILD_LIST               0
+            1166 LOAD_CONST              18 (('time', 'timestamp', 'seconds', 't (s)'))
+            1168 LIST_EXTEND              1
+            1170 CALL                     1
+            1178 STORE_FAST              19 (time_col)
+
+1603        1180 LOAD_FAST               19 (time_col)
+            1182 POP_JUMP_IF_NONE        99 (to 1382)
+            1184 LOAD_GLOBAL             35 (NULL + len)
+            1194 LOAD_FAST                7 (imp)
+            1196 LOAD_ATTR               40 (rows)
+            1216 CALL                     1
+            1224 LOAD_CONST              15 (2)
+            1226 COMPARE_OP              92 (>=)
+            1230 POP_JUMP_IF_FALSE       75 (to 1382)
+
+1604        1232 NOP
+
+1605        1234 LOAD_FAST                7 (imp)
+            1236 LOAD_ATTR               40 (rows)
+            1256 LOAD_CONST              14 (1)
+            1258 BINARY_SUBSCR
+            1262 LOAD_FAST               19 (time_col)
+            1264 BINARY_SUBSCR
+            1268 LOAD_FAST                7 (imp)
+            1270 LOAD_ATTR               40 (rows)
+            1290 LOAD_CONST               1 (0)
+            1292 BINARY_SUBSCR
+            1296 LOAD_FAST               19 (time_col)
+            1298 BINARY_SUBSCR
+            1302 BINARY_OP               10 (-)
+            1306 STORE_FAST              20 (dt)
+
+1606        1308 LOAD_FAST               20 (dt)
+            1310 LOAD_CONST               1 (0)
+            1312 COMPARE_OP              68 (>)
+            1316 POP_JUMP_IF_FALSE       10 (to 1338)
+
+1607        1318 LOAD_CONST              19 (1.0)
+            1320 LOAD_FAST               20 (dt)
+            1322 BINARY_OP               11 (/)
+            1326 LOAD_FAST                7 (imp)
+            1328 STORE_ATTR              23 (sample_rate)
+         >> 1338 JUMP_FORWARD            21 (to 1382)
+         >> 1340 PUSH_EXC_INFO
+
+1608        1342 LOAD_GLOBAL             48 (TypeError)
+            1352 LOAD_GLOBAL             50 (IndexError)
+            1362 BUILD_TUPLE              2
+            1364 CHECK_EXC_MATCH
+            1366 POP_JUMP_IF_FALSE        3 (to 1374)
+            1368 POP_TOP
+
+1609        1370 POP_EXCEPT
+            1372 JUMP_FORWARD             4 (to 1382)
+
+1608     >> 1374 RERAISE                  0
+         >> 1376 COPY                     3
+            1378 POP_EXCEPT
+            1380 RERAISE                  1
+
+1611     >> 1382 LOAD_FAST                3 (target_hz)
+            1384 POP_JUMP_IF_FALSE       95 (to 1576)
+            1386 LOAD_FAST                7 (imp)
+            1388 LOAD_ATTR               46 (sample_rate)
+            1408 LOAD_FAST                3 (target_hz)
+            1410 LOAD_CONST              20 (1.5)
+            1412 BINARY_OP                5 (*)
+            1416 COMPARE_OP              68 (>)
+            1420 POP_JUMP_IF_FALSE       77 (to 1576)
+
+1612        1422 LOAD_GLOBAL             53 (NULL + max)
+            1432 LOAD_CONST              14 (1)
+            1434 LOAD_GLOBAL             43 (NULL + int)
+            1444 LOAD_FAST                7 (imp)
+            1446 LOAD_ATTR               46 (sample_rate)
+            1466 LOAD_FAST                3 (target_hz)
+            1468 BINARY_OP               11 (/)
+            1472 CALL                     1
+            1480 CALL                     2
+            1488 STORE_FAST              21 (stride)
+
+1613        1490 LOAD_FAST                7 (imp)
+            1492 LOAD_ATTR               40 (rows)
+            1512 LOAD_CONST               2 (None)
+            1514 LOAD_CONST               2 (None)
+            1516 LOAD_FAST               21 (stride)
+            1518 BUILD_SLICE              3
+            1520 BINARY_SUBSCR
+            1524 LOAD_FAST                7 (imp)
+            1526 STORE_ATTR              20 (rows)
+
+1614        1536 LOAD_FAST                7 (imp)
+            1538 LOAD_ATTR               46 (sample_rate)
+            1558 LOAD_FAST               21 (stride)
+            1560 BINARY_OP               11 (/)
+            1564 LOAD_FAST                7 (imp)
+            1566 STORE_ATTR              23 (sample_rate)
+
+1616     >> 1576 LOAD_FAST                2 (progress_cb)
+            1578 POP_JUMP_IF_FALSE        8 (to 1596)
+
+1617        1580 PUSH_NULL
+            1582 LOAD_FAST                2 (progress_cb)
+            1584 LOAD_CONST              10 (100)
+            1586 CALL                     1
+            1594 POP_TOP
+
+1618     >> 1596 LOAD_FAST                7 (imp)
+            1598 RETURN_VALUE
+ExceptionTable:
+  4 to 206 -> 210 [0]
+  210 to 226 -> 254 [1] lasti
+  232 to 246 -> 254 [1] lasti
+  252 to 252 -> 254 [1] lasti
+  310 to 366 -> 386 [1] lasti
+  386 to 394 -> 404 [3] lasti
+  498 to 518 -> 522 [2]
+  522 to 548 -> 556 [3] lasti
+  554 to 554 -> 556 [3] lasti
+  600 to 644 -> 648 [2]
+  876 to 926 -> 930 [2]
+  930 to 980 -> 988 [3] lasti
+  986 to 986 -> 988 [3] lasti
+  1234 to 1336 -> 1340 [0]
+  1340 to 1368 -> 1376 [1] lasti
+  1374 to 1374 -> 1376 [1] lasti

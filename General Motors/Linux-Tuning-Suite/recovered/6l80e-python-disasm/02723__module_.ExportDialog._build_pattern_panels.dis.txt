@@ -1,0 +1,430 @@
+               0 MAKE_CELL                0 (self)
+
+2723           2 RESUME                   0
+
+2724           4 LOAD_GLOBAL              1 (NULL + QVBoxLayout)
+              14 CALL                     0
+              22 STORE_FAST               1 (v)
+
+2725          24 BUILD_MAP                0
+              26 LOAD_DEREF               0 (self)
+              28 STORE_ATTR               1 (pattern_btn_groups)
+
+2726          38 LOAD_GLOBAL              5 (NULL + QWidget)
+              48 CALL                     0
+              56 LOAD_DEREF               0 (self)
+              58 STORE_ATTR               3 (pattern_panel_widget)
+
+2727          68 LOAD_GLOBAL              1 (NULL + QVBoxLayout)
+              78 LOAD_DEREF               0 (self)
+              80 LOAD_ATTR                6 (pattern_panel_widget)
+             100 CALL                     1
+             108 STORE_FAST               2 (inner)
+
+2728         110 LOAD_FAST                2 (inner)
+             112 LOAD_ATTR                9 (NULL|self + setContentsMargins)
+             132 LOAD_CONST               1 (0)
+             134 LOAD_CONST               1 (0)
+             136 LOAD_CONST               1 (0)
+             138 LOAD_CONST               1 (0)
+             140 CALL                     4
+             148 POP_TOP
+
+2730         150 LOAD_DEREF               0 (self)
+             152 LOAD_ATTR               10 (is_4spd)
+             172 EXTENDED_ARG             1
+             174 POP_JUMP_IF_FALSE      423 (to 1022)
+
+2732         176 LOAD_GLOBAL             13 (NULL + QGroupBox)
+             186 LOAD_CONST               2 ('4-spd Mode')
+             188 CALL                     1
+             196 STORE_FAST               3 (gb)
+
+2733         198 LOAD_GLOBAL              1 (NULL + QVBoxLayout)
+             208 CALL                     0
+             216 STORE_FAST               4 (gl)
+
+2734         218 BUILD_LIST               0
+             220 LOAD_DEREF               0 (self)
+             222 STORE_ATTR               7 (fspd_mode_buttons)
+
+2735         232 LOAD_GLOBAL             17 (NULL + list)
+             242 LOAD_DEREF               0 (self)
+             244 LOAD_ATTR               18 (pressure_4spd)
+             264 LOAD_ATTR               21 (NULL|self + keys)
+             284 CALL                     0
+             292 CALL                     1
+             300 COPY                     1
+             302 POP_JUMP_IF_TRUE         4 (to 312)
+             304 POP_TOP
+             306 LOAD_CONST               3 ('Normal')
+             308 LOAD_CONST               4 ('Performance')
+             310 BUILD_LIST               2
+         >>  312 STORE_FAST               5 (available_modes)
+
+2736         314 LOAD_FAST                5 (available_modes)
+             316 GET_ITER
+         >>  318 FOR_ITER               125 (to 572)
+             322 STORE_FAST               6 (mode)
+
+2737         324 LOAD_GLOBAL             23 (NULL + QPushButton)
+             334 LOAD_FAST                6 (mode)
+             336 CALL                     1
+             344 STORE_FAST               7 (btn)
+
+2738         346 LOAD_FAST                7 (btn)
+             348 LOAD_ATTR               25 (NULL|self + setCheckable)
+             368 LOAD_CONST               5 (True)
+             370 CALL                     1
+             378 POP_TOP
+
+2739         380 LOAD_FAST                7 (btn)
+             382 LOAD_ATTR               27 (NULL|self + setStyleSheet)
+
+2740         402 LOAD_CONST               6 ('QPushButton { padding: 6px; text-align: left; }QPushButton:checked { background: #2864A0; color: #fff; font-weight: bold; }')
+
+2739         404 CALL                     1
+             412 POP_TOP
+
+2743         414 LOAD_FAST                7 (btn)
+             416 LOAD_ATTR               28 (clicked)
+             436 LOAD_ATTR               31 (NULL|self + connect)
+             456 LOAD_FAST                6 (mode)
+             458 BUILD_TUPLE              1
+             460 LOAD_CLOSURE             0 (self)
+             462 BUILD_TUPLE              1
+             464 LOAD_CONST               7 (<code object <lambda> at 0x73ab02a112f0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2743>)
+             466 MAKE_FUNCTION            9 (defaults, closure)
+             468 CALL                     1
+             476 POP_TOP
+
+2744         478 LOAD_DEREF               0 (self)
+             480 LOAD_ATTR               14 (fspd_mode_buttons)
+             500 LOAD_ATTR               33 (NULL|self + append)
+             520 LOAD_FAST                6 (mode)
+             522 LOAD_FAST                7 (btn)
+             524 BUILD_TUPLE              2
+             526 CALL                     1
+             534 POP_TOP
+
+2745         536 LOAD_FAST                4 (gl)
+             538 LOAD_ATTR               35 (NULL|self + addWidget)
+             558 LOAD_FAST                7 (btn)
+             560 CALL                     1
+             568 POP_TOP
+             570 JUMP_BACKWARD          127 (to 318)
+
+2736     >>  572 END_FOR
+
+2746         574 LOAD_FAST                3 (gb)
+             576 LOAD_ATTR               37 (NULL|self + setLayout)
+             596 LOAD_FAST                4 (gl)
+             598 CALL                     1
+             606 POP_TOP
+
+2747         608 LOAD_FAST                2 (inner)
+             610 LOAD_ATTR               35 (NULL|self + addWidget)
+             630 LOAD_FAST                3 (gb)
+             632 CALL                     1
+             640 POP_TOP
+
+2750         642 LOAD_GLOBAL             13 (NULL + QGroupBox)
+             652 LOAD_CONST               8 ('4-spd Tables')
+             654 CALL                     1
+             662 STORE_FAST               8 (info)
+
+2751         664 LOAD_GLOBAL              1 (NULL + QVBoxLayout)
+             674 CALL                     0
+             682 STORE_FAST               9 (il)
+
+2752         684 LOAD_CONST               9 (('Base Shift Pressure', 'Desired Shift Time', 'TCC DC Maximum'))
+             686 GET_ITER
+         >>  688 FOR_ITER                50 (to 792)
+             692 STORE_FAST              10 (lbl)
+
+2753         694 LOAD_GLOBAL             39 (NULL + QLabel)
+             704 LOAD_CONST              10 ('  • ')
+             706 LOAD_FAST               10 (lbl)
+             708 FORMAT_VALUE             0
+             710 BUILD_STRING             2
+             712 CALL                     1
+             720 STORE_FAST              11 (w)
+
+2754         722 LOAD_FAST               11 (w)
+             724 LOAD_ATTR               27 (NULL|self + setStyleSheet)
+             744 LOAD_CONST              11 ('color: #aaa; padding: 2px;')
+             746 CALL                     1
+             754 POP_TOP
+
+2755         756 LOAD_FAST                9 (il)
+             758 LOAD_ATTR               35 (NULL|self + addWidget)
+             778 LOAD_FAST               11 (w)
+             780 CALL                     1
+             788 POP_TOP
+             790 JUMP_BACKWARD           52 (to 688)
+
+2752     >>  792 END_FOR
+
+2756         794 LOAD_GLOBAL             39 (NULL + QLabel)
+
+2757         804 LOAD_CONST              12 ('Use the Table dropdown on the right to switch between\nthe three 4-spd TCM tables. TCC DC Max is single-table\n(no Normal/Performance variants).')
+
+2756         806 CALL                     1
+             814 STORE_FAST              12 (note)
+
+2761         816 LOAD_FAST               12 (note)
+             818 LOAD_ATTR               27 (NULL|self + setStyleSheet)
+             838 LOAD_CONST              13 ('color: #888; font-size: 9pt; padding: 4px;')
+             840 CALL                     1
+             848 POP_TOP
+
+2762         850 LOAD_FAST               12 (note)
+             852 LOAD_ATTR               41 (NULL|self + setWordWrap)
+             872 LOAD_CONST               5 (True)
+             874 CALL                     1
+             882 POP_TOP
+
+2763         884 LOAD_FAST                9 (il)
+             886 LOAD_ATTR               35 (NULL|self + addWidget)
+             906 LOAD_FAST               12 (note)
+             908 CALL                     1
+             916 POP_TOP
+
+2764         918 LOAD_FAST                8 (info)
+             920 LOAD_ATTR               37 (NULL|self + setLayout)
+             940 LOAD_FAST                9 (il)
+             942 CALL                     1
+             950 POP_TOP
+
+2765         952 LOAD_FAST                2 (inner)
+             954 LOAD_ATTR               35 (NULL|self + addWidget)
+             974 LOAD_FAST                8 (info)
+             976 CALL                     1
+             984 POP_TOP
+
+2767         986 LOAD_DEREF               0 (self)
+             988 LOAD_ATTR               43 (NULL|self + _mark_selected_4spd_button)
+            1008 CALL                     0
+            1016 POP_TOP
+            1018 EXTENDED_ARG             1
+            1020 JUMP_FORWARD           413 (to 1848)
+
+2770     >> 1022 BUILD_LIST               0
+            1024 LOAD_CONST              14 (('X', 'Y', 'Z', 'W'))
+            1026 LIST_EXTEND              1
+            1028 STORE_FAST              13 (pattern_labels)
+
+2771        1030 LOAD_GLOBAL             17 (NULL + list)
+            1040 LOAD_DEREF               0 (self)
+            1042 LOAD_ATTR               44 (pressure_per_shift)
+            1062 LOAD_ATTR               21 (NULL|self + keys)
+            1082 CALL                     0
+            1090 CALL                     1
+            1098 STORE_FAST              14 (modes)
+
+2772        1100 LOAD_GLOBAL             47 (NULL + enumerate)
+            1110 LOAD_FAST               14 (modes)
+            1112 CALL                     1
+            1120 GET_ITER
+         >> 1122 EXTENDED_ARG             1
+            1124 FOR_ITER               343 (to 1814)
+            1128 UNPACK_SEQUENCE          2
+            1132 STORE_FAST              15 (i)
+            1134 STORE_FAST               6 (mode)
+
+2773        1136 LOAD_FAST               15 (i)
+            1138 LOAD_GLOBAL             49 (NULL + len)
+            1148 LOAD_FAST               13 (pattern_labels)
+            1150 CALL                     1
+            1158 COMPARE_OP              92 (>=)
+            1162 POP_JUMP_IF_FALSE        3 (to 1170)
+
+2774        1164 POP_TOP
+            1166 EXTENDED_ARG             1
+            1168 JUMP_FORWARD           323 (to 1816)
+
+2775     >> 1170 LOAD_GLOBAL             13 (NULL + QGroupBox)
+            1180 LOAD_CONST              15 ('Pattern ')
+            1182 LOAD_FAST               13 (pattern_labels)
+            1184 LOAD_FAST               15 (i)
+            1186 BINARY_SUBSCR
+            1190 FORMAT_VALUE             0
+            1192 LOAD_CONST              16 (' — ')
+            1194 LOAD_FAST                6 (mode)
+            1196 FORMAT_VALUE             0
+            1198 BUILD_STRING             4
+            1200 CALL                     1
+            1208 STORE_FAST               3 (gb)
+
+2776        1210 LOAD_GLOBAL             51 (NULL + QGridLayout)
+            1220 CALL                     0
+            1228 STORE_FAST               4 (gl)
+
+2778        1230 LOAD_DEREF               0 (self)
+            1232 LOAD_ATTR               44 (pressure_per_shift)
+            1252 POP_JUMP_IF_FALSE       67 (to 1388)
+
+2777        1254 LOAD_GLOBAL             17 (NULL + list)
+            1264 LOAD_GLOBAL             53 (NULL + next)
+            1274 LOAD_GLOBAL             55 (NULL + iter)
+            1284 LOAD_DEREF               0 (self)
+            1286 LOAD_ATTR               44 (pressure_per_shift)
+            1306 LOAD_ATTR               57 (NULL|self + values)
+            1326 CALL                     0
+            1334 CALL                     1
+            1342 CALL                     1
+            1350 LOAD_ATTR               21 (NULL|self + keys)
+            1370 CALL                     0
+            1378 CALL                     1
+            1386 JUMP_FORWARD             1 (to 1390)
+
+2778     >> 1388 BUILD_LIST               0
+
+2777     >> 1390 STORE_FAST              16 (shifts)
+
+2779        1392 BUILD_LIST               0
+            1394 STORE_FAST              17 (buttons)
+
+2780        1396 LOAD_GLOBAL             47 (NULL + enumerate)
+            1406 LOAD_FAST               16 (shifts)
+            1408 CALL                     1
+            1416 GET_ITER
+         >> 1418 FOR_ITER               144 (to 1710)
+            1422 UNPACK_SEQUENCE          2
+            1426 STORE_FAST              18 (idx)
+            1428 STORE_FAST              19 (sh)
+
+2781        1430 LOAD_GLOBAL             23 (NULL + QPushButton)
+            1440 LOAD_FAST               19 (sh)
+            1442 CALL                     1
+            1450 STORE_FAST               7 (btn)
+
+2782        1452 LOAD_FAST                7 (btn)
+            1454 LOAD_ATTR               25 (NULL|self + setCheckable)
+            1474 LOAD_CONST               5 (True)
+            1476 CALL                     1
+            1484 POP_TOP
+
+2783        1486 LOAD_FAST                7 (btn)
+            1488 LOAD_ATTR               59 (NULL|self + setMaximumWidth)
+            1508 LOAD_CONST              17 (60)
+            1510 CALL                     1
+            1518 POP_TOP
+
+2784        1520 LOAD_FAST                7 (btn)
+            1522 LOAD_ATTR               27 (NULL|self + setStyleSheet)
+
+2785        1542 LOAD_CONST              18 ('QPushButton { padding: 4px; }QPushButton:checked { background: #2864A0; color: #fff; }')
+
+2784        1544 CALL                     1
+            1552 POP_TOP
+
+2788        1554 LOAD_FAST                7 (btn)
+            1556 LOAD_ATTR               28 (clicked)
+            1576 LOAD_ATTR               31 (NULL|self + connect)
+
+2789        1596 LOAD_FAST                6 (mode)
+            1598 LOAD_FAST               19 (sh)
+            1600 BUILD_TUPLE              2
+            1602 LOAD_CLOSURE             0 (self)
+            1604 BUILD_TUPLE              1
+            1606 LOAD_CONST              19 (<code object <lambda> at 0x73ab02a113e0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2789>)
+            1608 MAKE_FUNCTION            9 (defaults, closure)
+
+2788        1610 CALL                     1
+            1618 POP_TOP
+
+2791        1620 LOAD_FAST               17 (buttons)
+            1622 LOAD_ATTR               33 (NULL|self + append)
+            1642 LOAD_FAST               19 (sh)
+            1644 LOAD_FAST                7 (btn)
+            1646 BUILD_TUPLE              2
+            1648 CALL                     1
+            1656 POP_TOP
+
+2792        1658 LOAD_FAST                4 (gl)
+            1660 LOAD_ATTR               35 (NULL|self + addWidget)
+            1680 LOAD_FAST                7 (btn)
+            1682 LOAD_FAST               18 (idx)
+            1684 LOAD_CONST              20 (3)
+            1686 BINARY_OP                2 (//)
+            1690 LOAD_FAST               18 (idx)
+            1692 LOAD_CONST              20 (3)
+            1694 BINARY_OP                6 (%)
+            1698 CALL                     3
+            1706 POP_TOP
+            1708 JUMP_BACKWARD          146 (to 1418)
+
+2780     >> 1710 END_FOR
+
+2793        1712 LOAD_FAST               17 (buttons)
+            1714 LOAD_DEREF               0 (self)
+            1716 LOAD_ATTR                2 (pattern_btn_groups)
+            1736 LOAD_FAST                6 (mode)
+            1738 STORE_SUBSCR
+
+2794        1742 LOAD_FAST                3 (gb)
+            1744 LOAD_ATTR               37 (NULL|self + setLayout)
+            1764 LOAD_FAST                4 (gl)
+            1766 CALL                     1
+            1774 POP_TOP
+
+2795        1776 LOAD_FAST                2 (inner)
+            1778 LOAD_ATTR               35 (NULL|self + addWidget)
+            1798 LOAD_FAST                3 (gb)
+            1800 CALL                     1
+            1808 POP_TOP
+            1810 EXTENDED_ARG             1
+            1812 JUMP_BACKWARD          346 (to 1122)
+
+2772     >> 1814 END_FOR
+
+2797     >> 1816 LOAD_DEREF               0 (self)
+            1818 LOAD_ATTR               61 (NULL|self + _mark_selected_pattern_button)
+            1838 CALL                     0
+            1846 POP_TOP
+
+2799     >> 1848 LOAD_FAST                1 (v)
+            1850 LOAD_ATTR               35 (NULL|self + addWidget)
+            1870 LOAD_DEREF               0 (self)
+            1872 LOAD_ATTR                6 (pattern_panel_widget)
+            1892 CALL                     1
+            1900 POP_TOP
+
+2800        1902 LOAD_DEREF               0 (self)
+            1904 LOAD_ATTR               10 (is_4spd)
+            1924 POP_JUMP_IF_FALSE       65 (to 2056)
+
+2801        1926 LOAD_DEREF               0 (self)
+            1928 LOAD_ATTR               18 (pressure_4spd)
+            1948 POP_JUMP_IF_TRUE        51 (to 2052)
+            1950 LOAD_DEREF               0 (self)
+            1952 LOAD_ATTR               62 (shift_time_4spd)
+            1972 POP_JUMP_IF_TRUE        39 (to 2052)
+            1974 LOAD_DEREF               0 (self)
+            1976 LOAD_ATTR               64 (tcc_duty_4spd)
+            1996 POP_JUMP_IF_TRUE        27 (to 2052)
+
+2802        1998 LOAD_DEREF               0 (self)
+            2000 LOAD_ATTR                6 (pattern_panel_widget)
+            2020 LOAD_ATTR               67 (NULL|self + setVisible)
+            2040 LOAD_CONST              21 (False)
+            2042 CALL                     1
+            2050 POP_TOP
+
+2806     >> 2052 LOAD_FAST                1 (v)
+            2054 RETURN_VALUE
+
+2804     >> 2056 LOAD_DEREF               0 (self)
+            2058 LOAD_ATTR               44 (pressure_per_shift)
+            2078 POP_JUMP_IF_TRUE        27 (to 2134)
+
+2805        2080 LOAD_DEREF               0 (self)
+            2082 LOAD_ATTR                6 (pattern_panel_widget)
+            2102 LOAD_ATTR               67 (NULL|self + setVisible)
+            2122 LOAD_CONST              21 (False)
+            2124 CALL                     1
+            2132 POP_TOP
+
+2806     >> 2134 LOAD_FAST                1 (v)
+            2136 RETURN_VALUE

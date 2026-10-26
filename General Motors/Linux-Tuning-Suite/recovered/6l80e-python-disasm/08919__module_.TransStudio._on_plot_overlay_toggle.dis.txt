@@ -1,0 +1,13 @@
+8919           0 RESUME                   0
+
+8920           2 LOAD_FAST                1 (checked)
+               4 LOAD_FAST                0 (self)
+               6 LOAD_ATTR                0 (plot_widget)
+              26 STORE_ATTR               1 (show_mode_overlays)
+
+8921          36 LOAD_FAST                0 (self)
+              38 LOAD_ATTR                0 (plot_widget)
+              58 LOAD_ATTR                5 (NULL|self + update)
+              78 CALL                     0
+              86 POP_TOP
+              88 RETURN_CONST             0 (None)

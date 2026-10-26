@@ -1,0 +1,18 @@
+5405           0 RESUME                   0
+
+5406           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (field_widgets)
+              24 LOAD_ATTR                3 (NULL|self + values)
+              44 CALL                     0
+              52 GET_ITER
+         >>   54 FOR_ITER                18 (to 94)
+              58 STORE_FAST               1 (le)
+
+5407          60 LOAD_FAST                1 (le)
+              62 LOAD_ATTR                5 (NULL|self + clear)
+              82 CALL                     0
+              90 POP_TOP
+              92 JUMP_BACKWARD           20 (to 54)
+
+5406     >>   94 END_FOR
+              96 RETURN_CONST             0 (None)

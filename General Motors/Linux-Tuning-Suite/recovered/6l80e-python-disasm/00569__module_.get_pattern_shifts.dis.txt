@@ -1,0 +1,98 @@
+569           0 RESUME                   0
+
+571           2 LOAD_FAST                0 (n_gears)
+              4 LOAD_CONST               1 (6)
+              6 COMPARE_OP               2 (<)
+             10 POP_JUMP_IF_FALSE        2 (to 16)
+
+572          12 BUILD_LIST               0
+             14 RETURN_VALUE
+
+573     >>   16 LOAD_GLOBAL              1 (NULL + range)
+             26 LOAD_FAST                0 (n_gears)
+             28 LOAD_CONST               2 (1)
+             30 BINARY_OP               10 (-)
+             34 CALL                     1
+             42 GET_ITER
+             44 LOAD_FAST_AND_CLEAR      1 (i)
+             46 SWAP                     2
+             48 BUILD_LIST               0
+             50 SWAP                     2
+        >>   52 FOR_ITER                15 (to 86)
+             56 STORE_FAST               1 (i)
+             58 LOAD_FAST                1 (i)
+             60 LOAD_CONST               2 (1)
+             62 BINARY_OP                0 (+)
+             66 FORMAT_VALUE             0
+             68 LOAD_CONST               3 ('-')
+             70 LOAD_FAST                1 (i)
+             72 LOAD_CONST               4 (2)
+             74 BINARY_OP                0 (+)
+             78 FORMAT_VALUE             0
+             80 BUILD_STRING             3
+             82 LIST_APPEND              2
+             84 JUMP_BACKWARD           17 (to 52)
+        >>   86 END_FOR
+             88 STORE_FAST               2 (sequential)
+             90 STORE_FAST               1 (i)
+
+574          92 LOAD_FAST                0 (n_gears)
+             94 LOAD_CONST               1 (6)
+             96 COMPARE_OP              40 (==)
+            100 POP_JUMP_IF_FALSE        9 (to 120)
+
+575         102 BUILD_LIST               0
+            104 LOAD_CONST               5 (('1-3', '1-4', '2-4', '2-6', '3-5', '4-6'))
+            106 LIST_EXTEND              1
+            108 STORE_FAST               3 (skips)
+
+585         110 LOAD_FAST                2 (sequential)
+            112 LOAD_FAST                3 (skips)
+            114 BINARY_OP                0 (+)
+            118 RETURN_VALUE
+
+576     >>  120 LOAD_FAST                0 (n_gears)
+            122 LOAD_CONST               6 (8)
+            124 COMPARE_OP              40 (==)
+            128 POP_JUMP_IF_FALSE        9 (to 148)
+
+577         130 BUILD_LIST               0
+            132 LOAD_CONST               7 (('1-3', '1-4', '1-5', '2-4', '2-5', '2-6', '3-5', '3-6', '4-6', '4-7', '5-7', '6-8'))
+            134 LIST_EXTEND              1
+            136 STORE_FAST               3 (skips)
+
+585         138 LOAD_FAST                2 (sequential)
+            140 LOAD_FAST                3 (skips)
+            142 BINARY_OP                0 (+)
+            146 RETURN_VALUE
+
+579     >>  148 LOAD_FAST                0 (n_gears)
+            150 LOAD_CONST               8 (10)
+            152 COMPARE_OP              40 (==)
+            156 POP_JUMP_IF_FALSE        9 (to 176)
+
+580         158 BUILD_LIST               0
+            160 LOAD_CONST               9 (('1-3', '1-4', '1-5', '2-4', '2-5', '3-5', '3-6', '4-6', '4-7', '5-7', '5-8', '6-8', '6-9', '7-9', '7-10', '8-10'))
+            162 LIST_EXTEND              1
+            164 STORE_FAST               3 (skips)
+
+585         166 LOAD_FAST                2 (sequential)
+            168 LOAD_FAST                3 (skips)
+            170 BINARY_OP                0 (+)
+            174 RETURN_VALUE
+
+584     >>  176 BUILD_LIST               0
+            178 STORE_FAST               3 (skips)
+
+585         180 LOAD_FAST                2 (sequential)
+            182 LOAD_FAST                3 (skips)
+            184 BINARY_OP                0 (+)
+            188 RETURN_VALUE
+        >>  190 SWAP                     2
+            192 POP_TOP
+
+573         194 SWAP                     2
+            196 STORE_FAST               1 (i)
+            198 RERAISE                  0
+ExceptionTable:
+  48 to 86 -> 190 [2]

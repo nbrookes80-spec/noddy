@@ -1,0 +1,22 @@
+8408           0 RESUME                   0
+
+8413           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (min_tcc_gear)
+              24 LOAD_ATTR                3 (NULL|self + value)
+              44 CALL                     0
+              52 STORE_FAST               1 (min_g)
+
+8414          54 LOAD_FAST                0 (self)
+              56 LOAD_ATTR                4 (accel_lock_gear)
+              76 LOAD_ATTR                7 (NULL|self + setMinimum)
+              96 LOAD_FAST                1 (min_g)
+              98 CALL                     1
+             106 POP_TOP
+
+8415         108 LOAD_FAST                0 (self)
+             110 LOAD_ATTR                8 (wot_lock_gear)
+             130 LOAD_ATTR                7 (NULL|self + setMinimum)
+             150 LOAD_FAST                1 (min_g)
+             152 CALL                     1
+             160 POP_TOP
+             162 RETURN_CONST             1 (None)

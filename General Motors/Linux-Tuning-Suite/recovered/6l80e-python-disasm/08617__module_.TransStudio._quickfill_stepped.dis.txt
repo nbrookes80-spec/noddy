@@ -1,0 +1,69 @@
+8617           0 RESUME                   0
+
+8620           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (per_gear_rpm_table)
+              24 STORE_FAST               2 (tbl)
+
+8621          26 LOAD_GLOBAL              3 (NULL + int)
+              36 LOAD_FAST                0 (self)
+              38 LOAD_ATTR                4 (shift_rpm)
+              58 LOAD_ATTR                7 (NULL|self + value)
+              78 CALL                     0
+              86 CALL                     1
+              94 STORE_FAST               3 (global_rpm)
+
+8622          96 LOAD_FAST                2 (tbl)
+              98 LOAD_ATTR                9 (NULL|self + blockSignals)
+             118 LOAD_CONST               1 (True)
+             120 CALL                     1
+             128 POP_TOP
+
+8623         130 LOAD_GLOBAL             11 (NULL + range)
+             140 LOAD_FAST                2 (tbl)
+             142 LOAD_ATTR               13 (NULL|self + rowCount)
+             162 CALL                     0
+             170 CALL                     1
+             178 GET_ITER
+         >>  180 FOR_ITER                67 (to 318)
+             184 STORE_FAST               4 (i)
+
+8624         186 LOAD_GLOBAL             15 (NULL + max)
+             196 LOAD_CONST               2 (1500)
+             198 LOAD_GLOBAL             17 (NULL + min)
+             208 LOAD_CONST               3 (10000)
+             210 LOAD_FAST                3 (global_rpm)
+             212 LOAD_FAST                1 (step_rpm)
+             214 LOAD_FAST                4 (i)
+             216 BINARY_OP                5 (*)
+             220 BINARY_OP                0 (+)
+             224 CALL                     2
+             232 CALL                     2
+             240 STORE_FAST               5 (v)
+
+8625         242 LOAD_FAST                2 (tbl)
+             244 LOAD_ATTR               19 (NULL|self + setItem)
+             264 LOAD_FAST                4 (i)
+             266 LOAD_CONST               4 (0)
+             268 LOAD_GLOBAL             21 (NULL + QTableWidgetItem)
+             278 LOAD_GLOBAL             23 (NULL + str)
+             288 LOAD_FAST                5 (v)
+             290 CALL                     1
+             298 CALL                     1
+             306 CALL                     3
+             314 POP_TOP
+             316 JUMP_BACKWARD           69 (to 180)
+
+8623     >>  318 END_FOR
+
+8626         320 LOAD_FAST                2 (tbl)
+             322 LOAD_ATTR                9 (NULL|self + blockSignals)
+             342 LOAD_CONST               5 (False)
+             344 CALL                     1
+             352 POP_TOP
+
+8627         354 LOAD_FAST                0 (self)
+             356 LOAD_ATTR               25 (NULL|self + _on_per_gear_rpm_changed)
+             376 LOAD_CONST               6 (None)
+             378 CALL                     1
+             386 POP_TOP
+             388 RETURN_CONST             6 (None)

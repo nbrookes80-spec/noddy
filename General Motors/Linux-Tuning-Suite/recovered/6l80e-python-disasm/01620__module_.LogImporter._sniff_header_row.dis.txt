@@ -1,0 +1,135 @@
+               0 MAKE_CELL                0 (cls)
+
+1620           2 RESUME                   0
+
+1623           4 LOAD_CONST               1 (0)
+               6 LOAD_CONST               2 (None)
+               8 IMPORT_NAME              0 (csv)
+              10 STORE_FAST               3 (_csv)
+
+1624          12 NOP
+
+1625          14 LOAD_GLOBAL              3 (NULL + open)
+              24 LOAD_FAST                1 (path)
+              26 LOAD_CONST               3 ('r')
+              28 LOAD_CONST               4 ('ignore')
+              30 KW_NAMES                 5 (('errors',))
+              32 CALL                     3
+              40 BEFORE_WITH
+              42 STORE_FAST               4 (f)
+
+1626          44 BUILD_LIST               0
+              46 STORE_FAST               5 (preview)
+
+1627          48 LOAD_GLOBAL              5 (NULL + enumerate)
+              58 LOAD_FAST                4 (f)
+              60 CALL                     1
+              68 GET_ITER
+         >>   70 FOR_ITER                29 (to 132)
+              74 UNPACK_SEQUENCE          2
+              78 STORE_FAST               6 (i)
+              80 STORE_FAST               7 (line)
+
+1628          82 LOAD_FAST                6 (i)
+              84 LOAD_FAST                2 (max_lines)
+              86 COMPARE_OP              92 (>=)
+              90 POP_JUMP_IF_FALSE        2 (to 96)
+
+1629          92 POP_TOP
+              94 JUMP_FORWARD            19 (to 134)
+
+1630     >>   96 LOAD_FAST                5 (preview)
+              98 LOAD_ATTR                7 (NULL|self + append)
+             118 LOAD_FAST                7 (line)
+             120 CALL                     1
+             128 POP_TOP
+             130 JUMP_BACKWARD           31 (to 70)
+
+1627     >>  132 END_FOR
+
+1625     >>  134 LOAD_CONST               2 (None)
+             136 LOAD_CONST               2 (None)
+             138 LOAD_CONST               2 (None)
+             140 CALL                     2
+             148 POP_TOP
+
+1631     >>  150 LOAD_FAST                3 (_csv)
+             152 LOAD_ATTR                9 (NULL|self + reader)
+             172 LOAD_FAST_CHECK          5 (preview)
+             174 CALL                     1
+             182 STORE_FAST               8 (reader)
+
+1632         184 LOAD_GLOBAL             11 (NULL + list)
+             194 LOAD_FAST                8 (reader)
+             196 CALL                     1
+             204 STORE_FAST               9 (rows)
+
+1635         206 LOAD_GLOBAL              5 (NULL + enumerate)
+             216 LOAD_FAST                9 (rows)
+             218 CALL                     1
+             226 GET_ITER
+         >>  228 FOR_ITER                34 (to 300)
+             232 UNPACK_SEQUENCE          2
+             236 STORE_FAST               6 (i)
+             238 STORE_FAST              10 (row)
+
+1636         240 LOAD_GLOBAL             15 (NULL + sum)
+             250 LOAD_CLOSURE             0 (cls)
+             252 BUILD_TUPLE              1
+             254 LOAD_CONST               6 (<code object <genexpr> at 0x73ab03537df0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1636>)
+             256 MAKE_FUNCTION            8 (closure)
+             258 LOAD_FAST               10 (row)
+             260 GET_ITER
+             262 CALL                     0
+             270 CALL                     1
+             278 STORE_FAST              11 (non_numeric)
+
+1638         280 LOAD_FAST               11 (non_numeric)
+             282 LOAD_CONST               7 (2)
+             284 COMPARE_OP              92 (>=)
+             288 POP_JUMP_IF_TRUE         1 (to 292)
+             290 JUMP_BACKWARD           32 (to 228)
+
+1639     >>  292 LOAD_FAST                6 (i)
+             294 SWAP                     2
+             296 POP_TOP
+             298 RETURN_VALUE
+
+1635     >>  300 END_FOR
+
+1640         302 RETURN_CONST             1 (0)
+
+1625     >>  304 PUSH_EXC_INFO
+             306 WITH_EXCEPT_START
+             308 POP_JUMP_IF_TRUE         1 (to 312)
+             310 RERAISE                  2
+         >>  312 POP_TOP
+             314 POP_EXCEPT
+             316 POP_TOP
+             318 POP_TOP
+             320 JUMP_BACKWARD           86 (to 150)
+         >>  322 COPY                     3
+             324 POP_EXCEPT
+             326 RERAISE                  1
+         >>  328 PUSH_EXC_INFO
+
+1633         330 LOAD_GLOBAL             12 (OSError)
+             340 CHECK_EXC_MATCH
+             342 POP_JUMP_IF_FALSE        3 (to 350)
+             344 POP_TOP
+
+1634         346 POP_EXCEPT
+             348 RETURN_CONST             1 (0)
+
+1633     >>  350 RERAISE                  0
+         >>  352 COPY                     3
+             354 POP_EXCEPT
+             356 RERAISE                  1
+ExceptionTable:
+  14 to 40 -> 328 [0]
+  42 to 132 -> 304 [1] lasti
+  134 to 204 -> 328 [0]
+  304 to 312 -> 322 [3] lasti
+  314 to 326 -> 328 [0]
+  328 to 344 -> 352 [1] lasti
+  350 to 350 -> 352 [1] lasti

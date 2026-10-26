@@ -1,0 +1,22 @@
+4154           0 RESUME                   0
+
+4155           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                1 (NULL|self + _restore_ui)
+              24 CALL                     0
+              32 POP_TOP
+
+4156          34 LOAD_GLOBAL              3 (NULL + QMessageBox)
+              44 LOAD_ATTR                4 (critical)
+              64 LOAD_FAST                0 (self)
+              66 LOAD_CONST               1 ('Import Error')
+              68 LOAD_FAST                1 (msg)
+              70 CALL                     3
+              78 POP_TOP
+
+4157          80 LOAD_FAST                0 (self)
+              82 LOAD_ATTR                6 (file_label)
+             102 LOAD_ATTR                9 (NULL|self + setText)
+             122 LOAD_CONST               2 ('(import failed)')
+             124 CALL                     1
+             132 POP_TOP
+             134 RETURN_CONST             0 (None)

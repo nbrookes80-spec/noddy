@@ -1,0 +1,12 @@
+6635           0 RESUME                   0
+
+6638           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                1 (NULL|self + _populate_intent_combo)
+              24 CALL                     0
+              32 POP_TOP
+
+6639          34 LOAD_FAST                0 (self)
+              36 LOAD_ATTR                3 (NULL|self + _refresh)
+              56 CALL                     0
+              64 POP_TOP
+              66 RETURN_CONST             1 (None)

@@ -1,0 +1,130 @@
+2160           0 RESUME                   0
+
+2169           2 LOAD_CONST               1 (63360.0)
+               4 LOAD_FAST                1 (tire_dia)
+               6 LOAD_GLOBAL              0 (math)
+              16 LOAD_ATTR                2 (pi)
+              36 BINARY_OP                5 (*)
+              40 BINARY_OP               11 (/)
+              44 STORE_FAST               5 (tire_rev_mi)
+
+2170          46 LOAD_FAST                5 (tire_rev_mi)
+              48 LOAD_FAST                2 (axle_ratio)
+              50 BINARY_OP                5 (*)
+              54 STORE_FAST               6 (trans_rev_mi)
+
+2172          56 LOAD_FAST                0 (mode_idx)
+              58 LOAD_CONST               2 (0)
+              60 COMPARE_OP              40 (==)
+              64 POP_JUMP_IF_FALSE       13 (to 92)
+
+2174          66 LOAD_FAST                6 (trans_rev_mi)
+              68 LOAD_FAST                3 (vss_count)
+              70 BINARY_OP                5 (*)
+
+2175          74 LOAD_FAST                3 (vss_count)
+
+2176          76 LOAD_FAST                1 (tire_dia)
+              78 LOAD_FAST                2 (axle_ratio)
+              80 BINARY_OP               11 (/)
+
+2177          84 LOAD_FAST                6 (trans_rev_mi)
+
+2173          86 LOAD_CONST               3 (('VSS Pulses/Mile', 'VSS Count', 'Tire / Gear', 'Trans Rev/Mile'))
+              88 BUILD_CONST_KEY_MAP      4
+              90 RETURN_VALUE
+
+2179     >>   92 LOAD_FAST                0 (mode_idx)
+              94 LOAD_CONST               4 (1)
+              96 COMPARE_OP              40 (==)
+             100 POP_JUMP_IF_FALSE       19 (to 140)
+
+2181         102 LOAD_FAST                6 (trans_rev_mi)
+             104 LOAD_FAST                3 (vss_count)
+             106 LOAD_FAST                2 (axle_ratio)
+             108 BINARY_OP               11 (/)
+             112 BINARY_OP                5 (*)
+
+2182         116 LOAD_FAST                3 (vss_count)
+             118 LOAD_FAST                2 (axle_ratio)
+             120 BINARY_OP               11 (/)
+
+2183         124 LOAD_FAST                1 (tire_dia)
+             126 LOAD_FAST                2 (axle_ratio)
+             128 BINARY_OP               11 (/)
+
+2184         132 LOAD_FAST                6 (trans_rev_mi)
+
+2180         134 LOAD_CONST               3 (('VSS Pulses/Mile', 'VSS Count', 'Tire / Gear', 'Trans Rev/Mile'))
+             136 BUILD_CONST_KEY_MAP      4
+             138 RETURN_VALUE
+
+2186     >>  140 LOAD_FAST                0 (mode_idx)
+             142 LOAD_CONST               5 (2)
+             144 COMPARE_OP              40 (==)
+             148 POP_JUMP_IF_FALSE       10 (to 170)
+
+2188         150 LOAD_FAST                6 (trans_rev_mi)
+             152 LOAD_FAST                3 (vss_count)
+             154 BINARY_OP                5 (*)
+
+2189         158 LOAD_FAST                3 (vss_count)
+
+2190         160 LOAD_FAST                2 (axle_ratio)
+
+2191         162 LOAD_FAST                6 (trans_rev_mi)
+
+2187         164 LOAD_CONST               6 (('VSS Pulses/Mile', 'VSS Count', 'Gear Ratio', 'Trans Rev/Mile'))
+             166 BUILD_CONST_KEY_MAP      4
+             168 RETURN_VALUE
+
+2193     >>  170 LOAD_FAST                0 (mode_idx)
+             172 LOAD_CONST               7 (3)
+             174 COMPARE_OP              40 (==)
+             178 POP_JUMP_IF_FALSE       16 (to 212)
+
+2195         180 LOAD_FAST                6 (trans_rev_mi)
+             182 LOAD_FAST                3 (vss_count)
+             184 LOAD_FAST                2 (axle_ratio)
+             186 BINARY_OP               11 (/)
+             190 BINARY_OP                5 (*)
+
+2196         194 LOAD_FAST                3 (vss_count)
+             196 LOAD_FAST                2 (axle_ratio)
+             198 BINARY_OP               11 (/)
+
+2197         202 LOAD_FAST                2 (axle_ratio)
+
+2198         204 LOAD_FAST                6 (trans_rev_mi)
+
+2194         206 LOAD_CONST               6 (('VSS Pulses/Mile', 'VSS Count', 'Gear Ratio', 'Trans Rev/Mile'))
+             208 BUILD_CONST_KEY_MAP      4
+             210 RETURN_VALUE
+
+2201     >>  212 LOAD_FAST                4 (metric)
+             214 POP_JUMP_IF_FALSE        2 (to 220)
+             216 LOAD_CONST               8 ('Tire Rev/Km')
+             218 JUMP_FORWARD             1 (to 222)
+         >>  220 LOAD_CONST               9 ('Tire Rev/M')
+         >>  222 STORE_FAST               7 (label_rev)
+
+2202         224 LOAD_FAST                4 (metric)
+             226 POP_JUMP_IF_FALSE        5 (to 238)
+             228 LOAD_FAST                5 (tire_rev_mi)
+             230 LOAD_CONST              10 (1.609)
+             232 BINARY_OP               11 (/)
+             236 JUMP_FORWARD             1 (to 240)
+         >>  238 LOAD_FAST                5 (tire_rev_mi)
+         >>  240 STORE_FAST               8 (value_rev)
+
+2204         242 LOAD_CONST              11 ('VSS Count')
+             244 LOAD_FAST                3 (vss_count)
+
+2205         246 LOAD_FAST                7 (label_rev)
+             248 LOAD_FAST                8 (value_rev)
+
+2206         250 LOAD_CONST              12 ('Gear Ratio')
+             252 LOAD_FAST                2 (axle_ratio)
+
+2203         254 BUILD_MAP                3
+             256 RETURN_VALUE

@@ -1,0 +1,158 @@
+9077           0 RESUME                   0
+
+9081           2 LOAD_CONST               1 ('Normal')
+               4 LOAD_CONST               2 ('Performance')
+               6 BUILD_LIST               2
+               8 STORE_FAST               1 (modes_to_build)
+
+9082          10 LOAD_FAST                0 (self)
+              12 LOAD_ATTR                0 (mode_overrides)
+              32 LOAD_ATTR                3 (NULL|self + items)
+              52 CALL                     0
+              60 GET_ITER
+         >>   62 FOR_ITER               128 (to 322)
+              66 UNPACK_SEQUENCE          2
+              70 STORE_FAST               2 (mode_name)
+              72 STORE_FAST               3 (mode_cfg)
+
+9083          74 LOAD_FAST                3 (mode_cfg)
+              76 LOAD_ATTR                5 (NULL|self + get)
+              96 LOAD_CONST               3 ('enabled')
+              98 CALL                     1
+             106 POP_JUMP_IF_TRUE         1 (to 110)
+
+9084         108 JUMP_BACKWARD           24 (to 62)
+
+9085     >>  110 LOAD_FAST                2 (mode_name)
+             112 LOAD_CONST               4 ('Hot Trans')
+             114 COMPARE_OP              40 (==)
+             118 POP_JUMP_IF_FALSE        1 (to 122)
+
+9086         120 JUMP_BACKWARD           30 (to 62)
+
+9087     >>  122 LOAD_FAST                3 (mode_cfg)
+             124 LOAD_ATTR                5 (NULL|self + get)
+             144 LOAD_CONST               5 ('intent')
+             146 LOAD_CONST               6 ('')
+             148 CALL                     2
+             156 STORE_FAST               4 (shift_intent)
+
+9088         158 LOAD_FAST                4 (shift_intent)
+             160 LOAD_ATTR                7 (NULL|self + replace)
+             180 LOAD_CONST               7 ('User: ')
+             182 LOAD_CONST               6 ('')
+             184 CALL                     2
+             192 LOAD_ATTR                9 (NULL|self + split)
+             212 LOAD_CONST               8 (' —')
+             214 CALL                     1
+             222 LOAD_CONST               9 (0)
+             224 BINARY_SUBSCR
+             228 LOAD_ATTR               11 (NULL|self + strip)
+             248 CALL                     0
+             256 STORE_FAST               5 (clean)
+
+9089         258 LOAD_FAST                5 (clean)
+             260 LOAD_GLOBAL             12 (PRESSURE_INTENTS_4SPD)
+             270 CONTAINS_OP              0
+             272 POP_JUMP_IF_TRUE         1 (to 276)
+             274 JUMP_BACKWARD          107 (to 62)
+
+9090     >>  276 LOAD_FAST                5 (clean)
+             278 LOAD_FAST                1 (modes_to_build)
+             280 CONTAINS_OP              1
+             282 POP_JUMP_IF_TRUE         1 (to 286)
+             284 JUMP_BACKWARD          112 (to 62)
+
+9091     >>  286 LOAD_FAST                1 (modes_to_build)
+             288 LOAD_ATTR               15 (NULL|self + append)
+             308 LOAD_FAST                5 (clean)
+             310 CALL                     1
+             318 POP_TOP
+             320 JUMP_BACKWARD          130 (to 62)
+
+9082     >>  322 END_FOR
+
+9093         324 LOAD_FAST                1 (modes_to_build)
+             326 GET_ITER
+         >>  328 FOR_ITER               129 (to 590)
+             332 STORE_FAST               6 (mode)
+
+9094         334 LOAD_FAST                6 (mode)
+             336 LOAD_GLOBAL             12 (PRESSURE_INTENTS_4SPD)
+             346 CONTAINS_OP              0
+             348 POP_JUMP_IF_FALSE       34 (to 418)
+
+9095         350 LOAD_GLOBAL             16 (PressureEngine)
+             360 LOAD_ATTR               19 (NULL|self + base_shift_pressure_4spd)
+             380 LOAD_FAST                6 (mode)
+             382 CALL                     1
+             390 LOAD_FAST                0 (self)
+             392 LOAD_ATTR               20 (_pressure_4spd)
+             412 LOAD_FAST                6 (mode)
+             414 STORE_SUBSCR
+
+9096     >>  418 LOAD_FAST                6 (mode)
+             420 LOAD_GLOBAL             22 (BRAKE_SHIFT_INTENTS_4SPD)
+             430 CONTAINS_OP              0
+             432 POP_JUMP_IF_FALSE       34 (to 502)
+
+9097         434 LOAD_GLOBAL             16 (PressureEngine)
+             444 LOAD_ATTR               25 (NULL|self + brake_shift_pressure_4spd)
+             464 LOAD_FAST                6 (mode)
+             466 CALL                     1
+             474 LOAD_FAST                0 (self)
+             476 LOAD_ATTR               26 (_brake_shift_4spd)
+             496 LOAD_FAST                6 (mode)
+             498 STORE_SUBSCR
+
+9098     >>  502 LOAD_FAST                6 (mode)
+             504 LOAD_GLOBAL             28 (SHIFT_TIME_INTENTS_4SPD)
+             514 CONTAINS_OP              0
+             516 POP_JUMP_IF_TRUE         1 (to 520)
+             518 JUMP_BACKWARD           96 (to 328)
+
+9099     >>  520 LOAD_GLOBAL             30 (ShiftTimeEngine)
+             530 LOAD_ATTR               33 (NULL|self + desired_shift_time_4spd)
+             550 LOAD_FAST                6 (mode)
+             552 CALL                     1
+             560 LOAD_FAST                0 (self)
+             562 LOAD_ATTR               34 (_shift_time_4spd)
+             582 LOAD_FAST                6 (mode)
+             584 STORE_SUBSCR
+             588 JUMP_BACKWARD          131 (to 328)
+
+9093     >>  590 END_FOR
+
+9102         592 LOAD_GLOBAL             36 (TCCDutyEngine)
+             602 LOAD_ATTR               39 (NULL|self + max_duty_cycle)
+             622 CALL                     0
+             630 LOAD_FAST                0 (self)
+             632 STORE_ATTR              20 (_tcc_duty_4spd)
+
+9103         642 LOAD_GLOBAL             16 (PressureEngine)
+             652 LOAD_ATTR               43 (NULL|self + force_motor_current)
+             672 CALL                     0
+             680 LOAD_FAST                0 (self)
+             682 STORE_ATTR              22 (_force_motor_4spd)
+
+9106         692 LOAD_FAST                0 (self)
+             694 LOAD_ATTR               46 (pressure_tab)
+             714 LOAD_ATTR               49 (NULL|self + set_4spd_tables)
+
+9107         734 LOAD_FAST                0 (self)
+             736 LOAD_ATTR               20 (_pressure_4spd)
+             756 LOAD_FAST                0 (self)
+             758 LOAD_ATTR               34 (_shift_time_4spd)
+             778 LOAD_FAST                0 (self)
+             780 LOAD_ATTR               40 (_tcc_duty_4spd)
+
+9108         800 LOAD_FAST                0 (self)
+             802 LOAD_ATTR               26 (_brake_shift_4spd)
+
+9109         822 LOAD_FAST                0 (self)
+             824 LOAD_ATTR               44 (_force_motor_4spd)
+
+9106         844 KW_NAMES                10 (('brake_shift_tbls', 'force_motor_tbl'))
+             846 CALL                     5
+             854 POP_TOP
+             856 RETURN_CONST            11 (None)

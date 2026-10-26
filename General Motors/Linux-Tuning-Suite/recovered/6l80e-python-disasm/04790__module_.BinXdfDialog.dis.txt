@@ -1,0 +1,49 @@
+               0 MAKE_CELL                0 (__class__)
+
+4790           2 RESUME                   0
+               4 LOAD_NAME                0 (__name__)
+               6 STORE_NAME               1 (__module__)
+               8 LOAD_CONST               0 ('BinXdfDialog')
+              10 STORE_NAME               2 (__qualname__)
+
+4791          12 LOAD_CONST               1 ('Load a .BIN flash dump + matching TunerPro .XDF definition, browse\n    parameters, view extracted values. Foundation for full BIN ↔ studio diff\n    (next round).\n\n    Layout:\n      Top:    Load BIN button | BIN path label | Load XDF button | XDF path\n      Left:   Parameter list (filterable by category + search)\n      Right:  Selected parameter detail + value preview (scalar or table)\n    ')
+              14 STORE_NAME               3 (__doc__)
+
+4800          16 LOAD_CONST              10 ((None,))
+              18 LOAD_CLOSURE             0 (__class__)
+              20 BUILD_TUPLE              1
+              22 LOAD_CONST               2 (<code object __init__ at 0x30c34650, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4800>)
+              24 MAKE_FUNCTION            9 (defaults, closure)
+              26 STORE_NAME               4 (__init__)
+
+4909          28 LOAD_CONST               3 (<code object _load_bin at 0x30c357b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4909>)
+              30 MAKE_FUNCTION            0
+              32 STORE_NAME               5 (_load_bin)
+
+4928          34 LOAD_CONST               4 (<code object _load_xdf at 0x30c35e10, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4928>)
+              36 MAKE_FUNCTION            0
+              38 STORE_NAME               6 (_load_xdf)
+
+4955          40 LOAD_CONST               5 (<code object _update_status at 0x30c36250, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4955>)
+              42 MAKE_FUNCTION            0
+              44 STORE_NAME               7 (_update_status)
+
+4965          46 LOAD_CONST               6 (<code object _refresh_param_list at 0x30c36910, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4965>)
+              48 MAKE_FUNCTION            0
+              50 STORE_NAME               8 (_refresh_param_list)
+
+4987          52 LOAD_CONST               7 (<code object _on_param_selected at 0x73ab03521f30, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4987>)
+              54 MAKE_FUNCTION            0
+              56 STORE_NAME               9 (_on_param_selected)
+
+5000          58 LOAD_CONST               8 (<code object _render_param_detail at 0x30c2a870, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5000>)
+              60 MAKE_FUNCTION            0
+              62 STORE_NAME              10 (_render_param_detail)
+
+5072          64 LOAD_CONST               9 (<code object _copy_table at 0x30c2b3e0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5072>)
+              66 MAKE_FUNCTION            0
+              68 STORE_NAME              11 (_copy_table)
+              70 LOAD_CLOSURE             0 (__class__)
+              72 COPY                     1
+              74 STORE_NAME              12 (__classcell__)
+              76 RETURN_VALUE

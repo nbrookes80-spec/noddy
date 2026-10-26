@@ -1,0 +1,3834 @@
+    0           0 RESUME                   0
+
+    1           2 LOAD_CONST               0 ('\nPro Transmission Calibration Studio\nGM 1996-Current shift point calculator (RWD, FWD, Allison, Aisin)\n\nOutput is TPS x Gear matrices compatible with HP Tuners VCM Editor and\nTunerPro paste. All math in MPH/imperial; metric toggle available.\n')
+                4 STORE_NAME               0 (__doc__)
+
+    9           6 LOAD_CONST               1 (0)
+                8 LOAD_CONST               2 (None)
+               10 IMPORT_NAME              1 (sys)
+               12 STORE_NAME               1 (sys)
+
+   10          14 LOAD_CONST               1 (0)
+               16 LOAD_CONST               2 (None)
+               18 IMPORT_NAME              2 (os)
+               20 STORE_NAME               2 (os)
+
+   11          22 LOAD_CONST               1 (0)
+               24 LOAD_CONST               2 (None)
+               26 IMPORT_NAME              3 (json)
+               28 STORE_NAME               3 (json)
+
+   12          30 LOAD_CONST               1 (0)
+               32 LOAD_CONST               2 (None)
+               34 IMPORT_NAME              4 (math)
+               36 STORE_NAME               4 (math)
+
+   13          38 LOAD_CONST               1 (0)
+               40 LOAD_CONST               3 (('deepcopy',))
+               42 IMPORT_NAME              5 (copy)
+               44 IMPORT_FROM              6 (deepcopy)
+               46 STORE_NAME               6 (deepcopy)
+               48 POP_TOP
+
+   15          50 LOAD_CONST               1 (0)
+               52 LOAD_CONST               4 (('QApplication', 'QMainWindow', 'QWidget', 'QVBoxLayout', 'QHBoxLayout', 'QGridLayout', 'QLabel', 'QComboBox', 'QLineEdit', 'QPushButton', 'QTableWidget', 'QTableWidgetItem', 'QHeaderView', 'QMessageBox', 'QGroupBox', 'QTabWidget', 'QDialog', 'QTextEdit', 'QScrollArea', 'QFormLayout', 'QCheckBox', 'QRadioButton', 'QButtonGroup', 'QFileDialog', 'QDoubleSpinBox', 'QSpinBox', 'QSplitter', 'QToolBar', 'QProgressBar', 'QSizePolicy'))
+               54 IMPORT_NAME              7 (PyQt6.QtWidgets)
+               56 IMPORT_FROM              8 (QApplication)
+               58 STORE_NAME               8 (QApplication)
+               60 IMPORT_FROM              9 (QMainWindow)
+               62 STORE_NAME               9 (QMainWindow)
+               64 IMPORT_FROM             10 (QWidget)
+               66 STORE_NAME              10 (QWidget)
+               68 IMPORT_FROM             11 (QVBoxLayout)
+               70 STORE_NAME              11 (QVBoxLayout)
+               72 IMPORT_FROM             12 (QHBoxLayout)
+               74 STORE_NAME              12 (QHBoxLayout)
+               76 IMPORT_FROM             13 (QGridLayout)
+               78 STORE_NAME              13 (QGridLayout)
+               80 IMPORT_FROM             14 (QLabel)
+               82 STORE_NAME              14 (QLabel)
+               84 IMPORT_FROM             15 (QComboBox)
+               86 STORE_NAME              15 (QComboBox)
+               88 IMPORT_FROM             16 (QLineEdit)
+               90 STORE_NAME              16 (QLineEdit)
+               92 IMPORT_FROM             17 (QPushButton)
+               94 STORE_NAME              17 (QPushButton)
+               96 IMPORT_FROM             18 (QTableWidget)
+               98 STORE_NAME              18 (QTableWidget)
+              100 IMPORT_FROM             19 (QTableWidgetItem)
+              102 STORE_NAME              19 (QTableWidgetItem)
+              104 IMPORT_FROM             20 (QHeaderView)
+              106 STORE_NAME              20 (QHeaderView)
+              108 IMPORT_FROM             21 (QMessageBox)
+              110 STORE_NAME              21 (QMessageBox)
+              112 IMPORT_FROM             22 (QGroupBox)
+              114 STORE_NAME              22 (QGroupBox)
+              116 IMPORT_FROM             23 (QTabWidget)
+              118 STORE_NAME              23 (QTabWidget)
+              120 IMPORT_FROM             24 (QDialog)
+              122 STORE_NAME              24 (QDialog)
+              124 IMPORT_FROM             25 (QTextEdit)
+              126 STORE_NAME              25 (QTextEdit)
+              128 IMPORT_FROM             26 (QScrollArea)
+              130 STORE_NAME              26 (QScrollArea)
+              132 IMPORT_FROM             27 (QFormLayout)
+              134 STORE_NAME              27 (QFormLayout)
+              136 IMPORT_FROM             28 (QCheckBox)
+              138 STORE_NAME              28 (QCheckBox)
+              140 IMPORT_FROM             29 (QRadioButton)
+              142 STORE_NAME              29 (QRadioButton)
+              144 IMPORT_FROM             30 (QButtonGroup)
+              146 STORE_NAME              30 (QButtonGroup)
+              148 IMPORT_FROM             31 (QFileDialog)
+              150 STORE_NAME              31 (QFileDialog)
+              152 IMPORT_FROM             32 (QDoubleSpinBox)
+              154 STORE_NAME              32 (QDoubleSpinBox)
+              156 IMPORT_FROM             33 (QSpinBox)
+              158 STORE_NAME              33 (QSpinBox)
+              160 IMPORT_FROM             34 (QSplitter)
+              162 STORE_NAME              34 (QSplitter)
+              164 IMPORT_FROM             35 (QToolBar)
+              166 STORE_NAME              35 (QToolBar)
+              168 IMPORT_FROM             36 (QProgressBar)
+              170 STORE_NAME              36 (QProgressBar)
+              172 IMPORT_FROM             37 (QSizePolicy)
+              174 STORE_NAME              37 (QSizePolicy)
+              176 POP_TOP
+
+   23         178 LOAD_CONST               1 (0)
+              180 LOAD_CONST               5 (('Qt', 'QTimer', 'QObject', 'QThread', 'pyqtSignal'))
+              182 IMPORT_NAME             38 (PyQt6.QtCore)
+              184 IMPORT_FROM             39 (Qt)
+              186 STORE_NAME              39 (Qt)
+              188 IMPORT_FROM             40 (QTimer)
+              190 STORE_NAME              40 (QTimer)
+              192 IMPORT_FROM             41 (QObject)
+              194 STORE_NAME              41 (QObject)
+              196 IMPORT_FROM             42 (QThread)
+              198 STORE_NAME              42 (QThread)
+              200 IMPORT_FROM             43 (pyqtSignal)
+              202 STORE_NAME              43 (pyqtSignal)
+              204 POP_TOP
+
+   24         206 LOAD_CONST               1 (0)
+              208 LOAD_CONST               6 (('QGuiApplication', 'QColor', 'QBrush', 'QFont', 'QAction', 'QIcon'))
+              210 IMPORT_NAME             44 (PyQt6.QtGui)
+              212 IMPORT_FROM             45 (QGuiApplication)
+              214 STORE_NAME              45 (QGuiApplication)
+              216 IMPORT_FROM             46 (QColor)
+              218 STORE_NAME              46 (QColor)
+              220 IMPORT_FROM             47 (QBrush)
+              222 STORE_NAME              47 (QBrush)
+              224 IMPORT_FROM             48 (QFont)
+              226 STORE_NAME              48 (QFont)
+              228 IMPORT_FROM             49 (QAction)
+              230 STORE_NAME              49 (QAction)
+              232 IMPORT_FROM             50 (QIcon)
+              234 STORE_NAME              50 (QIcon)
+              236 POP_TOP
+
+   27         238 LOAD_CONST               1 (0)
+              240 LOAD_CONST               2 (None)
+              242 IMPORT_NAME              1 (sys)
+              244 STORE_NAME               1 (sys)
+
+   28         246 LOAD_CONST               1 (0)
+              248 LOAD_CONST               2 (None)
+              250 IMPORT_NAME              2 (os)
+              252 STORE_NAME               2 (os)
+
+   30         254 LOAD_CONST               7 (<code object resource_path at 0x73ab034ea8b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 30>)
+              256 MAKE_FUNCTION            0
+              258 STORE_NAME              51 (resource_path)
+
+   45         260 LOAD_CONST               8 (336.13)
+              262 STORE_NAME              52 (MPH_K)
+
+   48         264 LOAD_CONST               9 (17)
+              266 STORE_NAME              53 (TPS_COLS)
+
+   49         268 LOAD_CONST              10 (6.25)
+              270 STORE_NAME              54 (TPS_STEP)
+
+   51         272 BUILD_LIST               0
+              274 LOAD_CONST              11 ((0.0, 0.1, 0.1, 0.1, 0.1, 0.125, 0.15, 0.225, 0.35, 0.5, 0.675, 0.825, 0.925, 0.95, 1.0, 1.0, 1.0))
+              276 LIST_EXTEND              1
+              278 STORE_NAME              55 (SLOPE_BLEND)
+
+   55         280 LOAD_CONST              12 (32)
+              282 STORE_NAME              56 (MAX_SPREAD_ITERATIONS)
+
+   59         284 LOAD_CONST              13 (255.0)
+              286 STORE_NAME              57 (TCC_DISABLED_MPH)
+
+   66         288 BUILD_MAP                0
+
+   67         290 LOAD_CONST              14 ('Custom')
+              292 LOAD_CONST               2 (None)
+
+   66         294 MAP_ADD                  1
+
+   70         296 LOAD_CONST              15 ('75-78mm Cable TB (LT1, early LS1)')
+              298 LOAD_CONST              16 ((1.4, 0.0, 5.0, 5.0))
+
+   66         300 MAP_ADD                  1
+
+   71         302 LOAD_CONST              17 ('78-85mm Cable TB (LS1 stock)')
+              304 LOAD_CONST              18 ((1.35, 0.0, 5.0, 5.0))
+
+   66         306 MAP_ADD                  1
+
+   72         308 LOAD_CONST              19 ('90-92mm Cable TB (NCS/LS6 upgrade)')
+              310 LOAD_CONST              20 ((1.25, -5.0, 5.0, 5.0))
+
+   66         312 MAP_ADD                  1
+
+   73         314 LOAD_CONST              21 ('102mm+ Cable TB (race only)')
+              316 LOAD_CONST              22 ((1.15, -10.0, 6.0, 5.0))
+
+   66         318 MAP_ADD                  1
+
+   76         320 LOAD_CONST              23 ('97-04 C5 Vette ETC')
+              322 LOAD_CONST              24 ((1.3, 0.0, 5.0, 5.0))
+
+   66         324 MAP_ADD                  1
+
+   77         326 LOAD_CONST              25 ('05-13 C6 Vette / Z06 ETC')
+              328 LOAD_CONST              26 ((1.3, 10.0, 5.0, 5.0))
+
+   66         330 MAP_ADD                  1
+
+   78         332 LOAD_CONST              27 ('09-13 C6 ZR1 LS9 Supercharged ETC')
+              334 LOAD_CONST              28 ((1.25, 8.0, 5.0, 5.0))
+
+   66         336 MAP_ADD                  1
+
+   79         338 LOAD_CONST              29 ('05-06 LS2 GTO ETC')
+              340 LOAD_CONST              24 ((1.3, 0.0, 5.0, 5.0))
+
+   66         342 MAP_ADD                  1
+
+   80         344 LOAD_CONST              30 ('08-09 Pontiac G8 GT/GXP ETC')
+              346 LOAD_CONST              31 ((1.0, 3.0, 3.0, 5.0))
+
+   66         348 MAP_ADD                  1
+
+   81         350 LOAD_CONST              32 ('08-14 CTS-V LSA Supercharged ETC')
+              352 LOAD_CONST              33 ((1.1, 5.0, 4.0, 5.0))
+
+   66         354 MAP_ADD                  1
+
+   82         356 LOAD_CONST              34 ('10-15 5th Gen Camaro SS L99/LS3')
+              358 LOAD_CONST              35 ((1.1, 6.0, 5.0, 7.0))
+
+   66         360 MAP_ADD                  1
+
+   83         362 LOAD_CONST              36 ('06-09 Solstice GXP / Sky Redline')
+              364 LOAD_CONST              37 ((1.2, 4.0, 5.0, 5.0))
+
+   66         366 MAP_ADD                  1
+
+   86         368 LOAD_CONST              38 ('02-03 GMT800 LM7/LQ4 Early ETC')
+              370 LOAD_CONST              39 ((1.25, 8.0, 7.0, 6.0))
+
+   66         372 MAP_ADD                  1
+
+   87         374 LOAD_CONST              40 ('04-07 GMT800 LM7/LH6/LQ9 Late ETC')
+              376 LOAD_CONST              41 ((1.1, 13.0, 7.0, 7.0))
+
+   66         378 MAP_ADD                  1
+
+   88         380 LOAD_CONST              42 ('07-10 GMT900 LY5/LMG/LFA 5.3')
+              382 LOAD_CONST              43 ((1.1, 14.0, 7.0, 7.0))
+
+   66         384 MAP_ADD                  1
+
+   89         386 LOAD_CONST              44 ('07-10 GMT900 L92/L9H 6.0/6.2')
+              388 LOAD_CONST              45 ((1.05, 13.0, 7.0, 7.0))
+
+   66         390 MAP_ADD                  1
+              392 BUILD_MAP                0
+
+   90         394 LOAD_CONST              46 ('11-14 GMT900 L20/L96 6.0 HD')
+              396 LOAD_CONST              47 ((1.05, 12.0, 6.0, 7.0))
+
+   66         398 MAP_ADD                  1
+
+   91         400 LOAD_CONST              48 ('02-09 GMT360 4.2L Atlas I6 (LL8)')
+              402 LOAD_CONST              49 ((1.15, 10.0, 6.0, 6.0))
+
+   66         404 MAP_ADD                  1
+
+   92         406 LOAD_CONST              50 ('03-14 Express/Savana Van ETC')
+              408 LOAD_CONST              51 ((1.1, 14.0, 6.0, 7.0))
+
+   66         410 MAP_ADD                  1
+
+   93         412 LOAD_CONST              52 ('07-09 Hummer H2/H3 ETC')
+              414 LOAD_CONST              53 ((1.05, 14.0, 7.0, 7.0))
+
+   66         416 MAP_ADD                  1
+
+   96         418 LOAD_CONST              54 ('14-19 C7 Vette LT1 ETC')
+              420 LOAD_CONST              55 ((1.2, 8.0, 5.0, 6.0))
+
+   66         422 MAP_ADD                  1
+
+   97         424 LOAD_CONST              56 ('15-19 C7 Z06 LT4 Supercharged ETC')
+              426 LOAD_CONST              57 ((1.15, 5.0, 6.0, 5.0))
+
+   66         428 MAP_ADD                  1
+
+   98         430 LOAD_CONST              58 ('20+ C8 Mid-Engine LT2 ETC')
+              432 LOAD_CONST              59 ((1.2, 6.0, 5.0, 6.0))
+
+   66         434 MAP_ADD                  1
+
+   99         436 LOAD_CONST              60 ('16-23 6th Gen Camaro SS LT1 ETC')
+              438 LOAD_CONST              61 ((1.15, 7.0, 5.0, 6.0))
+
+   66         440 MAP_ADD                  1
+
+  100         442 LOAD_CONST              62 ('12-15 5th Gen ZL1 LSA ETC')
+              444 LOAD_CONST              63 ((1.1, 4.0, 6.0, 5.0))
+
+   66         446 MAP_ADD                  1
+
+  101         448 LOAD_CONST              64 ('17-24 6th Gen ZL1 LT4 ETC')
+              450 LOAD_CONST              63 ((1.1, 4.0, 6.0, 5.0))
+
+   66         452 MAP_ADD                  1
+
+  102         454 LOAD_CONST              65 ('16-19 CTS-V Gen3 LT4 ETC')
+              456 LOAD_CONST              57 ((1.15, 5.0, 6.0, 5.0))
+
+   66         458 MAP_ADD                  1
+
+  103         460 LOAD_CONST              66 ('22+ CT5-V Blackwing LT4 ETC')
+              462 LOAD_CONST              57 ((1.15, 5.0, 6.0, 5.0))
+
+   66         464 MAP_ADD                  1
+
+  106         466 LOAD_CONST              67 ('14-18 GMTK2 L83/L86 5.3/6.2 ETC')
+              468 LOAD_CONST              41 ((1.1, 13.0, 7.0, 7.0))
+
+   66         470 MAP_ADD                  1
+
+  107         472 LOAD_CONST              68 ('19+ T1XX L82/L84 5.3 ETC')
+              474 LOAD_CONST              69 ((1.1, 12.0, 6.0, 7.0))
+
+   66         476 MAP_ADD                  1
+
+  108         478 LOAD_CONST              70 ('19+ T1XX L87 6.2 ETC')
+              480 LOAD_CONST              69 ((1.1, 12.0, 6.0, 7.0))
+
+   66         482 MAP_ADD                  1
+
+  109         484 LOAD_CONST              71 ('20+ T1XX L8T 6.6 Gas HD ETC')
+              486 LOAD_CONST              72 ((1.05, 14.0, 6.0, 7.0))
+
+   66         488 MAP_ADD                  1
+
+  110         490 LOAD_CONST              73 ('17+ Colorado/Canyon LGZ V6 ETC')
+              492 LOAD_CONST              74 ((1.1, 11.0, 6.0, 6.0))
+
+   66         494 MAP_ADD                  1
+              496 DICT_UPDATE              1
+
+  113         498 LOAD_CONST              75 ((0.9, 3.0, 4.0, 6.0))
+
+  114         500 LOAD_CONST              76 ((0.95, 3.0, 4.0, 6.0))
+
+  115         502 LOAD_CONST              77 ((0.95, 5.0, 4.0, 6.0))
+
+  116         504 LOAD_CONST              78 ((0.95, 6.0, 4.0, 6.0))
+
+  117         506 LOAD_CONST              79 ((0.95, 8.0, 5.0, 7.0))
+
+  118         508 LOAD_CONST              80 ((0.95, 10.0, 5.0, 7.0))
+
+  121         510 LOAD_CONST              81 ((1.2, -8.0, 8.0, 5.0))
+
+  122         512 LOAD_CONST              82 ((1.15, 0.0, 7.0, 5.0))
+
+  123         514 LOAD_CONST              83 ((1.3, -12.0, 9.0, 4.0))
+
+   66         516 LOAD_CONST              84 (('01-04 LB7 Duramax (cable, mech.)', '04.5-05 LLY Duramax (early ETC)', '06-07 LBZ Duramax ETC', '07.5-10 LMM Duramax ETC', '11-16 LML Duramax ETC', '17+ L5P Duramax ETC', 'LSX/LSXR Intake + Cable', 'Magnuson/Whipple SC + 102mm', 'Turbo LS Drag (low TPS off-throttle)'))
+              518 BUILD_CONST_KEY_MAP      9
+              520 DICT_UPDATE              1
+              522 STORE_NAME              58 (TB_PRESETS)
+
+  131         524 BUILD_MAP                0
+
+  132         526 LOAD_CONST              85 ('(Custom — enter manually)')
+              528 LOAD_CONST               2 (None)
+
+  131         530 MAP_ADD                  1
+
+  135         532 LOAD_CONST              86 ('26×10×15 M/T ET Street SS')
+              534 LOAD_CONST              87 (26.0)
+
+  131         536 MAP_ADD                  1
+
+  136         538 LOAD_CONST              88 ('26×11.5×15 M/T ET Street')
+              540 LOAD_CONST              87 (26.0)
+
+  131         542 MAP_ADD                  1
+
+  137         544 LOAD_CONST              89 ('28×10×15 M/T Sportsman SR')
+              546 LOAD_CONST              90 (28.0)
+
+  131         548 MAP_ADD                  1
+
+  138         550 LOAD_CONST              91 ('28×11.5×15 M/T ET Street')
+              552 LOAD_CONST              90 (28.0)
+
+  131         554 MAP_ADD                  1
+
+  139         556 LOAD_CONST              92 ('29×10.5×15 M/T ET Street R')
+              558 LOAD_CONST              93 (29.0)
+
+  131         560 MAP_ADD                  1
+
+  140         562 LOAD_CONST              94 ('30×9×15 Hoosier Quick Time')
+              564 LOAD_CONST              95 (30.0)
+
+  131         566 MAP_ADD                  1
+
+  141         568 LOAD_CONST              96 ('275/60R15 M/T DR')
+              570 LOAD_CONST              97 (27.9)
+
+  131         572 MAP_ADD                  1
+
+  142         574 LOAD_CONST              98 ('315/60R15 M/T DR')
+              576 LOAD_CONST              99 (29.9)
+
+  131         578 MAP_ADD                  1
+
+  143         580 LOAD_CONST             100 ('275/40R20 Nitto NT05R')
+              582 LOAD_CONST             101 (28.7)
+
+  131         584 MAP_ADD                  1
+
+  144         586 LOAD_CONST             102 ('305/35R20 NT555R')
+              588 LOAD_CONST             103 (28.4)
+
+  131         590 MAP_ADD                  1
+
+  147         592 LOAD_CONST             104 ('245/45R18 (LS1 Camaro stock)')
+              594 LOAD_CONST             105 (26.7)
+
+  131         596 MAP_ADD                  1
+
+  148         598 LOAD_CONST             106 ('245/45R20')
+              600 LOAD_CONST             101 (28.7)
+
+  131         602 MAP_ADD                  1
+
+  149         604 LOAD_CONST             107 ('255/35R20')
+              606 LOAD_CONST             108 (27.0)
+
+  131         608 MAP_ADD                  1
+
+  150         610 LOAD_CONST             109 ('255/40R18')
+              612 LOAD_CONST              87 (26.0)
+
+  131         614 MAP_ADD                  1
+
+  151         616 LOAD_CONST             110 ('255/40R19')
+              618 LOAD_CONST             108 (27.0)
+
+  131         620 MAP_ADD                  1
+
+  152         622 LOAD_CONST             111 ('275/35R19')
+              624 LOAD_CONST             112 (26.6)
+
+  131         626 MAP_ADD                  1
+              628 BUILD_MAP                0
+
+  153         630 LOAD_CONST             113 ('275/35R20')
+              632 LOAD_CONST             114 (27.6)
+
+  131         634 MAP_ADD                  1
+
+  154         636 LOAD_CONST             115 ('275/40R20')
+              638 LOAD_CONST             101 (28.7)
+
+  131         640 MAP_ADD                  1
+
+  155         642 LOAD_CONST             116 ('285/35R20 (Camaro SS rear)')
+              644 LOAD_CONST              97 (27.9)
+
+  131         646 MAP_ADD                  1
+
+  156         648 LOAD_CONST             117 ('295/30R20')
+              650 LOAD_CONST             108 (27.0)
+
+  131         652 MAP_ADD                  1
+
+  157         654 LOAD_CONST             118 ('305/30R20')
+              656 LOAD_CONST             119 (27.2)
+
+  131         658 MAP_ADD                  1
+
+  158         660 LOAD_CONST             120 ('305/35R20')
+              662 LOAD_CONST             103 (28.4)
+
+  131         664 MAP_ADD                  1
+
+  159         666 LOAD_CONST             121 ('295/30R19')
+              668 LOAD_CONST              87 (26.0)
+
+  131         670 MAP_ADD                  1
+
+  160         672 LOAD_CONST             122 ('335/30R20 (ZR1/ZL1 rear)')
+              674 LOAD_CONST              97 (27.9)
+
+  131         676 MAP_ADD                  1
+
+  163         678 LOAD_CONST             123 ('245/75R16 (LD truck stock)')
+              680 LOAD_CONST             124 (30.5)
+
+  131         682 MAP_ADD                  1
+
+  164         684 LOAD_CONST             125 ('265/65R17 (1500 stock)')
+              686 LOAD_CONST             126 (30.6)
+
+  131         688 MAP_ADD                  1
+
+  165         690 LOAD_CONST             127 ('265/70R17')
+              692 LOAD_CONST             128 (31.6)
+
+  131         694 MAP_ADD                  1
+
+  166         696 LOAD_CONST             129 ('275/55R20 (1500 22" stock)')
+              698 LOAD_CONST             130 (31.9)
+
+  131         700 MAP_ADD                  1
+
+  167         702 LOAD_CONST             131 ('275/65R18')
+              704 LOAD_CONST             132 (32.1)
+
+  131         706 MAP_ADD                  1
+
+  168         708 LOAD_CONST             133 ('275/60R20')
+              710 LOAD_CONST             134 (33.0)
+
+  131         712 MAP_ADD                  1
+
+  169         714 LOAD_CONST             135 ('285/45R22')
+              716 LOAD_CONST             132 (32.1)
+
+  131         718 MAP_ADD                  1
+
+  170         720 LOAD_CONST             136 ('285/65R18')
+              722 LOAD_CONST             137 (32.6)
+
+  131         724 MAP_ADD                  1
+
+  171         726 LOAD_CONST             138 ('275/65R20')
+              728 LOAD_CONST             139 (34.1)
+
+  131         730 MAP_ADD                  1
+              732 DICT_UPDATE              1
+              734 BUILD_MAP                0
+
+  172         736 LOAD_CONST             140 ('305/55R20')
+              738 LOAD_CONST             141 (33.2)
+
+  131         740 MAP_ADD                  1
+
+  175         742 LOAD_CONST             142 ('31×10.5×15 (BFG A/T)')
+              744 LOAD_CONST             143 (31.0)
+
+  131         746 MAP_ADD                  1
+
+  176         748 LOAD_CONST             144 ('32×11.5×15')
+              750 LOAD_CONST             145 (32.0)
+
+  131         752 MAP_ADD                  1
+
+  177         754 LOAD_CONST             146 ('33×12.5R17')
+              756 LOAD_CONST             134 (33.0)
+
+  131         758 MAP_ADD                  1
+
+  178         760 LOAD_CONST             147 ('35×12.5R17')
+              762 LOAD_CONST             148 (35.0)
+
+  131         764 MAP_ADD                  1
+
+  179         766 LOAD_CONST             149 ('37×12.5R17')
+              768 LOAD_CONST             150 (37.0)
+
+  131         770 MAP_ADD                  1
+
+  180         772 LOAD_CONST             151 ('LT265/70R17')
+              774 LOAD_CONST             128 (31.6)
+
+  131         776 MAP_ADD                  1
+
+  181         778 LOAD_CONST             152 ('LT285/70R17')
+              780 LOAD_CONST             153 (32.7)
+
+  131         782 MAP_ADD                  1
+
+  182         784 LOAD_CONST             154 ('LT295/70R17')
+              786 LOAD_CONST             155 (33.3)
+
+  131         788 MAP_ADD                  1
+
+  183         790 LOAD_CONST             156 ('LT315/70R17')
+              792 LOAD_CONST             157 (34.4)
+
+  131         794 MAP_ADD                  1
+
+  184         796 LOAD_CONST             158 ('LT325/65R18')
+              798 LOAD_CONST             159 (34.6)
+
+  131         800 MAP_ADD                  1
+
+  185         802 LOAD_CONST             160 ('LT285/75R16')
+              804 LOAD_CONST             161 (32.8)
+
+  131         806 MAP_ADD                  1
+
+  186         808 LOAD_CONST             162 ('LT35×12.5R20')
+              810 LOAD_CONST             148 (35.0)
+
+  131         812 MAP_ADD                  1
+
+  189         814 LOAD_CONST             163 ('LT265/70R18 (3/4 ton stock)')
+              816 LOAD_CONST             137 (32.6)
+
+  131         818 MAP_ADD                  1
+
+  190         820 LOAD_CONST             164 ('LT275/65R20 (HD stock)')
+              822 LOAD_CONST             139 (34.1)
+
+  131         824 MAP_ADD                  1
+
+  191         826 LOAD_CONST             165 ('LT235/85R16 (1-ton stock)')
+              828 LOAD_CONST             166 (31.7)
+
+  131         830 MAP_ADD                  1
+              832 DICT_UPDATE              1
+              834 STORE_NAME              59 (TIRE_PRESETS)
+
+  200         836 BUILD_LIST               0
+              838 LOAD_CONST             167 (('Gen III 98', 'Gen III 97-98 Vette', 'Gen III', 'Gen III Vette', 'Gen IV'))
+              840 LIST_EXTEND              1
+              842 STORE_NAME              60 (SPEEDO_MODES)
+
+  216         844 BUILD_LIST               0
+              846 LOAD_CONST             168 (('Performance', 'Hot Trans', 'Cruise'))
+              848 LIST_EXTEND              1
+
+  217         850 BUILD_LIST               0
+              852 LOAD_CONST             169 (('Pattern A', 'Hot Trans', 'Pattern B'))
+              854 LIST_EXTEND              1
+
+  215         856 LOAD_CONST             170 (('4spd', '6plus'))
+              858 BUILD_CONST_KEY_MAP      2
+              860 STORE_NAME              61 (MODE_LAYOUTS)
+
+  224         862 LOAD_CONST             171 ('Racing')
+
+  225         864 LOAD_CONST             171 ('Racing')
+
+  226         866 LOAD_CONST             172 ('Eco')
+
+  227         868 LOAD_CONST             173 ('Hot ATF Protection')
+
+  228         870 LOAD_CONST             174 ('Cruise / Light Foot')
+
+  223         872 LOAD_CONST             175 (('Performance', 'Pattern A', 'Pattern B', 'Hot Trans', 'Cruise'))
+              874 BUILD_CONST_KEY_MAP      5
+              876 STORE_NAME              62 (MODE_DEFAULT_INTENT)
+
+  240         878 LOAD_CONST               2 (None)
+
+  254         880 LOAD_CONST             176 (500)
+
+  255         882 LOAD_CONST             177 (1.1)
+
+  256         884 LOAD_CONST             178 (9.5)
+
+  257         886 LOAD_CONST             178 (9.5)
+
+  258         888 LOAD_CONST             179 (-15)
+
+  259         890 LOAD_CONST             180 (1.0)
+
+  260         892 LOAD_CONST             181 (-1)
+
+  261         894 LOAD_CONST             181 (-1)
+
+  262         896 LOAD_CONST             182 (-1.0)
+
+  263         898 LOAD_CONST             182 (-1.0)
+
+  253         900 LOAD_CONST             183 (('shift_rpm_delta', 'tps_factor_abs', 'up_firmness_abs', 'down_firmness_abs', 'tps_offset_delta', 'lead_value_abs', 'accel_lock_gear_delta', 'wot_lock_gear_delta', 'spread_up_delta', 'spread_unlock_dn_delta'))
+              902 BUILD_CONST_KEY_MAP     10
+
+  270         904 LOAD_CONST             184 (200)
+
+  271         906 LOAD_CONST             185 (1.05)
+
+  272         908 LOAD_CONST             186 (4.0)
+
+  273         910 LOAD_CONST             178 (9.5)
+
+  274         912 LOAD_CONST             187 (-10)
+
+  275         914 LOAD_CONST             188 (2.0)
+
+  276         916 LOAD_CONST               1 (0)
+
+  277         918 LOAD_CONST             189 (-2)
+
+  278         920 LOAD_CONST             190 (0.0)
+
+  279         922 LOAD_CONST             191 (-1.5)
+
+  269         924 LOAD_CONST             183 (('shift_rpm_delta', 'tps_factor_abs', 'up_firmness_abs', 'down_firmness_abs', 'tps_offset_delta', 'lead_value_abs', 'accel_lock_gear_delta', 'wot_lock_gear_delta', 'spread_up_delta', 'spread_unlock_dn_delta'))
+              926 BUILD_CONST_KEY_MAP     10
+
+  286         928 LOAD_CONST             192 (-1000)
+
+  287         930 LOAD_CONST             193 (1.45)
+
+  288         932 LOAD_CONST             188 (2.0)
+
+  289         934 LOAD_CONST             186 (4.0)
+
+  290         936 LOAD_CONST             194 (5)
+
+  291         938 LOAD_CONST             195 (1.5)
+
+  292         940 LOAD_CONST             196 (0.5)
+
+  285         942 LOAD_CONST             197 (('shift_rpm_delta', 'tps_factor_abs', 'up_firmness_abs', 'down_firmness_abs', 'tps_offset_delta', 'lead_value_abs', 'spread_up_delta'))
+              944 BUILD_CONST_KEY_MAP      7
+
+  298         946 LOAD_CONST             198 (-700)
+
+  299         948 LOAD_CONST             199 (1.35)
+
+  300         950 LOAD_CONST             200 (3.0)
+
+  301         952 LOAD_CONST             201 (5.0)
+
+  302         954 LOAD_CONST             202 (3)
+
+  303         956 LOAD_CONST             188 (2.0)
+
+  304         958 LOAD_CONST             181 (-1)
+
+  305         960 LOAD_CONST             189 (-2)
+
+  306         962 LOAD_CONST             180 (1.0)
+
+  297         964 LOAD_CONST             203 (('shift_rpm_delta', 'tps_factor_abs', 'up_firmness_abs', 'down_firmness_abs', 'tps_offset_delta', 'lead_value_abs', 'accel_lock_gear_delta', 'wot_lock_gear_delta', 'spread_up_delta'))
+              966 BUILD_CONST_KEY_MAP      9
+
+  312         968 LOAD_CONST             204 (-900)
+
+  313         970 LOAD_CONST             205 (1.4)
+
+  314         972 LOAD_CONST             188 (2.0)
+
+  315         974 LOAD_CONST             186 (4.0)
+
+  316         976 LOAD_CONST             195 (1.5)
+
+  311         978 LOAD_CONST             206 (('shift_rpm_delta', 'tps_factor_abs', 'up_firmness_abs', 'down_firmness_abs', 'lead_value_abs'))
+              980 BUILD_CONST_KEY_MAP      5
+
+  239         982 LOAD_CONST             207 (('(Custom — keep current overrides)', 'Racing', 'Towing', 'Eco', 'Hot ATF Protection', 'Cruise / Light Foot'))
+              984 BUILD_CONST_KEY_MAP      6
+              986 STORE_NAME              63 (INTENT_PRESETS)
+
+  322         988 PUSH_NULL
+              990 LOAD_NAME               64 (set)
+              992 LOAD_NAME               63 (INTENT_PRESETS)
+              994 LOAD_ATTR              131 (NULL|self + keys)
+             1014 CALL                     0
+             1022 CALL                     1
+             1030 STORE_NAME              66 (BUILTIN_INTENT_NAMES)
+
+  331        1032 BUILD_LIST               0
+             1034 LOAD_CONST             208 ((-22, 14, 68, 86, 257))
+             1036 LIST_EXTEND              1
+             1038 STORE_NAME              67 (PRESSURE_TEMP_ROWS)
+
+  334        1040 BUILD_LIST               0
+             1042 LOAD_CONST             209 ((0.0, 0.25, 0.5, 0.75, 1.0))
+             1044 LIST_EXTEND              1
+             1046 STORE_NAME              68 (PRESSURE_TORQUE_PCT)
+
+  339        1048 LOAD_CONST             210 (296.0)
+             1050 STORE_NAME              69 (MAX_PRESSURE_PSI)
+
+  341        1052 LOAD_CONST             211 (6.89475729)
+             1054 STORE_NAME              70 (PSI_TO_KPA)
+
+  345        1056 BUILD_MAP                0
+
+  346        1058 LOAD_CONST             212 ('1-2')
+             1060 LOAD_CONST             180 (1.0)
+
+  345        1062 MAP_ADD                  1
+
+  346        1064 LOAD_CONST             213 ('2-3')
+             1066 LOAD_CONST             214 (0.92)
+
+  345        1068 MAP_ADD                  1
+
+  346        1070 LOAD_CONST             215 ('3-4')
+             1072 LOAD_CONST             216 (0.85)
+
+  345        1074 MAP_ADD                  1
+
+  346        1076 LOAD_CONST             217 ('4-5')
+             1078 LOAD_CONST             218 (0.78)
+
+  345        1080 MAP_ADD                  1
+
+  346        1082 LOAD_CONST             219 ('5-6')
+             1084 LOAD_CONST             220 (0.72)
+
+  345        1086 MAP_ADD                  1
+
+  347        1088 LOAD_CONST             221 ('6-7')
+             1090 LOAD_CONST             222 (0.66)
+
+  345        1092 MAP_ADD                  1
+
+  347        1094 LOAD_CONST             223 ('7-8')
+             1096 LOAD_CONST             224 (0.6)
+
+  345        1098 MAP_ADD                  1
+
+  347        1100 LOAD_CONST             225 ('8-9')
+             1102 LOAD_CONST             226 (0.55)
+
+  345        1104 MAP_ADD                  1
+
+  347        1106 LOAD_CONST             227 ('9-10')
+             1108 LOAD_CONST             196 (0.5)
+
+  345        1110 MAP_ADD                  1
+
+  348        1112 LOAD_CONST             228 ('1-3')
+             1114 LOAD_CONST             229 (1.25)
+
+  345        1116 MAP_ADD                  1
+
+  348        1118 LOAD_CONST             230 ('2-4')
+             1120 LOAD_CONST             231 (1.15)
+
+  345        1122 MAP_ADD                  1
+
+  348        1124 LOAD_CONST             232 ('3-5')
+             1126 LOAD_CONST             177 (1.1)
+
+  345        1128 MAP_ADD                  1
+
+  348        1130 LOAD_CONST             233 ('4-6')
+             1132 LOAD_CONST             185 (1.05)
+
+  345        1134 MAP_ADD                  1
+
+  348        1136 LOAD_CONST             234 ('5-7')
+             1138 LOAD_CONST             180 (1.0)
+
+  345        1140 MAP_ADD                  1
+
+  349        1142 LOAD_CONST             235 ('6-8')
+             1144 LOAD_CONST             236 (0.95)
+
+  345        1146 MAP_ADD                  1
+
+  349        1148 LOAD_CONST             237 ('7-9')
+             1150 LOAD_CONST             238 (0.9)
+
+  345        1152 MAP_ADD                  1
+
+  349        1154 LOAD_CONST             239 ('8-10')
+             1156 LOAD_CONST             216 (0.85)
+
+  345        1158 MAP_ADD                  1
+
+  350        1160 LOAD_CONST             205 (1.4)
+             1162 LOAD_CONST             240 (1.3)
+             1164 LOAD_CONST             241 (1.2)
+             1166 LOAD_CONST             231 (1.15)
+             1168 LOAD_CONST             177 (1.1)
+
+  351        1170 LOAD_CONST             185 (1.05)
+             1172 LOAD_CONST             180 (1.0)
+
+  352        1174 LOAD_CONST             242 (1.55)
+             1176 LOAD_CONST             193 (1.45)
+             1178 LOAD_CONST             199 (1.35)
+             1180 LOAD_CONST             229 (1.25)
+
+  353        1182 LOAD_CONST             243 (1.65)
+             1184 LOAD_CONST             242 (1.55)
+             1186 LOAD_CONST             193 (1.45)
+
+  345        1188 LOAD_CONST             244 (('1-4', '2-5', '3-6', '4-7', '5-8', '6-9', '7-10', '1-5', '2-6', '3-7', '4-8', '1-6', '2-7', '3-8'))
+             1190 BUILD_CONST_KEY_MAP     14
+             1192 DICT_UPDATE              1
+             1194 STORE_NAME              71 (SHIFT_PRESSURE_MULT)
+
+  359        1196 LOAD_CONST             180 (1.0)
+
+  360        1198 LOAD_CONST             245 (0.4)
+
+  361        1200 LOAD_CONST             190 (0.0)
+
+  362        1202 LOAD_CONST             190 (0.0)
+
+  363        1204 LOAD_CONST             190 (0.0)
+
+  358        1206 LOAD_CONST             208 ((-22, 14, 68, 86, 257))
+             1208 BUILD_CONST_KEY_MAP      5
+             1210 STORE_NAME              72 (COLD_PRELOAD_FACTOR)
+
+  374        1212 LOAD_CONST             246 (107)
+             1214 LOAD_CONST             247 (165)
+             1216 LOAD_CONST             246 (107)
+
+  375        1218 LOAD_CONST             190 (0.0)
+             1220 LOAD_CONST             180 (1.0)
+
+  373        1222 LOAD_CONST             248 (('base_psi', 'max_psi', 'cold_preload', 'hot_scale', 'torque_curve'))
+             1224 BUILD_CONST_KEY_MAP      5
+
+  378        1226 LOAD_CONST             249 (120)
+             1228 LOAD_CONST             250 (220)
+             1230 LOAD_CONST             249 (120)
+
+  379        1232 LOAD_CONST             240 (1.3)
+             1234 LOAD_CONST             216 (0.85)
+
+  377        1236 LOAD_CONST             248 (('base_psi', 'max_psi', 'cold_preload', 'hot_scale', 'torque_curve'))
+             1238 BUILD_CONST_KEY_MAP      5
+
+  382        1240 LOAD_CONST             251 (130)
+             1242 LOAD_CONST             252 (270)
+             1244 LOAD_CONST             253 (100)
+
+  383        1246 LOAD_CONST             254 (0.3)
+             1248 LOAD_CONST             255 (0.7)
+
+  381        1250 LOAD_CONST             248 (('base_psi', 'max_psi', 'cold_preload', 'hot_scale', 'torque_curve'))
+             1252 BUILD_CONST_KEY_MAP      5
+
+  386        1254 EXTENDED_ARG             1
+             1256 LOAD_CONST             256 (95)
+             1258 EXTENDED_ARG             1
+             1260 LOAD_CONST             257 (150)
+             1262 EXTENDED_ARG             1
+             1264 LOAD_CONST             258 (90)
+
+  387        1266 LOAD_CONST             190 (0.0)
+             1268 LOAD_CONST             240 (1.3)
+
+  385        1270 LOAD_CONST             248 (('base_psi', 'max_psi', 'cold_preload', 'hot_scale', 'torque_curve'))
+             1272 BUILD_CONST_KEY_MAP      5
+
+  390        1274 LOAD_CONST             253 (100)
+             1276 EXTENDED_ARG             1
+             1278 LOAD_CONST             259 (175)
+             1280 LOAD_CONST             253 (100)
+
+  391        1282 EXTENDED_ARG             1
+             1284 LOAD_CONST             260 (1.8)
+             1286 LOAD_CONST             177 (1.1)
+
+  389        1288 LOAD_CONST             248 (('base_psi', 'max_psi', 'cold_preload', 'hot_scale', 'torque_curve'))
+             1290 BUILD_CONST_KEY_MAP      5
+
+  372        1292 EXTENDED_ARG             1
+             1294 LOAD_CONST             261 (('Daily', 'Towing / Heavy Load', 'Racing / Drag', 'Eco / Cruise', 'Hot ATF Protection'))
+             1296 BUILD_CONST_KEY_MAP      5
+             1298 STORE_NAME              73 (PRESSURE_INTENTS)
+
+  397        1300 EXTENDED_ARG             1
+             1302 LOAD_CONST             262 ('Racing / Drag')
+
+  398        1304 EXTENDED_ARG             1
+             1306 LOAD_CONST             263 ('Towing / Heavy Load')
+
+  399        1308 EXTENDED_ARG             1
+             1310 LOAD_CONST             264 ('Eco / Cruise')
+
+  400        1312 LOAD_CONST             173 ('Hot ATF Protection')
+
+  401        1314 EXTENDED_ARG             1
+             1316 LOAD_CONST             264 ('Eco / Cruise')
+
+  396        1318 EXTENDED_ARG             1
+             1320 LOAD_CONST             265 (('Racing', 'Towing', 'Eco', 'Hot ATF Protection', 'Cruise / Light Foot'))
+             1322 BUILD_CONST_KEY_MAP      5
+             1324 STORE_NAME              74 (SHIFT_TO_PRESSURE_INTENT)
+
+  417        1326 EXTENDED_ARG             1
+             1328 LOAD_CONST             266 (200.0)
+             1330 STORE_NAME              75 (MAX_TCC_APPLY_PSI)
+
+  427        1332 EXTENDED_ARG             1
+             1334 LOAD_CONST             267 (40)
+             1336 EXTENDED_ARG             1
+             1338 LOAD_CONST             268 (110)
+             1340 EXTENDED_ARG             1
+             1342 LOAD_CONST             269 (30)
+
+  428        1344 LOAD_CONST             190 (0.0)
+             1346 LOAD_CONST             180 (1.0)
+
+  426        1348 LOAD_CONST             248 (('base_psi', 'max_psi', 'cold_preload', 'hot_scale', 'torque_curve'))
+             1350 BUILD_CONST_KEY_MAP      5
+
+  431        1352 EXTENDED_ARG             1
+             1354 LOAD_CONST             270 (65)
+             1356 EXTENDED_ARG             1
+             1358 LOAD_CONST             259 (175)
+             1360 EXTENDED_ARG             1
+             1362 LOAD_CONST             271 (35)
+
+  432        1364 LOAD_CONST             180 (1.0)
+             1366 LOAD_CONST             216 (0.85)
+
+  430        1368 LOAD_CONST             248 (('base_psi', 'max_psi', 'cold_preload', 'hot_scale', 'torque_curve'))
+             1370 BUILD_CONST_KEY_MAP      5
+
+  435        1372 EXTENDED_ARG             1
+             1374 LOAD_CONST             272 (55)
+             1376 EXTENDED_ARG             1
+             1378 LOAD_CONST             273 (145)
+             1380 EXTENDED_ARG             1
+             1382 LOAD_CONST             274 (25)
+
+  436        1384 LOAD_CONST             254 (0.3)
+             1386 LOAD_CONST             255 (0.7)
+
+  434        1388 LOAD_CONST             248 (('base_psi', 'max_psi', 'cold_preload', 'hot_scale', 'torque_curve'))
+             1390 BUILD_CONST_KEY_MAP      5
+
+  439        1392 EXTENDED_ARG             1
+             1394 LOAD_CONST             269 (30)
+             1396 EXTENDED_ARG             1
+             1398 LOAD_CONST             275 (85)
+             1400 EXTENDED_ARG             1
+             1402 LOAD_CONST             274 (25)
+
+  440        1404 LOAD_CONST             190 (0.0)
+             1406 LOAD_CONST             240 (1.3)
+
+  438        1408 LOAD_CONST             248 (('base_psi', 'max_psi', 'cold_preload', 'hot_scale', 'torque_curve'))
+             1410 BUILD_CONST_KEY_MAP      5
+
+  443        1412 EXTENDED_ARG             1
+             1414 LOAD_CONST             276 (45)
+             1416 LOAD_CONST             251 (130)
+             1418 EXTENDED_ARG             1
+             1420 LOAD_CONST             269 (30)
+
+  444        1422 LOAD_CONST             195 (1.5)
+             1424 LOAD_CONST             177 (1.1)
+
+  442        1426 LOAD_CONST             248 (('base_psi', 'max_psi', 'cold_preload', 'hot_scale', 'torque_curve'))
+             1428 BUILD_CONST_KEY_MAP      5
+
+  453        1430 EXTENDED_ARG             1
+             1432 LOAD_CONST             270 (65)
+             1434 EXTENDED_ARG             1
+             1436 LOAD_CONST             277 (148)
+             1438 EXTENDED_ARG             1
+             1440 LOAD_CONST             269 (30)
+
+  454        1442 LOAD_CONST             196 (0.5)
+             1444 LOAD_CONST             180 (1.0)
+
+  452        1446 LOAD_CONST             248 (('base_psi', 'max_psi', 'cold_preload', 'hot_scale', 'torque_curve'))
+             1448 BUILD_CONST_KEY_MAP      5
+
+  425        1450 EXTENDED_ARG             1
+             1452 LOAD_CONST             278 (('Daily', 'Towing / Heavy Load', 'Racing / Drag', 'Eco / Cruise', 'Hot ATF Protection', 'Shudder Fix'))
+             1454 BUILD_CONST_KEY_MAP      6
+             1456 STORE_NAME              76 (TCC_APPLY_INTENTS)
+
+  472        1458 EXTENDED_ARG             1
+             1460 LOAD_CONST             279 (148.0)
+             1462 STORE_NAME              77 (MAX_TCC_APPLY_PSI_07_14)
+
+  475        1464 BUILD_LIST               0
+             1466 EXTENDED_ARG             1
+             1468 LOAD_CONST             280 ((-36.9, 0.0, 22.1, 44.3, 66.4, 88.5, 110.6, 132.8, 154.9, 177.0, 199.1, 221.3, 243.4, 287.6, 331.9, 339.3, 368.8))
+             1470 LIST_EXTEND              1
+
+  477        1472 BUILD_LIST               0
+             1474 EXTENDED_ARG             1
+             1476 LOAD_CONST             281 ((-30, -25, -20, -17, -12, -7, -2, 0, 2, 7, 12, 20, 30, 60, 100, 200, 250))
+             1478 LIST_EXTEND              1
+
+  479        1480 EXTENDED_ARG             1
+             1482 LOAD_CONST             282 ('torque')
+
+  480        1484 LOAD_NAME               77 (MAX_TCC_APPLY_PSI_07_14)
+
+  474        1486 EXTENDED_ARG             1
+             1488 LOAD_CONST             283 (('torque_rows', 'slip_cols', 'row_axis', 'max_psi'))
+             1490 BUILD_CONST_KEY_MAP      4
+             1492 STORE_NAME              78 (TCC_RAMP_ERA_07_10)
+
+  484        1494 BUILD_LIST               0
+             1496 EXTENDED_ARG             1
+             1498 LOAD_CONST             280 ((-36.9, 0.0, 22.1, 44.3, 66.4, 88.5, 110.6, 132.8, 154.9, 177.0, 199.1, 221.3, 243.4, 287.6, 331.9, 339.3, 368.8))
+             1500 LIST_EXTEND              1
+
+  486        1502 BUILD_LIST               0
+             1504 EXTENDED_ARG             1
+             1506 LOAD_CONST             284 ((-30, -25, -20, -15, -9, -5, -2, 0, 2, 7, 12, 20, 30, 60, 100, 200, 250))
+             1508 LIST_EXTEND              1
+
+  488        1510 EXTENDED_ARG             1
+             1512 LOAD_CONST             282 ('torque')
+
+  489        1514 LOAD_NAME               77 (MAX_TCC_APPLY_PSI_07_14)
+
+  483        1516 EXTENDED_ARG             1
+             1518 LOAD_CONST             283 (('torque_rows', 'slip_cols', 'row_axis', 'max_psi'))
+             1520 BUILD_CONST_KEY_MAP      4
+             1522 STORE_NAME              79 (TCC_RAMP_ERA_11_14)
+
+  493        1524 BUILD_LIST               0
+             1526 EXTENDED_ARG             1
+             1528 LOAD_CONST             285 ((800, 1000, 1200, 1600, 2000, 2800, 4000, 5000, 6000))
+             1530 LIST_EXTEND              1
+
+  494        1532 BUILD_LIST               0
+             1534 EXTENDED_ARG             1
+             1536 LOAD_CONST             286 ((-40, -35, -30, -16, -13, -10, -8, -5, 0, 5, 10, 20, 40, 60, 120, 200, 400))
+             1538 LIST_EXTEND              1
+
+  496        1540 EXTENDED_ARG             1
+             1542 LOAD_CONST             287 ('rpm')
+
+  497        1544 LOAD_NAME               75 (MAX_TCC_APPLY_PSI)
+
+  492        1546 EXTENDED_ARG             1
+             1548 LOAD_CONST             288 (('rpm_rows', 'slip_cols', 'row_axis', 'max_psi'))
+             1550 BUILD_CONST_KEY_MAP      4
+             1552 STORE_NAME              80 (TCC_RAMP_ERA_15_PLUS)
+
+  501        1554 LOAD_NAME               78 (TCC_RAMP_ERA_07_10)
+
+  502        1556 LOAD_NAME               79 (TCC_RAMP_ERA_11_14)
+
+  503        1558 LOAD_NAME               80 (TCC_RAMP_ERA_15_PLUS)
+
+  500        1560 EXTENDED_ARG             1
+             1562 LOAD_CONST             289 (('2007-2010', '2011-2014', '2015+'))
+             1564 BUILD_CONST_KEY_MAP      3
+             1566 STORE_NAME              81 (TCC_RAMP_ERAS)
+
+  515        1568 EXTENDED_ARG             1
+             1570 LOAD_CONST             290 (250.0)
+             1572 STORE_NAME              82 (MAX_COAST_PRESSURE_PSI)
+
+  519        1574 EXTENDED_ARG             1
+             1576 LOAD_CONST             291 (75)
+             1578 EXTENDED_ARG             1
+             1580 LOAD_CONST             292 (115)
+             1582 EXTENDED_ARG             1
+             1584 LOAD_CONST             293 (80)
+
+  520        1586 LOAD_CONST             190 (0.0)
+             1588 LOAD_CONST             241 (1.2)
+
+  518        1590 LOAD_CONST             248 (('base_psi', 'max_psi', 'cold_preload', 'hot_scale', 'torque_curve'))
+             1592 BUILD_CONST_KEY_MAP      5
+
+  523        1594 EXTENDED_ARG             1
+             1596 LOAD_CONST             256 (95)
+             1598 EXTENDED_ARG             1
+             1600 LOAD_CONST             294 (170)
+             1602 EXTENDED_ARG             1
+             1604 LOAD_CONST             256 (95)
+
+  524        1606 LOAD_CONST             180 (1.0)
+             1608 LOAD_CONST             238 (0.9)
+
+  522        1610 LOAD_CONST             248 (('base_psi', 'max_psi', 'cold_preload', 'hot_scale', 'torque_curve'))
+             1612 BUILD_CONST_KEY_MAP      5
+
+  527        1614 EXTENDED_ARG             1
+             1616 LOAD_CONST             258 (90)
+             1618 EXTENDED_ARG             1
+             1620 LOAD_CONST             295 (180)
+             1622 EXTENDED_ARG             1
+             1624 LOAD_CONST             291 (75)
+
+  528        1626 LOAD_CONST             254 (0.3)
+             1628 LOAD_CONST             255 (0.7)
+
+  526        1630 LOAD_CONST             248 (('base_psi', 'max_psi', 'cold_preload', 'hot_scale', 'torque_curve'))
+             1632 BUILD_CONST_KEY_MAP      5
+
+  531        1634 EXTENDED_ARG             1
+             1636 LOAD_CONST             270 (65)
+             1638 EXTENDED_ARG             1
+             1640 LOAD_CONST             296 (105)
+             1642 EXTENDED_ARG             1
+             1644 LOAD_CONST             297 (70)
+
+  532        1646 LOAD_CONST             190 (0.0)
+             1648 LOAD_CONST             205 (1.4)
+
+  530        1650 LOAD_CONST             248 (('base_psi', 'max_psi', 'cold_preload', 'hot_scale', 'torque_curve'))
+             1652 BUILD_CONST_KEY_MAP      5
+
+  535        1654 EXTENDED_ARG             1
+             1656 LOAD_CONST             291 (75)
+             1658 LOAD_CONST             251 (130)
+             1660 EXTENDED_ARG             1
+             1662 LOAD_CONST             293 (80)
+
+  536        1664 LOAD_CONST             195 (1.5)
+             1666 LOAD_CONST             177 (1.1)
+
+  534        1668 LOAD_CONST             248 (('base_psi', 'max_psi', 'cold_preload', 'hot_scale', 'torque_curve'))
+             1670 BUILD_CONST_KEY_MAP      5
+
+  517        1672 EXTENDED_ARG             1
+             1674 LOAD_CONST             261 (('Daily', 'Towing / Heavy Load', 'Racing / Drag', 'Eco / Cruise', 'Hot ATF Protection'))
+             1676 BUILD_CONST_KEY_MAP      5
+             1678 STORE_NAME              83 (COAST_PRESSURE_INTENTS)
+
+  552        1680 EXTENDED_ARG             1
+             1682 LOAD_CONST             298 (120.0)
+             1684 STORE_NAME              84 (MAX_GARAGE_SHIFT_PSI)
+
+  558        1686 EXTENDED_ARG             1
+             1688 LOAD_CONST             271 (35)
+             1690 EXTENDED_ARG             1
+             1692 LOAD_CONST             299 (50)
+             1694 EXTENDED_ARG             1
+             1696 LOAD_CONST             269 (30)
+             1698 EXTENDED_ARG             1
+             1700 LOAD_CONST             276 (45)
+             1702 EXTENDED_ARG             1
+             1704 LOAD_CONST             300 (('PD', 'PR', 'ND', 'NR'))
+             1706 BUILD_CONST_KEY_MAP      4
+
+  559        1708 EXTENDED_ARG             1
+             1710 LOAD_CONST             299 (50)
+             1712 EXTENDED_ARG             1
+             1714 LOAD_CONST             270 (65)
+             1716 EXTENDED_ARG             1
+             1718 LOAD_CONST             276 (45)
+             1720 EXTENDED_ARG             1
+             1722 LOAD_CONST             301 (60)
+             1724 EXTENDED_ARG             1
+             1726 LOAD_CONST             300 (('PD', 'PR', 'ND', 'NR'))
+             1728 BUILD_CONST_KEY_MAP      4
+
+  560        1730 EXTENDED_ARG             1
+             1732 LOAD_CONST             301 (60)
+             1734 EXTENDED_ARG             1
+             1736 LOAD_CONST             291 (75)
+             1738 EXTENDED_ARG             1
+             1740 LOAD_CONST             272 (55)
+             1742 EXTENDED_ARG             1
+             1744 LOAD_CONST             297 (70)
+             1746 EXTENDED_ARG             1
+             1748 LOAD_CONST             300 (('PD', 'PR', 'ND', 'NR'))
+             1750 BUILD_CONST_KEY_MAP      4
+
+  561        1752 EXTENDED_ARG             1
+             1754 LOAD_CONST             269 (30)
+             1756 EXTENDED_ARG             1
+             1758 LOAD_CONST             276 (45)
+             1760 EXTENDED_ARG             1
+             1762 LOAD_CONST             302 (28)
+             1764 EXTENDED_ARG             1
+             1766 LOAD_CONST             303 (42)
+             1768 EXTENDED_ARG             1
+             1770 LOAD_CONST             300 (('PD', 'PR', 'ND', 'NR'))
+             1772 BUILD_CONST_KEY_MAP      4
+
+  562        1774 EXTENDED_ARG             1
+             1776 LOAD_CONST             267 (40)
+             1778 EXTENDED_ARG             1
+             1780 LOAD_CONST             272 (55)
+             1782 EXTENDED_ARG             1
+             1784 LOAD_CONST             271 (35)
+             1786 EXTENDED_ARG             1
+             1788 LOAD_CONST             299 (50)
+             1790 EXTENDED_ARG             1
+             1792 LOAD_CONST             300 (('PD', 'PR', 'ND', 'NR'))
+             1794 BUILD_CONST_KEY_MAP      4
+
+  557        1796 EXTENDED_ARG             1
+             1798 LOAD_CONST             261 (('Daily', 'Towing / Heavy Load', 'Racing / Drag', 'Eco / Cruise', 'Hot ATF Protection'))
+             1800 BUILD_CONST_KEY_MAP      5
+             1802 STORE_NAME              85 (GARAGE_SHIFT_INTENTS)
+
+  566        1804 LOAD_CONST             241 (1.2)
+             1806 LOAD_CONST             177 (1.1)
+             1808 LOAD_CONST             180 (1.0)
+             1810 LOAD_CONST             180 (1.0)
+             1812 LOAD_CONST             214 (0.92)
+             1814 LOAD_CONST             208 ((-22, 14, 68, 86, 257))
+             1816 BUILD_CONST_KEY_MAP      5
+             1818 STORE_NAME              86 (GARAGE_SHIFT_TEMP_MULT)
+
+  569        1820 EXTENDED_ARG             1
+             1822 LOAD_CONST             304 (<code object get_pattern_shifts at 0x73ab02ba8b20, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 569>)
+             1824 MAKE_FUNCTION            0
+             1826 STORE_NAME              87 (get_pattern_shifts)
+
+  596        1828 PUSH_NULL
+             1830 LOAD_NAME               88 (list)
+             1832 PUSH_NULL
+             1834 LOAD_NAME               89 (range)
+             1836 LOAD_CONST               1 (0)
+             1838 EXTENDED_ARG             1
+             1840 LOAD_CONST             305 (660)
+             1842 EXTENDED_ARG             1
+             1844 LOAD_CONST             306 (20)
+             1846 CALL                     3
+             1854 CALL                     1
+             1862 STORE_NAME              90 (PRESSURE_4SPD_TORQUE_COLS)
+
+  597        1864 EXTENDED_ARG             1
+             1866 LOAD_CONST             307 (96.0)
+             1868 STORE_NAME              91 (PRESSURE_4SPD_MAX_PSI)
+
+  598        1870 BUILD_LIST               0
+             1872 EXTENDED_ARG             1
+             1874 LOAD_CONST             308 (('1-2', '2-3', '3-4'))
+             1876 LIST_EXTEND              1
+             1878 STORE_NAME              92 (PRESSURE_4SPD_SHIFTS)
+
+  601        1880 PUSH_NULL
+             1882 LOAD_NAME               88 (list)
+             1884 PUSH_NULL
+             1886 LOAD_NAME               89 (range)
+             1888 LOAD_CONST               1 (0)
+             1890 EXTENDED_ARG             1
+             1892 LOAD_CONST             309 (680)
+             1894 EXTENDED_ARG             1
+             1896 LOAD_CONST             267 (40)
+             1898 CALL                     3
+             1906 CALL                     1
+             1914 STORE_NAME              93 (SHIFT_TIME_TORQUE_COLS)
+
+  602        1916 BUILD_LIST               0
+             1918 EXTENDED_ARG             1
+             1920 LOAD_CONST             308 (('1-2', '2-3', '3-4'))
+             1922 LIST_EXTEND              1
+             1924 STORE_NAME              94 (SHIFT_TIME_SHIFTS)
+
+  605        1926 BUILD_LIST               0
+             1928 EXTENDED_ARG             1
+             1930 LOAD_CONST             310 ((32, 91, 151, 210, 270))
+             1932 LIST_EXTEND              1
+             1934 STORE_NAME              95 (TCC_DC_TEMP_ROWS)
+
+  606        1936 PUSH_NULL
+             1938 LOAD_NAME               88 (list)
+             1940 PUSH_NULL
+             1942 LOAD_NAME               89 (range)
+             1944 LOAD_CONST               1 (0)
+             1946 EXTENDED_ARG             1
+             1948 LOAD_CONST             311 (102)
+             1950 EXTENDED_ARG             1
+             1952 LOAD_CONST             312 (6)
+             1954 CALL                     3
+             1962 CALL                     1
+             1970 STORE_NAME              96 (TCC_DC_LINE_PSI_COLS)
+
+  612        1972 PUSH_NULL
+             1974 LOAD_NAME               88 (list)
+             1976 PUSH_NULL
+             1978 LOAD_NAME               89 (range)
+             1980 LOAD_CONST               1 (0)
+             1982 EXTENDED_ARG             1
+             1984 LOAD_CONST             313 (640)
+             1986 EXTENDED_ARG             1
+             1988 LOAD_CONST             306 (20)
+             1990 CALL                     3
+             1998 CALL                     1
+             2006 STORE_NAME              97 (BRAKE_SHIFT_4SPD_TORQUE_COLS)
+
+  613        2008 BUILD_LIST               0
+             2010 EXTENDED_ARG             1
+             2012 LOAD_CONST             314 (('2-1 Downshift', '3-2 Downshift', '4-3 Downshift'))
+             2014 LIST_EXTEND              1
+             2016 STORE_NAME              98 (BRAKE_SHIFT_4SPD_SHIFTS)
+
+  614        2018 EXTENDED_ARG             1
+             2020 LOAD_CONST             307 (96.0)
+             2022 STORE_NAME              99 (BRAKE_SHIFT_4SPD_MAX_PSI)
+
+  622        2024 EXTENDED_ARG             1
+             2026 LOAD_CONST             258 (90)
+             2028 EXTENDED_ARG             1
+             2030 LOAD_CONST             306 (20)
+             2032 EXTENDED_ARG             1
+             2034 LOAD_CONST             315 (360)
+             2036 EXTENDED_ARG             1
+             2038 LOAD_CONST             316 (77)
+             2040 EXTENDED_ARG             1
+             2042 LOAD_CONST             317 (('base_high', 'valley_psi', 'valley_center', 'high_end_psi'))
+             2044 BUILD_CONST_KEY_MAP      4
+
+  623        2046 EXTENDED_ARG             1
+             2048 LOAD_CONST             258 (90)
+             2050 EXTENDED_ARG             1
+             2052 LOAD_CONST             306 (20)
+             2054 EXTENDED_ARG             1
+             2056 LOAD_CONST             318 (260)
+             2058 EXTENDED_ARG             1
+             2060 LOAD_CONST             316 (77)
+             2062 EXTENDED_ARG             1
+             2064 LOAD_CONST             317 (('base_high', 'valley_psi', 'valley_center', 'high_end_psi'))
+             2066 BUILD_CONST_KEY_MAP      4
+
+  624        2068 EXTENDED_ARG             1
+             2070 LOAD_CONST             258 (90)
+             2072 EXTENDED_ARG             1
+             2074 LOAD_CONST             319 (10)
+             2076 EXTENDED_ARG             1
+             2078 LOAD_CONST             320 (280)
+             2080 EXTENDED_ARG             1
+             2082 LOAD_CONST             316 (77)
+             2084 EXTENDED_ARG             1
+             2086 LOAD_CONST             317 (('base_high', 'valley_psi', 'valley_center', 'high_end_psi'))
+             2088 BUILD_CONST_KEY_MAP      4
+
+  617        2090 EXTENDED_ARG             1
+             2092 LOAD_CONST             314 (('2-1 Downshift', '3-2 Downshift', '4-3 Downshift'))
+             2094 BUILD_CONST_KEY_MAP      3
+
+  627        2096 EXTENDED_ARG             1
+             2098 LOAD_CONST             321 (92)
+             2100 EXTENDED_ARG             1
+             2102 LOAD_CONST             269 (30)
+             2104 EXTENDED_ARG             1
+             2106 LOAD_CONST             315 (360)
+             2108 EXTENDED_ARG             1
+             2110 LOAD_CONST             322 (86)
+             2112 EXTENDED_ARG             1
+             2114 LOAD_CONST             317 (('base_high', 'valley_psi', 'valley_center', 'high_end_psi'))
+             2116 BUILD_CONST_KEY_MAP      4
+
+  628        2118 EXTENDED_ARG             1
+             2120 LOAD_CONST             321 (92)
+             2122 EXTENDED_ARG             1
+             2124 LOAD_CONST             274 (25)
+             2126 EXTENDED_ARG             1
+             2128 LOAD_CONST             318 (260)
+             2130 EXTENDED_ARG             1
+             2132 LOAD_CONST             322 (86)
+             2134 EXTENDED_ARG             1
+             2136 LOAD_CONST             317 (('base_high', 'valley_psi', 'valley_center', 'high_end_psi'))
+             2138 BUILD_CONST_KEY_MAP      4
+
+  629        2140 EXTENDED_ARG             1
+             2142 LOAD_CONST             321 (92)
+             2144 EXTENDED_ARG             1
+             2146 LOAD_CONST             323 (18)
+             2148 EXTENDED_ARG             1
+             2150 LOAD_CONST             320 (280)
+             2152 EXTENDED_ARG             1
+             2154 LOAD_CONST             322 (86)
+             2156 EXTENDED_ARG             1
+             2158 LOAD_CONST             317 (('base_high', 'valley_psi', 'valley_center', 'high_end_psi'))
+             2160 BUILD_CONST_KEY_MAP      4
+
+  626        2162 EXTENDED_ARG             1
+             2164 LOAD_CONST             314 (('2-1 Downshift', '3-2 Downshift', '4-3 Downshift'))
+             2166 BUILD_CONST_KEY_MAP      3
+
+  632        2168 EXTENDED_ARG             1
+             2170 LOAD_CONST             321 (92)
+             2172 EXTENDED_ARG             1
+             2174 LOAD_CONST             267 (40)
+             2176 EXTENDED_ARG             1
+             2178 LOAD_CONST             324 (320)
+             2180 EXTENDED_ARG             1
+             2182 LOAD_CONST             325 (88)
+             2184 EXTENDED_ARG             1
+             2186 LOAD_CONST             317 (('base_high', 'valley_psi', 'valley_center', 'high_end_psi'))
+             2188 BUILD_CONST_KEY_MAP      4
+
+  633        2190 EXTENDED_ARG             1
+             2192 LOAD_CONST             321 (92)
+             2194 EXTENDED_ARG             1
+             2196 LOAD_CONST             271 (35)
+             2198 EXTENDED_ARG             1
+             2200 LOAD_CONST             326 (240)
+             2202 EXTENDED_ARG             1
+             2204 LOAD_CONST             325 (88)
+             2206 EXTENDED_ARG             1
+             2208 LOAD_CONST             317 (('base_high', 'valley_psi', 'valley_center', 'high_end_psi'))
+             2210 BUILD_CONST_KEY_MAP      4
+
+  634        2212 EXTENDED_ARG             1
+             2214 LOAD_CONST             321 (92)
+             2216 EXTENDED_ARG             1
+             2218 LOAD_CONST             269 (30)
+             2220 EXTENDED_ARG             1
+             2222 LOAD_CONST             318 (260)
+             2224 EXTENDED_ARG             1
+             2226 LOAD_CONST             325 (88)
+             2228 EXTENDED_ARG             1
+             2230 LOAD_CONST             317 (('base_high', 'valley_psi', 'valley_center', 'high_end_psi'))
+             2232 BUILD_CONST_KEY_MAP      4
+
+  631        2234 EXTENDED_ARG             1
+             2236 LOAD_CONST             314 (('2-1 Downshift', '3-2 Downshift', '4-3 Downshift'))
+             2238 BUILD_CONST_KEY_MAP      3
+
+  616        2240 EXTENDED_ARG             1
+             2242 LOAD_CONST             327 (('Normal', 'Performance', 'Towing'))
+             2244 BUILD_CONST_KEY_MAP      3
+             2246 STORE_NAME             100 (BRAKE_SHIFT_INTENTS_4SPD)
+
+  642        2248 BUILD_LIST               0
+             2250 EXTENDED_ARG             1
+             2252 LOAD_CONST             328 ((-40, -18, 3, 26, 46, 68, 90, 111, 133, 154, 176, 198, 219, 241, 262, 284, 306))
+             2254 LIST_EXTEND              1
+             2256 STORE_NAME             101 (FORCE_MOTOR_TEMP_ROWS)
+
+  644        2258 PUSH_NULL
+             2260 LOAD_NAME               88 (list)
+             2262 PUSH_NULL
+             2264 LOAD_NAME               89 (range)
+             2266 LOAD_CONST               1 (0)
+             2268 EXTENDED_ARG             1
+             2270 LOAD_CONST             311 (102)
+             2272 EXTENDED_ARG             1
+             2274 LOAD_CONST             312 (6)
+             2276 CALL                     3
+             2284 CALL                     1
+             2292 LOAD_CONST             253 (100)
+             2294 BUILD_LIST               1
+             2296 BINARY_OP                0 (+)
+             2300 STORE_NAME             102 (FORCE_MOTOR_PSI_COLS)
+
+  646        2302 PUSH_NULL
+             2304 LOAD_NAME              103 (sorted)
+             2306 PUSH_NULL
+             2308 LOAD_NAME               64 (set)
+             2310 LOAD_NAME              102 (FORCE_MOTOR_PSI_COLS)
+             2312 CALL                     1
+             2320 CALL                     1
+             2328 STORE_NAME             102 (FORCE_MOTOR_PSI_COLS)
+
+  647        2330 EXTENDED_ARG             1
+             2332 LOAD_CONST             329 (98.0)
+             2334 STORE_NAME             104 (FORCE_MOTOR_MIN_MA)
+
+  648        2336 EXTENDED_ARG             1
+             2338 LOAD_CONST             330 (1069.0)
+             2340 STORE_NAME             105 (FORCE_MOTOR_MAX_MA)
+
+  656        2342 LOAD_CONST             190 (0.0)
+             2344 LOAD_CONST               1 (0)
+             2346 EXTENDED_ARG             1
+             2348 LOAD_CONST             331 (90.0)
+             2350 LOAD_CONST             240 (1.3)
+             2352 EXTENDED_ARG             1
+             2354 LOAD_CONST             332 (('base', 'threshold', 'max_psi', 'curve'))
+             2356 BUILD_CONST_KEY_MAP      4
+
+  657        2358 LOAD_CONST             188 (2.0)
+             2360 LOAD_CONST               1 (0)
+             2362 EXTENDED_ARG             1
+             2364 LOAD_CONST             333 (81.0)
+             2366 LOAD_CONST             241 (1.2)
+             2368 EXTENDED_ARG             1
+             2370 LOAD_CONST             332 (('base', 'threshold', 'max_psi', 'curve'))
+             2372 BUILD_CONST_KEY_MAP      4
+
+  658        2374 EXTENDED_ARG             1
+             2376 LOAD_CONST             334 (2.5)
+             2378 EXTENDED_ARG             1
+             2380 LOAD_CONST             293 (80)
+             2382 EXTENDED_ARG             1
+             2384 LOAD_CONST             335 (85.0)
+             2386 LOAD_CONST             180 (1.0)
+             2388 EXTENDED_ARG             1
+             2390 LOAD_CONST             332 (('base', 'threshold', 'max_psi', 'curve'))
+             2392 BUILD_CONST_KEY_MAP      4
+
+  655        2394 EXTENDED_ARG             1
+             2396 LOAD_CONST             308 (('1-2', '2-3', '3-4'))
+             2398 BUILD_CONST_KEY_MAP      3
+
+  661        2400 EXTENDED_ARG             1
+             2402 LOAD_CONST             336 (5.5)
+             2404 LOAD_CONST               1 (0)
+             2406 EXTENDED_ARG             1
+             2408 LOAD_CONST             331 (90.0)
+             2410 LOAD_CONST             180 (1.0)
+             2412 EXTENDED_ARG             1
+             2414 LOAD_CONST             332 (('base', 'threshold', 'max_psi', 'curve'))
+             2416 BUILD_CONST_KEY_MAP      4
+
+  662        2418 EXTENDED_ARG             1
+             2420 LOAD_CONST             337 (8.5)
+             2422 LOAD_CONST               1 (0)
+             2424 EXTENDED_ARG             1
+             2426 LOAD_CONST             331 (90.0)
+             2428 LOAD_CONST             238 (0.9)
+             2430 EXTENDED_ARG             1
+             2432 LOAD_CONST             332 (('base', 'threshold', 'max_psi', 'curve'))
+             2434 BUILD_CONST_KEY_MAP      4
+
+  663        2436 EXTENDED_ARG             1
+             2438 LOAD_CONST             338 (10.0)
+             2440 EXTENDED_ARG             1
+             2442 LOAD_CONST             301 (60)
+             2444 EXTENDED_ARG             1
+             2446 LOAD_CONST             331 (90.0)
+             2448 LOAD_CONST             255 (0.7)
+             2450 EXTENDED_ARG             1
+             2452 LOAD_CONST             332 (('base', 'threshold', 'max_psi', 'curve'))
+             2454 BUILD_CONST_KEY_MAP      4
+
+  660        2456 EXTENDED_ARG             1
+             2458 LOAD_CONST             308 (('1-2', '2-3', '3-4'))
+             2460 BUILD_CONST_KEY_MAP      3
+
+  666        2462 LOAD_CONST             186 (4.0)
+             2464 LOAD_CONST               1 (0)
+             2466 EXTENDED_ARG             1
+             2468 LOAD_CONST             331 (90.0)
+             2470 LOAD_CONST             177 (1.1)
+             2472 EXTENDED_ARG             1
+             2474 LOAD_CONST             332 (('base', 'threshold', 'max_psi', 'curve'))
+             2476 BUILD_CONST_KEY_MAP      4
+
+  667        2478 EXTENDED_ARG             1
+             2480 LOAD_CONST             339 (6.0)
+             2482 LOAD_CONST               1 (0)
+             2484 EXTENDED_ARG             1
+             2486 LOAD_CONST             340 (88.0)
+             2488 LOAD_CONST             180 (1.0)
+             2490 EXTENDED_ARG             1
+             2492 LOAD_CONST             332 (('base', 'threshold', 'max_psi', 'curve'))
+             2494 BUILD_CONST_KEY_MAP      4
+
+  668        2496 EXTENDED_ARG             1
+             2498 LOAD_CONST             339 (6.0)
+             2500 EXTENDED_ARG             1
+             2502 LOAD_CONST             267 (40)
+             2504 EXTENDED_ARG             1
+             2506 LOAD_CONST             331 (90.0)
+             2508 LOAD_CONST             216 (0.85)
+             2510 EXTENDED_ARG             1
+             2512 LOAD_CONST             332 (('base', 'threshold', 'max_psi', 'curve'))
+             2514 BUILD_CONST_KEY_MAP      4
+
+  665        2516 EXTENDED_ARG             1
+             2518 LOAD_CONST             308 (('1-2', '2-3', '3-4'))
+             2520 BUILD_CONST_KEY_MAP      3
+
+  671        2522 LOAD_CONST             190 (0.0)
+             2524 LOAD_CONST               1 (0)
+             2526 EXTENDED_ARG             1
+             2528 LOAD_CONST             341 (75.0)
+             2530 LOAD_CONST             195 (1.5)
+             2532 EXTENDED_ARG             1
+             2534 LOAD_CONST             332 (('base', 'threshold', 'max_psi', 'curve'))
+             2536 BUILD_CONST_KEY_MAP      4
+
+  672        2538 LOAD_CONST             195 (1.5)
+             2540 LOAD_CONST               1 (0)
+             2542 EXTENDED_ARG             1
+             2544 LOAD_CONST             342 (68.0)
+             2546 LOAD_CONST             199 (1.35)
+             2548 EXTENDED_ARG             1
+             2550 LOAD_CONST             332 (('base', 'threshold', 'max_psi', 'curve'))
+             2552 BUILD_CONST_KEY_MAP      4
+
+  673        2554 LOAD_CONST             188 (2.0)
+             2556 LOAD_CONST             253 (100)
+             2558 EXTENDED_ARG             1
+             2560 LOAD_CONST             343 (72.0)
+             2562 LOAD_CONST             241 (1.2)
+             2564 EXTENDED_ARG             1
+             2566 LOAD_CONST             332 (('base', 'threshold', 'max_psi', 'curve'))
+             2568 BUILD_CONST_KEY_MAP      4
+
+  670        2570 EXTENDED_ARG             1
+             2572 LOAD_CONST             308 (('1-2', '2-3', '3-4'))
+             2574 BUILD_CONST_KEY_MAP      3
+
+  654        2576 EXTENDED_ARG             1
+             2578 LOAD_CONST             344 (('Normal', 'Performance', 'Towing', 'Eco'))
+             2580 BUILD_CONST_KEY_MAP      4
+             2582 STORE_NAME             106 (PRESSURE_INTENTS_4SPD)
+
+  682        2584 EXTENDED_ARG             1
+             2586 LOAD_CONST             345 (0.575)
+             2588 LOAD_CONST             254 (0.3)
+             2590 LOAD_CONST             255 (0.7)
+             2592 EXTENDED_ARG             1
+             2594 LOAD_CONST             346 (('max_s', 'min_s', 'curve'))
+             2596 BUILD_CONST_KEY_MAP      3
+
+  683        2598 LOAD_CONST             224 (0.6)
+             2600 EXTENDED_ARG             1
+             2602 LOAD_CONST             347 (0.225)
+             2604 LOAD_CONST             224 (0.6)
+             2606 EXTENDED_ARG             1
+             2608 LOAD_CONST             346 (('max_s', 'min_s', 'curve'))
+             2610 BUILD_CONST_KEY_MAP      3
+
+  684        2612 LOAD_CONST             190 (0.0)
+             2614 LOAD_CONST             190 (0.0)
+             2616 LOAD_CONST             180 (1.0)
+             2618 EXTENDED_ARG             1
+             2620 LOAD_CONST             346 (('max_s', 'min_s', 'curve'))
+             2622 BUILD_CONST_KEY_MAP      3
+
+  681        2624 EXTENDED_ARG             1
+             2626 LOAD_CONST             308 (('1-2', '2-3', '3-4'))
+             2628 BUILD_CONST_KEY_MAP      3
+
+  687        2630 LOAD_CONST             245 (0.4)
+             2632 EXTENDED_ARG             1
+             2634 LOAD_CONST             348 (0.2)
+             2636 LOAD_CONST             255 (0.7)
+             2638 EXTENDED_ARG             1
+             2640 LOAD_CONST             346 (('max_s', 'min_s', 'curve'))
+             2642 BUILD_CONST_KEY_MAP      3
+
+  688        2644 EXTENDED_ARG             1
+             2646 LOAD_CONST             349 (0.425)
+             2648 EXTENDED_ARG             1
+             2650 LOAD_CONST             350 (0.15)
+             2652 LOAD_CONST             224 (0.6)
+             2654 EXTENDED_ARG             1
+             2656 LOAD_CONST             346 (('max_s', 'min_s', 'curve'))
+             2658 BUILD_CONST_KEY_MAP      3
+
+  689        2660 EXTENDED_ARG             1
+             2662 LOAD_CONST             351 (0.35)
+             2664 EXTENDED_ARG             1
+             2666 LOAD_CONST             352 (0.1)
+             2668 EXTENDED_ARG             1
+             2670 LOAD_CONST             353 (0.8)
+             2672 EXTENDED_ARG             1
+             2674 LOAD_CONST             346 (('max_s', 'min_s', 'curve'))
+             2676 BUILD_CONST_KEY_MAP      3
+
+  686        2678 EXTENDED_ARG             1
+             2680 LOAD_CONST             308 (('1-2', '2-3', '3-4'))
+             2682 BUILD_CONST_KEY_MAP      3
+
+  692        2684 EXTENDED_ARG             1
+             2686 LOAD_CONST             354 (0.65)
+             2688 LOAD_CONST             245 (0.4)
+             2690 EXTENDED_ARG             1
+             2692 LOAD_CONST             353 (0.8)
+             2694 EXTENDED_ARG             1
+             2696 LOAD_CONST             346 (('max_s', 'min_s', 'curve'))
+             2698 BUILD_CONST_KEY_MAP      3
+
+  693        2700 LOAD_CONST             255 (0.7)
+             2702 EXTENDED_ARG             1
+             2704 LOAD_CONST             351 (0.35)
+             2706 LOAD_CONST             255 (0.7)
+             2708 EXTENDED_ARG             1
+             2710 LOAD_CONST             346 (('max_s', 'min_s', 'curve'))
+             2712 BUILD_CONST_KEY_MAP      3
+
+  694        2714 LOAD_CONST             226 (0.55)
+             2716 LOAD_CONST             254 (0.3)
+             2718 EXTENDED_ARG             1
+             2720 LOAD_CONST             353 (0.8)
+             2722 EXTENDED_ARG             1
+             2724 LOAD_CONST             346 (('max_s', 'min_s', 'curve'))
+             2726 BUILD_CONST_KEY_MAP      3
+
+  691        2728 EXTENDED_ARG             1
+             2730 LOAD_CONST             308 (('1-2', '2-3', '3-4'))
+             2732 BUILD_CONST_KEY_MAP      3
+
+  697        2734 LOAD_CONST             255 (0.7)
+             2736 EXTENDED_ARG             1
+             2738 LOAD_CONST             355 (0.45)
+             2740 LOAD_CONST             238 (0.9)
+             2742 EXTENDED_ARG             1
+             2744 LOAD_CONST             346 (('max_s', 'min_s', 'curve'))
+             2746 BUILD_CONST_KEY_MAP      3
+
+  698        2748 EXTENDED_ARG             1
+             2750 LOAD_CONST             356 (0.75)
+             2752 LOAD_CONST             245 (0.4)
+             2754 LOAD_CONST             216 (0.85)
+             2756 EXTENDED_ARG             1
+             2758 LOAD_CONST             346 (('max_s', 'min_s', 'curve'))
+             2760 BUILD_CONST_KEY_MAP      3
+
+  699        2762 LOAD_CONST             196 (0.5)
+             2764 EXTENDED_ARG             1
+             2766 LOAD_CONST             357 (0.25)
+             2768 LOAD_CONST             236 (0.95)
+             2770 EXTENDED_ARG             1
+             2772 LOAD_CONST             346 (('max_s', 'min_s', 'curve'))
+             2774 BUILD_CONST_KEY_MAP      3
+
+  696        2776 EXTENDED_ARG             1
+             2778 LOAD_CONST             308 (('1-2', '2-3', '3-4'))
+             2780 BUILD_CONST_KEY_MAP      3
+
+  680        2782 EXTENDED_ARG             1
+             2784 LOAD_CONST             344 (('Normal', 'Performance', 'Towing', 'Eco'))
+             2786 BUILD_CONST_KEY_MAP      4
+             2788 STORE_NAME             107 (SHIFT_TIME_INTENTS_4SPD)
+
+  710        2790 BUILD_MAP                0
+
+  711        2792 EXTENDED_ARG             1
+             2794 LOAD_CONST             358 ('trans_name')
+             2796 EXTENDED_ARG             1
+             2798 LOAD_CONST             359 ('4L60E (1993-2013)')
+
+  710        2800 MAP_ADD                  1
+
+  712        2802 EXTENDED_ARG             1
+             2804 LOAD_CONST             360 ('tire_dia')
+             2806 LOAD_CONST              87 (26.0)
+
+  710        2808 MAP_ADD                  1
+
+  712        2810 EXTENDED_ARG             1
+             2812 LOAD_CONST             361 ('axle')
+             2814 EXTENDED_ARG             1
+             2816 LOAD_CONST             362 (3.42)
+
+  710        2818 MAP_ADD                  1
+
+  712        2820 EXTENDED_ARG             1
+             2822 LOAD_CONST             363 ('chain')
+             2824 LOAD_CONST             180 (1.0)
+
+  710        2826 MAP_ADD                  1
+
+  713        2828 EXTENDED_ARG             1
+             2830 LOAD_CONST             364 ('weight')
+             2832 EXTENDED_ARG             1
+             2834 LOAD_CONST             365 (3500)
+
+  710        2836 MAP_ADD                  1
+
+  713        2838 EXTENDED_ARG             1
+             2840 LOAD_CONST             366 ('rwhp')
+             2842 EXTENDED_ARG             1
+             2844 LOAD_CONST             324 (320)
+
+  710        2846 MAP_ADD                  1
+
+  713        2848 EXTENDED_ARG             1
+             2850 LOAD_CONST             367 ('vss_count')
+             2852 EXTENDED_ARG             1
+             2854 LOAD_CONST             267 (40)
+
+  710        2856 MAP_ADD                  1
+
+  714        2858 EXTENDED_ARG             1
+             2860 LOAD_CONST             368 ('idle_rpm')
+             2862 EXTENDED_ARG             1
+             2864 LOAD_CONST             369 (700)
+
+  710        2866 MAP_ADD                  1
+
+  714        2868 EXTENDED_ARG             1
+             2870 LOAD_CONST             370 ('stall_rpm')
+             2872 EXTENDED_ARG             1
+             2874 LOAD_CONST             371 (2200)
+
+  710        2876 MAP_ADD                  1
+
+  714        2878 EXTENDED_ARG             1
+             2880 LOAD_CONST             372 ('shift_rpm')
+             2882 EXTENDED_ARG             1
+             2884 LOAD_CONST             373 (6200)
+
+  710        2886 MAP_ADD                  1
+
+  715        2888 EXTENDED_ARG             1
+             2890 LOAD_CONST             374 ('downshift_rpm')
+             2892 EXTENDED_ARG             1
+             2894 LOAD_CONST             375 (5000)
+
+  710        2896 MAP_ADD                  1
+
+  715        2898 EXTENDED_ARG             1
+             2900 LOAD_CONST             376 ('min_tcc_rpm')
+             2902 EXTENDED_ARG             1
+             2904 LOAD_CONST             377 (1400)
+
+  710        2906 MAP_ADD                  1
+
+  716        2908 EXTENDED_ARG             1
+             2910 LOAD_CONST             378 ('min_tcc_gear')
+             2912 EXTENDED_ARG             1
+             2914 LOAD_CONST             379 (2)
+
+  710        2916 MAP_ADD                  1
+
+  716        2918 EXTENDED_ARG             1
+             2920 LOAD_CONST             380 ('accel_lock_gear')
+             2922 LOAD_CONST             202 (3)
+
+  710        2924 MAP_ADD                  1
+
+  716        2926 EXTENDED_ARG             1
+             2928 LOAD_CONST             381 ('wot_lock_gear')
+             2930 LOAD_CONST             202 (3)
+
+  710        2932 MAP_ADD                  1
+
+  717        2934 EXTENDED_ARG             1
+             2936 LOAD_CONST             382 ('tps_preset')
+             2938 LOAD_CONST              17 ('78-85mm Cable TB (LS1 stock)')
+
+  710        2940 MAP_ADD                  1
+
+  718        2942 EXTENDED_ARG             1
+             2944 LOAD_CONST             383 ('spread_up')
+             2946 LOAD_CONST             200 (3.0)
+
+  710        2948 MAP_ADD                  1
+
+  718        2950 LOAD_CONST             188 (2.0)
+
+  719        2952 LOAD_CONST             188 (2.0)
+             2954 LOAD_CONST             188 (2.0)
+
+  720        2956 EXTENDED_ARG             1
+             2958 LOAD_CONST             287 ('rpm')
+             2960 LOAD_CONST             188 (2.0)
+             2962 LOAD_CONST             245 (0.4)
+
+  710        2964 EXTENDED_ARG             1
+             2966 LOAD_CONST             384 (('spread_lock', 'spread_lock_up', 'spread_unlock_dn', 'lead_mode', 'lead_value', 'down_time'))
+             2968 BUILD_CONST_KEY_MAP      6
+             2970 DICT_UPDATE              1
+
+  722        2972 BUILD_MAP                0
+
+  723        2974 EXTENDED_ARG             1
+             2976 LOAD_CONST             358 ('trans_name')
+             2978 EXTENDED_ARG             1
+             2980 LOAD_CONST             385 ('6L80 (2006-Current)')
+
+  722        2982 MAP_ADD                  1
+
+  724        2984 EXTENDED_ARG             1
+             2986 LOAD_CONST             360 ('tire_dia')
+             2988 EXTENDED_ARG             1
+             2990 LOAD_CONST             386 (27.5)
+
+  722        2992 MAP_ADD                  1
+
+  724        2994 EXTENDED_ARG             1
+             2996 LOAD_CONST             361 ('axle')
+             2998 EXTENDED_ARG             1
+             3000 LOAD_CONST             387 (3.45)
+
+  722        3002 MAP_ADD                  1
+
+  724        3004 EXTENDED_ARG             1
+             3006 LOAD_CONST             363 ('chain')
+             3008 LOAD_CONST             180 (1.0)
+
+  722        3010 MAP_ADD                  1
+
+  725        3012 EXTENDED_ARG             1
+             3014 LOAD_CONST             364 ('weight')
+             3016 EXTENDED_ARG             1
+             3018 LOAD_CONST             388 (3900)
+
+  722        3020 MAP_ADD                  1
+
+  725        3022 EXTENDED_ARG             1
+             3024 LOAD_CONST             366 ('rwhp')
+             3026 EXTENDED_ARG             1
+             3028 LOAD_CONST             389 (380)
+
+  722        3030 MAP_ADD                  1
+
+  725        3032 EXTENDED_ARG             1
+             3034 LOAD_CONST             367 ('vss_count')
+             3036 EXTENDED_ARG             1
+             3038 LOAD_CONST             267 (40)
+
+  722        3040 MAP_ADD                  1
+
+  726        3042 EXTENDED_ARG             1
+             3044 LOAD_CONST             368 ('idle_rpm')
+             3046 EXTENDED_ARG             1
+             3048 LOAD_CONST             390 (650)
+
+  722        3050 MAP_ADD                  1
+
+  726        3052 EXTENDED_ARG             1
+             3054 LOAD_CONST             370 ('stall_rpm')
+             3056 EXTENDED_ARG             1
+             3058 LOAD_CONST             371 (2200)
+
+  722        3060 MAP_ADD                  1
+
+  726        3062 EXTENDED_ARG             1
+             3064 LOAD_CONST             372 ('shift_rpm')
+             3066 EXTENDED_ARG             1
+             3068 LOAD_CONST             391 (6300)
+
+  722        3070 MAP_ADD                  1
+
+  727        3072 EXTENDED_ARG             1
+             3074 LOAD_CONST             374 ('downshift_rpm')
+             3076 EXTENDED_ARG             1
+             3078 LOAD_CONST             392 (5200)
+
+  722        3080 MAP_ADD                  1
+
+  727        3082 EXTENDED_ARG             1
+             3084 LOAD_CONST             376 ('min_tcc_rpm')
+             3086 EXTENDED_ARG             1
+             3088 LOAD_CONST             393 (1300)
+
+  722        3090 MAP_ADD                  1
+
+  728        3092 EXTENDED_ARG             1
+             3094 LOAD_CONST             378 ('min_tcc_gear')
+             3096 EXTENDED_ARG             1
+             3098 LOAD_CONST             379 (2)
+
+  722        3100 MAP_ADD                  1
+
+  728        3102 EXTENDED_ARG             1
+             3104 LOAD_CONST             380 ('accel_lock_gear')
+             3106 LOAD_CONST             202 (3)
+
+  722        3108 MAP_ADD                  1
+
+  728        3110 EXTENDED_ARG             1
+             3112 LOAD_CONST             381 ('wot_lock_gear')
+             3114 LOAD_CONST             194 (5)
+
+  722        3116 MAP_ADD                  1
+
+  729        3118 EXTENDED_ARG             1
+             3120 LOAD_CONST             382 ('tps_preset')
+             3122 LOAD_CONST              34 ('10-15 5th Gen Camaro SS L99/LS3')
+
+  722        3124 MAP_ADD                  1
+
+  730        3126 EXTENDED_ARG             1
+             3128 LOAD_CONST             383 ('spread_up')
+             3130 EXTENDED_ARG             1
+             3132 LOAD_CONST             394 (3.5)
+
+  722        3134 MAP_ADD                  1
+
+  730        3136 LOAD_CONST             188 (2.0)
+
+  731        3138 LOAD_CONST             188 (2.0)
+             3140 EXTENDED_ARG             1
+             3142 LOAD_CONST             334 (2.5)
+
+  732        3144 EXTENDED_ARG             1
+             3146 LOAD_CONST             287 ('rpm')
+             3148 EXTENDED_ARG             1
+             3150 LOAD_CONST             334 (2.5)
+             3152 EXTENDED_ARG             1
+             3154 LOAD_CONST             351 (0.35)
+
+  722        3156 EXTENDED_ARG             1
+             3158 LOAD_CONST             384 (('spread_lock', 'spread_lock_up', 'spread_unlock_dn', 'lead_mode', 'lead_value', 'down_time'))
+             3160 BUILD_CONST_KEY_MAP      6
+             3162 DICT_UPDATE              1
+
+  734        3164 BUILD_MAP                0
+
+  735        3166 EXTENDED_ARG             1
+             3168 LOAD_CONST             358 ('trans_name')
+             3170 EXTENDED_ARG             1
+             3172 LOAD_CONST             395 ('8L90 (2014-Current)')
+
+  734        3174 MAP_ADD                  1
+
+  736        3176 EXTENDED_ARG             1
+             3178 LOAD_CONST             360 ('tire_dia')
+             3180 EXTENDED_ARG             1
+             3182 LOAD_CONST             396 (26.5)
+
+  734        3184 MAP_ADD                  1
+
+  736        3186 EXTENDED_ARG             1
+             3188 LOAD_CONST             361 ('axle')
+             3190 EXTENDED_ARG             1
+             3192 LOAD_CONST             397 (3.27)
+
+  734        3194 MAP_ADD                  1
+
+  736        3196 EXTENDED_ARG             1
+             3198 LOAD_CONST             363 ('chain')
+             3200 LOAD_CONST             180 (1.0)
+
+  734        3202 MAP_ADD                  1
+
+  737        3204 EXTENDED_ARG             1
+             3206 LOAD_CONST             364 ('weight')
+             3208 EXTENDED_ARG             1
+             3210 LOAD_CONST             398 (3850)
+
+  734        3212 MAP_ADD                  1
+
+  737        3214 EXTENDED_ARG             1
+             3216 LOAD_CONST             366 ('rwhp')
+             3218 EXTENDED_ARG             1
+             3220 LOAD_CONST             399 (420)
+
+  734        3222 MAP_ADD                  1
+
+  737        3224 EXTENDED_ARG             1
+             3226 LOAD_CONST             367 ('vss_count')
+             3228 EXTENDED_ARG             1
+             3230 LOAD_CONST             267 (40)
+
+  734        3232 MAP_ADD                  1
+
+  738        3234 EXTENDED_ARG             1
+             3236 LOAD_CONST             368 ('idle_rpm')
+             3238 EXTENDED_ARG             1
+             3240 LOAD_CONST             400 (600)
+
+  734        3242 MAP_ADD                  1
+
+  738        3244 EXTENDED_ARG             1
+             3246 LOAD_CONST             370 ('stall_rpm')
+             3248 EXTENDED_ARG             1
+             3250 LOAD_CONST             401 (2400)
+
+  734        3252 MAP_ADD                  1
+
+  738        3254 EXTENDED_ARG             1
+             3256 LOAD_CONST             372 ('shift_rpm')
+             3258 EXTENDED_ARG             1
+             3260 LOAD_CONST             402 (6500)
+
+  734        3262 MAP_ADD                  1
+
+  739        3264 EXTENDED_ARG             1
+             3266 LOAD_CONST             374 ('downshift_rpm')
+             3268 EXTENDED_ARG             1
+             3270 LOAD_CONST             403 (5500)
+
+  734        3272 MAP_ADD                  1
+
+  739        3274 EXTENDED_ARG             1
+             3276 LOAD_CONST             376 ('min_tcc_rpm')
+             3278 EXTENDED_ARG             1
+             3280 LOAD_CONST             393 (1300)
+
+  734        3282 MAP_ADD                  1
+
+  740        3284 EXTENDED_ARG             1
+             3286 LOAD_CONST             378 ('min_tcc_gear')
+             3288 EXTENDED_ARG             1
+             3290 LOAD_CONST             379 (2)
+
+  734        3292 MAP_ADD                  1
+
+  740        3294 EXTENDED_ARG             1
+             3296 LOAD_CONST             380 ('accel_lock_gear')
+             3298 LOAD_CONST             202 (3)
+
+  734        3300 MAP_ADD                  1
+
+  740        3302 EXTENDED_ARG             1
+             3304 LOAD_CONST             381 ('wot_lock_gear')
+             3306 EXTENDED_ARG             1
+             3308 LOAD_CONST             404 (7)
+
+  734        3310 MAP_ADD                  1
+
+  741        3312 EXTENDED_ARG             1
+             3314 LOAD_CONST             382 ('tps_preset')
+             3316 LOAD_CONST              54 ('14-19 C7 Vette LT1 ETC')
+
+  734        3318 MAP_ADD                  1
+
+  742        3320 EXTENDED_ARG             1
+             3322 LOAD_CONST             383 ('spread_up')
+             3324 LOAD_CONST             186 (4.0)
+
+  734        3326 MAP_ADD                  1
+
+  742        3328 EXTENDED_ARG             1
+             3330 LOAD_CONST             334 (2.5)
+
+  743        3332 EXTENDED_ARG             1
+             3334 LOAD_CONST             334 (2.5)
+             3336 EXTENDED_ARG             1
+             3338 LOAD_CONST             334 (2.5)
+
+  744        3340 EXTENDED_ARG             1
+             3342 LOAD_CONST             287 ('rpm')
+             3344 LOAD_CONST             188 (2.0)
+             3346 LOAD_CONST             254 (0.3)
+
+  734        3348 EXTENDED_ARG             1
+             3350 LOAD_CONST             384 (('spread_lock', 'spread_lock_up', 'spread_unlock_dn', 'lead_mode', 'lead_value', 'down_time'))
+             3352 BUILD_CONST_KEY_MAP      6
+             3354 DICT_UPDATE              1
+
+  746        3356 BUILD_MAP                0
+
+  747        3358 EXTENDED_ARG             1
+             3360 LOAD_CONST             358 ('trans_name')
+             3362 EXTENDED_ARG             1
+             3364 LOAD_CONST             405 ('10L90 (2017-Current)')
+
+  746        3366 MAP_ADD                  1
+
+  748        3368 EXTENDED_ARG             1
+             3370 LOAD_CONST             360 ('tire_dia')
+             3372 LOAD_CONST             108 (27.0)
+
+  746        3374 MAP_ADD                  1
+
+  748        3376 EXTENDED_ARG             1
+             3378 LOAD_CONST             361 ('axle')
+             3380 EXTENDED_ARG             1
+             3382 LOAD_CONST             406 (3.23)
+
+  746        3384 MAP_ADD                  1
+
+  748        3386 EXTENDED_ARG             1
+             3388 LOAD_CONST             363 ('chain')
+             3390 LOAD_CONST             180 (1.0)
+
+  746        3392 MAP_ADD                  1
+
+  749        3394 EXTENDED_ARG             1
+             3396 LOAD_CONST             364 ('weight')
+             3398 EXTENDED_ARG             1
+             3400 LOAD_CONST             407 (4000)
+
+  746        3402 MAP_ADD                  1
+
+  749        3404 EXTENDED_ARG             1
+             3406 LOAD_CONST             366 ('rwhp')
+             3408 EXTENDED_ARG             1
+             3410 LOAD_CONST             400 (600)
+
+  746        3412 MAP_ADD                  1
+
+  749        3414 EXTENDED_ARG             1
+             3416 LOAD_CONST             367 ('vss_count')
+             3418 EXTENDED_ARG             1
+             3420 LOAD_CONST             267 (40)
+
+  746        3422 MAP_ADD                  1
+
+  750        3424 EXTENDED_ARG             1
+             3426 LOAD_CONST             368 ('idle_rpm')
+             3428 EXTENDED_ARG             1
+             3430 LOAD_CONST             400 (600)
+
+  746        3432 MAP_ADD                  1
+
+  750        3434 EXTENDED_ARG             1
+             3436 LOAD_CONST             370 ('stall_rpm')
+             3438 EXTENDED_ARG             1
+             3440 LOAD_CONST             408 (2500)
+
+  746        3442 MAP_ADD                  1
+
+  750        3444 EXTENDED_ARG             1
+             3446 LOAD_CONST             372 ('shift_rpm')
+             3448 EXTENDED_ARG             1
+             3450 LOAD_CONST             402 (6500)
+
+  746        3452 MAP_ADD                  1
+
+  751        3454 EXTENDED_ARG             1
+             3456 LOAD_CONST             374 ('downshift_rpm')
+             3458 EXTENDED_ARG             1
+             3460 LOAD_CONST             403 (5500)
+
+  746        3462 MAP_ADD                  1
+
+  751        3464 EXTENDED_ARG             1
+             3466 LOAD_CONST             376 ('min_tcc_rpm')
+             3468 EXTENDED_ARG             1
+             3470 LOAD_CONST             393 (1300)
+
+  746        3472 MAP_ADD                  1
+
+  752        3474 EXTENDED_ARG             1
+             3476 LOAD_CONST             378 ('min_tcc_gear')
+             3478 EXTENDED_ARG             1
+             3480 LOAD_CONST             379 (2)
+
+  746        3482 MAP_ADD                  1
+
+  752        3484 EXTENDED_ARG             1
+             3486 LOAD_CONST             380 ('accel_lock_gear')
+             3488 LOAD_CONST             202 (3)
+
+  746        3490 MAP_ADD                  1
+
+  752        3492 EXTENDED_ARG             1
+             3494 LOAD_CONST             381 ('wot_lock_gear')
+             3496 EXTENDED_ARG             1
+             3498 LOAD_CONST             409 (8)
+
+  746        3500 MAP_ADD                  1
+
+  753        3502 EXTENDED_ARG             1
+             3504 LOAD_CONST             382 ('tps_preset')
+             3506 LOAD_CONST              64 ('17-24 6th Gen ZL1 LT4 ETC')
+
+  746        3508 MAP_ADD                  1
+
+  754        3510 EXTENDED_ARG             1
+             3512 LOAD_CONST             383 ('spread_up')
+             3514 LOAD_CONST             201 (5.0)
+
+  746        3516 MAP_ADD                  1
+
+  754        3518 EXTENDED_ARG             1
+             3520 LOAD_CONST             334 (2.5)
+
+  755        3522 EXTENDED_ARG             1
+             3524 LOAD_CONST             334 (2.5)
+             3526 EXTENDED_ARG             1
+             3528 LOAD_CONST             334 (2.5)
+
+  756        3530 EXTENDED_ARG             1
+             3532 LOAD_CONST             287 ('rpm')
+             3534 LOAD_CONST             195 (1.5)
+             3536 EXTENDED_ARG             1
+             3538 LOAD_CONST             357 (0.25)
+
+  746        3540 EXTENDED_ARG             1
+             3542 LOAD_CONST             384 (('spread_lock', 'spread_lock_up', 'spread_unlock_dn', 'lead_mode', 'lead_value', 'down_time'))
+             3544 BUILD_CONST_KEY_MAP      6
+             3546 DICT_UPDATE              1
+
+  758        3548 BUILD_MAP                0
+
+  759        3550 EXTENDED_ARG             1
+             3552 LOAD_CONST             358 ('trans_name')
+             3554 EXTENDED_ARG             1
+             3556 LOAD_CONST             359 ('4L60E (1993-2013)')
+
+  758        3558 MAP_ADD                  1
+
+  760        3560 EXTENDED_ARG             1
+             3562 LOAD_CONST             360 ('tire_dia')
+             3564 EXTENDED_ARG             1
+             3566 LOAD_CONST             410 (31.5)
+
+  758        3568 MAP_ADD                  1
+
+  760        3570 EXTENDED_ARG             1
+             3572 LOAD_CONST             361 ('axle')
+             3574 EXTENDED_ARG             1
+             3576 LOAD_CONST             411 (3.73)
+
+  758        3578 MAP_ADD                  1
+
+  760        3580 EXTENDED_ARG             1
+             3582 LOAD_CONST             363 ('chain')
+             3584 LOAD_CONST             180 (1.0)
+
+  758        3586 MAP_ADD                  1
+
+  761        3588 EXTENDED_ARG             1
+             3590 LOAD_CONST             364 ('weight')
+             3592 EXTENDED_ARG             1
+             3594 LOAD_CONST             412 (5400)
+
+  758        3596 MAP_ADD                  1
+
+  761        3598 EXTENDED_ARG             1
+             3600 LOAD_CONST             366 ('rwhp')
+             3602 EXTENDED_ARG             1
+             3604 LOAD_CONST             413 (250)
+
+  758        3606 MAP_ADD                  1
+
+  761        3608 EXTENDED_ARG             1
+             3610 LOAD_CONST             367 ('vss_count')
+             3612 EXTENDED_ARG             1
+             3614 LOAD_CONST             267 (40)
+
+  758        3616 MAP_ADD                  1
+
+  762        3618 EXTENDED_ARG             1
+             3620 LOAD_CONST             368 ('idle_rpm')
+             3622 EXTENDED_ARG             1
+             3624 LOAD_CONST             400 (600)
+
+  758        3626 MAP_ADD                  1
+
+  762        3628 EXTENDED_ARG             1
+             3630 LOAD_CONST             370 ('stall_rpm')
+             3632 EXTENDED_ARG             1
+             3634 LOAD_CONST             414 (1800)
+
+  758        3636 MAP_ADD                  1
+
+  762        3638 EXTENDED_ARG             1
+             3640 LOAD_CONST             372 ('shift_rpm')
+             3642 EXTENDED_ARG             1
+             3644 LOAD_CONST             415 (5800)
+
+  758        3646 MAP_ADD                  1
+
+  763        3648 EXTENDED_ARG             1
+             3650 LOAD_CONST             374 ('downshift_rpm')
+             3652 EXTENDED_ARG             1
+             3654 LOAD_CONST             416 (4500)
+
+  758        3656 MAP_ADD                  1
+
+  763        3658 EXTENDED_ARG             1
+             3660 LOAD_CONST             376 ('min_tcc_rpm')
+             3662 EXTENDED_ARG             1
+             3664 LOAD_CONST             377 (1400)
+
+  758        3666 MAP_ADD                  1
+
+  764        3668 EXTENDED_ARG             1
+             3670 LOAD_CONST             378 ('min_tcc_gear')
+             3672 LOAD_CONST             202 (3)
+
+  758        3674 MAP_ADD                  1
+
+  764        3676 EXTENDED_ARG             1
+             3678 LOAD_CONST             380 ('accel_lock_gear')
+             3680 EXTENDED_ARG             1
+             3682 LOAD_CONST             417 (4)
+
+  758        3684 MAP_ADD                  1
+
+  764        3686 EXTENDED_ARG             1
+             3688 LOAD_CONST             381 ('wot_lock_gear')
+             3690 EXTENDED_ARG             1
+             3692 LOAD_CONST             417 (4)
+
+  758        3694 MAP_ADD                  1
+
+  765        3696 EXTENDED_ARG             1
+             3698 LOAD_CONST             382 ('tps_preset')
+             3700 LOAD_CONST              38 ('02-03 GMT800 LM7/LQ4 Early ETC')
+
+  758        3702 MAP_ADD                  1
+
+  766        3704 EXTENDED_ARG             1
+             3706 LOAD_CONST             383 ('spread_up')
+             3708 EXTENDED_ARG             1
+             3710 LOAD_CONST             394 (3.5)
+
+  758        3712 MAP_ADD                  1
+
+  766        3714 EXTENDED_ARG             1
+             3716 LOAD_CONST             334 (2.5)
+
+  767        3718 EXTENDED_ARG             1
+             3720 LOAD_CONST             334 (2.5)
+             3722 LOAD_CONST             200 (3.0)
+
+  768        3724 EXTENDED_ARG             1
+             3726 LOAD_CONST             287 ('rpm')
+             3728 EXTENDED_ARG             1
+             3730 LOAD_CONST             334 (2.5)
+             3732 EXTENDED_ARG             1
+             3734 LOAD_CONST             355 (0.45)
+
+  758        3736 EXTENDED_ARG             1
+             3738 LOAD_CONST             384 (('spread_lock', 'spread_lock_up', 'spread_unlock_dn', 'lead_mode', 'lead_value', 'down_time'))
+             3740 BUILD_CONST_KEY_MAP      6
+             3742 DICT_UPDATE              1
+
+  770        3744 BUILD_MAP                0
+
+  771        3746 EXTENDED_ARG             1
+             3748 LOAD_CONST             358 ('trans_name')
+             3750 EXTENDED_ARG             1
+             3752 LOAD_CONST             418 ('10L80 (2017-Current)')
+
+  770        3754 MAP_ADD                  1
+
+  772        3756 EXTENDED_ARG             1
+             3758 LOAD_CONST             360 ('tire_dia')
+             3760 EXTENDED_ARG             1
+             3762 LOAD_CONST             419 (32.5)
+
+  770        3764 MAP_ADD                  1
+
+  772        3766 EXTENDED_ARG             1
+             3768 LOAD_CONST             361 ('axle')
+             3770 EXTENDED_ARG             1
+             3772 LOAD_CONST             362 (3.42)
+
+  770        3774 MAP_ADD                  1
+
+  772        3776 EXTENDED_ARG             1
+             3778 LOAD_CONST             363 ('chain')
+             3780 LOAD_CONST             180 (1.0)
+
+  770        3782 MAP_ADD                  1
+
+  773        3784 EXTENDED_ARG             1
+             3786 LOAD_CONST             364 ('weight')
+             3788 EXTENDED_ARG             1
+             3790 LOAD_CONST             403 (5500)
+
+  770        3792 MAP_ADD                  1
+
+  773        3794 EXTENDED_ARG             1
+             3796 LOAD_CONST             366 ('rwhp')
+             3798 EXTENDED_ARG             1
+             3800 LOAD_CONST             420 (350)
+
+  770        3802 MAP_ADD                  1
+
+  773        3804 EXTENDED_ARG             1
+             3806 LOAD_CONST             367 ('vss_count')
+             3808 EXTENDED_ARG             1
+             3810 LOAD_CONST             267 (40)
+
+  770        3812 MAP_ADD                  1
+
+  774        3814 EXTENDED_ARG             1
+             3816 LOAD_CONST             368 ('idle_rpm')
+             3818 EXTENDED_ARG             1
+             3820 LOAD_CONST             400 (600)
+
+  770        3822 MAP_ADD                  1
+
+  774        3824 EXTENDED_ARG             1
+             3826 LOAD_CONST             370 ('stall_rpm')
+             3828 EXTENDED_ARG             1
+             3830 LOAD_CONST             421 (2000)
+
+  770        3832 MAP_ADD                  1
+
+  774        3834 EXTENDED_ARG             1
+             3836 LOAD_CONST             372 ('shift_rpm')
+             3838 EXTENDED_ARG             1
+             3840 LOAD_CONST             415 (5800)
+
+  770        3842 MAP_ADD                  1
+
+  775        3844 EXTENDED_ARG             1
+             3846 LOAD_CONST             374 ('downshift_rpm')
+             3848 EXTENDED_ARG             1
+             3850 LOAD_CONST             422 (4800)
+
+  770        3852 MAP_ADD                  1
+
+  775        3854 EXTENDED_ARG             1
+             3856 LOAD_CONST             376 ('min_tcc_rpm')
+             3858 EXTENDED_ARG             1
+             3860 LOAD_CONST             377 (1400)
+
+  770        3862 MAP_ADD                  1
+
+  776        3864 EXTENDED_ARG             1
+             3866 LOAD_CONST             378 ('min_tcc_gear')
+             3868 LOAD_CONST             202 (3)
+
+  770        3870 MAP_ADD                  1
+
+  776        3872 EXTENDED_ARG             1
+             3874 LOAD_CONST             380 ('accel_lock_gear')
+             3876 EXTENDED_ARG             1
+             3878 LOAD_CONST             417 (4)
+
+  770        3880 MAP_ADD                  1
+
+  776        3882 EXTENDED_ARG             1
+             3884 LOAD_CONST             381 ('wot_lock_gear')
+             3886 EXTENDED_ARG             1
+             3888 LOAD_CONST             409 (8)
+
+  770        3890 MAP_ADD                  1
+
+  777        3892 EXTENDED_ARG             1
+             3894 LOAD_CONST             382 ('tps_preset')
+             3896 LOAD_CONST              70 ('19+ T1XX L87 6.2 ETC')
+
+  770        3898 MAP_ADD                  1
+
+  778        3900 EXTENDED_ARG             1
+             3902 LOAD_CONST             383 ('spread_up')
+             3904 EXTENDED_ARG             1
+             3906 LOAD_CONST             423 (4.5)
+
+  770        3908 MAP_ADD                  1
+
+  778        3910 EXTENDED_ARG             1
+             3912 LOAD_CONST             334 (2.5)
+
+  779        3914 EXTENDED_ARG             1
+             3916 LOAD_CONST             334 (2.5)
+             3918 LOAD_CONST             200 (3.0)
+
+  780        3920 EXTENDED_ARG             1
+             3922 LOAD_CONST             287 ('rpm')
+             3924 LOAD_CONST             188 (2.0)
+             3926 EXTENDED_ARG             1
+             3928 LOAD_CONST             351 (0.35)
+
+  770        3930 EXTENDED_ARG             1
+             3932 LOAD_CONST             384 (('spread_lock', 'spread_lock_up', 'spread_unlock_dn', 'lead_mode', 'lead_value', 'down_time'))
+             3934 BUILD_CONST_KEY_MAP      6
+             3936 DICT_UPDATE              1
+
+  782        3938 BUILD_MAP                0
+
+  783        3940 EXTENDED_ARG             1
+             3942 LOAD_CONST             358 ('trans_name')
+             3944 EXTENDED_ARG             1
+             3946 LOAD_CONST             424 ('Allison 1000 6-Spd (2006-Current)')
+
+  782        3948 MAP_ADD                  1
+
+  784        3950 EXTENDED_ARG             1
+             3952 LOAD_CONST             360 ('tire_dia')
+             3954 LOAD_CONST             134 (33.0)
+
+  782        3956 MAP_ADD                  1
+
+  784        3958 EXTENDED_ARG             1
+             3960 LOAD_CONST             361 ('axle')
+             3962 EXTENDED_ARG             1
+             3964 LOAD_CONST             411 (3.73)
+
+  782        3966 MAP_ADD                  1
+
+  784        3968 EXTENDED_ARG             1
+             3970 LOAD_CONST             363 ('chain')
+             3972 LOAD_CONST             180 (1.0)
+
+  782        3974 MAP_ADD                  1
+
+  785        3976 EXTENDED_ARG             1
+             3978 LOAD_CONST             364 ('weight')
+             3980 EXTENDED_ARG             1
+             3982 LOAD_CONST             425 (7800)
+
+  782        3984 MAP_ADD                  1
+
+  785        3986 EXTENDED_ARG             1
+             3988 LOAD_CONST             366 ('rwhp')
+             3990 EXTENDED_ARG             1
+             3992 LOAD_CONST             315 (360)
+
+  782        3994 MAP_ADD                  1
+
+  785        3996 EXTENDED_ARG             1
+             3998 LOAD_CONST             367 ('vss_count')
+             4000 EXTENDED_ARG             1
+             4002 LOAD_CONST             267 (40)
+
+  782        4004 MAP_ADD                  1
+
+  786        4006 EXTENDED_ARG             1
+             4008 LOAD_CONST             368 ('idle_rpm')
+             4010 EXTENDED_ARG             1
+             4012 LOAD_CONST             309 (680)
+
+  782        4014 MAP_ADD                  1
+
+  786        4016 EXTENDED_ARG             1
+             4018 LOAD_CONST             370 ('stall_rpm')
+             4020 EXTENDED_ARG             1
+             4022 LOAD_CONST             414 (1800)
+
+  782        4024 MAP_ADD                  1
+
+  786        4026 EXTENDED_ARG             1
+             4028 LOAD_CONST             372 ('shift_rpm')
+             4030 EXTENDED_ARG             1
+             4032 LOAD_CONST             426 (3200)
+
+  782        4034 MAP_ADD                  1
+
+  787        4036 EXTENDED_ARG             1
+             4038 LOAD_CONST             374 ('downshift_rpm')
+             4040 EXTENDED_ARG             1
+             4042 LOAD_CONST             427 (2800)
+
+  782        4044 MAP_ADD                  1
+
+  787        4046 EXTENDED_ARG             1
+             4048 LOAD_CONST             376 ('min_tcc_rpm')
+             4050 EXTENDED_ARG             1
+             4052 LOAD_CONST             428 (1100)
+
+  782        4054 MAP_ADD                  1
+
+  788        4056 EXTENDED_ARG             1
+             4058 LOAD_CONST             378 ('min_tcc_gear')
+             4060 EXTENDED_ARG             1
+             4062 LOAD_CONST             379 (2)
+
+  782        4064 MAP_ADD                  1
+
+  788        4066 EXTENDED_ARG             1
+             4068 LOAD_CONST             380 ('accel_lock_gear')
+             4070 LOAD_CONST             202 (3)
+
+  782        4072 MAP_ADD                  1
+
+  788        4074 EXTENDED_ARG             1
+             4076 LOAD_CONST             381 ('wot_lock_gear')
+             4078 EXTENDED_ARG             1
+             4080 LOAD_CONST             417 (4)
+
+  782        4082 MAP_ADD                  1
+
+  789        4084 EXTENDED_ARG             1
+             4086 LOAD_CONST             382 ('tps_preset')
+             4088 EXTENDED_ARG             1
+             4090 LOAD_CONST             429 ('06-07 LBZ Duramax ETC')
+
+  782        4092 MAP_ADD                  1
+
+  790        4094 EXTENDED_ARG             1
+             4096 LOAD_CONST             383 ('spread_up')
+             4098 LOAD_CONST             200 (3.0)
+
+  782        4100 MAP_ADD                  1
+
+  790        4102 EXTENDED_ARG             1
+             4104 LOAD_CONST             334 (2.5)
+
+  791        4106 EXTENDED_ARG             1
+             4108 LOAD_CONST             334 (2.5)
+             4110 LOAD_CONST             200 (3.0)
+
+  792        4112 EXTENDED_ARG             1
+             4114 LOAD_CONST             287 ('rpm')
+             4116 LOAD_CONST             200 (3.0)
+             4118 LOAD_CONST             196 (0.5)
+
+  782        4120 EXTENDED_ARG             1
+             4122 LOAD_CONST             384 (('spread_lock', 'spread_lock_up', 'spread_unlock_dn', 'lead_mode', 'lead_value', 'down_time'))
+             4124 BUILD_CONST_KEY_MAP      6
+             4126 DICT_UPDATE              1
+
+  794        4128 BUILD_MAP                0
+
+  795        4130 EXTENDED_ARG             1
+             4132 LOAD_CONST             358 ('trans_name')
+             4134 EXTENDED_ARG             1
+             4136 LOAD_CONST             424 ('Allison 1000 6-Spd (2006-Current)')
+
+  794        4138 MAP_ADD                  1
+
+  796        4140 EXTENDED_ARG             1
+             4142 LOAD_CONST             360 ('tire_dia')
+             4144 LOAD_CONST             134 (33.0)
+
+  794        4146 MAP_ADD                  1
+
+  796        4148 EXTENDED_ARG             1
+             4150 LOAD_CONST             361 ('axle')
+             4152 EXTENDED_ARG             1
+             4154 LOAD_CONST             411 (3.73)
+
+  794        4156 MAP_ADD                  1
+
+  796        4158 EXTENDED_ARG             1
+             4160 LOAD_CONST             363 ('chain')
+             4162 LOAD_CONST             180 (1.0)
+
+  794        4164 MAP_ADD                  1
+
+  797        4166 EXTENDED_ARG             1
+             4168 LOAD_CONST             364 ('weight')
+             4170 EXTENDED_ARG             1
+             4172 LOAD_CONST             430 (8200)
+
+  794        4174 MAP_ADD                  1
+
+  797        4176 EXTENDED_ARG             1
+             4178 LOAD_CONST             366 ('rwhp')
+             4180 EXTENDED_ARG             1
+             4182 LOAD_CONST             431 (425)
+
+  794        4184 MAP_ADD                  1
+
+  797        4186 EXTENDED_ARG             1
+             4188 LOAD_CONST             367 ('vss_count')
+             4190 EXTENDED_ARG             1
+             4192 LOAD_CONST             267 (40)
+
+  794        4194 MAP_ADD                  1
+
+  798        4196 EXTENDED_ARG             1
+             4198 LOAD_CONST             368 ('idle_rpm')
+             4200 EXTENDED_ARG             1
+             4202 LOAD_CONST             309 (680)
+
+  794        4204 MAP_ADD                  1
+
+  798        4206 EXTENDED_ARG             1
+             4208 LOAD_CONST             370 ('stall_rpm')
+             4210 EXTENDED_ARG             1
+             4212 LOAD_CONST             432 (1900)
+
+  794        4214 MAP_ADD                  1
+
+  798        4216 EXTENDED_ARG             1
+             4218 LOAD_CONST             372 ('shift_rpm')
+             4220 EXTENDED_ARG             1
+             4222 LOAD_CONST             426 (3200)
+
+  794        4224 MAP_ADD                  1
+
+  799        4226 EXTENDED_ARG             1
+             4228 LOAD_CONST             374 ('downshift_rpm')
+             4230 EXTENDED_ARG             1
+             4232 LOAD_CONST             427 (2800)
+
+  794        4234 MAP_ADD                  1
+
+  799        4236 EXTENDED_ARG             1
+             4238 LOAD_CONST             376 ('min_tcc_rpm')
+             4240 EXTENDED_ARG             1
+             4242 LOAD_CONST             428 (1100)
+
+  794        4244 MAP_ADD                  1
+
+  800        4246 EXTENDED_ARG             1
+             4248 LOAD_CONST             378 ('min_tcc_gear')
+             4250 EXTENDED_ARG             1
+             4252 LOAD_CONST             379 (2)
+
+  794        4254 MAP_ADD                  1
+
+  800        4256 EXTENDED_ARG             1
+             4258 LOAD_CONST             380 ('accel_lock_gear')
+             4260 LOAD_CONST             202 (3)
+
+  794        4262 MAP_ADD                  1
+
+  800        4264 EXTENDED_ARG             1
+             4266 LOAD_CONST             381 ('wot_lock_gear')
+             4268 EXTENDED_ARG             1
+             4270 LOAD_CONST             417 (4)
+
+  794        4272 MAP_ADD                  1
+
+  801        4274 EXTENDED_ARG             1
+             4276 LOAD_CONST             382 ('tps_preset')
+             4278 EXTENDED_ARG             1
+             4280 LOAD_CONST             433 ('17+ L5P Duramax ETC')
+
+  794        4282 MAP_ADD                  1
+
+  802        4284 EXTENDED_ARG             1
+             4286 LOAD_CONST             383 ('spread_up')
+             4288 LOAD_CONST             200 (3.0)
+
+  794        4290 MAP_ADD                  1
+
+  802        4292 EXTENDED_ARG             1
+             4294 LOAD_CONST             334 (2.5)
+
+  803        4296 EXTENDED_ARG             1
+             4298 LOAD_CONST             334 (2.5)
+             4300 LOAD_CONST             200 (3.0)
+
+  804        4302 EXTENDED_ARG             1
+             4304 LOAD_CONST             287 ('rpm')
+             4306 LOAD_CONST             200 (3.0)
+             4308 LOAD_CONST             196 (0.5)
+
+  794        4310 EXTENDED_ARG             1
+             4312 LOAD_CONST             384 (('spread_lock', 'spread_lock_up', 'spread_unlock_dn', 'lead_mode', 'lead_value', 'down_time'))
+             4314 BUILD_CONST_KEY_MAP      6
+             4316 DICT_UPDATE              1
+
+  709        4318 EXTENDED_ARG             1
+             4320 LOAD_CONST             434 (('LS1 Camaro / Trans Am (4L60E)', 'LS3 Camaro SS (6L80)', 'LT1 Camaro SS / Vette C7 (8L90)', 'ZL1 / Vette ZR1 (10L90)', '5.3L / 6.0L Truck (4L60E)', 'L87 Silverado / Tahoe (10L80)', 'LBZ/LMM Duramax (Allison 6-spd)', 'L5P Duramax (Allison 6-spd)'))
+             4322 BUILD_CONST_KEY_MAP      8
+             4324 STORE_NAME             108 (STARTER_PROFILES)
+
+  814        4326 BUILD_MAP                0
+
+  816        4328 EXTENDED_ARG             1
+             4330 LOAD_CONST             359 ('4L60E (1993-2013)')
+             4332 BUILD_LIST               0
+             4334 EXTENDED_ARG             1
+             4336 LOAD_CONST             435 ((3.059, 1.625, 1.0, 0.696))
+             4338 LIST_EXTEND              1
+             4340 EXTENDED_ARG             1
+             4342 LOAD_CONST             436 ('RWD')
+             4344 EXTENDED_ARG             1
+             4346 LOAD_CONST             315 (360)
+             4348 EXTENDED_ARG             1
+             4350 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4352 BUILD_CONST_KEY_MAP      3
+
+  814        4354 MAP_ADD                  1
+
+  817        4356 EXTENDED_ARG             1
+             4358 LOAD_CONST             438 ('4L65E (2001-2013)')
+             4360 BUILD_LIST               0
+             4362 EXTENDED_ARG             1
+             4364 LOAD_CONST             435 ((3.059, 1.625, 1.0, 0.696))
+             4366 LIST_EXTEND              1
+             4368 EXTENDED_ARG             1
+             4370 LOAD_CONST             436 ('RWD')
+             4372 EXTENDED_ARG             1
+             4374 LOAD_CONST             389 (380)
+             4376 EXTENDED_ARG             1
+             4378 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4380 BUILD_CONST_KEY_MAP      3
+
+  814        4382 MAP_ADD                  1
+
+  818        4384 EXTENDED_ARG             1
+             4386 LOAD_CONST             439 ('4L70E (2006-2013)')
+             4388 BUILD_LIST               0
+             4390 EXTENDED_ARG             1
+             4392 LOAD_CONST             435 ((3.059, 1.625, 1.0, 0.696))
+             4394 LIST_EXTEND              1
+             4396 EXTENDED_ARG             1
+             4398 LOAD_CONST             436 ('RWD')
+             4400 EXTENDED_ARG             1
+             4402 LOAD_CONST             389 (380)
+             4404 EXTENDED_ARG             1
+             4406 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4408 BUILD_CONST_KEY_MAP      3
+
+  814        4410 MAP_ADD                  1
+
+  819        4412 EXTENDED_ARG             1
+             4414 LOAD_CONST             440 ('4L80E (1991-2013)')
+             4416 BUILD_LIST               0
+             4418 EXTENDED_ARG             1
+             4420 LOAD_CONST             441 ((2.482, 1.482, 1.0, 0.75))
+             4422 LIST_EXTEND              1
+             4424 EXTENDED_ARG             1
+             4426 LOAD_CONST             436 ('RWD')
+             4428 EXTENDED_ARG             1
+             4430 LOAD_CONST             442 (440)
+             4432 EXTENDED_ARG             1
+             4434 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4436 BUILD_CONST_KEY_MAP      3
+
+  814        4438 MAP_ADD                  1
+
+  820        4440 EXTENDED_ARG             1
+             4442 LOAD_CONST             443 ('4L85E (2002-2013)')
+             4444 BUILD_LIST               0
+             4446 EXTENDED_ARG             1
+             4448 LOAD_CONST             441 ((2.482, 1.482, 1.0, 0.75))
+             4450 LIST_EXTEND              1
+             4452 EXTENDED_ARG             1
+             4454 LOAD_CONST             436 ('RWD')
+             4456 EXTENDED_ARG             1
+             4458 LOAD_CONST             444 (460)
+             4460 EXTENDED_ARG             1
+             4462 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4464 BUILD_CONST_KEY_MAP      3
+
+  814        4466 MAP_ADD                  1
+
+  822        4468 EXTENDED_ARG             1
+             4470 LOAD_CONST             445 ('6L45 (2007-2013)')
+             4472 BUILD_LIST               0
+             4474 EXTENDED_ARG             1
+             4476 LOAD_CONST             446 ((4.06, 2.37, 1.55, 1.16, 0.85, 0.67))
+             4478 LIST_EXTEND              1
+             4480 EXTENDED_ARG             1
+             4482 LOAD_CONST             436 ('RWD')
+             4484 EXTENDED_ARG             1
+             4486 LOAD_CONST             324 (320)
+             4488 EXTENDED_ARG             1
+             4490 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4492 BUILD_CONST_KEY_MAP      3
+
+  814        4494 MAP_ADD                  1
+
+  823        4496 EXTENDED_ARG             1
+             4498 LOAD_CONST             447 ('6L50 (2007-Current)')
+             4500 BUILD_LIST               0
+             4502 EXTENDED_ARG             1
+             4504 LOAD_CONST             446 ((4.06, 2.37, 1.55, 1.16, 0.85, 0.67))
+             4506 LIST_EXTEND              1
+             4508 EXTENDED_ARG             1
+             4510 LOAD_CONST             436 ('RWD')
+             4512 EXTENDED_ARG             1
+             4514 LOAD_CONST             324 (320)
+             4516 EXTENDED_ARG             1
+             4518 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4520 BUILD_CONST_KEY_MAP      3
+
+  814        4522 MAP_ADD                  1
+
+  824        4524 EXTENDED_ARG             1
+             4526 LOAD_CONST             385 ('6L80 (2006-Current)')
+             4528 BUILD_LIST               0
+             4530 EXTENDED_ARG             1
+             4532 LOAD_CONST             448 ((4.027, 2.364, 1.532, 1.152, 0.852, 0.667))
+             4534 LIST_EXTEND              1
+             4536 EXTENDED_ARG             1
+             4538 LOAD_CONST             436 ('RWD')
+             4540 EXTENDED_ARG             1
+             4542 LOAD_CONST             442 (440)
+             4544 EXTENDED_ARG             1
+             4546 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4548 BUILD_CONST_KEY_MAP      3
+
+  814        4550 MAP_ADD                  1
+
+  825        4552 EXTENDED_ARG             1
+             4554 LOAD_CONST             449 ('6L90 (2007-Current)')
+             4556 BUILD_LIST               0
+             4558 EXTENDED_ARG             1
+             4560 LOAD_CONST             448 ((4.027, 2.364, 1.532, 1.152, 0.852, 0.667))
+             4562 LIST_EXTEND              1
+             4564 EXTENDED_ARG             1
+             4566 LOAD_CONST             436 ('RWD')
+             4568 LOAD_CONST             176 (500)
+             4570 EXTENDED_ARG             1
+             4572 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4574 BUILD_CONST_KEY_MAP      3
+
+  814        4576 MAP_ADD                  1
+
+  827        4578 EXTENDED_ARG             1
+             4580 LOAD_CONST             450 ('8L45 (2015-Current)')
+             4582 BUILD_LIST               0
+             4584 EXTENDED_ARG             1
+             4586 LOAD_CONST             451 ((4.62, 3.04, 2.07, 1.66, 1.26, 1.0, 0.85, 0.67))
+             4588 LIST_EXTEND              1
+             4590 EXTENDED_ARG             1
+             4592 LOAD_CONST             436 ('RWD')
+             4594 EXTENDED_ARG             1
+             4596 LOAD_CONST             452 (295)
+             4598 EXTENDED_ARG             1
+             4600 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4602 BUILD_CONST_KEY_MAP      3
+
+  814        4604 MAP_ADD                  1
+
+  828        4606 EXTENDED_ARG             1
+             4608 LOAD_CONST             395 ('8L90 (2014-Current)')
+             4610 BUILD_LIST               0
+             4612 EXTENDED_ARG             1
+             4614 LOAD_CONST             453 ((4.56, 2.97, 2.08, 1.69, 1.27, 1.0, 0.85, 0.65))
+             4616 LIST_EXTEND              1
+             4618 EXTENDED_ARG             1
+             4620 LOAD_CONST             436 ('RWD')
+             4622 EXTENDED_ARG             1
+             4624 LOAD_CONST             444 (460)
+             4626 EXTENDED_ARG             1
+             4628 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4630 BUILD_CONST_KEY_MAP      3
+
+  814        4632 MAP_ADD                  1
+
+  830        4634 EXTENDED_ARG             1
+             4636 LOAD_CONST             418 ('10L80 (2017-Current)')
+             4638 BUILD_LIST               0
+             4640 EXTENDED_ARG             1
+             4642 LOAD_CONST             454 ((4.696, 2.985, 2.146, 1.769, 1.52, 1.275, 1.0, 0.854, 0.689, 0.636))
+             4644 LIST_EXTEND              1
+             4646 EXTENDED_ARG             1
+             4648 LOAD_CONST             436 ('RWD')
+             4650 LOAD_CONST             176 (500)
+             4652 EXTENDED_ARG             1
+             4654 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4656 BUILD_CONST_KEY_MAP      3
+
+  814        4658 MAP_ADD                  1
+
+  831        4660 EXTENDED_ARG             1
+             4662 LOAD_CONST             405 ('10L90 (2017-Current)')
+             4664 BUILD_LIST               0
+             4666 EXTENDED_ARG             1
+             4668 LOAD_CONST             454 ((4.696, 2.985, 2.146, 1.769, 1.52, 1.275, 1.0, 0.854, 0.689, 0.636))
+             4670 LIST_EXTEND              1
+             4672 EXTENDED_ARG             1
+             4674 LOAD_CONST             436 ('RWD')
+             4676 EXTENDED_ARG             1
+             4678 LOAD_CONST             400 (600)
+             4680 EXTENDED_ARG             1
+             4682 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4684 BUILD_CONST_KEY_MAP      3
+
+  814        4686 MAP_ADD                  1
+
+  833        4688 EXTENDED_ARG             1
+             4690 LOAD_CONST             455 ('4T40E (1995-2005)')
+             4692 BUILD_LIST               0
+             4694 EXTENDED_ARG             1
+             4696 LOAD_CONST             456 ((2.95, 1.62, 1.0, 0.68))
+             4698 LIST_EXTEND              1
+             4700 EXTENDED_ARG             1
+             4702 LOAD_CONST             457 ('FWD')
+             4704 LOAD_CONST             184 (200)
+             4706 EXTENDED_ARG             1
+             4708 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4710 BUILD_CONST_KEY_MAP      3
+
+  814        4712 MAP_ADD                  1
+
+  834        4714 EXTENDED_ARG             1
+             4716 LOAD_CONST             458 ('4T45E (1997-2011)')
+             4718 BUILD_LIST               0
+             4720 EXTENDED_ARG             1
+             4722 LOAD_CONST             456 ((2.95, 1.62, 1.0, 0.68))
+             4724 LIST_EXTEND              1
+             4726 EXTENDED_ARG             1
+             4728 LOAD_CONST             457 ('FWD')
+             4730 LOAD_CONST             250 (220)
+             4732 EXTENDED_ARG             1
+             4734 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4736 BUILD_CONST_KEY_MAP      3
+
+  814        4738 MAP_ADD                  1
+
+  835        4740 EXTENDED_ARG             1
+             4742 LOAD_CONST             459 ('4T60E (1991-1999)')
+             4744 BUILD_LIST               0
+             4746 EXTENDED_ARG             1
+             4748 LOAD_CONST             460 ((2.921, 1.568, 1.0, 0.705))
+             4750 LIST_EXTEND              1
+             4752 EXTENDED_ARG             1
+             4754 LOAD_CONST             457 ('FWD')
+             4756 LOAD_CONST             184 (200)
+             4758 EXTENDED_ARG             1
+             4760 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4762 BUILD_CONST_KEY_MAP      3
+
+  814        4764 MAP_ADD                  1
+
+  836        4766 EXTENDED_ARG             1
+             4768 LOAD_CONST             461 ('4T65E (1997-2009)')
+             4770 BUILD_LIST               0
+             4772 EXTENDED_ARG             1
+             4774 LOAD_CONST             460 ((2.921, 1.568, 1.0, 0.705))
+             4776 LIST_EXTEND              1
+             4778 EXTENDED_ARG             1
+             4780 LOAD_CONST             457 ('FWD')
+             4782 EXTENDED_ARG             1
+             4784 LOAD_CONST             326 (240)
+             4786 EXTENDED_ARG             1
+             4788 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4790 BUILD_CONST_KEY_MAP      3
+
+  814        4792 MAP_ADD                  1
+
+  837        4794 BUILD_LIST               0
+             4796 EXTENDED_ARG             1
+             4798 LOAD_CONST             460 ((2.921, 1.568, 1.0, 0.705))
+             4800 LIST_EXTEND              1
+             4802 EXTENDED_ARG             1
+             4804 LOAD_CONST             457 ('FWD')
+             4806 EXTENDED_ARG             1
+             4808 LOAD_CONST             320 (280)
+             4810 EXTENDED_ARG             1
+             4812 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4814 BUILD_CONST_KEY_MAP      3
+
+  838        4816 BUILD_LIST               0
+             4818 EXTENDED_ARG             1
+             4820 LOAD_CONST             462 ((2.96, 1.63, 1.0, 0.68))
+             4822 LIST_EXTEND              1
+             4824 EXTENDED_ARG             1
+             4826 LOAD_CONST             457 ('FWD')
+             4828 EXTENDED_ARG             1
+             4830 LOAD_CONST             452 (295)
+             4832 EXTENDED_ARG             1
+             4834 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4836 BUILD_CONST_KEY_MAP      3
+
+  840        4838 BUILD_LIST               0
+             4840 EXTENDED_ARG             1
+             4842 LOAD_CONST             463 ((4.584, 2.964, 1.912, 1.446, 1.0, 0.746))
+             4844 LIST_EXTEND              1
+             4846 EXTENDED_ARG             1
+             4848 LOAD_CONST             457 ('FWD')
+             4850 EXTENDED_ARG             1
+             4852 LOAD_CONST             464 (160)
+             4854 EXTENDED_ARG             1
+             4856 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4858 BUILD_CONST_KEY_MAP      3
+
+  841        4860 BUILD_LIST               0
+             4862 EXTENDED_ARG             1
+             4864 LOAD_CONST             463 ((4.584, 2.964, 1.912, 1.446, 1.0, 0.746))
+             4866 LIST_EXTEND              1
+             4868 EXTENDED_ARG             1
+             4870 LOAD_CONST             457 ('FWD')
+             4872 EXTENDED_ARG             1
+             4874 LOAD_CONST             465 (184)
+             4876 EXTENDED_ARG             1
+             4878 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4880 BUILD_CONST_KEY_MAP      3
+
+  842        4882 BUILD_LIST               0
+             4884 EXTENDED_ARG             1
+             4886 LOAD_CONST             463 ((4.584, 2.964, 1.912, 1.446, 1.0, 0.746))
+             4888 LIST_EXTEND              1
+             4890 EXTENDED_ARG             1
+             4892 LOAD_CONST             457 ('FWD')
+             4894 EXTENDED_ARG             1
+             4896 LOAD_CONST             326 (240)
+             4898 EXTENDED_ARG             1
+             4900 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4902 BUILD_CONST_KEY_MAP      3
+
+  843        4904 BUILD_LIST               0
+             4906 EXTENDED_ARG             1
+             4908 LOAD_CONST             466 ((4.484, 2.872, 1.842, 1.414, 1.0, 0.742))
+             4910 LIST_EXTEND              1
+             4912 EXTENDED_ARG             1
+             4914 LOAD_CONST             457 ('FWD')
+             4916 EXTENDED_ARG             1
+             4918 LOAD_CONST             318 (260)
+             4920 EXTENDED_ARG             1
+             4922 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4924 BUILD_CONST_KEY_MAP      3
+
+  844        4926 BUILD_LIST               0
+             4928 EXTENDED_ARG             1
+             4930 LOAD_CONST             466 ((4.484, 2.872, 1.842, 1.414, 1.0, 0.742))
+             4932 LIST_EXTEND              1
+             4934 EXTENDED_ARG             1
+             4936 LOAD_CONST             457 ('FWD')
+             4938 EXTENDED_ARG             1
+             4940 LOAD_CONST             320 (280)
+             4942 EXTENDED_ARG             1
+             4944 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4946 BUILD_CONST_KEY_MAP      3
+
+  845        4948 BUILD_LIST               0
+             4950 EXTENDED_ARG             1
+             4952 LOAD_CONST             466 ((4.484, 2.872, 1.842, 1.414, 1.0, 0.742))
+             4954 LIST_EXTEND              1
+             4956 EXTENDED_ARG             1
+             4958 LOAD_CONST             457 ('FWD')
+             4960 EXTENDED_ARG             1
+             4962 LOAD_CONST             467 (290)
+             4964 EXTENDED_ARG             1
+             4966 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4968 BUILD_CONST_KEY_MAP      3
+
+  846        4970 BUILD_LIST               0
+             4972 EXTENDED_ARG             1
+             4974 LOAD_CONST             466 ((4.484, 2.872, 1.842, 1.414, 1.0, 0.742))
+             4976 LIST_EXTEND              1
+             4978 EXTENDED_ARG             1
+             4980 LOAD_CONST             457 ('FWD')
+             4982 EXTENDED_ARG             1
+             4984 LOAD_CONST             468 (330)
+             4986 EXTENDED_ARG             1
+             4988 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             4990 BUILD_CONST_KEY_MAP      3
+
+  848        4992 BUILD_LIST               0
+             4994 EXTENDED_ARG             1
+             4996 LOAD_CONST             469 ((4.69, 3.31, 3.01, 2.45, 1.92, 1.45, 1.0, 0.75, 0.62))
+             4998 LIST_EXTEND              1
+             5000 EXTENDED_ARG             1
+             5002 LOAD_CONST             457 ('FWD')
+             5004 EXTENDED_ARG             1
+             5006 LOAD_CONST             326 (240)
+             5008 EXTENDED_ARG             1
+             5010 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             5012 BUILD_CONST_KEY_MAP      3
+
+  849        5014 BUILD_LIST               0
+             5016 EXTENDED_ARG             1
+             5018 LOAD_CONST             469 ((4.69, 3.31, 3.01, 2.45, 1.92, 1.45, 1.0, 0.75, 0.62))
+             5020 LIST_EXTEND              1
+             5022 EXTENDED_ARG             1
+             5024 LOAD_CONST             457 ('FWD')
+             5026 EXTENDED_ARG             1
+             5028 LOAD_CONST             318 (260)
+             5030 EXTENDED_ARG             1
+             5032 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             5034 BUILD_CONST_KEY_MAP      3
+
+  850        5036 BUILD_LIST               0
+             5038 EXTENDED_ARG             1
+             5040 LOAD_CONST             469 ((4.69, 3.31, 3.01, 2.45, 1.92, 1.45, 1.0, 0.75, 0.62))
+             5042 LIST_EXTEND              1
+             5044 EXTENDED_ARG             1
+             5046 LOAD_CONST             457 ('FWD')
+             5048 EXTENDED_ARG             1
+             5050 LOAD_CONST             320 (280)
+             5052 EXTENDED_ARG             1
+             5054 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             5056 BUILD_CONST_KEY_MAP      3
+
+  851        5058 BUILD_LIST               0
+             5060 EXTENDED_ARG             1
+             5062 LOAD_CONST             469 ((4.69, 3.31, 3.01, 2.45, 1.92, 1.45, 1.0, 0.75, 0.62))
+             5064 LIST_EXTEND              1
+             5066 EXTENDED_ARG             1
+             5068 LOAD_CONST             457 ('FWD')
+             5070 EXTENDED_ARG             1
+             5072 LOAD_CONST             452 (295)
+             5074 EXTENDED_ARG             1
+             5076 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             5078 BUILD_CONST_KEY_MAP      3
+
+  853        5080 BUILD_LIST               0
+             5082 EXTENDED_ARG             1
+             5084 LOAD_CONST             470 ((3.1, 1.81, 1.41, 1.0, 0.71))
+             5086 LIST_EXTEND              1
+             5088 EXTENDED_ARG             1
+             5090 LOAD_CONST             436 ('RWD')
+             5092 EXTENDED_ARG             1
+             5094 LOAD_CONST             471 (620)
+             5096 EXTENDED_ARG             1
+             5098 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             5100 BUILD_CONST_KEY_MAP      3
+
+  854        5102 BUILD_LIST               0
+             5104 EXTENDED_ARG             1
+             5106 LOAD_CONST             472 ((3.1, 1.81, 1.41, 1.0, 0.71, 0.61))
+             5108 LIST_EXTEND              1
+             5110 EXTENDED_ARG             1
+             5112 LOAD_CONST             436 ('RWD')
+             5114 EXTENDED_ARG             1
+             5116 LOAD_CONST             473 (765)
+             5118 EXTENDED_ARG             1
+             5120 LOAD_CONST             437 (('ratios', 'type', 'torque'))
+             5122 BUILD_CONST_KEY_MAP      3
+
+  814        5124 EXTENDED_ARG             1
+             5126 LOAD_CONST             474 (('4T65E-HD (2000-2009)', '4T80E (1993-2005)', '6T30 (2010-Current)', '6T40 (2008-Current)', '6T45 (2008-Current)', '6T50 (2008-Current)', '6T70 (2007-Current)', '6T75 (2007-Current)', '6T80 (2009-Current, HD)', '9T45 (2017-Current)', '9T50 (2017-Current)', '9T60 (2017-Current)', '9T65 (2017-Current)', 'Allison 1000 5-Spd (2001-2005)', 'Allison 1000 6-Spd (2006-Current)'))
+             5128 BUILD_CONST_KEY_MAP     15
+             5130 DICT_UPDATE              1
+             5132 STORE_NAME             109 (TRANS_DB)
+
+  859        5134 PUSH_NULL
+             5136 LOAD_NAME               46 (QColor)
+             5138 EXTENDED_ARG             1
+             5140 LOAD_CONST             267 (40)
+             5142 LOAD_CONST             253 (100)
+             5144 EXTENDED_ARG             1
+             5146 LOAD_CONST             464 (160)
+             5148 CALL                     3
+
+  860        5156 PUSH_NULL
+             5158 LOAD_NAME               46 (QColor)
+             5160 EXTENDED_ARG             1
+             5162 LOAD_CONST             267 (40)
+             5164 LOAD_CONST             251 (130)
+             5166 LOAD_CONST             253 (100)
+             5168 CALL                     3
+
+  861        5176 PUSH_NULL
+             5178 LOAD_NAME               46 (QColor)
+             5180 EXTENDED_ARG             1
+             5182 LOAD_CONST             295 (180)
+             5184 LOAD_CONST             251 (130)
+             5186 EXTENDED_ARG             1
+             5188 LOAD_CONST             267 (40)
+             5190 CALL                     3
+
+  862        5198 PUSH_NULL
+             5200 LOAD_NAME               46 (QColor)
+             5202 EXTENDED_ARG             1
+             5204 LOAD_CONST             475 (140)
+             5206 EXTENDED_ARG             1
+             5208 LOAD_CONST             293 (80)
+             5210 EXTENDED_ARG             1
+             5212 LOAD_CONST             464 (160)
+             5214 CALL                     3
+
+  863        5222 PUSH_NULL
+             5224 LOAD_NAME               46 (QColor)
+             5226 EXTENDED_ARG             1
+             5228 LOAD_CONST             464 (160)
+             5230 EXTENDED_ARG             1
+             5232 LOAD_CONST             301 (60)
+             5234 EXTENDED_ARG             1
+             5236 LOAD_CONST             301 (60)
+             5238 CALL                     3
+
+  864        5246 PUSH_NULL
+             5248 LOAD_NAME               46 (QColor)
+             5250 EXTENDED_ARG             1
+             5252 LOAD_CONST             293 (80)
+             5254 LOAD_CONST             251 (130)
+             5256 EXTENDED_ARG             1
+             5258 LOAD_CONST             475 (140)
+             5260 CALL                     3
+
+  865        5268 PUSH_NULL
+             5270 LOAD_NAME               46 (QColor)
+             5272 LOAD_CONST             249 (120)
+             5274 LOAD_CONST             253 (100)
+             5276 EXTENDED_ARG             1
+             5278 LOAD_CONST             299 (50)
+             5280 CALL                     3
+
+  866        5288 PUSH_NULL
+             5290 LOAD_NAME               46 (QColor)
+             5292 EXTENDED_ARG             1
+             5294 LOAD_CONST             464 (160)
+             5296 EXTENDED_ARG             1
+             5298 LOAD_CONST             268 (110)
+             5300 LOAD_CONST             251 (130)
+             5302 CALL                     3
+
+  867        5310 PUSH_NULL
+             5312 LOAD_NAME               46 (QColor)
+             5314 EXTENDED_ARG             1
+             5316 LOAD_CONST             297 (70)
+             5318 EXTENDED_ARG             1
+             5320 LOAD_CONST             268 (110)
+             5322 EXTENDED_ARG             1
+             5324 LOAD_CONST             297 (70)
+             5326 CALL                     3
+
+  858        5334 BUILD_LIST               9
+             5336 STORE_NAME             110 (GEAR_COLORS)
+
+  905        5338 PUSH_NULL
+             5340 LOAD_BUILD_CLASS
+             5342 EXTENDED_ARG             1
+             5344 LOAD_CONST             476 (<code object XDFAxis at 0x73ab02a10300, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 905>)
+             5346 MAKE_FUNCTION            0
+             5348 EXTENDED_ARG             1
+             5350 LOAD_CONST             477 ('XDFAxis')
+             5352 CALL                     2
+             5360 STORE_NAME             111 (XDFAxis)
+
+  962        5362 PUSH_NULL
+             5364 LOAD_BUILD_CLASS
+             5366 EXTENDED_ARG             1
+             5368 LOAD_CONST             478 (<code object XDFParameter at 0x73ab02a1c110, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 962>)
+             5370 MAKE_FUNCTION            0
+             5372 EXTENDED_ARG             1
+             5374 LOAD_CONST             479 ('XDFParameter')
+             5376 CALL                     2
+             5384 STORE_NAME             112 (XDFParameter)
+
+  993        5386 PUSH_NULL
+             5388 LOAD_BUILD_CLASS
+             5390 EXTENDED_ARG             1
+             5392 LOAD_CONST             480 (<code object XDFDefinition at 0x73ab034ab050, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 993>)
+             5394 MAKE_FUNCTION            0
+             5396 EXTENDED_ARG             1
+             5398 LOAD_CONST             481 ('XDFDefinition')
+             5400 CALL                     2
+             5408 STORE_NAME             113 (XDFDefinition)
+
+ 1160        5410 PUSH_NULL
+             5412 LOAD_BUILD_CLASS
+             5414 EXTENDED_ARG             1
+             5416 LOAD_CONST             482 (<code object BinReader at 0x73ab02a05f00, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1160>)
+             5418 MAKE_FUNCTION            0
+             5420 EXTENDED_ARG             1
+             5422 LOAD_CONST             483 ('BinReader')
+             5424 CALL                     2
+             5432 STORE_NAME             114 (BinReader)
+
+ 1214        5434 PUSH_NULL
+             5436 LOAD_BUILD_CLASS
+             5438 EXTENDED_ARG             1
+             5440 LOAD_CONST             484 (<code object BoostCurve at 0x73ab02a06010, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1214>)
+             5442 MAKE_FUNCTION            0
+             5444 EXTENDED_ARG             1
+             5446 LOAD_CONST             485 ('BoostCurve')
+             5448 CALL                     2
+             5456 STORE_NAME             115 (BoostCurve)
+
+ 1293        5458 PUSH_NULL
+             5460 LOAD_BUILD_CLASS
+             5462 EXTENDED_ARG             1
+             5464 LOAD_CONST             486 (<code object TorqueCurve at 0x73ab02b3eb50, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1293>)
+             5466 MAKE_FUNCTION            0
+             5468 EXTENDED_ARG             1
+             5470 LOAD_CONST             487 ('TorqueCurve')
+             5472 CALL                     2
+             5480 STORE_NAME             116 (TorqueCurve)
+
+ 1499        5482 PUSH_NULL
+             5484 LOAD_BUILD_CLASS
+             5486 EXTENDED_ARG             1
+             5488 LOAD_CONST             488 (<code object LogImporter at 0x73ab03546040, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1499>)
+             5490 MAKE_FUNCTION            0
+             5492 EXTENDED_ARG             1
+             5494 LOAD_CONST             489 ('LogImporter')
+             5496 CALL                     2
+             5504 STORE_NAME             117 (LogImporter)
+
+ 1863        5506 PUSH_NULL
+             5508 LOAD_BUILD_CLASS
+             5510 EXTENDED_ARG             1
+             5512 LOAD_CONST             490 (<code object DragSimulator at 0x73ab02b7fbd0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 1863>)
+             5514 MAKE_FUNCTION            0
+             5516 EXTENDED_ARG             1
+             5518 LOAD_CONST             491 ('DragSimulator')
+             5520 CALL                     2
+             5528 STORE_NAME             118 (DragSimulator)
+
+ 2106        5530 PUSH_NULL
+             5532 LOAD_BUILD_CLASS
+             5534 EXTENDED_ARG             1
+             5536 LOAD_CONST             492 (<code object CalcEngine at 0x73ab02bd9140, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2106>)
+             5538 MAKE_FUNCTION            0
+             5540 EXTENDED_ARG             1
+             5542 LOAD_CONST             493 ('CalcEngine')
+             5544 CALL                     2
+             5552 STORE_NAME             119 (CalcEngine)
+
+ 2485        5554 PUSH_NULL
+             5556 LOAD_BUILD_CLASS
+             5558 EXTENDED_ARG             1
+             5560 LOAD_CONST             494 (<code object ExportDialog at 0x73ab02a3c770, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2485>)
+             5562 MAKE_FUNCTION            0
+             5564 EXTENDED_ARG             1
+             5566 LOAD_CONST             495 ('ExportDialog')
+             5568 LOAD_NAME               24 (QDialog)
+             5570 CALL                     3
+             5578 STORE_NAME             120 (ExportDialog)
+
+ 3695        5580 PUSH_NULL
+             5582 LOAD_BUILD_CLASS
+             5584 EXTENDED_ARG             1
+             5586 LOAD_CONST             496 (<code object ProfileMetadataDialog at 0x73ab02a11c50, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3695>)
+             5588 MAKE_FUNCTION            0
+             5590 EXTENDED_ARG             1
+             5592 LOAD_CONST             497 ('ProfileMetadataDialog')
+             5594 LOAD_NAME               24 (QDialog)
+             5596 CALL                     3
+             5604 STORE_NAME             121 (ProfileMetadataDialog)
+
+ 3778        5606 PUSH_NULL
+             5608 LOAD_BUILD_CLASS
+             5610 EXTENDED_ARG             1
+             5612 LOAD_CONST             498 (<code object LockupConfigDialog at 0x73ab02a11f20, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3778>)
+             5614 MAKE_FUNCTION            0
+             5616 EXTENDED_ARG             1
+             5618 LOAD_CONST             499 ('LockupConfigDialog')
+             5620 LOAD_NAME               24 (QDialog)
+             5622 CALL                     3
+             5630 STORE_NAME             122 (LockupConfigDialog)
+
+ 3849        5632 PUSH_NULL
+             5634 LOAD_BUILD_CLASS
+             5636 EXTENDED_ARG             1
+             5638 LOAD_CONST             500 (<code object DragRunPlot at 0x73ab02a12010, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3849>)
+             5640 MAKE_FUNCTION            0
+             5642 EXTENDED_ARG             1
+             5644 LOAD_CONST             501 ('DragRunPlot')
+             5646 LOAD_NAME               10 (QWidget)
+             5648 CALL                     3
+             5656 STORE_NAME             123 (DragRunPlot)
+
+ 3970        5658 PUSH_NULL
+             5660 LOAD_BUILD_CLASS
+             5662 EXTENDED_ARG             1
+             5664 LOAD_CONST             502 (<code object LogImportWorker at 0x73ab02a4cc90, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3970>)
+             5666 MAKE_FUNCTION            0
+             5668 EXTENDED_ARG             1
+             5670 LOAD_CONST             503 ('LogImportWorker')
+             5672 LOAD_NAME               41 (QObject)
+             5674 CALL                     3
+             5682 STORE_NAME             124 (LogImportWorker)
+
+ 4001        5684 PUSH_NULL
+             5686 LOAD_BUILD_CLASS
+             5688 EXTENDED_ARG             1
+             5690 LOAD_CONST             504 (<code object LogImportDialog at 0x73ab02a06ab0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4001>)
+             5692 MAKE_FUNCTION            0
+             5694 EXTENDED_ARG             1
+             5696 LOAD_CONST             505 ('LogImportDialog')
+             5698 LOAD_NAME               24 (QDialog)
+             5700 CALL                     3
+             5708 STORE_NAME             125 (LogImportDialog)
+
+ 4324        5710 PUSH_NULL
+             5712 LOAD_BUILD_CLASS
+             5714 EXTENDED_ARG             1
+             5716 LOAD_CONST             506 (<code object PerfSimDialog at 0x73ab02a123d0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4324>)
+             5718 MAKE_FUNCTION            0
+             5720 EXTENDED_ARG             1
+             5722 LOAD_CONST             507 ('PerfSimDialog')
+             5724 LOAD_NAME               24 (QDialog)
+             5726 CALL                     3
+             5734 STORE_NAME             126 (PerfSimDialog)
+
+ 4539        5736 PUSH_NULL
+             5738 LOAD_BUILD_CLASS
+             5740 EXTENDED_ARG             1
+             5742 LOAD_CONST             508 (<code object TorqueCurveDialog at 0x73ab02a6c030, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4539>)
+             5744 MAKE_FUNCTION            0
+             5746 EXTENDED_ARG             1
+             5748 LOAD_CONST             509 ('TorqueCurveDialog')
+             5750 LOAD_NAME               24 (QDialog)
+             5752 CALL                     3
+             5760 STORE_NAME             127 (TorqueCurveDialog)
+
+ 4790        5762 PUSH_NULL
+             5764 LOAD_BUILD_CLASS
+             5766 EXTENDED_ARG             1
+             5768 LOAD_CONST             510 (<code object BinXdfDialog at 0x73ab02a06ef0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 4790>)
+             5770 MAKE_FUNCTION            0
+             5772 EXTENDED_ARG             1
+             5774 LOAD_CONST             511 ('BinXdfDialog')
+             5776 LOAD_NAME               24 (QDialog)
+             5778 CALL                     3
+             5786 STORE_NAME             128 (BinXdfDialog)
+
+ 5086        5788 PUSH_NULL
+             5790 LOAD_BUILD_CLASS
+             5792 EXTENDED_ARG             2
+             5794 LOAD_CONST             512 (<code object DelayDialog at 0x73ab02a12b50, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5086>)
+             5796 MAKE_FUNCTION            0
+             5798 EXTENDED_ARG             2
+             5800 LOAD_CONST             513 ('DelayDialog')
+             5802 LOAD_NAME               24 (QDialog)
+             5804 CALL                     3
+             5812 STORE_NAME             129 (DelayDialog)
+
+ 5140        5814 EXTENDED_ARG             2
+             5816 LOAD_CONST             514 ((3000, 9000))
+
+ 5141        5818 EXTENDED_ARG             2
+             5820 LOAD_CONST             515 ((0.5, 4.0))
+
+ 5142        5822 EXTENDED_ARG             2
+             5824 LOAD_CONST             516 ((0.0, 10.0))
+
+ 5143        5826 EXTENDED_ARG             2
+             5828 LOAD_CONST             516 ((0.0, 10.0))
+
+ 5144        5830 EXTENDED_ARG             2
+             5832 LOAD_CONST             517 ((-20, 50))
+
+ 5145        5834 EXTENDED_ARG             2
+             5836 LOAD_CONST             518 ((0.0, 8.0))
+
+ 5146        5838 EXTENDED_ARG             2
+             5840 LOAD_CONST             519 ((1, 10))
+
+ 5147        5842 EXTENDED_ARG             2
+             5844 LOAD_CONST             519 ((1, 10))
+
+ 5148        5846 EXTENDED_ARG             2
+             5848 LOAD_CONST             520 ((0.5, 15.0))
+
+ 5149        5850 EXTENDED_ARG             2
+             5852 LOAD_CONST             521 ((0.5, 10.0))
+
+ 5150        5854 EXTENDED_ARG             2
+             5856 LOAD_CONST             521 ((0.5, 10.0))
+
+ 5151        5858 EXTENDED_ARG             2
+             5860 LOAD_CONST             521 ((0.5, 10.0))
+
+ 5139        5862 EXTENDED_ARG             2
+             5864 LOAD_CONST             522 (('shift_rpm', 'tps_factor', 'up_firmness', 'down_firmness', 'tps_offset', 'lead_value', 'accel_lock_gear', 'wot_lock_gear', 'spread_up', 'spread_unlock_dn', 'spread_lock', 'spread_lock_up'))
+             5866 BUILD_CONST_KEY_MAP     12
+             5868 STORE_NAME             130 (_INTENT_CLAMPS)
+
+ 5154        5870 EXTENDED_ARG             2
+             5872 LOAD_CONST             523 (<code object intent_to_overrides at 0x30c2c590, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5154>)
+             5874 MAKE_FUNCTION            0
+             5876 STORE_NAME             131 (intent_to_overrides)
+
+ 5184        5878 EXTENDED_ARG             2
+             5880 LOAD_CONST             553 ((300, 1e-05, 0.15))
+             5882 EXTENDED_ARG             2
+             5884 LOAD_CONST             524 (<code object nelder_mead at 0x30c2c810, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5184>)
+             5886 MAKE_FUNCTION            1 (defaults)
+             5888 STORE_NAME             132 (nelder_mead)
+
+ 5215        5890 EXTENDED_ARG             2
+             5892 LOAD_CONST             553 ((300, 1e-05, 0.15))
+             5894 EXTENDED_ARG             2
+             5896 LOAD_CONST             525 (<code object _nelder_mead_pure at 0x30c3ad00, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5215>)
+             5898 MAKE_FUNCTION            1 (defaults)
+             5900 STORE_NAME             133 (_nelder_mead_pure)
+
+ 5271        5902 PUSH_NULL
+             5904 LOAD_BUILD_CLASS
+             5906 EXTENDED_ARG             2
+             5908 LOAD_CONST             526 (<code object ModeOverridesDialog at 0x73ab02a4d6b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5271>)
+             5910 MAKE_FUNCTION            0
+             5912 EXTENDED_ARG             2
+             5914 LOAD_CONST             527 ('ModeOverridesDialog')
+             5916 LOAD_NAME               24 (QDialog)
+             5918 CALL                     3
+             5926 STORE_NAME             134 (ModeOverridesDialog)
+
+ 5485        5928 PUSH_NULL
+             5930 LOAD_BUILD_CLASS
+             5932 EXTENDED_ARG             2
+             5934 LOAD_CONST             528 (<code object ImportTableDialog at 0x73ab02a64730, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5485>)
+             5936 MAKE_FUNCTION            0
+             5938 EXTENDED_ARG             2
+             5940 LOAD_CONST             529 ('ImportTableDialog')
+             5942 LOAD_NAME               24 (QDialog)
+             5944 CALL                     3
+             5952 STORE_NAME             135 (ImportTableDialog)
+
+ 5619        5954 PUSH_NULL
+             5956 LOAD_BUILD_CLASS
+             5958 EXTENDED_ARG             2
+             5960 LOAD_CONST             530 (<code object ShiftCurvePlot at 0x30c41b40, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5619>)
+             5962 MAKE_FUNCTION            0
+             5964 EXTENDED_ARG             2
+             5966 LOAD_CONST             531 ('ShiftCurvePlot')
+             5968 LOAD_NAME               10 (QWidget)
+             5970 CALL                     3
+             5978 STORE_NAME             136 (ShiftCurvePlot)
+
+ 5805        5980 PUSH_NULL
+             5982 LOAD_BUILD_CLASS
+             5984 EXTENDED_ARG             2
+             5986 LOAD_CONST             532 (<code object PressureEngine at 0x73ab02a7c030, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 5805>)
+             5988 MAKE_FUNCTION            0
+             5990 EXTENDED_ARG             2
+             5992 LOAD_CONST             533 ('PressureEngine')
+             5994 CALL                     2
+             6002 STORE_NAME             137 (PressureEngine)
+
+ 6308        6004 PUSH_NULL
+             6006 LOAD_BUILD_CLASS
+             6008 EXTENDED_ARG             2
+             6010 LOAD_CONST             534 (<code object ShiftTimeEngine at 0x73ab02a1db50, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6308>)
+             6012 MAKE_FUNCTION            0
+             6014 EXTENDED_ARG             2
+             6016 LOAD_CONST             535 ('ShiftTimeEngine')
+             6018 CALL                     2
+             6026 STORE_NAME             138 (ShiftTimeEngine)
+
+ 6341        6028 PUSH_NULL
+             6030 LOAD_BUILD_CLASS
+             6032 EXTENDED_ARG             2
+             6034 LOAD_CONST             536 (<code object TCCDutyEngine at 0x73ab02a1dc30, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6341>)
+             6036 MAKE_FUNCTION            0
+             6038 EXTENDED_ARG             2
+             6040 LOAD_CONST             537 ('TCCDutyEngine')
+             6042 CALL                     2
+             6050 STORE_NAME             139 (TCCDutyEngine)
+
+ 6379        6052 PUSH_NULL
+             6054 LOAD_BUILD_CLASS
+             6056 EXTENDED_ARG             2
+             6058 LOAD_CONST             538 (<code object PressureTab at 0x73ab02a356b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6379>)
+             6060 MAKE_FUNCTION            0
+             6062 EXTENDED_ARG             2
+             6064 LOAD_CONST             539 ('PressureTab')
+             6066 LOAD_NAME               10 (QWidget)
+             6068 CALL                     3
+             6076 STORE_NAME             140 (PressureTab)
+
+ 6859        6078 PUSH_NULL
+             6080 LOAD_BUILD_CLASS
+             6082 EXTENDED_ARG             2
+             6084 LOAD_CONST             540 (<code object CompareDialog at 0x73ab02a133c0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6859>)
+             6086 MAKE_FUNCTION            0
+             6088 EXTENDED_ARG             2
+             6090 LOAD_CONST             541 ('CompareDialog')
+             6092 LOAD_NAME               24 (QDialog)
+             6094 CALL                     3
+             6102 STORE_NAME             141 (CompareDialog)
+
+ 6978        6104 BUILD_LIST               0
+             6106 EXTENDED_ARG             2
+             6108 LOAD_CONST             542 ((2.41, 2.56, 2.73, 2.93, 3.08, 3.23, 3.42, 3.55, 3.73, 3.92, 4.1, 4.3, 4.56, 4.88))
+             6110 LIST_EXTEND              1
+             6112 STORE_NAME             142 (COMMON_AXLE_RATIOS)
+
+ 6982        6114 PUSH_NULL
+             6116 LOAD_BUILD_CLASS
+             6118 EXTENDED_ARG             2
+             6120 LOAD_CONST             543 (<code object GearCalculatorPlot at 0x73ab02a64f30, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6982>)
+             6122 MAKE_FUNCTION            0
+             6124 EXTENDED_ARG             2
+             6126 LOAD_CONST             544 ('GearCalculatorPlot')
+             6128 LOAD_NAME               10 (QWidget)
+             6130 CALL                     3
+             6138 STORE_NAME             143 (GearCalculatorPlot)
+
+ 7123        6140 PUSH_NULL
+             6142 LOAD_BUILD_CLASS
+             6144 EXTENDED_ARG             2
+             6146 LOAD_CONST             545 (<code object GearCalculatorTab at 0x73ab02a4e310, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7123>)
+             6148 MAKE_FUNCTION            0
+             6150 EXTENDED_ARG             2
+             6152 LOAD_CONST             546 ('GearCalculatorTab')
+             6154 LOAD_NAME               10 (QWidget)
+             6156 CALL                     3
+             6164 STORE_NAME             144 (GearCalculatorTab)
+
+ 7412        6166 PUSH_NULL
+             6168 LOAD_BUILD_CLASS
+             6170 EXTENDED_ARG             2
+             6172 LOAD_CONST             547 (<code object Theme at 0x73ab02bda100, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7412>)
+             6174 MAKE_FUNCTION            0
+             6176 EXTENDED_ARG             2
+             6178 LOAD_CONST             548 ('Theme')
+             6180 CALL                     2
+             6188 STORE_NAME             145 (Theme)
+
+ 7505        6190 PUSH_NULL
+             6192 LOAD_BUILD_CLASS
+             6194 EXTENDED_ARG             2
+             6196 LOAD_CONST             549 (<code object TransStudio at 0x30c89c30, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7505>)
+             6198 MAKE_FUNCTION            0
+             6200 EXTENDED_ARG             2
+             6202 LOAD_CONST             550 ('TransStudio')
+             6204 LOAD_NAME                9 (QMainWindow)
+             6206 CALL                     3
+             6214 STORE_NAME             146 (TransStudio)
+
+10672        6216 EXTENDED_ARG             2
+             6218 LOAD_CONST             551 (<code object main at 0x73ab02a9d530, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 10672>)
+             6220 MAKE_FUNCTION            0
+             6222 STORE_NAME             147 (main)
+
+10683        6224 LOAD_NAME              148 (__name__)
+             6226 EXTENDED_ARG             2
+             6228 LOAD_CONST             552 ('__main__')
+             6230 COMPARE_OP              40 (==)
+             6234 POP_JUMP_IF_FALSE        8 (to 6252)
+
+10684        6236 PUSH_NULL
+             6238 LOAD_NAME              147 (main)
+             6240 CALL                     0
+             6248 POP_TOP
+             6250 RETURN_CONST             2 (None)
+
+10683     >> 6252 RETURN_CONST             2 (None)

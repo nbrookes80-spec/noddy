@@ -1,0 +1,82 @@
+9459           0 RESUME                   0
+
+9461           2 LOAD_GLOBAL              0 (os)
+              12 LOAD_ATTR                2 (path)
+              32 LOAD_ATTR                5 (NULL|self + exists)
+              52 LOAD_FAST                0 (self)
+              54 LOAD_ATTR                6 (_custom_intents_path)
+              74 CALL                     1
+              82 POP_JUMP_IF_TRUE         1 (to 86)
+
+9462          84 RETURN_CONST             1 (None)
+
+9463     >>   86 NOP
+
+9464          88 LOAD_GLOBAL              9 (NULL + open)
+              98 LOAD_FAST                0 (self)
+             100 LOAD_ATTR                6 (_custom_intents_path)
+             120 CALL                     1
+             128 BEFORE_WITH
+             130 STORE_FAST               1 (f)
+
+9465         132 LOAD_GLOBAL             11 (NULL + json)
+             142 LOAD_ATTR               12 (load)
+             162 LOAD_FAST                1 (f)
+             164 CALL                     1
+             172 STORE_FAST               2 (user_intents)
+
+9464         174 LOAD_CONST               1 (None)
+             176 LOAD_CONST               1 (None)
+             178 LOAD_CONST               1 (None)
+             180 CALL                     2
+             188 POP_TOP
+
+9466     >>  190 LOAD_GLOBAL             15 (NULL + isinstance)
+             200 LOAD_FAST_CHECK          2 (user_intents)
+             202 LOAD_GLOBAL             16 (dict)
+             212 CALL                     2
+             220 POP_JUMP_IF_FALSE       22 (to 266)
+
+9467         222 LOAD_GLOBAL             18 (INTENT_PRESETS)
+             232 LOAD_ATTR               21 (NULL|self + update)
+             252 LOAD_FAST                2 (user_intents)
+             254 CALL                     1
+             262 POP_TOP
+             264 RETURN_CONST             1 (None)
+
+9466     >>  266 RETURN_CONST             1 (None)
+
+9464     >>  268 PUSH_EXC_INFO
+             270 WITH_EXCEPT_START
+             272 POP_JUMP_IF_TRUE         1 (to 276)
+             274 RERAISE                  2
+         >>  276 POP_TOP
+             278 POP_EXCEPT
+             280 POP_TOP
+             282 POP_TOP
+             284 JUMP_BACKWARD           48 (to 190)
+         >>  286 COPY                     3
+             288 POP_EXCEPT
+             290 RERAISE                  1
+         >>  292 PUSH_EXC_INFO
+
+9468         294 LOAD_GLOBAL             22 (Exception)
+             304 CHECK_EXC_MATCH
+             306 POP_JUMP_IF_FALSE        3 (to 314)
+             308 POP_TOP
+
+9469         310 POP_EXCEPT
+             312 RETURN_CONST             1 (None)
+
+9468     >>  314 RERAISE                  0
+         >>  316 COPY                     3
+             318 POP_EXCEPT
+             320 RERAISE                  1
+ExceptionTable:
+  88 to 128 -> 292 [0]
+  130 to 172 -> 268 [1] lasti
+  174 to 262 -> 292 [0]
+  268 to 276 -> 286 [3] lasti
+  278 to 290 -> 292 [0]
+  292 to 308 -> 316 [1] lasti
+  314 to 314 -> 316 [1] lasti

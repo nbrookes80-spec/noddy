@@ -1,0 +1,43 @@
+1451           0 RESUME                   0
+
+1453           2 LOAD_FAST                1 (d)
+               4 POP_JUMP_IF_FALSE        4 (to 14)
+               6 LOAD_CONST               1 ('points')
+               8 LOAD_FAST                1 (d)
+              10 CONTAINS_OP              1
+              12 POP_JUMP_IF_FALSE        7 (to 28)
+
+1454     >>   14 PUSH_NULL
+              16 LOAD_FAST                0 (cls)
+              18 CALL                     0
+              26 RETURN_VALUE
+
+1455     >>   28 PUSH_NULL
+              30 LOAD_FAST                0 (cls)
+              32 LOAD_FAST                1 (d)
+              34 LOAD_CONST               1 ('points')
+              36 BINARY_SUBSCR
+              40 GET_ITER
+              42 LOAD_FAST_AND_CLEAR      2 (p)
+              44 SWAP                     2
+              46 BUILD_LIST               0
+              48 SWAP                     2
+         >>   50 FOR_ITER                13 (to 80)
+              54 STORE_FAST               2 (p)
+              56 LOAD_GLOBAL              1 (NULL + tuple)
+              66 LOAD_FAST                2 (p)
+              68 CALL                     1
+              76 LIST_APPEND              2
+              78 JUMP_BACKWARD           15 (to 50)
+         >>   80 END_FOR
+              82 SWAP                     2
+              84 STORE_FAST               2 (p)
+              86 CALL                     1
+              94 RETURN_VALUE
+         >>   96 SWAP                     2
+              98 POP_TOP
+             100 SWAP                     2
+             102 STORE_FAST               2 (p)
+             104 RERAISE                  0
+ExceptionTable:
+  46 to 80 -> 96 [4]

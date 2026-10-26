@@ -1,0 +1,275 @@
+9206           0 RESUME                   0
+
+9225           2 LOAD_FAST                1 (res)
+               4 LOAD_CONST               1 ('upshift')
+               6 BINARY_SUBSCR
+              10 STORE_FAST               5 (up)
+
+9226          12 LOAD_FAST                1 (res)
+              14 LOAD_CONST               2 ('downshift')
+              16 BINARY_SUBSCR
+              20 STORE_FAST               6 (dn)
+
+9227          22 LOAD_FAST                1 (res)
+              24 LOAD_CONST               3 ('tcc_lock')
+              26 BINARY_SUBSCR
+              30 STORE_FAST               7 (lock)
+
+9228          32 LOAD_FAST                1 (res)
+              34 LOAD_CONST               4 ('tcc_unlock')
+              36 BINARY_SUBSCR
+              40 STORE_FAST               8 (unlock)
+
+9229          42 LOAD_FAST                4 (cfg)
+              44 LOAD_CONST               5 ('spread_up')
+              46 BINARY_SUBSCR
+              50 STORE_FAST               9 (spread_up)
+
+9230          52 LOAD_FAST                4 (cfg)
+              54 LOAD_CONST               6 ('spread_lock')
+              56 BINARY_SUBSCR
+              60 STORE_FAST              10 (spread_lock)
+
+9232          62 LOAD_GLOBAL              1 (NULL + QColor)
+              72 LOAD_CONST               7 (160)
+              74 LOAD_CONST               8 (30)
+              76 LOAD_CONST               8 (30)
+              78 CALL                     3
+              86 STORE_FAST              11 (ERROR_BG)
+
+9233          88 LOAD_GLOBAL              1 (NULL + QColor)
+              98 LOAD_CONST               9 (180)
+             100 LOAD_CONST              10 (120)
+             102 LOAD_CONST              11 (20)
+             104 CALL                     3
+             112 STORE_FAST              12 (WARN_BG)
+
+9234         114 LOAD_GLOBAL              1 (NULL + QColor)
+             124 LOAD_CONST              12 (255)
+             126 LOAD_CONST              12 (255)
+             128 LOAD_CONST              12 (255)
+             130 CALL                     3
+             138 STORE_FAST              13 (ERROR_FG)
+
+9235         140 LOAD_GLOBAL              1 (NULL + QColor)
+             150 LOAD_CONST              12 (255)
+             152 LOAD_CONST              12 (255)
+             154 LOAD_CONST              12 (255)
+             156 CALL                     3
+             164 STORE_FAST              14 (WARN_FG)
+
+9237         166 LOAD_CONST              32 (('',))
+             168 LOAD_CONST              13 (<code object paint at 0x73ab02a71230, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 9237>)
+             170 MAKE_FUNCTION            1 (defaults)
+             172 STORE_FAST              15 (paint)
+
+9247         174 LOAD_GLOBAL              3 (NULL + range)
+             184 LOAD_FAST                3 (n_shifts)
+             186 CALL                     1
+             194 GET_ITER
+         >>  196 FOR_ITER               176 (to 552)
+             200 STORE_FAST              16 (g)
+
+9248         202 LOAD_GLOBAL              3 (NULL + range)
+             212 LOAD_GLOBAL              4 (TPS_COLS)
+             222 CALL                     1
+             230 GET_ITER
+         >>  232 FOR_ITER               156 (to 548)
+             236 STORE_FAST              17 (c)
+
+9249         238 LOAD_FAST                5 (up)
+             240 LOAD_FAST               16 (g)
+             242 BINARY_SUBSCR
+             246 LOAD_FAST               17 (c)
+             248 BINARY_SUBSCR
+             252 STORE_FAST              18 (u)
+
+9250         254 LOAD_FAST                6 (dn)
+             256 LOAD_FAST               16 (g)
+             258 BINARY_SUBSCR
+             262 LOAD_FAST               17 (c)
+             264 BINARY_SUBSCR
+             268 STORE_FAST              19 (d)
+
+9251         270 LOAD_FAST               18 (u)
+             272 LOAD_CONST              14 (0)
+             274 COMPARE_OP               2 (<)
+             278 POP_JUMP_IF_TRUE         5 (to 290)
+             280 LOAD_FAST               19 (d)
+             282 LOAD_CONST              14 (0)
+             284 COMPARE_OP               2 (<)
+             288 POP_JUMP_IF_FALSE       41 (to 372)
+
+9252     >>  290 PUSH_NULL
+             292 LOAD_FAST               15 (paint)
+             294 LOAD_FAST               18 (u)
+             296 LOAD_CONST              14 (0)
+             298 COMPARE_OP               2 (<)
+             302 POP_JUMP_IF_FALSE       12 (to 328)
+             304 LOAD_FAST                0 (self)
+             306 LOAD_ATTR                6 (grid_up)
+             326 JUMP_FORWARD            11 (to 350)
+         >>  328 LOAD_FAST                0 (self)
+             330 LOAD_ATTR                8 (grid_dn)
+         >>  350 LOAD_FAST               16 (g)
+             352 LOAD_FAST               17 (c)
+
+9253         354 LOAD_FAST               11 (ERROR_BG)
+             356 LOAD_FAST               13 (ERROR_FG)
+             358 LOAD_CONST              15 ('Negative speed — check ratio/RPM')
+
+9252         360 CALL                     6
+             368 POP_TOP
+
+9254         370 JUMP_BACKWARD           70 (to 232)
+
+9255     >>  372 LOAD_FAST               18 (u)
+             374 LOAD_CONST              16 (200)
+             376 COMPARE_OP              68 (>)
+             380 POP_JUMP_IF_FALSE       27 (to 436)
+
+9256         382 PUSH_NULL
+             384 LOAD_FAST               15 (paint)
+             386 LOAD_FAST                0 (self)
+             388 LOAD_ATTR                6 (grid_up)
+             408 LOAD_FAST               16 (g)
+             410 LOAD_FAST               17 (c)
+             412 LOAD_FAST               12 (WARN_BG)
+             414 LOAD_FAST               14 (WARN_FG)
+
+9257         416 LOAD_FAST               18 (u)
+             418 LOAD_CONST              17 ('.0f')
+             420 FORMAT_VALUE             4 (with format)
+             422 LOAD_CONST              18 (' MPH is very high — verify tire/axle/ratio')
+             424 BUILD_STRING             2
+
+9256         426 CALL                     6
+             434 POP_TOP
+
+9260     >>  436 LOAD_FAST               19 (d)
+             438 LOAD_FAST               18 (u)
+             440 LOAD_FAST                9 (spread_up)
+             442 BINARY_OP               10 (-)
+             446 LOAD_CONST              19 (0.1)
+             448 BINARY_OP                0 (+)
+             452 COMPARE_OP              68 (>)
+             456 POP_JUMP_IF_TRUE         1 (to 460)
+             458 JUMP_BACKWARD          114 (to 232)
+
+9261     >>  460 PUSH_NULL
+             462 LOAD_FAST               15 (paint)
+             464 LOAD_FAST                0 (self)
+             466 LOAD_ATTR                8 (grid_dn)
+             486 LOAD_FAST               16 (g)
+             488 LOAD_FAST               17 (c)
+             490 LOAD_FAST               11 (ERROR_BG)
+             492 LOAD_FAST               13 (ERROR_FG)
+
+9262         494 LOAD_CONST              20 ('Downshift ')
+             496 LOAD_FAST               19 (d)
+             498 LOAD_CONST              21 ('.1f')
+             500 FORMAT_VALUE             4 (with format)
+             502 LOAD_CONST              22 (' ≥ Upshift ')
+             504 LOAD_FAST               18 (u)
+             506 LOAD_CONST              21 ('.1f')
+             508 FORMAT_VALUE             4 (with format)
+             510 LOAD_CONST              23 (' - spread ')
+
+9263         512 LOAD_FAST                9 (spread_up)
+             514 LOAD_CONST              21 ('.1f')
+             516 FORMAT_VALUE             4 (with format)
+             518 LOAD_CONST              24 (' = ')
+             520 LOAD_FAST               18 (u)
+             522 LOAD_FAST                9 (spread_up)
+             524 BINARY_OP               10 (-)
+             528 LOAD_CONST              21 ('.1f')
+             530 FORMAT_VALUE             4 (with format)
+             532 LOAD_CONST              25 (' (illegal)')
+
+9262         534 BUILD_STRING             9
+
+9261         536 CALL                     6
+             544 POP_TOP
+             546 JUMP_BACKWARD          158 (to 232)
+
+9248     >>  548 END_FOR
+             550 JUMP_BACKWARD          178 (to 196)
+
+9247     >>  552 END_FOR
+
+9272         554 LOAD_GLOBAL              3 (NULL + range)
+             564 LOAD_FAST                2 (n)
+             566 CALL                     1
+             574 GET_ITER
+         >>  576 FOR_ITER                90 (to 760)
+             580 STORE_FAST              16 (g)
+
+9273         582 LOAD_GLOBAL              3 (NULL + range)
+             592 LOAD_GLOBAL              4 (TPS_COLS)
+             602 CALL                     1
+             610 GET_ITER
+         >>  612 FOR_ITER                70 (to 756)
+             616 STORE_FAST              17 (c)
+
+9274         618 LOAD_FAST                7 (lock)
+             620 LOAD_FAST               16 (g)
+             622 BINARY_SUBSCR
+             626 LOAD_FAST               17 (c)
+             628 BINARY_SUBSCR
+             632 STORE_FAST              20 (l)
+
+9275         634 LOAD_FAST                8 (unlock)
+             636 LOAD_FAST               16 (g)
+             638 BINARY_SUBSCR
+             642 LOAD_FAST               17 (c)
+             644 BINARY_SUBSCR
+             648 STORE_FAST              18 (u)
+
+9276         650 LOAD_FAST               20 (l)
+             652 LOAD_CONST              26 (254.0)
+             654 COMPARE_OP              92 (>=)
+             658 POP_JUMP_IF_TRUE         5 (to 670)
+             660 LOAD_FAST               18 (u)
+             662 LOAD_CONST              26 (254.0)
+             664 COMPARE_OP              92 (>=)
+             668 POP_JUMP_IF_FALSE        1 (to 672)
+
+9277     >>  670 JUMP_BACKWARD           30 (to 612)
+
+9281     >>  672 LOAD_FAST               20 (l)
+             674 LOAD_FAST               18 (u)
+             676 LOAD_CONST              27 (0.05)
+             678 BINARY_OP                0 (+)
+             682 COMPARE_OP               2 (<)
+             686 POP_JUMP_IF_TRUE         1 (to 690)
+             688 JUMP_BACKWARD           39 (to 612)
+
+9282     >>  690 PUSH_NULL
+             692 LOAD_FAST               15 (paint)
+             694 LOAD_FAST                0 (self)
+             696 LOAD_ATTR               10 (grid_lock)
+             716 LOAD_FAST               16 (g)
+             718 LOAD_FAST               17 (c)
+             720 LOAD_FAST               11 (ERROR_BG)
+             722 LOAD_FAST               13 (ERROR_FG)
+
+9283         724 LOAD_CONST              28 ('Lock ')
+             726 LOAD_FAST               20 (l)
+             728 LOAD_CONST              21 ('.1f')
+             730 FORMAT_VALUE             4 (with format)
+             732 LOAD_CONST              29 (' ≤ Unlock ')
+             734 LOAD_FAST               18 (u)
+             736 LOAD_CONST              21 ('.1f')
+             738 FORMAT_VALUE             4 (with format)
+             740 LOAD_CONST              30 (' — no hysteresis (TCC will oscillate)')
+             742 BUILD_STRING             5
+
+9282         744 CALL                     6
+             752 POP_TOP
+             754 JUMP_BACKWARD           72 (to 612)
+
+9273     >>  756 END_FOR
+             758 JUMP_BACKWARD           92 (to 576)
+
+9272     >>  760 END_FOR
+             762 RETURN_CONST            31 (None)

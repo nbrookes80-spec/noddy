@@ -1,0 +1,53 @@
+               0 MAKE_CELL                0 (__class__)
+
+7123           2 RESUME                   0
+               4 LOAD_NAME                0 (__name__)
+               6 STORE_NAME               1 (__module__)
+               8 LOAD_CONST               0 ('GearCalculatorTab')
+              10 STORE_NAME               2 (__qualname__)
+
+7124          12 LOAD_CONST               1 ('Side-by-side: input controls + comparison table + plot.\n    Pulls trans gears, tire, redline from the main window via callback.')
+              14 STORE_NAME               3 (__doc__)
+
+7126          16 LOAD_CONST              11 ((None,))
+              18 LOAD_CLOSURE             0 (__class__)
+              20 BUILD_TUPLE              1
+              22 LOAD_CONST               2 (<code object __init__ at 0x30c54d60, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7126>)
+              24 MAKE_FUNCTION            9 (defaults, closure)
+              26 STORE_NAME               4 (__init__)
+
+7236          28 LOAD_CONST               3 (<code object _dsb at 0x73ab02a707b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7236>)
+              30 MAKE_FUNCTION            0
+              32 STORE_NAME               5 (_dsb)
+
+7244          34 LOAD_CONST               4 (<code object _isb at 0x73ab02bd9fb0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7244>)
+              36 MAKE_FUNCTION            0
+              38 STORE_NAME               6 (_isb)
+
+7251          40 LOAD_CONST               5 (<code object set_trans at 0x73ab02a3d250, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7251>)
+              42 MAKE_FUNCTION            0
+              44 STORE_NAME               7 (set_trans)
+
+7263          46 LOAD_CONST               6 (<code object set_current_axle at 0x30c55ce0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7263>)
+              48 MAKE_FUNCTION            0
+              50 STORE_NAME               8 (set_current_axle)
+
+7273          52 LOAD_CONST               7 (<code object _refresh at 0x30c42d80, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7273>)
+              54 MAKE_FUNCTION            0
+              56 STORE_NAME               9 (_refresh)
+
+7368          58 LOAD_CONST               8 (<code object _pick_best at 0x30c43760, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7368>)
+              60 MAKE_FUNCTION            0
+              62 STORE_NAME              10 (_pick_best)
+
+7388          64 LOAD_CONST               9 (<code object _on_table_selection at 0x73ab02bf1a30, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7388>)
+              66 MAKE_FUNCTION            0
+              68 STORE_NAME              11 (_on_table_selection)
+
+7398          70 LOAD_CONST              10 (<code object _on_apply at 0x73ab02a41f10, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 7398>)
+              72 MAKE_FUNCTION            0
+              74 STORE_NAME              12 (_on_apply)
+              76 LOAD_CLOSURE             0 (__class__)
+              78 COPY                     1
+              80 STORE_NAME              13 (__classcell__)
+              82 RETURN_VALUE

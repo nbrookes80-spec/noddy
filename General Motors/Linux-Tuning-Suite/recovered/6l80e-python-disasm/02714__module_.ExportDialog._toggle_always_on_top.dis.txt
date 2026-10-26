@@ -1,0 +1,16 @@
+2714           0 RESUME                   0
+
+2715           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                1 (NULL|self + setWindowFlag)
+              24 LOAD_GLOBAL              2 (Qt)
+              34 LOAD_ATTR                4 (WindowType)
+              54 LOAD_ATTR                6 (WindowStaysOnTopHint)
+              74 LOAD_FAST                1 (on)
+              76 CALL                     2
+              84 POP_TOP
+
+2716          86 LOAD_FAST                0 (self)
+              88 LOAD_ATTR                9 (NULL|self + show)
+             108 CALL                     0
+             116 POP_TOP
+             118 RETURN_CONST             0 (None)

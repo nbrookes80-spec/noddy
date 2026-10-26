@@ -1,0 +1,57 @@
+6518           0 RESUME                   0
+
+6520           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (table_combo)
+              24 LOAD_ATTR                3 (NULL|self + blockSignals)
+              44 LOAD_CONST               1 (True)
+              46 CALL                     1
+              54 POP_TOP
+
+6521          56 LOAD_FAST                0 (self)
+              58 LOAD_ATTR                0 (table_combo)
+              78 LOAD_ATTR                5 (NULL|self + clear)
+              98 CALL                     0
+             106 POP_TOP
+
+6522         108 LOAD_FAST                0 (self)
+             110 LOAD_ATTR                6 (is_4spd)
+             130 POP_JUMP_IF_FALSE       30 (to 192)
+
+6523         132 LOAD_FAST                0 (self)
+             134 LOAD_ATTR                0 (table_combo)
+             154 LOAD_ATTR                9 (NULL|self + addItems)
+             174 BUILD_LIST               0
+             176 LOAD_CONST               2 (('Base Shift Pressure', 'Brake Shift Pressure', 'Desired Shift Time', 'TCC DC Maximum', 'Force Motor Current'))
+             178 LIST_EXTEND              1
+             180 CALL                     1
+             188 POP_TOP
+             190 JUMP_FORWARD            59 (to 310)
+
+6531     >>  192 LOAD_CONST               3 ('Base Shift Pressure (6+ spd master)')
+             194 BUILD_LIST               1
+             196 STORE_FAST               1 (items)
+
+6532         198 LOAD_FAST                0 (self)
+             200 LOAD_ATTR               10 (tcc_apply_tables)
+             220 POP_JUMP_IF_FALSE       17 (to 256)
+
+6533         222 LOAD_FAST                1 (items)
+             224 LOAD_ATTR               13 (NULL|self + append)
+             244 LOAD_CONST               4 ('TCC Apply Pressure Ramp')
+             246 CALL                     1
+             254 POP_TOP
+
+6534     >>  256 LOAD_FAST                0 (self)
+             258 LOAD_ATTR                0 (table_combo)
+             278 LOAD_ATTR                9 (NULL|self + addItems)
+             298 LOAD_FAST                1 (items)
+             300 CALL                     1
+             308 POP_TOP
+
+6535     >>  310 LOAD_FAST                0 (self)
+             312 LOAD_ATTR                0 (table_combo)
+             332 LOAD_ATTR                3 (NULL|self + blockSignals)
+             352 LOAD_CONST               5 (False)
+             354 CALL                     1
+             362 POP_TOP
+             364 RETURN_CONST             6 (None)

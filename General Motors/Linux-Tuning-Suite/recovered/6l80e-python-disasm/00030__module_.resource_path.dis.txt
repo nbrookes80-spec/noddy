@@ -1,0 +1,39 @@
+ 30           0 RESUME                   0
+
+ 32           2 NOP
+
+ 33           4 LOAD_GLOBAL              0 (sys)
+             14 LOAD_ATTR                2 (_MEIPASS)
+             34 STORE_FAST               1 (base_path)
+
+ 36     >>   36 LOAD_GLOBAL              6 (os)
+             46 LOAD_ATTR                8 (path)
+             66 LOAD_ATTR               13 (NULL|self + join)
+             86 LOAD_FAST                1 (base_path)
+             88 LOAD_FAST                0 (relative_path)
+             90 CALL                     2
+             98 RETURN_VALUE
+        >>  100 PUSH_EXC_INFO
+
+ 34         102 LOAD_GLOBAL              4 (Exception)
+            112 CHECK_EXC_MATCH
+            114 POP_JUMP_IF_FALSE       34 (to 184)
+            116 POP_TOP
+
+ 35         118 LOAD_GLOBAL              6 (os)
+            128 LOAD_ATTR                8 (path)
+            148 LOAD_ATTR               11 (NULL|self + abspath)
+            168 LOAD_CONST               1 ('.')
+            170 CALL                     1
+            178 STORE_FAST               1 (base_path)
+            180 POP_EXCEPT
+            182 JUMP_BACKWARD           74 (to 36)
+
+ 34     >>  184 RERAISE                  0
+        >>  186 COPY                     3
+            188 POP_EXCEPT
+            190 RERAISE                  1
+ExceptionTable:
+  4 to 34 -> 100 [0]
+  100 to 178 -> 186 [1] lasti
+  184 to 184 -> 186 [1] lasti

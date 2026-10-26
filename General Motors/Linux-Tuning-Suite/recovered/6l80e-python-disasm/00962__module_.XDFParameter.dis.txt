@@ -1,0 +1,17 @@
+962           0 RESUME                   0
+              2 LOAD_NAME                0 (__name__)
+              4 STORE_NAME               1 (__module__)
+              6 LOAD_CONST               0 ('XDFParameter')
+              8 STORE_NAME               2 (__qualname__)
+
+963          10 LOAD_CONST               1 ('A scalar or table from an XDF definition.')
+             12 STORE_NAME               3 (__doc__)
+
+964          14 LOAD_CONST               2 (<code object __init__ at 0x73ab02bd8810, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 964>)
+             16 MAKE_FUNCTION            0
+             18 STORE_NAME               4 (__init__)
+
+975          20 LOAD_CONST               3 (<code object read at 0x30b580b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 975>)
+             22 MAKE_FUNCTION            0
+             24 STORE_NAME               5 (read)
+             26 RETURN_CONST             4 (None)

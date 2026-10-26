@@ -1,0 +1,11 @@
+6631           0 RESUME                   0
+
+6632           2 LOAD_FAST                1 (unit)
+               4 LOAD_FAST                0 (self)
+               6 STORE_ATTR               0 (unit)
+
+6633          16 LOAD_FAST                0 (self)
+              18 LOAD_ATTR                3 (NULL|self + _refresh)
+              38 CALL                     0
+              46 POP_TOP
+              48 RETURN_CONST             0 (None)

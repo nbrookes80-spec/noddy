@@ -1,0 +1,30 @@
+2822           0 RESUME                   0
+
+2823           2 LOAD_GLOBAL              1 (NULL + hasattr)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_CONST               1 ('fspd_mode_buttons')
+              16 CALL                     2
+              24 POP_JUMP_IF_FALSE       51 (to 128)
+
+2824          26 LOAD_FAST                0 (self)
+              28 LOAD_ATTR                2 (fspd_mode_buttons)
+              48 GET_ITER
+         >>   50 FOR_ITER                35 (to 124)
+              54 UNPACK_SEQUENCE          2
+              58 STORE_FAST               1 (mode)
+              60 STORE_FAST               2 (btn)
+
+2825          62 LOAD_FAST                2 (btn)
+              64 LOAD_ATTR                5 (NULL|self + setChecked)
+              84 LOAD_FAST                1 (mode)
+              86 LOAD_FAST                0 (self)
+              88 LOAD_ATTR                6 (current_4spd_mode)
+             108 COMPARE_OP              40 (==)
+             112 CALL                     1
+             120 POP_TOP
+             122 JUMP_BACKWARD           37 (to 50)
+
+2824     >>  124 END_FOR
+             126 RETURN_CONST             0 (None)
+
+2823     >>  128 RETURN_CONST             0 (None)

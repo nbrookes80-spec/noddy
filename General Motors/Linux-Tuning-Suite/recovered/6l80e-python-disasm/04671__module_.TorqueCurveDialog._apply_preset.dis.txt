@@ -1,0 +1,30 @@
+4671           0 RESUME                   0
+
+4672           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (PRESETS)
+              24 LOAD_ATTR                3 (NULL|self + get)
+              44 LOAD_FAST                1 (name)
+              46 CALL                     1
+              54 STORE_FAST               2 (preset)
+
+4673          56 LOAD_FAST                2 (preset)
+              58 POP_JUMP_IF_NOT_NONE     1 (to 62)
+
+4674          60 RETURN_CONST             0 (None)
+
+4675     >>   62 LOAD_GLOBAL              5 (NULL + TorqueCurve)
+              72 LOAD_FAST                2 (preset)
+              74 CALL                     1
+              82 LOAD_FAST                0 (self)
+              84 STORE_ATTR               3 (curve)
+
+4676          94 LOAD_FAST                0 (self)
+              96 LOAD_ATTR                9 (NULL|self + _load_curve_into_table)
+             116 CALL                     0
+             124 POP_TOP
+
+4677         126 LOAD_FAST                0 (self)
+             128 LOAD_ATTR               11 (NULL|self + _update_summary)
+             148 CALL                     0
+             156 POP_TOP
+             158 RETURN_CONST             0 (None)

@@ -1,0 +1,47 @@
+9352           0 RESUME                   0
+
+9353           2 LOAD_GLOBAL              1 (NULL + len)
+              12 LOAD_GLOBAL              2 (TRANS_DB)
+              22 LOAD_FAST                0 (self)
+              24 LOAD_ATTR                4 (trans)
+              44 LOAD_ATTR                7 (NULL|self + currentText)
+              64 CALL                     0
+              72 BINARY_SUBSCR
+              76 LOAD_CONST               1 ('ratios')
+              78 BINARY_SUBSCR
+              82 CALL                     1
+              90 STORE_FAST               1 (n)
+
+9354          92 LOAD_GLOBAL              9 (NULL + DelayDialog)
+             102 LOAD_FAST                0 (self)
+             104 LOAD_FAST                1 (n)
+             106 LOAD_CONST               2 (1)
+             108 BINARY_OP               10 (-)
+             112 LOAD_FAST                0 (self)
+             114 LOAD_ATTR               10 (shift_delays)
+             134 LOAD_CONST               0 (None)
+             136 LOAD_FAST                1 (n)
+             138 LOAD_CONST               2 (1)
+             140 BINARY_OP               10 (-)
+             144 BINARY_SLICE
+             146 CALL                     3
+             154 STORE_FAST               2 (dlg)
+
+9355         156 LOAD_FAST                2 (dlg)
+             158 LOAD_ATTR               13 (NULL|self + exec)
+             178 CALL                     0
+             186 POP_JUMP_IF_FALSE       33 (to 254)
+
+9356         188 LOAD_FAST                2 (dlg)
+             190 LOAD_ATTR               15 (NULL|self + get_delays)
+             210 CALL                     0
+             218 LOAD_FAST                0 (self)
+             220 LOAD_ATTR               10 (shift_delays)
+             240 LOAD_CONST               0 (None)
+             242 LOAD_FAST                1 (n)
+             244 LOAD_CONST               2 (1)
+             246 BINARY_OP               10 (-)
+             250 STORE_SLICE
+             252 RETURN_CONST             0 (None)
+
+9355     >>  254 RETURN_CONST             0 (None)

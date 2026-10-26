@@ -1,0 +1,179 @@
+               0 MAKE_CELL                0 (__class__)
+
+2485           2 RESUME                   0
+               4 LOAD_NAME                0 (__name__)
+               6 STORE_NAME               1 (__module__)
+               8 LOAD_CONST               0 ('ExportDialog')
+              10 STORE_NAME               2 (__qualname__)
+
+2486          12 LOAD_CONST               1 ('\n      - Left: Speedometer Cal (Gen III/IV variants with computed VSS values)\n      - Right: Shift Tables cycle (Previous/Next), 2 Column WOT, Copy Table\n      - Heatmap visualization (white -> royal blue gradient by intensity)\n    ')
+              14 STORE_NAME               3 (__doc__)
+
+2509          16 LOAD_NAME                4 (staticmethod)
+
+2510          18 LOAD_CONST               2 (<code object _detect_tcm_era at 0x73ab02a4c030, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2509>)
+              20 MAKE_FUNCTION            0
+
+2509          22 CALL                     0
+
+2510          30 STORE_NAME               5 (_detect_tcm_era)
+
+2524          32 BUILD_LIST               0
+              34 LOAD_CONST               3 (('1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th'))
+              36 LIST_EXTEND              1
+              38 STORE_NAME               6 (ORDINAL)
+
+2527          40 LOAD_CONST               4 (<code object _build_table_list at 0x30c12cb0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2527>)
+              42 MAKE_FUNCTION            0
+              44 STORE_NAME               7 (_build_table_list)
+
+2615          46 BUILD_LIST               0
+              48 LOAD_CONST               5 (('Main Shift Table', 'WOT Shift Table', 'WOT RPM Table', 'TCC Table', 'TCC WOT Table'))
+              50 LIST_EXTEND              1
+              52 STORE_NAME               8 (TABLE_NAMES)
+
+2621          54 NOP
+
+2622          56 NOP
+
+2623          58 NOP
+
+2624          60 NOP
+
+2625          62 NOP
+
+2620          64 LOAD_CONST              38 ((None, None, None, None, None, None, 400, None, None, None))
+              66 LOAD_CLOSURE             0 (__class__)
+              68 BUILD_TUPLE              1
+              70 LOAD_CONST               6 (<code object __init__ at 0x30c145d0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2620>)
+              72 MAKE_FUNCTION            9 (defaults, closure)
+              74 STORE_NAME               9 (__init__)
+
+2700          76 LOAD_CONST               7 (<code object _build_left_panel at 0x30c0af70, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2700>)
+              78 MAKE_FUNCTION            0
+              80 STORE_NAME              10 (_build_left_panel)
+
+2714          82 LOAD_CONST               8 (<code object _toggle_always_on_top at 0x73ab02a348f0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2714>)
+              84 MAKE_FUNCTION            0
+              86 STORE_NAME              11 (_toggle_always_on_top)
+
+2723          88 LOAD_CONST               9 (<code object _build_pattern_panels at 0x30c0f840, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2723>)
+              90 MAKE_FUNCTION            0
+              92 STORE_NAME              12 (_build_pattern_panels)
+
+2808          94 LOAD_CONST              10 (<code object _select_4spd_mode at 0x73ab02bf1030, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2808>)
+              96 MAKE_FUNCTION            0
+              98 STORE_NAME              13 (_select_4spd_mode)
+
+2822         100 LOAD_CONST              11 (<code object _mark_selected_4spd_button at 0x73ab02bd9290, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2822>)
+             102 MAKE_FUNCTION            0
+             104 STORE_NAME              14 (_mark_selected_4spd_button)
+
+2827         106 LOAD_CONST              12 (<code object _select_pressure at 0x30c07cb0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2827>)
+             108 MAKE_FUNCTION            0
+             110 STORE_NAME              15 (_select_pressure)
+
+2842         112 LOAD_CONST              13 (<code object _mark_selected_pattern_button at 0x73ab034eb630, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2842>)
+             114 MAKE_FUNCTION            0
+             116 STORE_NAME              16 (_mark_selected_pattern_button)
+
+2852         118 LOAD_CONST              14 (<code object _build_right_panel at 0x73ab034ab730, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2852>)
+             120 MAKE_FUNCTION            0
+             122 STORE_NAME              17 (_build_right_panel)
+
+2859         124 LOAD_CONST              15 (<code object _build_pressure_panel at 0x30c17a50, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2859>)
+             126 MAKE_FUNCTION            0
+             128 STORE_NAME              18 (_build_pressure_panel)
+
+2985         130 LOAD_CONST              16 (<code object _populate_pres_intent_combo at 0x30c18ee0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 2985>)
+             132 MAKE_FUNCTION            0
+             134 STORE_NAME              19 (_populate_pres_intent_combo)
+
+3024         136 LOAD_CONST              17 (<code object _on_pres_table_type_changed at 0x30c19460, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3024>)
+             138 MAKE_FUNCTION            0
+             140 STORE_NAME              20 (_on_pres_table_type_changed)
+
+3037         142 LOAD_CONST              18 (<code object _on_pres_mode_changed at 0x73ab034a7290, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3037>)
+             144 MAKE_FUNCTION            0
+             146 STORE_NAME              21 (_on_pres_mode_changed)
+
+3049         148 LOAD_CONST              19 (<code object _on_pres_intent_changed at 0x30bc5350, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3049>)
+             150 MAKE_FUNCTION            0
+             152 STORE_NAME              22 (_on_pres_intent_changed)
+
+3089         154 LOAD_CONST              20 (<code object _on_4spd_table_changed at 0x73ab02bcba30, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3089>)
+             156 MAKE_FUNCTION            0
+             158 STORE_NAME              23 (_on_4spd_table_changed)
+
+3093         160 LOAD_CONST              21 (<code object _get_4spd_current_table at 0x30c15360, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3093>)
+             162 MAKE_FUNCTION            0
+             164 STORE_NAME              24 (_get_4spd_current_table)
+
+3115         166 LOAD_CONST              22 (<code object _refresh_pressure_table at 0x30c1c2a0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3115>)
+             168 MAKE_FUNCTION            0
+             170 STORE_NAME              25 (_refresh_pressure_table)
+
+3261         172 LOAD_CONST              23 (<code object _copy_pressure_table at 0x30c1d580, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3261>)
+             174 MAKE_FUNCTION            0
+             176 STORE_NAME              26 (_copy_pressure_table)
+
+3301         178 LOAD_CONST              24 (<code object _build_speedo_panel at 0x30c1df90, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3301>)
+             180 MAKE_FUNCTION            0
+             182 STORE_NAME              27 (_build_speedo_panel)
+
+3337         184 LOAD_CONST              25 (<code object _refresh_speedo at 0x30c1e520, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3337>)
+             186 MAKE_FUNCTION            0
+             188 STORE_NAME              28 (_refresh_speedo)
+
+3360         190 LOAD_CONST              26 (<code object _build_shift_panel at 0x30c1f820, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3360>)
+             192 MAKE_FUNCTION            0
+             194 STORE_NAME              29 (_build_shift_panel)
+
+3462         196 LOAD_CONST              27 (<code object _switch_mode at 0x73ab02b3f3f0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3462>)
+             198 MAKE_FUNCTION            0
+             200 STORE_NAME              30 (_switch_mode)
+
+3471         202 LOAD_CONST              28 (<code object _switch_era at 0x73ab02a4c4b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3471>)
+             204 MAKE_FUNCTION            0
+             206 STORE_NAME              31 (_switch_era)
+
+3482         208 LOAD_CONST              29 (<code object _current_table_list at 0x73ab02a11980, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3482>)
+             210 MAKE_FUNCTION            0
+             212 STORE_NAME              32 (_current_table_list)
+
+3486         214 LOAD_CONST              30 (<code object _prev_table at 0x73ab02bd93e0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3486>)
+             216 MAKE_FUNCTION            0
+             218 STORE_NAME              33 (_prev_table)
+
+3491         220 LOAD_CONST              31 (<code object _next_table at 0x73ab02bd9530, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3491>)
+             222 MAKE_FUNCTION            0
+             224 STORE_NAME              34 (_next_table)
+
+3496         226 LOAD_CONST              32 (<code object _build_current_table at 0x30c20a40, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3496>)
+             228 MAKE_FUNCTION            0
+             230 STORE_NAME              35 (_build_current_table)
+
+3575         232 LOAD_CONST              33 (<code object _refresh_shift_table at 0x30c196b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3575>)
+             234 MAKE_FUNCTION            0
+             236 STORE_NAME              36 (_refresh_shift_table)
+
+3627         238 LOAD_CONST              34 (<code object _label_rows at 0x30c1a3b0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3627>)
+             240 MAKE_FUNCTION            0
+             242 STORE_NAME              37 (_label_rows)
+
+3660         244 LOAD_CONST              39 (('\t',))
+             246 LOAD_CONST              35 (<code object _table_as_text at 0x73ab02a40d40, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3660>)
+             248 MAKE_FUNCTION            1 (defaults)
+             250 STORE_NAME              38 (_table_as_text)
+
+3665         252 LOAD_CONST              36 (<code object _copy_table at 0x73ab034abb50, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3665>)
+             254 MAKE_FUNCTION            0
+             256 STORE_NAME              39 (_copy_table)
+
+3677         258 LOAD_CONST              37 (<code object _save_table at 0x30c1a810, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 3677>)
+             260 MAKE_FUNCTION            0
+             262 STORE_NAME              40 (_save_table)
+             264 LOAD_CLOSURE             0 (__class__)
+             266 COPY                     1
+             268 STORE_NAME              41 (__classcell__)
+             270 RETURN_VALUE

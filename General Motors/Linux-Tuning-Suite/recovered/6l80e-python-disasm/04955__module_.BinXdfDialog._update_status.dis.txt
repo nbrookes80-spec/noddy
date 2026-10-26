@@ -1,0 +1,73 @@
+4955           0 RESUME                   0
+
+4956           2 BUILD_LIST               0
+               4 STORE_FAST               1 (parts)
+
+4957           6 LOAD_FAST                0 (self)
+               8 LOAD_ATTR                0 (reader)
+              28 POP_JUMP_IF_NONE        44 (to 118)
+
+4958          30 LOAD_FAST                1 (parts)
+              32 LOAD_ATTR                3 (NULL|self + append)
+              52 LOAD_CONST               1 ('BIN: ')
+              54 LOAD_FAST                0 (self)
+              56 LOAD_ATTR                0 (reader)
+              76 LOAD_ATTR                4 (size)
+              96 LOAD_CONST               2 (1024)
+              98 BINARY_OP                2 (//)
+             102 FORMAT_VALUE             0
+             104 LOAD_CONST               3 (' KB')
+             106 BUILD_STRING             3
+             108 CALL                     1
+             116 POP_TOP
+
+4959     >>  118 LOAD_FAST                0 (self)
+             120 LOAD_ATTR                6 (xdf)
+             140 POP_JUMP_IF_NONE        93 (to 328)
+
+4960         142 LOAD_FAST                1 (parts)
+             144 LOAD_ATTR                3 (NULL|self + append)
+             164 LOAD_CONST               4 ('XDF: ')
+             166 LOAD_FAST                0 (self)
+             168 LOAD_ATTR                6 (xdf)
+             188 LOAD_ATTR                8 (title)
+             208 COPY                     1
+             210 POP_JUMP_IF_TRUE         2 (to 216)
+             212 POP_TOP
+             214 LOAD_CONST               5 ('(untitled)')
+         >>  216 FORMAT_VALUE             0
+             218 BUILD_STRING             2
+             220 CALL                     1
+             228 POP_TOP
+
+4961         230 LOAD_FAST                1 (parts)
+             232 LOAD_ATTR                3 (NULL|self + append)
+             252 LOAD_GLOBAL             11 (NULL + len)
+             262 LOAD_FAST                0 (self)
+             264 LOAD_ATTR                6 (xdf)
+             284 LOAD_ATTR               12 (parameters)
+             304 CALL                     1
+             312 FORMAT_VALUE             0
+             314 LOAD_CONST               6 (' parameters')
+             316 BUILD_STRING             2
+             318 CALL                     1
+             326 POP_TOP
+
+4962     >>  328 LOAD_FAST                0 (self)
+             330 LOAD_ATTR               14 (status_lbl)
+             350 LOAD_ATTR               17 (NULL|self + setText)
+             370 LOAD_FAST                1 (parts)
+             372 POP_JUMP_IF_FALSE       22 (to 418)
+             374 LOAD_CONST               7 (' | ')
+             376 LOAD_ATTR               19 (NULL|self + join)
+             396 LOAD_FAST                1 (parts)
+             398 CALL                     1
+             406 CALL                     1
+             414 POP_TOP
+             416 RETURN_CONST             0 (None)
+
+4963     >>  418 LOAD_CONST               8 ('Load a BIN and matching XDF to begin.')
+
+4962         420 CALL                     1
+             428 POP_TOP
+             430 RETURN_CONST             0 (None)

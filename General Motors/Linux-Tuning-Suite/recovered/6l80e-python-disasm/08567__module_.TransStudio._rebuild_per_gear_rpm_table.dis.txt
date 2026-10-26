@@ -1,0 +1,128 @@
+8567           0 RESUME                   0
+
+8570           2 LOAD_GLOBAL              1 (NULL + max)
+              12 LOAD_CONST               1 (1)
+              14 LOAD_FAST                1 (n_gears)
+              16 LOAD_CONST               1 (1)
+              18 BINARY_OP               10 (-)
+              22 CALL                     2
+              30 STORE_FAST               2 (n_shifts)
+
+8571          32 LOAD_FAST                0 (self)
+              34 LOAD_ATTR                2 (per_gear_rpm_table)
+              54 STORE_FAST               3 (tbl)
+
+8572          56 LOAD_FAST                3 (tbl)
+              58 LOAD_ATTR                5 (NULL|self + blockSignals)
+              78 LOAD_CONST               2 (True)
+              80 CALL                     1
+              88 POP_TOP
+
+8573          90 LOAD_FAST                3 (tbl)
+              92 LOAD_ATTR                7 (NULL|self + setRowCount)
+             112 LOAD_FAST                2 (n_shifts)
+             114 CALL                     1
+             122 POP_TOP
+
+8574         124 LOAD_FAST                3 (tbl)
+             126 LOAD_ATTR                9 (NULL|self + setVerticalHeaderLabels)
+             146 LOAD_GLOBAL             11 (NULL + range)
+             156 LOAD_FAST                2 (n_shifts)
+             158 CALL                     1
+             166 GET_ITER
+             168 LOAD_FAST_AND_CLEAR      4 (i)
+             170 SWAP                     2
+             172 BUILD_LIST               0
+             174 SWAP                     2
+         >>  176 FOR_ITER                15 (to 210)
+             180 STORE_FAST               4 (i)
+             182 LOAD_FAST                4 (i)
+             184 LOAD_CONST               1 (1)
+             186 BINARY_OP                0 (+)
+             190 FORMAT_VALUE             0
+             192 LOAD_CONST               3 ('→')
+             194 LOAD_FAST                4 (i)
+             196 LOAD_CONST               4 (2)
+             198 BINARY_OP                0 (+)
+             202 FORMAT_VALUE             0
+             204 BUILD_STRING             3
+             206 LIST_APPEND              2
+             208 JUMP_BACKWARD           17 (to 176)
+         >>  210 END_FOR
+             212 SWAP                     2
+             214 STORE_FAST               4 (i)
+             216 CALL                     1
+             224 POP_TOP
+
+8575         226 LOAD_GLOBAL             13 (NULL + int)
+             236 LOAD_FAST                0 (self)
+             238 LOAD_ATTR               14 (shift_rpm)
+             258 LOAD_ATTR               17 (NULL|self + value)
+             278 CALL                     0
+             286 CALL                     1
+             294 STORE_FAST               5 (global_rpm)
+
+8576         296 LOAD_FAST                0 (self)
+             298 LOAD_ATTR               18 (per_gear_rpm)
+             318 COPY                     1
+             320 POP_JUMP_IF_TRUE         2 (to 326)
+             322 POP_TOP
+             324 BUILD_LIST               0
+         >>  326 STORE_FAST               6 (existing)
+
+8577         328 LOAD_GLOBAL             11 (NULL + range)
+             338 LOAD_FAST                2 (n_shifts)
+             340 CALL                     1
+             348 GET_ITER
+         >>  350 FOR_ITER                69 (to 492)
+             354 STORE_FAST               4 (i)
+
+8578         356 LOAD_FAST                4 (i)
+             358 LOAD_GLOBAL             21 (NULL + len)
+             368 LOAD_FAST                6 (existing)
+             370 CALL                     1
+             378 COMPARE_OP               2 (<)
+             382 POP_JUMP_IF_FALSE       14 (to 412)
+             384 LOAD_GLOBAL             13 (NULL + int)
+             394 LOAD_FAST                6 (existing)
+             396 LOAD_FAST                4 (i)
+             398 BINARY_SUBSCR
+             402 CALL                     1
+             410 JUMP_FORWARD             1 (to 414)
+         >>  412 LOAD_FAST                5 (global_rpm)
+         >>  414 STORE_FAST               7 (v)
+
+8579         416 LOAD_FAST                3 (tbl)
+             418 LOAD_ATTR               23 (NULL|self + setItem)
+             438 LOAD_FAST                4 (i)
+             440 LOAD_CONST               5 (0)
+             442 LOAD_GLOBAL             25 (NULL + QTableWidgetItem)
+             452 LOAD_GLOBAL             27 (NULL + str)
+             462 LOAD_FAST                7 (v)
+             464 CALL                     1
+             472 CALL                     1
+             480 CALL                     3
+             488 POP_TOP
+             490 JUMP_BACKWARD           71 (to 350)
+
+8577     >>  492 END_FOR
+
+8580         494 LOAD_FAST                3 (tbl)
+             496 LOAD_ATTR                5 (NULL|self + blockSignals)
+             516 LOAD_CONST               6 (False)
+             518 CALL                     1
+             526 POP_TOP
+
+8581         528 LOAD_FAST                0 (self)
+             530 LOAD_ATTR               29 (NULL|self + _refresh_per_gear_highlight)
+             550 CALL                     0
+             558 POP_TOP
+             560 RETURN_CONST             7 (None)
+         >>  562 SWAP                     2
+             564 POP_TOP
+
+8574         566 SWAP                     2
+             568 STORE_FAST               4 (i)
+             570 RERAISE                  0
+ExceptionTable:
+  172 to 210 -> 562 [4]

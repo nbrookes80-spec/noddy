@@ -1,0 +1,831 @@
+3862           0 RESUME                   0
+
+3863           2 LOAD_CONST               1 (0)
+               4 LOAD_CONST               2 (('QPainter', 'QPen', 'QFont'))
+               6 IMPORT_NAME              0 (PyQt6.QtGui)
+               8 IMPORT_FROM              1 (QPainter)
+              10 STORE_FAST               2 (QPainter)
+              12 IMPORT_FROM              2 (QPen)
+              14 STORE_FAST               3 (QPen)
+              16 IMPORT_FROM              3 (QFont)
+              18 STORE_FAST               4 (_F)
+              20 POP_TOP
+
+3864          22 PUSH_NULL
+              24 LOAD_FAST                2 (QPainter)
+              26 LOAD_FAST                0 (self)
+              28 CALL                     1
+              36 STORE_FAST               5 (p)
+
+3865          38 LOAD_FAST                5 (p)
+              40 LOAD_ATTR                9 (NULL|self + setRenderHint)
+              60 LOAD_FAST                2 (QPainter)
+              62 LOAD_ATTR               10 (RenderHint)
+              82 LOAD_ATTR               12 (Antialiasing)
+             102 CALL                     1
+             110 POP_TOP
+
+3866         112 LOAD_FAST                0 (self)
+             114 LOAD_ATTR               15 (NULL|self + width)
+             134 CALL                     0
+             142 LOAD_FAST                0 (self)
+             144 LOAD_ATTR               17 (NULL|self + height)
+             164 CALL                     0
+             172 STORE_FAST               7 (H)
+             174 STORE_FAST               6 (W)
+
+3867         176 LOAD_CONST               3 ((50, 50, 18, 32))
+             178 UNPACK_SEQUENCE          4
+             182 STORE_FAST               8 (pad_l)
+             184 STORE_FAST               9 (pad_r)
+             186 STORE_FAST              10 (pad_t)
+             188 STORE_FAST              11 (pad_b)
+
+3870         190 LOAD_FAST                5 (p)
+             192 LOAD_ATTR               19 (NULL|self + fillRect)
+             212 LOAD_CONST               1 (0)
+             214 LOAD_CONST               1 (0)
+             216 LOAD_FAST                6 (W)
+             218 LOAD_FAST                7 (H)
+             220 LOAD_GLOBAL             21 (NULL + QColor)
+             230 LOAD_CONST               4 (30)
+             232 LOAD_CONST               4 (30)
+             234 LOAD_CONST               4 (30)
+             236 CALL                     3
+             244 CALL                     5
+             252 POP_TOP
+
+3872         254 LOAD_FAST                0 (self)
+             256 LOAD_ATTR               22 (results)
+             276 POP_JUMP_IF_NONE        27 (to 332)
+             278 LOAD_FAST                0 (self)
+             280 LOAD_ATTR               22 (results)
+             300 LOAD_ATTR               25 (NULL|self + get)
+             320 LOAD_CONST               5 ('trace_t')
+             322 CALL                     1
+             330 POP_JUMP_IF_TRUE       110 (to 552)
+
+3873     >>  332 LOAD_FAST                5 (p)
+             334 LOAD_ATTR               27 (NULL|self + setPen)
+             354 LOAD_GLOBAL             21 (NULL + QColor)
+             364 LOAD_CONST               6 (150)
+             366 LOAD_CONST               6 (150)
+             368 LOAD_CONST               6 (150)
+             370 CALL                     3
+             378 CALL                     1
+             386 POP_TOP
+
+3874         388 LOAD_FAST                5 (p)
+             390 LOAD_ATTR               29 (NULL|self + setFont)
+             410 PUSH_NULL
+             412 LOAD_FAST                4 (_F)
+             414 LOAD_CONST               7 ('Sans')
+             416 LOAD_CONST               8 (10)
+             418 CALL                     2
+             426 CALL                     1
+             434 POP_TOP
+
+3875         436 LOAD_FAST                5 (p)
+             438 LOAD_ATTR               31 (NULL|self + drawText)
+             458 LOAD_FAST                0 (self)
+             460 LOAD_ATTR               33 (NULL|self + rect)
+             480 CALL                     0
+             488 LOAD_GLOBAL             34 (Qt)
+             498 LOAD_ATTR               36 (AlignmentFlag)
+             518 LOAD_ATTR               38 (AlignCenter)
+
+3876         538 LOAD_CONST               9 ("Click 'Run Simulation' to plot velocity vs time")
+
+3875         540 CALL                     3
+             548 POP_TOP
+
+3877         550 RETURN_CONST             0 (None)
+
+3879     >>  552 LOAD_FAST                0 (self)
+             554 LOAD_ATTR               22 (results)
+             574 LOAD_CONST               5 ('trace_t')
+             576 BINARY_SUBSCR
+             580 STORE_FAST              12 (t_arr)
+
+3880         582 LOAD_FAST                0 (self)
+             584 LOAD_ATTR               22 (results)
+             604 LOAD_CONST              10 ('trace_v')
+             606 BINARY_SUBSCR
+             610 STORE_FAST              13 (v_arr)
+
+3881         612 LOAD_FAST                0 (self)
+             614 LOAD_ATTR               22 (results)
+             634 LOAD_CONST              11 ('trace_rpm')
+             636 BINARY_SUBSCR
+             640 STORE_FAST              14 (rpm_arr)
+
+3882         642 LOAD_FAST               12 (t_arr)
+             644 POP_JUMP_IF_TRUE         1 (to 648)
+
+3883         646 RETURN_CONST             0 (None)
+
+3885     >>  648 LOAD_FAST               12 (t_arr)
+             650 LOAD_CONST              12 (-1)
+             652 BINARY_SUBSCR
+             656 STORE_FAST              15 (t_max)
+
+3886         658 LOAD_GLOBAL             41 (NULL + max)
+             668 LOAD_FAST               13 (v_arr)
+             670 CALL                     1
+             678 LOAD_CONST              13 (1.05)
+             680 BINARY_OP                5 (*)
+             684 STORE_FAST              16 (v_max)
+
+3887         686 LOAD_GLOBAL             41 (NULL + max)
+             696 LOAD_CONST              14 (8000)
+             698 LOAD_GLOBAL             41 (NULL + max)
+             708 LOAD_FAST               14 (rpm_arr)
+             710 CALL                     1
+             718 LOAD_CONST              13 (1.05)
+             720 BINARY_OP                5 (*)
+             724 CALL                     2
+             732 STORE_FAST              17 (rpm_max)
+
+3890         734 LOAD_FAST                8 (pad_l)
+             736 STORE_FAST              18 (plot_l)
+
+3891         738 LOAD_FAST                6 (W)
+             740 LOAD_FAST                9 (pad_r)
+             742 BINARY_OP               10 (-)
+             746 STORE_FAST              19 (plot_r)
+
+3892         748 LOAD_FAST               10 (pad_t)
+             750 STORE_FAST              20 (plot_t)
+
+3893         752 LOAD_FAST                7 (H)
+             754 LOAD_FAST               11 (pad_b)
+             756 BINARY_OP               10 (-)
+             760 STORE_FAST              21 (plot_b)
+
+3894         762 LOAD_FAST               19 (plot_r)
+             764 LOAD_FAST               18 (plot_l)
+             766 BINARY_OP               10 (-)
+             770 STORE_FAST              22 (plot_w)
+
+3895         772 LOAD_FAST               21 (plot_b)
+             774 LOAD_FAST               20 (plot_t)
+             776 BINARY_OP               10 (-)
+             780 STORE_FAST              23 (plot_h)
+
+3898         782 LOAD_FAST                5 (p)
+             784 LOAD_ATTR               27 (NULL|self + setPen)
+             804 PUSH_NULL
+             806 LOAD_FAST                3 (QPen)
+             808 LOAD_GLOBAL             21 (NULL + QColor)
+             818 LOAD_CONST              15 (120)
+             820 LOAD_CONST              15 (120)
+             822 LOAD_CONST              15 (120)
+             824 CALL                     3
+             832 LOAD_CONST              16 (1)
+             834 CALL                     2
+             842 CALL                     1
+             850 POP_TOP
+
+3899         852 LOAD_FAST                5 (p)
+             854 LOAD_ATTR               43 (NULL|self + drawLine)
+             874 LOAD_FAST               18 (plot_l)
+             876 LOAD_FAST               21 (plot_b)
+             878 LOAD_FAST               19 (plot_r)
+             880 LOAD_FAST               21 (plot_b)
+             882 CALL                     4
+             890 POP_TOP
+
+3900         892 LOAD_FAST                5 (p)
+             894 LOAD_ATTR               43 (NULL|self + drawLine)
+             914 LOAD_FAST               18 (plot_l)
+             916 LOAD_FAST               20 (plot_t)
+             918 LOAD_FAST               18 (plot_l)
+             920 LOAD_FAST               21 (plot_b)
+             922 CALL                     4
+             930 POP_TOP
+
+3901         932 LOAD_FAST                5 (p)
+             934 LOAD_ATTR               43 (NULL|self + drawLine)
+             954 LOAD_FAST               19 (plot_r)
+             956 LOAD_FAST               20 (plot_t)
+             958 LOAD_FAST               19 (plot_r)
+             960 LOAD_FAST               21 (plot_b)
+             962 CALL                     4
+             970 POP_TOP
+
+3904         972 LOAD_FAST                5 (p)
+             974 LOAD_ATTR               29 (NULL|self + setFont)
+             994 PUSH_NULL
+             996 LOAD_FAST                4 (_F)
+             998 LOAD_CONST               7 ('Sans')
+            1000 LOAD_CONST              17 (8)
+            1002 CALL                     2
+            1010 CALL                     1
+            1018 POP_TOP
+
+3905        1020 LOAD_FAST                5 (p)
+            1022 LOAD_ATTR               27 (NULL|self + setPen)
+            1042 LOAD_GLOBAL             21 (NULL + QColor)
+            1052 LOAD_CONST              18 (80)
+            1054 LOAD_CONST              18 (80)
+            1056 LOAD_CONST              18 (80)
+            1058 CALL                     3
+            1066 CALL                     1
+            1074 POP_TOP
+
+3907        1076 LOAD_GLOBAL             45 (NULL + range)
+            1086 LOAD_CONST               1 (0)
+            1088 LOAD_GLOBAL             47 (NULL + int)
+            1098 LOAD_FAST               16 (v_max)
+            1100 CALL                     1
+            1108 LOAD_CONST              16 (1)
+            1110 BINARY_OP                0 (+)
+            1114 LOAD_CONST              19 (25)
+            1116 CALL                     3
+            1124 GET_ITER
+         >> 1126 FOR_ITER               137 (to 1404)
+            1130 STORE_FAST              24 (v)
+
+3908        1132 LOAD_FAST               21 (plot_b)
+            1134 LOAD_GLOBAL             47 (NULL + int)
+            1144 LOAD_FAST               24 (v)
+            1146 LOAD_FAST               16 (v_max)
+            1148 BINARY_OP               11 (/)
+            1152 LOAD_FAST               23 (plot_h)
+            1154 BINARY_OP                5 (*)
+            1158 CALL                     1
+            1166 BINARY_OP               10 (-)
+            1170 STORE_FAST              25 (y)
+
+3909        1172 LOAD_FAST               24 (v)
+            1174 LOAD_CONST               1 (0)
+            1176 COMPARE_OP              68 (>)
+            1180 POP_JUMP_IF_FALSE       54 (to 1290)
+
+3910        1182 LOAD_FAST                5 (p)
+            1184 LOAD_ATTR               27 (NULL|self + setPen)
+            1204 LOAD_GLOBAL             21 (NULL + QColor)
+            1214 LOAD_CONST              20 (60)
+            1216 LOAD_CONST              20 (60)
+            1218 LOAD_CONST              20 (60)
+            1220 CALL                     3
+            1228 CALL                     1
+            1236 POP_TOP
+
+3911        1238 LOAD_FAST                5 (p)
+            1240 LOAD_ATTR               43 (NULL|self + drawLine)
+            1260 LOAD_FAST               18 (plot_l)
+            1262 LOAD_CONST              16 (1)
+            1264 BINARY_OP                0 (+)
+            1268 LOAD_FAST               25 (y)
+            1270 LOAD_FAST               19 (plot_r)
+            1272 LOAD_CONST              16 (1)
+            1274 BINARY_OP               10 (-)
+            1278 LOAD_FAST               25 (y)
+            1280 CALL                     4
+            1288 POP_TOP
+
+3912     >> 1290 LOAD_FAST                5 (p)
+            1292 LOAD_ATTR               27 (NULL|self + setPen)
+            1312 LOAD_GLOBAL             21 (NULL + QColor)
+            1322 LOAD_CONST              21 (180)
+            1324 LOAD_CONST              21 (180)
+            1326 LOAD_CONST              22 (200)
+            1328 CALL                     3
+            1336 CALL                     1
+            1344 POP_TOP
+
+3913        1346 LOAD_FAST                5 (p)
+            1348 LOAD_ATTR               31 (NULL|self + drawText)
+            1368 LOAD_FAST               18 (plot_l)
+            1370 LOAD_CONST              23 (38)
+            1372 BINARY_OP               10 (-)
+            1376 LOAD_FAST               25 (y)
+            1378 LOAD_CONST              24 (4)
+            1380 BINARY_OP                0 (+)
+            1384 LOAD_FAST               24 (v)
+            1386 FORMAT_VALUE             0
+            1388 LOAD_CONST              25 (' mph')
+            1390 BUILD_STRING             2
+            1392 CALL                     3
+            1400 POP_TOP
+            1402 JUMP_BACKWARD          139 (to 1126)
+
+3907     >> 1404 END_FOR
+
+3915        1406 LOAD_GLOBAL             45 (NULL + range)
+            1416 LOAD_CONST               1 (0)
+            1418 LOAD_GLOBAL             47 (NULL + int)
+            1428 LOAD_FAST               17 (rpm_max)
+            1430 CALL                     1
+            1438 LOAD_CONST              16 (1)
+            1440 BINARY_OP                0 (+)
+            1444 LOAD_CONST              26 (2000)
+            1446 CALL                     3
+            1454 GET_ITER
+         >> 1456 FOR_ITER                81 (to 1622)
+            1460 STORE_FAST              26 (r)
+
+3916        1462 LOAD_FAST               21 (plot_b)
+            1464 LOAD_GLOBAL             47 (NULL + int)
+            1474 LOAD_FAST               26 (r)
+            1476 LOAD_FAST               17 (rpm_max)
+            1478 BINARY_OP               11 (/)
+            1482 LOAD_FAST               23 (plot_h)
+            1484 BINARY_OP                5 (*)
+            1488 CALL                     1
+            1496 BINARY_OP               10 (-)
+            1500 STORE_FAST              25 (y)
+
+3917        1502 LOAD_FAST                5 (p)
+            1504 LOAD_ATTR               27 (NULL|self + setPen)
+            1524 LOAD_GLOBAL             21 (NULL + QColor)
+            1534 LOAD_CONST              22 (200)
+            1536 LOAD_CONST              21 (180)
+            1538 LOAD_CONST              27 (160)
+            1540 CALL                     3
+            1548 CALL                     1
+            1556 POP_TOP
+
+3918        1558 LOAD_FAST                5 (p)
+            1560 LOAD_ATTR               31 (NULL|self + drawText)
+            1580 LOAD_FAST               19 (plot_r)
+            1582 LOAD_CONST              24 (4)
+            1584 BINARY_OP                0 (+)
+            1588 LOAD_FAST               25 (y)
+            1590 LOAD_CONST              24 (4)
+            1592 BINARY_OP                0 (+)
+            1596 LOAD_FAST               26 (r)
+            1598 LOAD_CONST              28 (1000)
+            1600 BINARY_OP                2 (//)
+            1604 FORMAT_VALUE             0
+            1606 LOAD_CONST              29 ('k')
+            1608 BUILD_STRING             2
+            1610 CALL                     3
+            1618 POP_TOP
+            1620 JUMP_BACKWARD           83 (to 1456)
+
+3915     >> 1622 END_FOR
+
+3920        1624 LOAD_GLOBAL             45 (NULL + range)
+            1634 LOAD_CONST               1 (0)
+            1636 LOAD_GLOBAL             47 (NULL + int)
+            1646 LOAD_FAST               15 (t_max)
+            1648 CALL                     1
+            1656 LOAD_CONST              16 (1)
+            1658 BINARY_OP                0 (+)
+            1662 LOAD_CONST              30 (2)
+            1664 CALL                     3
+            1672 GET_ITER
+         >> 1674 FOR_ITER               137 (to 1952)
+            1678 STORE_FAST              27 (ts)
+
+3921        1680 LOAD_FAST               18 (plot_l)
+            1682 LOAD_GLOBAL             47 (NULL + int)
+            1692 LOAD_FAST               27 (ts)
+            1694 LOAD_FAST               15 (t_max)
+            1696 BINARY_OP               11 (/)
+            1700 LOAD_FAST               22 (plot_w)
+            1702 BINARY_OP                5 (*)
+            1706 CALL                     1
+            1714 BINARY_OP                0 (+)
+            1718 STORE_FAST              28 (x)
+
+3922        1720 LOAD_FAST               27 (ts)
+            1722 LOAD_CONST               1 (0)
+            1724 COMPARE_OP              68 (>)
+            1728 POP_JUMP_IF_FALSE       54 (to 1838)
+
+3923        1730 LOAD_FAST                5 (p)
+            1732 LOAD_ATTR               27 (NULL|self + setPen)
+            1752 LOAD_GLOBAL             21 (NULL + QColor)
+            1762 LOAD_CONST              20 (60)
+            1764 LOAD_CONST              20 (60)
+            1766 LOAD_CONST              20 (60)
+            1768 CALL                     3
+            1776 CALL                     1
+            1784 POP_TOP
+
+3924        1786 LOAD_FAST                5 (p)
+            1788 LOAD_ATTR               43 (NULL|self + drawLine)
+            1808 LOAD_FAST               28 (x)
+            1810 LOAD_FAST               20 (plot_t)
+            1812 LOAD_CONST              16 (1)
+            1814 BINARY_OP                0 (+)
+            1818 LOAD_FAST               28 (x)
+            1820 LOAD_FAST               21 (plot_b)
+            1822 LOAD_CONST              16 (1)
+            1824 BINARY_OP               10 (-)
+            1828 CALL                     4
+            1836 POP_TOP
+
+3925     >> 1838 LOAD_FAST                5 (p)
+            1840 LOAD_ATTR               27 (NULL|self + setPen)
+            1860 LOAD_GLOBAL             21 (NULL + QColor)
+            1870 LOAD_CONST              21 (180)
+            1872 LOAD_CONST              21 (180)
+            1874 LOAD_CONST              22 (200)
+            1876 CALL                     3
+            1884 CALL                     1
+            1892 POP_TOP
+
+3926        1894 LOAD_FAST                5 (p)
+            1896 LOAD_ATTR               31 (NULL|self + drawText)
+            1916 LOAD_FAST               28 (x)
+            1918 LOAD_CONST              17 (8)
+            1920 BINARY_OP               10 (-)
+            1924 LOAD_FAST               21 (plot_b)
+            1926 LOAD_CONST              31 (18)
+            1928 BINARY_OP                0 (+)
+            1932 LOAD_FAST               27 (ts)
+            1934 FORMAT_VALUE             0
+            1936 LOAD_CONST              32 ('s')
+            1938 BUILD_STRING             2
+            1940 CALL                     3
+            1948 POP_TOP
+            1950 JUMP_BACKWARD          139 (to 1674)
+
+3920     >> 1952 END_FOR
+
+3929        1954 LOAD_FAST                5 (p)
+            1956 LOAD_ATTR               27 (NULL|self + setPen)
+            1976 PUSH_NULL
+            1978 LOAD_FAST                3 (QPen)
+            1980 LOAD_GLOBAL             21 (NULL + QColor)
+            1990 LOAD_CONST              18 (80)
+            1992 LOAD_CONST              27 (160)
+            1994 LOAD_CONST              33 (240)
+            1996 CALL                     3
+            2004 LOAD_CONST              34 (2.5)
+            2006 CALL                     2
+            2014 CALL                     1
+            2022 POP_TOP
+
+3930        2024 LOAD_CONST               0 (None)
+            2026 STORE_FAST              29 (prev)
+
+3931        2028 LOAD_GLOBAL             49 (NULL + enumerate)
+            2038 LOAD_GLOBAL             51 (NULL + zip)
+            2048 LOAD_FAST               12 (t_arr)
+            2050 LOAD_FAST               13 (v_arr)
+            2052 CALL                     2
+            2060 CALL                     1
+            2068 GET_ITER
+         >> 2070 FOR_ITER                80 (to 2234)
+            2074 UNPACK_SEQUENCE          2
+            2078 STORE_FAST              30 (i)
+            2080 UNPACK_SEQUENCE          2
+            2084 STORE_FAST              31 (ti)
+            2086 STORE_FAST              32 (vi)
+
+3932        2088 LOAD_FAST               18 (plot_l)
+            2090 LOAD_GLOBAL             47 (NULL + int)
+            2100 LOAD_FAST               31 (ti)
+            2102 LOAD_FAST               15 (t_max)
+            2104 BINARY_OP               11 (/)
+            2108 LOAD_FAST               22 (plot_w)
+            2110 BINARY_OP                5 (*)
+            2114 CALL                     1
+            2122 BINARY_OP                0 (+)
+            2126 STORE_FAST              28 (x)
+
+3933        2128 LOAD_FAST               21 (plot_b)
+            2130 LOAD_GLOBAL             47 (NULL + int)
+            2140 LOAD_FAST               32 (vi)
+            2142 LOAD_FAST               16 (v_max)
+            2144 BINARY_OP               11 (/)
+            2148 LOAD_FAST               23 (plot_h)
+            2150 BINARY_OP                5 (*)
+            2154 CALL                     1
+            2162 BINARY_OP               10 (-)
+            2166 STORE_FAST              25 (y)
+
+3934        2168 LOAD_FAST               29 (prev)
+            2170 POP_JUMP_IF_FALSE       26 (to 2224)
+
+3935        2172 LOAD_FAST                5 (p)
+            2174 LOAD_ATTR               43 (NULL|self + drawLine)
+            2194 LOAD_FAST               29 (prev)
+            2196 LOAD_CONST               1 (0)
+            2198 BINARY_SUBSCR
+            2202 LOAD_FAST               29 (prev)
+            2204 LOAD_CONST              16 (1)
+            2206 BINARY_SUBSCR
+            2210 LOAD_FAST               28 (x)
+            2212 LOAD_FAST               25 (y)
+            2214 CALL                     4
+            2222 POP_TOP
+
+3936     >> 2224 LOAD_FAST               28 (x)
+            2226 LOAD_FAST               25 (y)
+            2228 BUILD_TUPLE              2
+            2230 STORE_FAST              29 (prev)
+            2232 JUMP_BACKWARD           82 (to 2070)
+
+3931     >> 2234 END_FOR
+
+3939        2236 LOAD_FAST                5 (p)
+            2238 LOAD_ATTR               27 (NULL|self + setPen)
+            2258 PUSH_NULL
+            2260 LOAD_FAST                3 (QPen)
+            2262 LOAD_GLOBAL             21 (NULL + QColor)
+            2272 LOAD_CONST              35 (220)
+            2274 LOAD_CONST              27 (160)
+            2276 LOAD_CONST              20 (60)
+            2278 CALL                     3
+            2286 LOAD_CONST              36 (1.5)
+            2288 LOAD_GLOBAL             34 (Qt)
+            2298 LOAD_ATTR               52 (PenStyle)
+            2318 LOAD_ATTR               54 (DashLine)
+            2338 CALL                     3
+            2346 CALL                     1
+            2354 POP_TOP
+
+3940        2356 LOAD_CONST               0 (None)
+            2358 STORE_FAST              29 (prev)
+
+3941        2360 LOAD_GLOBAL             49 (NULL + enumerate)
+            2370 LOAD_GLOBAL             51 (NULL + zip)
+            2380 LOAD_FAST               12 (t_arr)
+            2382 LOAD_FAST               14 (rpm_arr)
+            2384 CALL                     2
+            2392 CALL                     1
+            2400 GET_ITER
+         >> 2402 FOR_ITER                80 (to 2566)
+            2406 UNPACK_SEQUENCE          2
+            2410 STORE_FAST              30 (i)
+            2412 UNPACK_SEQUENCE          2
+            2416 STORE_FAST              31 (ti)
+            2418 STORE_FAST              33 (ri)
+
+3942        2420 LOAD_FAST               18 (plot_l)
+            2422 LOAD_GLOBAL             47 (NULL + int)
+            2432 LOAD_FAST               31 (ti)
+            2434 LOAD_FAST               15 (t_max)
+            2436 BINARY_OP               11 (/)
+            2440 LOAD_FAST               22 (plot_w)
+            2442 BINARY_OP                5 (*)
+            2446 CALL                     1
+            2454 BINARY_OP                0 (+)
+            2458 STORE_FAST              28 (x)
+
+3943        2460 LOAD_FAST               21 (plot_b)
+            2462 LOAD_GLOBAL             47 (NULL + int)
+            2472 LOAD_FAST               33 (ri)
+            2474 LOAD_FAST               17 (rpm_max)
+            2476 BINARY_OP               11 (/)
+            2480 LOAD_FAST               23 (plot_h)
+            2482 BINARY_OP                5 (*)
+            2486 CALL                     1
+            2494 BINARY_OP               10 (-)
+            2498 STORE_FAST              25 (y)
+
+3944        2500 LOAD_FAST               29 (prev)
+            2502 POP_JUMP_IF_FALSE       26 (to 2556)
+
+3945        2504 LOAD_FAST                5 (p)
+            2506 LOAD_ATTR               43 (NULL|self + drawLine)
+            2526 LOAD_FAST               29 (prev)
+            2528 LOAD_CONST               1 (0)
+            2530 BINARY_SUBSCR
+            2534 LOAD_FAST               29 (prev)
+            2536 LOAD_CONST              16 (1)
+            2538 BINARY_SUBSCR
+            2542 LOAD_FAST               28 (x)
+            2544 LOAD_FAST               25 (y)
+            2546 CALL                     4
+            2554 POP_TOP
+
+3946     >> 2556 LOAD_FAST               28 (x)
+            2558 LOAD_FAST               25 (y)
+            2560 BUILD_TUPLE              2
+            2562 STORE_FAST              29 (prev)
+            2564 JUMP_BACKWARD           82 (to 2402)
+
+3941     >> 2566 END_FOR
+
+3949        2568 LOAD_FAST                5 (p)
+            2570 LOAD_ATTR               27 (NULL|self + setPen)
+            2590 PUSH_NULL
+            2592 LOAD_FAST                3 (QPen)
+            2594 LOAD_GLOBAL             21 (NULL + QColor)
+            2604 LOAD_CONST              18 (80)
+            2606 LOAD_CONST              22 (200)
+            2608 LOAD_CONST              37 (100)
+            2610 CALL                     3
+            2618 LOAD_CONST              38 (1.2)
+            2620 LOAD_GLOBAL             34 (Qt)
+            2630 LOAD_ATTR               52 (PenStyle)
+            2650 LOAD_ATTR               54 (DashLine)
+            2670 CALL                     3
+            2678 CALL                     1
+            2686 POP_TOP
+
+3950        2688 LOAD_FAST                5 (p)
+            2690 LOAD_ATTR               29 (NULL|self + setFont)
+            2710 PUSH_NULL
+            2712 LOAD_FAST                4 (_F)
+            2714 LOAD_CONST               7 ('Sans')
+            2716 LOAD_CONST              17 (8)
+            2718 LOAD_FAST                4 (_F)
+            2720 LOAD_ATTR               56 (Weight)
+            2740 LOAD_ATTR               58 (Bold)
+            2760 CALL                     3
+            2768 CALL                     1
+            2776 POP_TOP
+
+3951        2778 LOAD_FAST                0 (self)
+            2780 LOAD_ATTR               22 (results)
+            2800 LOAD_ATTR               25 (NULL|self + get)
+            2820 LOAD_CONST              39 ('shift_events')
+            2822 BUILD_LIST               0
+            2824 CALL                     2
+            2832 GET_ITER
+         >> 2834 FOR_ITER               161 (to 3160)
+            2838 STORE_FAST              34 (ev)
+
+3952        2840 LOAD_FAST               18 (plot_l)
+            2842 LOAD_GLOBAL             47 (NULL + int)
+            2852 LOAD_FAST               34 (ev)
+            2854 LOAD_CONST              40 ('t')
+            2856 BINARY_SUBSCR
+            2860 LOAD_FAST               15 (t_max)
+            2862 BINARY_OP               11 (/)
+            2866 LOAD_FAST               22 (plot_w)
+            2868 BINARY_OP                5 (*)
+            2872 CALL                     1
+            2880 BINARY_OP                0 (+)
+            2884 STORE_FAST              28 (x)
+
+3953        2886 LOAD_FAST                5 (p)
+            2888 LOAD_ATTR               43 (NULL|self + drawLine)
+            2908 LOAD_FAST               28 (x)
+            2910 LOAD_FAST               20 (plot_t)
+            2912 LOAD_FAST               28 (x)
+            2914 LOAD_FAST               21 (plot_b)
+            2916 CALL                     4
+            2924 POP_TOP
+
+3954        2926 LOAD_FAST                5 (p)
+            2928 LOAD_ATTR               27 (NULL|self + setPen)
+            2948 LOAD_GLOBAL             21 (NULL + QColor)
+            2958 LOAD_CONST              37 (100)
+            2960 LOAD_CONST              35 (220)
+            2962 LOAD_CONST              15 (120)
+            2964 CALL                     3
+            2972 CALL                     1
+            2980 POP_TOP
+
+3955        2982 LOAD_FAST                5 (p)
+            2984 LOAD_ATTR               31 (NULL|self + drawText)
+            3004 LOAD_FAST               28 (x)
+            3006 LOAD_CONST              41 (3)
+            3008 BINARY_OP                0 (+)
+            3012 LOAD_FAST               20 (plot_t)
+            3014 LOAD_CONST              42 (12)
+            3016 BINARY_OP                0 (+)
+            3020 LOAD_FAST               34 (ev)
+            3022 LOAD_CONST              43 ('shift_name')
+            3024 BINARY_SUBSCR
+            3028 CALL                     3
+            3036 POP_TOP
+
+3956        3038 LOAD_FAST                5 (p)
+            3040 LOAD_ATTR               27 (NULL|self + setPen)
+            3060 PUSH_NULL
+            3062 LOAD_FAST                3 (QPen)
+            3064 LOAD_GLOBAL             21 (NULL + QColor)
+            3074 LOAD_CONST              18 (80)
+            3076 LOAD_CONST              22 (200)
+            3078 LOAD_CONST              37 (100)
+            3080 CALL                     3
+            3088 LOAD_CONST              38 (1.2)
+            3090 LOAD_GLOBAL             34 (Qt)
+            3100 LOAD_ATTR               52 (PenStyle)
+            3120 LOAD_ATTR               54 (DashLine)
+            3140 CALL                     3
+            3148 CALL                     1
+            3156 POP_TOP
+            3158 JUMP_BACKWARD          163 (to 2834)
+
+3951     >> 3160 END_FOR
+
+3959        3162 LOAD_FAST                5 (p)
+            3164 LOAD_ATTR               29 (NULL|self + setFont)
+            3184 PUSH_NULL
+            3186 LOAD_FAST                4 (_F)
+            3188 LOAD_CONST               7 ('Sans')
+            3190 LOAD_CONST              44 (9)
+            3192 CALL                     2
+            3200 CALL                     1
+            3208 POP_TOP
+
+3960        3210 LOAD_FAST                5 (p)
+            3212 LOAD_ATTR               27 (NULL|self + setPen)
+            3232 PUSH_NULL
+            3234 LOAD_FAST                3 (QPen)
+            3236 LOAD_GLOBAL             21 (NULL + QColor)
+            3246 LOAD_CONST              18 (80)
+            3248 LOAD_CONST              27 (160)
+            3250 LOAD_CONST              33 (240)
+            3252 CALL                     3
+            3260 LOAD_CONST              34 (2.5)
+            3262 CALL                     2
+            3270 CALL                     1
+            3278 POP_TOP
+
+3961        3280 LOAD_FAST                5 (p)
+            3282 LOAD_ATTR               43 (NULL|self + drawLine)
+            3302 LOAD_FAST               18 (plot_l)
+            3304 LOAD_CONST              17 (8)
+            3306 BINARY_OP                0 (+)
+            3310 LOAD_FAST               20 (plot_t)
+            3312 LOAD_CONST              17 (8)
+            3314 BINARY_OP                0 (+)
+            3318 LOAD_FAST               18 (plot_l)
+            3320 LOAD_CONST              45 (28)
+            3322 BINARY_OP                0 (+)
+            3326 LOAD_FAST               20 (plot_t)
+            3328 LOAD_CONST              17 (8)
+            3330 BINARY_OP                0 (+)
+            3334 CALL                     4
+            3342 POP_TOP
+
+3962        3344 LOAD_FAST                5 (p)
+            3346 LOAD_ATTR               27 (NULL|self + setPen)
+            3366 LOAD_GLOBAL             21 (NULL + QColor)
+            3376 LOAD_CONST              22 (200)
+            3378 LOAD_CONST              22 (200)
+            3380 LOAD_CONST              22 (200)
+            3382 CALL                     3
+            3390 CALL                     1
+            3398 POP_TOP
+
+3963        3400 LOAD_FAST                5 (p)
+            3402 LOAD_ATTR               31 (NULL|self + drawText)
+            3422 LOAD_FAST               18 (plot_l)
+            3424 LOAD_CONST              46 (32)
+            3426 BINARY_OP                0 (+)
+            3430 LOAD_FAST               20 (plot_t)
+            3432 LOAD_CONST              42 (12)
+            3434 BINARY_OP                0 (+)
+            3438 LOAD_CONST              47 ('MPH')
+            3440 CALL                     3
+            3448 POP_TOP
+
+3964        3450 LOAD_FAST                5 (p)
+            3452 LOAD_ATTR               27 (NULL|self + setPen)
+            3472 PUSH_NULL
+            3474 LOAD_FAST                3 (QPen)
+            3476 LOAD_GLOBAL             21 (NULL + QColor)
+            3486 LOAD_CONST              35 (220)
+            3488 LOAD_CONST              27 (160)
+            3490 LOAD_CONST              20 (60)
+            3492 CALL                     3
+            3500 LOAD_CONST              36 (1.5)
+            3502 LOAD_GLOBAL             34 (Qt)
+            3512 LOAD_ATTR               52 (PenStyle)
+            3532 LOAD_ATTR               54 (DashLine)
+            3552 CALL                     3
+            3560 CALL                     1
+            3568 POP_TOP
+
+3965        3570 LOAD_FAST                5 (p)
+            3572 LOAD_ATTR               43 (NULL|self + drawLine)
+            3592 LOAD_FAST               18 (plot_l)
+            3594 LOAD_CONST              18 (80)
+            3596 BINARY_OP                0 (+)
+            3600 LOAD_FAST               20 (plot_t)
+            3602 LOAD_CONST              17 (8)
+            3604 BINARY_OP                0 (+)
+            3608 LOAD_FAST               18 (plot_l)
+            3610 LOAD_CONST              37 (100)
+            3612 BINARY_OP                0 (+)
+            3616 LOAD_FAST               20 (plot_t)
+            3618 LOAD_CONST              17 (8)
+            3620 BINARY_OP                0 (+)
+            3624 CALL                     4
+            3632 POP_TOP
+
+3966        3634 LOAD_FAST                5 (p)
+            3636 LOAD_ATTR               27 (NULL|self + setPen)
+            3656 LOAD_GLOBAL             21 (NULL + QColor)
+            3666 LOAD_CONST              22 (200)
+            3668 LOAD_CONST              22 (200)
+            3670 LOAD_CONST              22 (200)
+            3672 CALL                     3
+            3680 CALL                     1
+            3688 POP_TOP
+
+3967        3690 LOAD_FAST                5 (p)
+            3692 LOAD_ATTR               31 (NULL|self + drawText)
+            3712 LOAD_FAST               18 (plot_l)
+            3714 LOAD_CONST              48 (104)
+            3716 BINARY_OP                0 (+)
+            3720 LOAD_FAST               20 (plot_t)
+            3722 LOAD_CONST              42 (12)
+            3724 BINARY_OP                0 (+)
+            3728 LOAD_CONST              49 ('RPM')
+            3730 CALL                     3
+            3738 POP_TOP
+            3740 RETURN_CONST             0 (None)

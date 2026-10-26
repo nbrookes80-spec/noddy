@@ -1,0 +1,201 @@
+                0 COPY_FREE_VARS           1
+
+10105           2 RESUME                   0
+
+10109           4 NOP
+
+10110           6 LOAD_FAST                0 (self)
+                8 LOAD_ATTR                1 (NULL|self + _gather_config)
+               28 CALL                     0
+               36 STORE_FAST               2 (cfg)
+
+10111          38 LOAD_FAST                0 (self)
+               40 LOAD_ATTR                2 (trans)
+               60 LOAD_ATTR                5 (NULL|self + currentText)
+               80 CALL                     0
+               88 LOAD_FAST                2 (cfg)
+               90 LOAD_CONST               1 ('trans_name')
+               92 STORE_SUBSCR
+
+10112          96 LOAD_FAST                0 (self)
+               98 LOAD_ATTR                6 (lockup_flags)
+              118 LOAD_FAST                2 (cfg)
+              120 LOAD_CONST               2 ('lockup_flags')
+              122 STORE_SUBSCR
+
+10113         126 LOAD_FAST                0 (self)
+              128 LOAD_ATTR                8 (mode_overrides)
+              148 LOAD_FAST                2 (cfg)
+              150 LOAD_CONST               3 ('mode_overrides')
+              152 STORE_SUBSCR
+
+10114         156 LOAD_FAST                0 (self)
+              158 LOAD_ATTR               10 (multi_mode_enabled)
+              178 LOAD_FAST                2 (cfg)
+              180 LOAD_CONST               4 ('multi_mode_enabled')
+              182 STORE_SUBSCR
+
+10115         186 LOAD_FAST                0 (self)
+              188 LOAD_ATTR               12 (metric)
+              208 LOAD_FAST                2 (cfg)
+              210 LOAD_CONST               5 ('metric')
+              212 STORE_SUBSCR
+
+10116         216 LOAD_FAST                0 (self)
+              218 LOAD_ATTR               14 (tb_preset)
+              238 LOAD_ATTR                5 (NULL|self + currentText)
+              258 CALL                     0
+              266 LOAD_FAST                2 (cfg)
+              268 LOAD_CONST               6 ('tb_preset')
+              270 STORE_SUBSCR
+
+10119         274 LOAD_FAST                2 (cfg)
+              276 LOAD_ATTR               17 (NULL|self + pop)
+              296 LOAD_CONST               7 ('torque_curve')
+              298 LOAD_CONST               8 (None)
+              300 CALL                     2
+              308 STORE_FAST               3 (tc)
+
+10120         310 LOAD_FAST                3 (tc)
+              312 POP_JUMP_IF_NONE        31 (to 376)
+              314 LOAD_FAST                3 (tc)
+              316 LOAD_ATTR               18 (is_empty)
+              336 POP_JUMP_IF_TRUE        19 (to 376)
+
+10121         338 LOAD_FAST                3 (tc)
+              340 LOAD_ATTR               21 (NULL|self + to_dict)
+              360 CALL                     0
+              368 LOAD_FAST                2 (cfg)
+              370 LOAD_CONST               7 ('torque_curve')
+              372 STORE_SUBSCR
+
+10122     >>  376 LOAD_CONST               9 ('ratios')
+              378 LOAD_FAST                2 (cfg)
+              380 CONTAINS_OP              0
+              382 POP_JUMP_IF_FALSE        3 (to 390)
+
+10123         384 LOAD_FAST                2 (cfg)
+              386 LOAD_CONST               9 ('ratios')
+              388 DELETE_SUBSCR
+
+10127     >>  390 LOAD_FAST                0 (self)
+              392 LOAD_ATTR               22 (_autosave_path)
+              412 LOAD_CONST              10 ('.tmp')
+              414 BINARY_OP                0 (+)
+              418 STORE_FAST               4 (tmp_path)
+
+10128         420 LOAD_GLOBAL             25 (NULL + open)
+              430 LOAD_FAST                4 (tmp_path)
+              432 LOAD_CONST              11 ('w')
+              434 CALL                     2
+              442 BEFORE_WITH
+              444 STORE_FAST               5 (f)
+
+10129         446 LOAD_GLOBAL             27 (NULL + json)
+              456 LOAD_ATTR               28 (dump)
+              476 LOAD_FAST                2 (cfg)
+              478 LOAD_FAST                5 (f)
+              480 LOAD_CONST              12 (2)
+              482 LOAD_CONST              13 (False)
+              484 KW_NAMES                14 (('indent', 'allow_nan'))
+              486 CALL                     4
+              494 POP_TOP
+
+10128         496 LOAD_CONST               8 (None)
+              498 LOAD_CONST               8 (None)
+              500 LOAD_CONST               8 (None)
+              502 CALL                     2
+              510 POP_TOP
+
+10130     >>  512 LOAD_GLOBAL             31 (NULL + os)
+              522 LOAD_ATTR               32 (replace)
+              542 LOAD_FAST                4 (tmp_path)
+              544 LOAD_FAST                0 (self)
+              546 LOAD_ATTR               22 (_autosave_path)
+              566 CALL                     2
+              574 POP_TOP
+
+10138     >>  576 LOAD_GLOBAL             44 (super)
+              586 LOAD_DEREF               6 (__class__)
+              588 LOAD_FAST                0 (self)
+              590 LOAD_SUPER_ATTR         93 (NULL|self + closeEvent)
+              594 LOAD_FAST                1 (event)
+              596 CALL                     1
+              604 POP_TOP
+              606 RETURN_CONST             8 (None)
+
+10128     >>  608 PUSH_EXC_INFO
+              610 WITH_EXCEPT_START
+              612 POP_JUMP_IF_TRUE         1 (to 616)
+              614 RERAISE                  2
+          >>  616 POP_TOP
+              618 POP_EXCEPT
+              620 POP_TOP
+              622 POP_TOP
+              624 JUMP_BACKWARD           57 (to 512)
+          >>  626 COPY                     3
+              628 POP_EXCEPT
+              630 RERAISE                  1
+          >>  632 PUSH_EXC_INFO
+
+10131         634 LOAD_GLOBAL             34 (Exception)
+              644 CHECK_EXC_MATCH
+              646 POP_JUMP_IF_FALSE       98 (to 844)
+              648 POP_TOP
+
+10133         650 NOP
+
+10134         652 LOAD_GLOBAL             30 (os)
+              662 LOAD_ATTR               36 (path)
+              682 LOAD_ATTR               39 (NULL|self + exists)
+              702 LOAD_FAST                0 (self)
+              704 LOAD_ATTR               22 (_autosave_path)
+              724 LOAD_CONST              10 ('.tmp')
+              726 BINARY_OP                0 (+)
+              730 CALL                     1
+              738 POP_JUMP_IF_FALSE       34 (to 808)
+
+10135         740 LOAD_GLOBAL             31 (NULL + os)
+              750 LOAD_ATTR               40 (remove)
+              770 LOAD_FAST                0 (self)
+              772 LOAD_ATTR               22 (_autosave_path)
+              792 LOAD_CONST              10 ('.tmp')
+              794 BINARY_OP                0 (+)
+              798 CALL                     1
+              806 POP_TOP
+          >>  808 JUMP_FORWARD            15 (to 840)
+          >>  810 PUSH_EXC_INFO
+
+10136         812 LOAD_GLOBAL             42 (OSError)
+              822 CHECK_EXC_MATCH
+              824 POP_JUMP_IF_FALSE        3 (to 832)
+              826 POP_TOP
+
+10137         828 POP_EXCEPT
+              830 JUMP_FORWARD             4 (to 840)
+
+10136     >>  832 RERAISE                  0
+          >>  834 COPY                     3
+              836 POP_EXCEPT
+              838 RERAISE                  1
+          >>  840 POP_EXCEPT
+              842 JUMP_BACKWARD          134 (to 576)
+
+10131     >>  844 RERAISE                  0
+          >>  846 COPY                     3
+              848 POP_EXCEPT
+              850 RERAISE                  1
+ExceptionTable:
+  6 to 442 -> 632 [0]
+  444 to 494 -> 608 [1] lasti
+  496 to 574 -> 632 [0]
+  608 to 616 -> 626 [3] lasti
+  618 to 630 -> 632 [0]
+  632 to 648 -> 846 [1] lasti
+  652 to 806 -> 810 [1]
+  808 to 808 -> 846 [1] lasti
+  810 to 826 -> 834 [2] lasti
+  828 to 830 -> 846 [1] lasti
+  832 to 832 -> 834 [2] lasti
+  834 to 838 -> 846 [1] lasti
+  844 to 844 -> 846 [1] lasti

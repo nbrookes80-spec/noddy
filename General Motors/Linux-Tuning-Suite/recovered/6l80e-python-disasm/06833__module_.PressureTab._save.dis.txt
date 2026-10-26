@@ -1,0 +1,193 @@
+               0 MAKE_CELL               13 (fmt)
+               2 MAKE_CELL               14 (scale)
+
+6833           4 RESUME                   0
+
+6834           6 LOAD_FAST                0 (self)
+               8 LOAD_ATTR                1 (NULL|self + _get_current_table_data)
+              28 CALL                     0
+              36 UNPACK_SEQUENCE          5
+              40 STORE_FAST               1 (data)
+              42 STORE_FAST               2 (row_lbls)
+              44 STORE_FAST               3 (col_lbls)
+              46 STORE_FAST               4 (kind)
+              48 STORE_FAST               5 (intent_label)
+
+6835          50 LOAD_FAST                1 (data)
+              52 POP_JUMP_IF_TRUE         1 (to 56)
+
+6836          54 RETURN_CONST             0 (None)
+
+6838     >>   56 LOAD_FAST                5 (intent_label)
+              58 LOAD_ATTR                3 (NULL|self + replace)
+              78 LOAD_CONST               1 (' ')
+              80 LOAD_CONST               2 ('_')
+              82 CALL                     2
+              90 LOAD_ATTR                3 (NULL|self + replace)
+             110 LOAD_CONST               3 ('/')
+             112 LOAD_CONST               2 ('_')
+             114 CALL                     2
+             122 LOAD_ATTR                3 (NULL|self + replace)
+             142 LOAD_CONST               4 (':')
+             144 LOAD_CONST               5 ('')
+             146 CALL                     2
+             154 STORE_FAST               6 (fname)
+
+6839         156 LOAD_FAST                4 (kind)
+             158 LOAD_CONST               6 ('psi')
+             160 COMPARE_OP              40 (==)
+             164 POP_JUMP_IF_FALSE       17 (to 200)
+             166 LOAD_FAST                0 (self)
+             168 LOAD_ATTR                4 (unit)
+             188 LOAD_CONST               7 ('kPa')
+             190 COMPARE_OP              40 (==)
+             194 POP_JUMP_IF_FALSE        2 (to 200)
+             196 LOAD_CONST               8 ('_kPa')
+             198 JUMP_FORWARD            15 (to 230)
+
+6840     >>  200 LOAD_FAST                4 (kind)
+             202 LOAD_CONST               9 ('sec')
+             204 COMPARE_OP              40 (==)
+             208 POP_JUMP_IF_FALSE        2 (to 214)
+             210 LOAD_CONST              10 ('_sec')
+             212 JUMP_FORWARD             8 (to 230)
+         >>  214 LOAD_FAST                4 (kind)
+             216 LOAD_CONST              11 ('pct')
+             218 COMPARE_OP              40 (==)
+             222 POP_JUMP_IF_FALSE        2 (to 228)
+             224 LOAD_CONST              12 ('_pct')
+             226 JUMP_FORWARD             1 (to 230)
+         >>  228 LOAD_CONST               5 ('')
+
+6839     >>  230 STORE_FAST               7 (suffix)
+
+6841         232 LOAD_GLOBAL              7 (NULL + QFileDialog)
+             242 LOAD_ATTR                8 (getSaveFileName)
+
+6842         262 LOAD_FAST                0 (self)
+             264 LOAD_CONST              13 ('Save Table CSV')
+             266 LOAD_FAST                6 (fname)
+             268 FORMAT_VALUE             0
+             270 LOAD_FAST                7 (suffix)
+             272 FORMAT_VALUE             0
+             274 LOAD_CONST              14 ('.csv')
+             276 BUILD_STRING             3
+
+6843         278 LOAD_CONST              15 ('CSV (*.csv)')
+
+6841         280 CALL                     4
+             288 UNPACK_SEQUENCE          2
+             292 STORE_FAST               8 (path)
+             294 STORE_FAST               9 (_)
+
+6844         296 LOAD_FAST                8 (path)
+             298 POP_JUMP_IF_TRUE         1 (to 302)
+
+6845         300 RETURN_CONST             0 (None)
+
+6846     >>  302 LOAD_FAST                4 (kind)
+             304 LOAD_CONST               6 ('psi')
+             306 COMPARE_OP              40 (==)
+             310 POP_JUMP_IF_FALSE       21 (to 354)
+             312 LOAD_FAST                0 (self)
+             314 LOAD_ATTR                4 (unit)
+             334 LOAD_CONST               7 ('kPa')
+             336 COMPARE_OP              40 (==)
+             340 POP_JUMP_IF_FALSE        6 (to 354)
+             342 LOAD_GLOBAL             10 (PSI_TO_KPA)
+             352 JUMP_FORWARD             1 (to 356)
+         >>  354 LOAD_CONST              16 (1.0)
+         >>  356 STORE_DEREF             14 (scale)
+
+6847         358 LOAD_FAST                4 (kind)
+             360 LOAD_CONST               9 ('sec')
+             362 COMPARE_OP              40 (==)
+             366 POP_JUMP_IF_FALSE        2 (to 372)
+             368 LOAD_CONST              17 ('{:.3f}')
+             370 JUMP_FORWARD             1 (to 374)
+         >>  372 LOAD_CONST              18 ('{:.2f}')
+         >>  374 STORE_DEREF             13 (fmt)
+
+6848         376 LOAD_GLOBAL             13 (NULL + open)
+             386 LOAD_FAST                8 (path)
+             388 LOAD_CONST              19 ('w')
+             390 CALL                     2
+             398 BEFORE_WITH
+             400 STORE_FAST              10 (f)
+
+6849         402 LOAD_FAST               10 (f)
+             404 LOAD_ATTR               15 (NULL|self + write)
+             424 LOAD_CONST              20 (',')
+             426 LOAD_CONST              20 (',')
+             428 LOAD_ATTR               17 (NULL|self + join)
+             448 LOAD_FAST                3 (col_lbls)
+             450 CALL                     1
+             458 BINARY_OP                0 (+)
+             462 LOAD_CONST              21 ('\n')
+             464 BINARY_OP                0 (+)
+             468 CALL                     1
+             476 POP_TOP
+
+6850         478 LOAD_GLOBAL             19 (NULL + enumerate)
+             488 LOAD_FAST                1 (data)
+             490 CALL                     1
+             498 GET_ITER
+         >>  500 FOR_ITER                59 (to 622)
+             504 UNPACK_SEQUENCE          2
+             508 STORE_FAST              11 (r)
+             510 STORE_FAST              12 (row)
+
+6851         512 LOAD_FAST               10 (f)
+             514 LOAD_ATTR               15 (NULL|self + write)
+             534 LOAD_FAST                2 (row_lbls)
+             536 LOAD_FAST               11 (r)
+             538 BINARY_SUBSCR
+             542 FORMAT_VALUE             0
+             544 LOAD_CONST              20 (',')
+             546 BUILD_STRING             2
+
+6852         548 LOAD_CONST              20 (',')
+             550 LOAD_ATTR               17 (NULL|self + join)
+             570 LOAD_CLOSURE            13 (fmt)
+             572 LOAD_CLOSURE            14 (scale)
+             574 BUILD_TUPLE              2
+             576 LOAD_CONST              22 (<code object <genexpr> at 0x73ab02a07770, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6852>)
+             578 MAKE_FUNCTION            8 (closure)
+             580 LOAD_FAST               12 (row)
+             582 GET_ITER
+             584 CALL                     0
+             592 CALL                     1
+
+6851         600 BINARY_OP                0 (+)
+
+6852         604 LOAD_CONST              21 ('\n')
+
+6851         606 BINARY_OP                0 (+)
+             610 CALL                     1
+             618 POP_TOP
+             620 JUMP_BACKWARD           61 (to 500)
+
+6850     >>  622 END_FOR
+             624 NOP
+
+6848         626 LOAD_CONST               0 (None)
+             628 LOAD_CONST               0 (None)
+             630 LOAD_CONST               0 (None)
+             632 CALL                     2
+             640 POP_TOP
+             642 RETURN_CONST             0 (None)
+         >>  644 PUSH_EXC_INFO
+             646 WITH_EXCEPT_START
+             648 POP_JUMP_IF_TRUE         1 (to 652)
+             650 RERAISE                  2
+         >>  652 POP_TOP
+             654 POP_EXCEPT
+             656 POP_TOP
+             658 POP_TOP
+             660 RETURN_CONST             0 (None)
+         >>  662 COPY                     3
+             664 POP_EXCEPT
+             666 RERAISE                  1
+ExceptionTable:
+  400 to 622 -> 644 [1] lasti
+  644 to 652 -> 662 [3] lasti

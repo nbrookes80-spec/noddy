@@ -1,0 +1,14 @@
+               0 COPY_FREE_VARS           3
+
+7286           2 RESUME                   0
+
+7287           4 LOAD_DEREF               1 (redline)
+               6 LOAD_DEREF               2 (tire)
+               8 BINARY_OP                5 (*)
+              12 LOAD_GLOBAL              0 (MPH_K)
+              22 LOAD_FAST                0 (axle)
+              24 BINARY_OP                5 (*)
+              28 LOAD_DEREF               3 (top_gear)
+              30 BINARY_OP                5 (*)
+              34 BINARY_OP               11 (/)
+              38 RETURN_VALUE

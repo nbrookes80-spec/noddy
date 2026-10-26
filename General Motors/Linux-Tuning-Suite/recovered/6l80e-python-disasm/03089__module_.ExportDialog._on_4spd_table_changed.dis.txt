@@ -1,0 +1,11 @@
+3089           0 RESUME                   0
+
+3090           2 LOAD_FAST                1 (table_name)
+               4 LOAD_FAST                0 (self)
+               6 STORE_ATTR               0 (current_4spd_table)
+
+3091          16 LOAD_FAST                0 (self)
+              18 LOAD_ATTR                3 (NULL|self + _refresh_pressure_table)
+              38 CALL                     0
+              46 POP_TOP
+              48 RETURN_CONST             0 (None)

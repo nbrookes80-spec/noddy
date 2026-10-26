@@ -1,0 +1,275 @@
+1650           0 RESUME                   0
+
+1655           2 PUSH_NULL
+               4 LOAD_FAST                0 (cls)
+               6 CALL                     0
+              14 STORE_FAST               3 (imp)
+
+1656          16 LOAD_FAST                1 (df)
+              18 LOAD_ATTR                0 (columns)
+              38 GET_ITER
+              40 LOAD_FAST_AND_CLEAR      4 (c)
+              42 SWAP                     2
+              44 BUILD_LIST               0
+              46 SWAP                     2
+         >>   48 FOR_ITER                27 (to 106)
+              52 STORE_FAST               4 (c)
+              54 LOAD_GLOBAL              3 (NULL + str)
+              64 LOAD_FAST                4 (c)
+              66 CALL                     1
+              74 LOAD_ATTR                5 (NULL|self + strip)
+              94 CALL                     0
+             102 LIST_APPEND              2
+             104 JUMP_BACKWARD           29 (to 48)
+         >>  106 END_FOR
+             108 SWAP                     2
+             110 STORE_FAST               4 (c)
+             112 LOAD_FAST                3 (imp)
+             114 STORE_ATTR               3 (headers)
+
+1657         124 LOAD_FAST                3 (imp)
+             126 LOAD_ATTR                9 (NULL|self + _build_column_map)
+             146 LOAD_FAST                3 (imp)
+             148 LOAD_ATTR                6 (headers)
+             168 CALL                     1
+             176 LOAD_FAST                3 (imp)
+             178 STORE_ATTR               5 (col_map)
+
+1660         188 LOAD_CONST               1 (0)
+             190 LOAD_CONST               2 (None)
+             192 IMPORT_NAME              6 (pandas)
+             194 STORE_FAST               5 (pd)
+
+1661         196 LOAD_FAST                1 (df)
+             198 LOAD_ATTR                0 (columns)
+             218 GET_ITER
+         >>  220 FOR_ITER                46 (to 316)
+             224 STORE_FAST               6 (col)
+
+1662         226 LOAD_FAST                1 (df)
+             228 LOAD_FAST                6 (col)
+             230 BINARY_SUBSCR
+             234 LOAD_ATTR               14 (dtype)
+             254 LOAD_CONST               3 ('object')
+             256 COMPARE_OP              40 (==)
+             260 POP_JUMP_IF_TRUE         1 (to 264)
+             262 JUMP_BACKWARD           22 (to 220)
+
+1663     >>  264 LOAD_FAST                5 (pd)
+             266 LOAD_ATTR               17 (NULL|self + to_numeric)
+             286 LOAD_FAST                1 (df)
+             288 LOAD_FAST                6 (col)
+             290 BINARY_SUBSCR
+             294 LOAD_CONST               4 ('coerce')
+             296 KW_NAMES                 5 (('errors',))
+             298 CALL                     2
+             306 LOAD_FAST                1 (df)
+             308 LOAD_FAST                6 (col)
+             310 STORE_SUBSCR
+             314 JUMP_BACKWARD           48 (to 220)
+
+1661     >>  316 END_FOR
+
+1666         318 LOAD_FAST                3 (imp)
+             320 LOAD_ATTR               19 (NULL|self + _find_col)
+             340 BUILD_LIST               0
+             342 LOAD_CONST               6 (('time', 'timestamp', 'seconds', 't (s)'))
+             344 LIST_EXTEND              1
+             346 CALL                     1
+             354 STORE_FAST               7 (time_col_idx)
+
+1667         356 LOAD_FAST                7 (time_col_idx)
+             358 POP_JUMP_IF_NONE       101 (to 562)
+             360 LOAD_GLOBAL             21 (NULL + len)
+             370 LOAD_FAST                1 (df)
+             372 CALL                     1
+             380 LOAD_CONST               7 (2)
+             382 COMPARE_OP              92 (>=)
+             386 POP_JUMP_IF_FALSE       87 (to 562)
+
+1668         388 NOP
+
+1669         390 LOAD_FAST                1 (df)
+             392 LOAD_ATTR               22 (iloc)
+             412 LOAD_CONST               1 (0)
+             414 LOAD_FAST                7 (time_col_idx)
+             416 BUILD_TUPLE              2
+             418 BINARY_SUBSCR
+             422 STORE_FAST               8 (t0)
+
+1670         424 LOAD_FAST                1 (df)
+             426 LOAD_ATTR               22 (iloc)
+             446 LOAD_CONST               8 (1)
+             448 LOAD_FAST                7 (time_col_idx)
+             450 BUILD_TUPLE              2
+             452 BINARY_SUBSCR
+             456 STORE_FAST               9 (t1)
+
+1671         458 LOAD_FAST                5 (pd)
+             460 LOAD_ATTR               25 (NULL|self + notna)
+             480 LOAD_FAST                8 (t0)
+             482 CALL                     1
+             490 POP_JUMP_IF_FALSE       35 (to 562)
+             492 LOAD_FAST                5 (pd)
+             494 LOAD_ATTR               25 (NULL|self + notna)
+             514 LOAD_FAST                9 (t1)
+             516 CALL                     1
+             524 POP_JUMP_IF_FALSE       18 (to 562)
+             526 LOAD_FAST                9 (t1)
+             528 LOAD_FAST                8 (t0)
+             530 COMPARE_OP              68 (>)
+             534 POP_JUMP_IF_FALSE       13 (to 562)
+
+1672         536 LOAD_CONST               9 (1.0)
+             538 LOAD_FAST                9 (t1)
+             540 LOAD_FAST                8 (t0)
+             542 BINARY_OP               10 (-)
+             546 BINARY_OP               11 (/)
+             550 LOAD_FAST                3 (imp)
+             552 STORE_ATTR              13 (sample_rate)
+
+1677     >>  562 LOAD_FAST                2 (target_hz)
+             564 POP_JUMP_IF_FALSE      106 (to 778)
+             566 LOAD_FAST                3 (imp)
+             568 LOAD_ATTR               26 (sample_rate)
+             588 LOAD_FAST                2 (target_hz)
+             590 LOAD_CONST              10 (1.5)
+             592 BINARY_OP                5 (*)
+             596 COMPARE_OP              68 (>)
+             600 POP_JUMP_IF_FALSE       88 (to 778)
+
+1678         602 LOAD_GLOBAL             33 (NULL + max)
+             612 LOAD_CONST               8 (1)
+             614 LOAD_GLOBAL             35 (NULL + int)
+             624 LOAD_FAST                3 (imp)
+             626 LOAD_ATTR               26 (sample_rate)
+             646 LOAD_FAST                2 (target_hz)
+             648 BINARY_OP               11 (/)
+             652 CALL                     1
+             660 CALL                     2
+             668 STORE_FAST              10 (stride)
+
+1679         670 LOAD_FAST                1 (df)
+             672 LOAD_ATTR               22 (iloc)
+             692 LOAD_CONST               2 (None)
+             694 LOAD_CONST               2 (None)
+             696 LOAD_FAST               10 (stride)
+             698 BUILD_SLICE              3
+             700 BINARY_SUBSCR
+             704 LOAD_ATTR               37 (NULL|self + reset_index)
+             724 LOAD_CONST              11 (True)
+             726 KW_NAMES                12 (('drop',))
+             728 CALL                     1
+             736 STORE_FAST               1 (df)
+
+1680         738 LOAD_FAST                3 (imp)
+             740 LOAD_ATTR               26 (sample_rate)
+             760 LOAD_FAST               10 (stride)
+             762 BINARY_OP               11 (/)
+             766 LOAD_FAST                3 (imp)
+             768 STORE_ATTR              13 (sample_rate)
+
+1684     >>  778 LOAD_FAST                1 (df)
+             780 LOAD_ATTR               38 (values)
+             800 LOAD_ATTR               41 (NULL|self + tolist)
+             820 CALL                     0
+             828 STORE_FAST              11 (arr)
+
+1688         830 LOAD_FAST               11 (arr)
+
+1685         832 GET_ITER
+             834 LOAD_FAST_AND_CLEAR     12 (row)
+             836 LOAD_FAST_AND_CLEAR     13 (v)
+             838 SWAP                     3
+             840 BUILD_LIST               0
+             842 SWAP                     2
+         >>  844 FOR_ITER                43 (to 934)
+
+1688         848 STORE_FAST              12 (row)
+
+1687         850 LOAD_FAST               12 (row)
+
+1686         852 GET_ITER
+             854 LOAD_FAST_AND_CLEAR     13 (v)
+             856 SWAP                     2
+             858 BUILD_LIST               0
+             860 SWAP                     2
+         >>  862 FOR_ITER                29 (to 924)
+
+1687         866 STORE_FAST              13 (v)
+
+1686         868 LOAD_FAST               13 (v)
+             870 POP_JUMP_IF_NONE        21 (to 914)
+             872 LOAD_GLOBAL             43 (NULL + isinstance)
+             882 LOAD_FAST               13 (v)
+             884 LOAD_GLOBAL             44 (float)
+             894 CALL                     2
+             902 POP_JUMP_IF_FALSE        7 (to 918)
+             904 LOAD_FAST               13 (v)
+             906 LOAD_FAST               13 (v)
+             908 COMPARE_OP              55 (!=)
+             912 POP_JUMP_IF_FALSE        2 (to 918)
+         >>  914 LOAD_CONST               2 (None)
+             916 JUMP_FORWARD             1 (to 920)
+         >>  918 LOAD_FAST               13 (v)
+         >>  920 LIST_APPEND              2
+             922 JUMP_BACKWARD           31 (to 862)
+         >>  924 END_FOR
+             926 SWAP                     2
+             928 STORE_FAST              13 (v)
+             930 LIST_APPEND              2
+             932 JUMP_BACKWARD           45 (to 844)
+
+1685     >>  934 END_FOR
+             936 SWAP                     3
+             938 STORE_FAST              13 (v)
+             940 STORE_FAST              12 (row)
+             942 LOAD_FAST                3 (imp)
+             944 STORE_ATTR              23 (rows)
+
+1690         954 LOAD_FAST                3 (imp)
+             956 RETURN_VALUE
+         >>  958 SWAP                     2
+             960 POP_TOP
+
+1656         962 SWAP                     2
+             964 STORE_FAST               4 (c)
+             966 RERAISE                  0
+         >>  968 PUSH_EXC_INFO
+
+1673         970 LOAD_GLOBAL             28 (IndexError)
+             980 LOAD_GLOBAL             30 (KeyError)
+             990 BUILD_TUPLE              2
+             992 CHECK_EXC_MATCH
+             994 POP_JUMP_IF_FALSE        3 (to 1002)
+             996 POP_TOP
+
+1674         998 POP_EXCEPT
+            1000 JUMP_BACKWARD          220 (to 562)
+
+1673     >> 1002 RERAISE                  0
+         >> 1004 COPY                     3
+            1006 POP_EXCEPT
+            1008 RERAISE                  1
+         >> 1010 SWAP                     2
+            1012 POP_TOP
+
+1686        1014 SWAP                     2
+            1016 STORE_FAST              13 (v)
+            1018 RERAISE                  0
+         >> 1020 SWAP                     2
+            1022 POP_TOP
+
+1685        1024 SWAP                     3
+            1026 STORE_FAST              13 (v)
+            1028 STORE_FAST              12 (row)
+            1030 RERAISE                  0
+ExceptionTable:
+  44 to 106 -> 958 [2]
+  390 to 560 -> 968 [0]
+  840 to 856 -> 1020 [3]
+  858 to 924 -> 1010 [6]
+  926 to 934 -> 1020 [3]
+  968 to 996 -> 1004 [1] lasti
+  1002 to 1002 -> 1004 [1] lasti
+  1010 to 1018 -> 1020 [3]

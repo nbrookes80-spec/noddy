@@ -1,0 +1,42 @@
+1174           0 RESUME                   0
+
+1176           2 LOAD_GLOBAL              1 (NULL + open)
+              12 LOAD_FAST                1 (path)
+              14 LOAD_CONST               1 ('rb')
+              16 CALL                     2
+              24 BEFORE_WITH
+              26 STORE_FAST               3 (f)
+
+1177          28 LOAD_FAST                3 (f)
+              30 LOAD_ATTR                3 (NULL|self + read)
+              50 CALL                     0
+              58 STORE_FAST               4 (data)
+
+1176          60 LOAD_CONST               0 (None)
+              62 LOAD_CONST               0 (None)
+              64 LOAD_CONST               0 (None)
+              66 CALL                     2
+              74 POP_TOP
+
+1178     >>   76 PUSH_NULL
+              78 LOAD_FAST                0 (cls)
+              80 LOAD_FAST_CHECK          4 (data)
+              82 LOAD_FAST                2 (xdf)
+              84 CALL                     2
+              92 RETURN_VALUE
+
+1176     >>   94 PUSH_EXC_INFO
+              96 WITH_EXCEPT_START
+              98 POP_JUMP_IF_TRUE         1 (to 102)
+             100 RERAISE                  2
+         >>  102 POP_TOP
+             104 POP_EXCEPT
+             106 POP_TOP
+             108 POP_TOP
+             110 JUMP_BACKWARD           18 (to 76)
+         >>  112 COPY                     3
+             114 POP_EXCEPT
+             116 RERAISE                  1
+ExceptionTable:
+  26 to 58 -> 94 [1] lasti
+  94 to 102 -> 112 [3] lasti

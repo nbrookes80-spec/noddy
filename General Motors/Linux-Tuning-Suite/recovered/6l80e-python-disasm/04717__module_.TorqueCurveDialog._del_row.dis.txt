@@ -1,0 +1,55 @@
+4717           0 RESUME                   0
+
+4718           2 LOAD_GLOBAL              1 (NULL + sorted)
+              12 LOAD_FAST                0 (self)
+              14 LOAD_ATTR                2 (tbl)
+              34 LOAD_ATTR                5 (NULL|self + selectedItems)
+              54 CALL                     0
+              62 GET_ITER
+              64 LOAD_FAST_AND_CLEAR      1 (i)
+              66 SWAP                     2
+              68 BUILD_SET                0
+              70 SWAP                     2
+         >>   72 FOR_ITER                18 (to 112)
+              76 STORE_FAST               1 (i)
+              78 LOAD_FAST                1 (i)
+              80 LOAD_ATTR                7 (NULL|self + row)
+             100 CALL                     0
+             108 SET_ADD                  2
+             110 JUMP_BACKWARD           20 (to 72)
+         >>  112 END_FOR
+             114 SWAP                     2
+             116 STORE_FAST               1 (i)
+             118 LOAD_CONST               1 (True)
+             120 KW_NAMES                 2 (('reverse',))
+             122 CALL                     2
+             130 STORE_FAST               2 (rows)
+
+4719         132 LOAD_FAST                2 (rows)
+             134 GET_ITER
+         >>  136 FOR_ITER                29 (to 198)
+             140 STORE_FAST               3 (r)
+
+4720         142 LOAD_FAST                0 (self)
+             144 LOAD_ATTR                2 (tbl)
+             164 LOAD_ATTR                9 (NULL|self + removeRow)
+             184 LOAD_FAST                3 (r)
+             186 CALL                     1
+             194 POP_TOP
+             196 JUMP_BACKWARD           31 (to 136)
+
+4719     >>  198 END_FOR
+
+4721         200 LOAD_FAST                0 (self)
+             202 LOAD_ATTR               11 (NULL|self + _sync_curve_from_table)
+             222 CALL                     0
+             230 POP_TOP
+             232 RETURN_CONST             0 (None)
+         >>  234 SWAP                     2
+             236 POP_TOP
+
+4718         238 SWAP                     2
+             240 STORE_FAST               1 (i)
+             242 RERAISE                  0
+ExceptionTable:
+  68 to 112 -> 234 [4]

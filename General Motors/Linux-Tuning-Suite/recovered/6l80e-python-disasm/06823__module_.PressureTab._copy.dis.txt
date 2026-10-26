@@ -1,0 +1,66 @@
+               0 MAKE_CELL                5 (fmt)
+               2 MAKE_CELL                6 (scale)
+
+6823           4 RESUME                   0
+
+6824           6 LOAD_FAST                0 (self)
+               8 LOAD_ATTR                1 (NULL|self + _get_current_table_data)
+              28 CALL                     0
+              36 UNPACK_SEQUENCE          5
+              40 STORE_FAST               1 (data)
+              42 STORE_FAST               2 (_)
+              44 STORE_FAST               2 (_)
+              46 STORE_FAST               3 (kind)
+              48 STORE_FAST               2 (_)
+
+6825          50 LOAD_FAST                1 (data)
+              52 POP_JUMP_IF_TRUE         1 (to 56)
+
+6826          54 RETURN_CONST             0 (None)
+
+6827     >>   56 LOAD_FAST                3 (kind)
+              58 LOAD_CONST               1 ('psi')
+              60 COMPARE_OP              40 (==)
+              64 POP_JUMP_IF_FALSE       21 (to 108)
+              66 LOAD_FAST                0 (self)
+              68 LOAD_ATTR                2 (unit)
+              88 LOAD_CONST               2 ('kPa')
+              90 COMPARE_OP              40 (==)
+              94 POP_JUMP_IF_FALSE        6 (to 108)
+              96 LOAD_GLOBAL              4 (PSI_TO_KPA)
+             106 JUMP_FORWARD             1 (to 110)
+         >>  108 LOAD_CONST               3 (1.0)
+         >>  110 STORE_DEREF              6 (scale)
+
+6828         112 LOAD_FAST                3 (kind)
+             114 LOAD_CONST               4 ('sec')
+             116 COMPARE_OP              40 (==)
+             120 POP_JUMP_IF_FALSE        2 (to 126)
+             122 LOAD_CONST               5 ('{:.3f}')
+             124 JUMP_FORWARD             1 (to 128)
+         >>  126 LOAD_CONST               6 ('{:.1f}')
+         >>  128 STORE_DEREF              5 (fmt)
+
+6829         130 LOAD_CONST               7 ('\n')
+             132 LOAD_ATTR                7 (NULL|self + join)
+             152 LOAD_CLOSURE             5 (fmt)
+             154 LOAD_CLOSURE             6 (scale)
+             156 BUILD_TUPLE              2
+             158 LOAD_CONST               8 (<code object <genexpr> at 0x73ab02a4e0d0, file "Ewalts Auto Tuning Transmission Calibration Studio v2.py", line 6829>)
+             160 MAKE_FUNCTION            8 (closure)
+
+6830         162 LOAD_FAST                1 (data)
+
+6829         164 GET_ITER
+             166 CALL                     0
+             174 CALL                     1
+             182 STORE_FAST               4 (text)
+
+6831         184 LOAD_GLOBAL              9 (NULL + QGuiApplication)
+             194 LOAD_ATTR               10 (clipboard)
+             214 CALL                     0
+             222 LOAD_ATTR               13 (NULL|self + setText)
+             242 LOAD_FAST                4 (text)
+             244 CALL                     1
+             252 POP_TOP
+             254 RETURN_CONST             0 (None)

@@ -1,0 +1,218 @@
+10286           0 RESUME                   0
+
+10287           2 LOAD_FAST                0 (self)
+                4 LOAD_ATTR                0 (_last_result)
+               24 POP_JUMP_IF_NOT_NONE    24 (to 74)
+
+10288          26 LOAD_GLOBAL              3 (NULL + QMessageBox)
+               36 LOAD_ATTR                4 (warning)
+               56 LOAD_FAST                0 (self)
+               58 LOAD_CONST               1 ('No Data')
+
+10289          60 LOAD_CONST               2 ("Run Calculate (F5) first — there's nothing to report.")
+
+10288          62 CALL                     3
+               70 POP_TOP
+
+10290          72 RETURN_CONST             0 (None)
+
+10291     >>   74 LOAD_GLOBAL              7 (NULL + QFileDialog)
+               84 LOAD_ATTR                8 (getSaveFileName)
+
+10292         104 LOAD_FAST                0 (self)
+              106 LOAD_CONST               3 ('Export PDF Report')
+
+10293         108 LOAD_CONST               4 ('trans_calibration_report.pdf')
+              110 LOAD_CONST               5 ('PDF (*.pdf)')
+
+10291         112 CALL                     4
+              120 UNPACK_SEQUENCE          2
+              124 STORE_FAST               1 (path)
+              126 STORE_FAST               2 (_)
+
+10294         128 LOAD_FAST                1 (path)
+              130 POP_JUMP_IF_TRUE         1 (to 134)
+
+10295         132 RETURN_CONST             0 (None)
+
+10296     >>  134 NOP
+
+10297         136 LOAD_CONST               6 (0)
+              138 LOAD_CONST               7 (('QPdfWriter', 'QPageLayout', 'QPageSize', 'QPainter', 'QPen'))
+              140 IMPORT_NAME              5 (PyQt6.QtGui)
+              142 IMPORT_FROM              6 (QPdfWriter)
+              144 STORE_FAST               3 (QPdfWriter)
+              146 IMPORT_FROM              7 (QPageLayout)
+              148 STORE_FAST               4 (QPageLayout)
+              150 IMPORT_FROM              8 (QPageSize)
+              152 STORE_FAST               5 (QPageSize)
+              154 IMPORT_FROM              9 (QPainter)
+              156 STORE_FAST               6 (QPainter)
+              158 IMPORT_FROM             10 (QPen)
+              160 STORE_FAST               7 (QPen)
+              162 POP_TOP
+
+10298         164 LOAD_CONST               6 (0)
+              166 LOAD_CONST               8 (('QSizeF', 'QMarginsF', 'QPointF'))
+              168 IMPORT_NAME             11 (PyQt6.QtCore)
+              170 IMPORT_FROM             12 (QSizeF)
+              172 STORE_FAST               8 (QSizeF)
+              174 IMPORT_FROM             13 (QMarginsF)
+              176 STORE_FAST               9 (QMarginsF)
+              178 IMPORT_FROM             14 (QPointF)
+              180 STORE_FAST              10 (QPointF)
+              182 POP_TOP
+
+10304         184 PUSH_NULL
+              186 LOAD_FAST                3 (QPdfWriter)
+              188 LOAD_FAST                1 (path)
+              190 CALL                     1
+              198 STORE_FAST              12 (writer)
+
+10305         200 LOAD_FAST               12 (writer)
+              202 LOAD_ATTR               35 (NULL|self + setResolution)
+              222 LOAD_CONST              11 (300)
+              224 CALL                     1
+              232 POP_TOP
+
+10306         234 LOAD_FAST               12 (writer)
+              236 LOAD_ATTR               37 (NULL|self + setPageSize)
+              256 PUSH_NULL
+              258 LOAD_FAST                5 (QPageSize)
+              260 LOAD_FAST                5 (QPageSize)
+              262 LOAD_ATTR               38 (PageSizeId)
+              282 LOAD_ATTR               40 (Letter)
+              302 CALL                     1
+              310 CALL                     1
+              318 POP_TOP
+
+10307         320 LOAD_FAST               12 (writer)
+              322 LOAD_ATTR               43 (NULL|self + setPageMargins)
+              342 PUSH_NULL
+              344 LOAD_FAST                9 (QMarginsF)
+              346 LOAD_CONST              12 (0.5)
+              348 LOAD_CONST              12 (0.5)
+              350 LOAD_CONST              12 (0.5)
+              352 LOAD_CONST              12 (0.5)
+              354 CALL                     4
+
+10308         362 LOAD_FAST                4 (QPageLayout)
+              364 LOAD_ATTR               44 (Unit)
+              384 LOAD_ATTR               46 (Inch)
+
+10307         404 CALL                     2
+              412 POP_TOP
+
+10309         414 LOAD_FAST               12 (writer)
+              416 LOAD_ATTR               49 (NULL|self + setTitle)
+              436 LOAD_CONST              13 ('Transmission Calibration Report')
+              438 CALL                     1
+              446 POP_TOP
+
+10310         448 LOAD_FAST               12 (writer)
+              450 LOAD_ATTR               51 (NULL|self + setCreator)
+              470 LOAD_CONST              14 ("Ewalt's Auto Tuning Transmission Calibration Studio")
+              472 CALL                     1
+              480 POP_TOP
+
+10312         482 PUSH_NULL
+              484 LOAD_FAST                6 (QPainter)
+              486 LOAD_FAST               12 (writer)
+              488 CALL                     1
+              496 STORE_FAST              13 (p)
+
+10313         498 LOAD_FAST               13 (p)
+              500 LOAD_ATTR               53 (NULL|self + isActive)
+              520 CALL                     0
+              528 POP_JUMP_IF_TRUE        24 (to 578)
+
+10314         530 LOAD_GLOBAL              3 (NULL + QMessageBox)
+              540 LOAD_ATTR               32 (critical)
+              560 LOAD_FAST                0 (self)
+              562 LOAD_CONST               9 ('PDF Export Failed')
+
+10315         564 LOAD_CONST              15 ('Could not open painter for PDF — file may be open elsewhere.')
+
+10314         566 CALL                     3
+              574 POP_TOP
+
+10316         576 RETURN_CONST             0 (None)
+
+10318     >>  578 NOP
+
+10319         580 LOAD_FAST                0 (self)
+              582 LOAD_ATTR               55 (NULL|self + _render_pdf_pages)
+              602 LOAD_FAST               13 (p)
+              604 LOAD_FAST               12 (writer)
+              606 CALL                     2
+              614 POP_TOP
+
+10321         616 LOAD_FAST               13 (p)
+              618 LOAD_ATTR               57 (NULL|self + end)
+              638 CALL                     0
+              646 POP_TOP
+
+10323         648 LOAD_GLOBAL              3 (NULL + QMessageBox)
+              658 LOAD_ATTR               58 (information)
+              678 LOAD_FAST                0 (self)
+              680 LOAD_CONST              16 ('PDF Exported')
+
+10324         682 LOAD_CONST              17 ('Report saved to:\n')
+              684 LOAD_FAST                1 (path)
+              686 FORMAT_VALUE             0
+              688 BUILD_STRING             2
+
+10323         690 CALL                     3
+              698 POP_TOP
+              700 RETURN_CONST             0 (None)
+          >>  702 PUSH_EXC_INFO
+
+10299         704 LOAD_GLOBAL             30 (ImportError)
+              714 CHECK_EXC_MATCH
+              716 POP_JUMP_IF_FALSE       36 (to 790)
+              718 STORE_FAST              11 (e)
+
+10300         720 LOAD_GLOBAL              3 (NULL + QMessageBox)
+              730 LOAD_ATTR               32 (critical)
+              750 LOAD_FAST                0 (self)
+              752 LOAD_CONST               9 ('PDF Export Failed')
+
+10301         754 LOAD_CONST              10 ('PDF writer not available: ')
+              756 LOAD_FAST               11 (e)
+              758 FORMAT_VALUE             0
+              760 BUILD_STRING             2
+
+10300         762 CALL                     3
+              770 POP_TOP
+
+10302         772 POP_EXCEPT
+              774 LOAD_CONST               0 (None)
+              776 STORE_FAST              11 (e)
+              778 DELETE_FAST             11 (e)
+              780 RETURN_CONST             0 (None)
+          >>  782 LOAD_CONST               0 (None)
+              784 STORE_FAST              11 (e)
+              786 DELETE_FAST             11 (e)
+              788 RERAISE                  1
+
+10299     >>  790 RERAISE                  0
+          >>  792 COPY                     3
+              794 POP_EXCEPT
+              796 RERAISE                  1
+          >>  798 PUSH_EXC_INFO
+
+10321         800 LOAD_FAST               13 (p)
+              802 LOAD_ATTR               57 (NULL|self + end)
+              822 CALL                     0
+              830 POP_TOP
+              832 RERAISE                  0
+          >>  834 COPY                     3
+              836 POP_EXCEPT
+              838 RERAISE                  1
+ExceptionTable:
+  136 to 182 -> 702 [0]
+  580 to 614 -> 798 [0]
+  702 to 718 -> 792 [1] lasti
+  720 to 770 -> 782 [1] lasti
+  782 to 790 -> 792 [1] lasti
+  798 to 832 -> 834 [1] lasti

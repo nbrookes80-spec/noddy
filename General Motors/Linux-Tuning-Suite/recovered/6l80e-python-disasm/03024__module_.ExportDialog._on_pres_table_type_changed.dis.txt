@@ -1,0 +1,60 @@
+3024           0 RESUME                   0
+
+3025           2 LOAD_FAST                0 (self)
+               4 LOAD_ATTR                0 (pres_table_combo)
+              24 LOAD_ATTR                3 (NULL|self + currentText)
+              44 CALL                     0
+              52 LOAD_FAST                0 (self)
+              54 STORE_ATTR               2 (current_pressure_table_type)
+
+3027          64 LOAD_FAST                0 (self)
+              66 LOAD_ATTR                6 (is_4spd)
+              86 POP_JUMP_IF_FALSE       17 (to 122)
+
+3028          88 LOAD_FAST                0 (self)
+              90 LOAD_ATTR                4 (current_pressure_table_type)
+             110 LOAD_FAST                0 (self)
+             112 STORE_ATTR               4 (current_4spd_table)
+
+3030     >>  122 LOAD_FAST                0 (self)
+             124 LOAD_ATTR                4 (current_pressure_table_type)
+             144 LOAD_CONST               1 ('TCC Apply')
+             146 COMPARE_OP              40 (==)
+             150 COPY                     1
+             152 POP_JUMP_IF_FALSE       13 (to 180)
+             154 POP_TOP
+             156 LOAD_FAST                0 (self)
+             158 LOAD_ATTR                6 (is_4spd)
+             178 UNARY_NOT
+         >>  180 STORE_FAST               2 (is_tcc)
+
+3031         182 LOAD_GLOBAL             11 (NULL + hasattr)
+             192 LOAD_FAST                0 (self)
+             194 LOAD_CONST               2 ('tcc_era_combo')
+             196 CALL                     2
+             204 POP_JUMP_IF_FALSE       54 (to 314)
+
+3032         206 LOAD_FAST                0 (self)
+             208 LOAD_ATTR               12 (tcc_era_label)
+             228 LOAD_ATTR               15 (NULL|self + setVisible)
+             248 LOAD_FAST                2 (is_tcc)
+             250 CALL                     1
+             258 POP_TOP
+
+3033         260 LOAD_FAST                0 (self)
+             262 LOAD_ATTR               16 (tcc_era_combo)
+             282 LOAD_ATTR               15 (NULL|self + setVisible)
+             302 LOAD_FAST                2 (is_tcc)
+             304 CALL                     1
+             312 POP_TOP
+
+3034     >>  314 LOAD_FAST                0 (self)
+             316 LOAD_ATTR               19 (NULL|self + _populate_pres_intent_combo)
+             336 CALL                     0
+             344 POP_TOP
+
+3035         346 LOAD_FAST                0 (self)
+             348 LOAD_ATTR               21 (NULL|self + _refresh_pressure_table)
+             368 CALL                     0
+             376 POP_TOP
+             378 RETURN_CONST             0 (None)

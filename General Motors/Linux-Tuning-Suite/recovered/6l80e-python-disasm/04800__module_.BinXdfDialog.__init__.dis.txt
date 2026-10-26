@@ -1,0 +1,523 @@
+               0 COPY_FREE_VARS           1
+
+4800           2 RESUME                   0
+
+4801           4 LOAD_GLOBAL              0 (super)
+              14 LOAD_DEREF              10 (__class__)
+              16 LOAD_FAST                0 (self)
+              18 LOAD_SUPER_ATTR          5 (NULL|self + __init__)
+              22 LOAD_FAST                1 (parent)
+              24 CALL                     1
+              32 POP_TOP
+
+4802          34 LOAD_FAST                0 (self)
+              36 LOAD_ATTR                5 (NULL|self + setWindowTitle)
+              56 LOAD_CONST               1 ('BIN / XDF Reader')
+              58 CALL                     1
+              66 POP_TOP
+
+4803          68 LOAD_FAST                0 (self)
+              70 LOAD_ATTR                7 (NULL|self + resize)
+              90 LOAD_CONST               2 (1100)
+              92 LOAD_CONST               3 (720)
+              94 CALL                     2
+             102 POP_TOP
+
+4804         104 LOAD_FAST                0 (self)
+             106 LOAD_ATTR                9 (NULL|self + setModal)
+             126 LOAD_CONST               4 (False)
+             128 CALL                     1
+             136 POP_TOP
+
+4806         138 LOAD_CONST               0 (None)
+             140 LOAD_FAST                0 (self)
+             142 STORE_ATTR               5 (reader)
+
+4807         152 LOAD_CONST               0 (None)
+             154 LOAD_FAST                0 (self)
+             156 STORE_ATTR               6 (xdf)
+
+4809         166 LOAD_GLOBAL             15 (NULL + QVBoxLayout)
+             176 LOAD_FAST                0 (self)
+             178 CALL                     1
+             186 STORE_FAST               2 (root)
+
+4812         188 LOAD_GLOBAL             17 (NULL + QHBoxLayout)
+             198 CALL                     0
+             206 STORE_FAST               3 (bar)
+
+4813         208 LOAD_GLOBAL             19 (NULL + QPushButton)
+             218 LOAD_CONST               5 ('Load .BIN…')
+             220 CALL                     1
+             228 LOAD_FAST                0 (self)
+             230 STORE_ATTR              10 (bin_btn)
+
+4814         240 LOAD_FAST                0 (self)
+             242 LOAD_ATTR               20 (bin_btn)
+             262 LOAD_ATTR               22 (clicked)
+             282 LOAD_ATTR               25 (NULL|self + connect)
+             302 LOAD_FAST                0 (self)
+             304 LOAD_ATTR               26 (_load_bin)
+             324 CALL                     1
+             332 POP_TOP
+
+4815         334 LOAD_FAST                3 (bar)
+             336 LOAD_ATTR               29 (NULL|self + addWidget)
+             356 LOAD_FAST                0 (self)
+             358 LOAD_ATTR               20 (bin_btn)
+             378 CALL                     1
+             386 POP_TOP
+
+4816         388 LOAD_GLOBAL             31 (NULL + QLabel)
+             398 LOAD_CONST               6 ('(no BIN loaded)')
+             400 CALL                     1
+             408 LOAD_FAST                0 (self)
+             410 STORE_ATTR              16 (bin_path_lbl)
+
+4817         420 LOAD_FAST                0 (self)
+             422 LOAD_ATTR               32 (bin_path_lbl)
+             442 LOAD_ATTR               35 (NULL|self + setStyleSheet)
+             462 LOAD_CONST               7 ('color: #aaa; padding: 0 8px;')
+             464 CALL                     1
+             472 POP_TOP
+
+4818         474 LOAD_FAST                3 (bar)
+             476 LOAD_ATTR               29 (NULL|self + addWidget)
+             496 LOAD_FAST                0 (self)
+             498 LOAD_ATTR               32 (bin_path_lbl)
+             518 LOAD_CONST               8 (2)
+             520 CALL                     2
+             528 POP_TOP
+
+4820         530 LOAD_GLOBAL             19 (NULL + QPushButton)
+             540 LOAD_CONST               9 ('Load .XDF…')
+             542 CALL                     1
+             550 LOAD_FAST                0 (self)
+             552 STORE_ATTR              18 (xdf_btn)
+
+4821         562 LOAD_FAST                0 (self)
+             564 LOAD_ATTR               36 (xdf_btn)
+             584 LOAD_ATTR               22 (clicked)
+             604 LOAD_ATTR               25 (NULL|self + connect)
+             624 LOAD_FAST                0 (self)
+             626 LOAD_ATTR               38 (_load_xdf)
+             646 CALL                     1
+             654 POP_TOP
+
+4822         656 LOAD_FAST                3 (bar)
+             658 LOAD_ATTR               29 (NULL|self + addWidget)
+             678 LOAD_FAST                0 (self)
+             680 LOAD_ATTR               36 (xdf_btn)
+             700 CALL                     1
+             708 POP_TOP
+
+4823         710 LOAD_GLOBAL             31 (NULL + QLabel)
+             720 LOAD_CONST              10 ('(no XDF loaded)')
+             722 CALL                     1
+             730 LOAD_FAST                0 (self)
+             732 STORE_ATTR              20 (xdf_path_lbl)
+
+4824         742 LOAD_FAST                0 (self)
+             744 LOAD_ATTR               40 (xdf_path_lbl)
+             764 LOAD_ATTR               35 (NULL|self + setStyleSheet)
+             784 LOAD_CONST               7 ('color: #aaa; padding: 0 8px;')
+             786 CALL                     1
+             794 POP_TOP
+
+4825         796 LOAD_FAST                3 (bar)
+             798 LOAD_ATTR               29 (NULL|self + addWidget)
+             818 LOAD_FAST                0 (self)
+             820 LOAD_ATTR               40 (xdf_path_lbl)
+             840 LOAD_CONST               8 (2)
+             842 CALL                     2
+             850 POP_TOP
+
+4826         852 LOAD_FAST                2 (root)
+             854 LOAD_ATTR               43 (NULL|self + addLayout)
+             874 LOAD_FAST                3 (bar)
+             876 CALL                     1
+             884 POP_TOP
+
+4829         886 LOAD_GLOBAL             31 (NULL + QLabel)
+             896 LOAD_CONST              11 ('Load a BIN and matching XDF to begin.')
+             898 CALL                     1
+             906 LOAD_FAST                0 (self)
+             908 STORE_ATTR              22 (status_lbl)
+
+4830         918 LOAD_FAST                0 (self)
+             920 LOAD_ATTR               44 (status_lbl)
+             940 LOAD_ATTR               35 (NULL|self + setStyleSheet)
+
+4831         960 LOAD_CONST              12 ('color: #6cc; background: #2a2a2a; padding: 6px; border-radius: 4px;')
+
+4830         962 CALL                     1
+             970 POP_TOP
+
+4832         972 LOAD_FAST                0 (self)
+             974 LOAD_ATTR               44 (status_lbl)
+             994 LOAD_ATTR               47 (NULL|self + setWordWrap)
+            1014 LOAD_CONST              13 (True)
+            1016 CALL                     1
+            1024 POP_TOP
+
+4833        1026 LOAD_FAST                2 (root)
+            1028 LOAD_ATTR               29 (NULL|self + addWidget)
+            1048 LOAD_FAST                0 (self)
+            1050 LOAD_ATTR               44 (status_lbl)
+            1070 CALL                     1
+            1078 POP_TOP
+
+4836        1080 LOAD_GLOBAL             17 (NULL + QHBoxLayout)
+            1090 CALL                     0
+            1098 STORE_FAST               4 (body)
+
+4839        1100 LOAD_GLOBAL             15 (NULL + QVBoxLayout)
+            1110 CALL                     0
+            1118 STORE_FAST               5 (left_col)
+
+4840        1120 LOAD_GLOBAL             17 (NULL + QHBoxLayout)
+            1130 CALL                     0
+            1138 STORE_FAST               6 (filt_row)
+
+4841        1140 LOAD_FAST                6 (filt_row)
+            1142 LOAD_ATTR               29 (NULL|self + addWidget)
+            1162 LOAD_GLOBAL             31 (NULL + QLabel)
+            1172 LOAD_CONST              14 ('Filter:')
+            1174 CALL                     1
+            1182 CALL                     1
+            1190 POP_TOP
+
+4842        1192 LOAD_GLOBAL             49 (NULL + QLineEdit)
+            1202 CALL                     0
+            1210 LOAD_FAST                0 (self)
+            1212 STORE_ATTR              25 (filter_edit)
+
+4843        1222 LOAD_FAST                0 (self)
+            1224 LOAD_ATTR               50 (filter_edit)
+            1244 LOAD_ATTR               53 (NULL|self + setPlaceholderText)
+            1264 LOAD_CONST              15 ('type to search…')
+            1266 CALL                     1
+            1274 POP_TOP
+
+4844        1276 LOAD_FAST                0 (self)
+            1278 LOAD_ATTR               50 (filter_edit)
+            1298 LOAD_ATTR               54 (textChanged)
+            1318 LOAD_ATTR               25 (NULL|self + connect)
+            1338 LOAD_FAST                0 (self)
+            1340 LOAD_ATTR               56 (_refresh_param_list)
+            1360 CALL                     1
+            1368 POP_TOP
+
+4845        1370 LOAD_FAST                6 (filt_row)
+            1372 LOAD_ATTR               29 (NULL|self + addWidget)
+            1392 LOAD_FAST                0 (self)
+            1394 LOAD_ATTR               50 (filter_edit)
+            1414 LOAD_CONST              16 (1)
+            1416 CALL                     2
+            1424 POP_TOP
+
+4846        1426 LOAD_FAST                6 (filt_row)
+            1428 LOAD_ATTR               29 (NULL|self + addWidget)
+            1448 LOAD_GLOBAL             31 (NULL + QLabel)
+            1458 LOAD_CONST              17 ('Category:')
+            1460 CALL                     1
+            1468 CALL                     1
+            1476 POP_TOP
+
+4847        1478 LOAD_GLOBAL             59 (NULL + QComboBox)
+            1488 CALL                     0
+            1496 LOAD_FAST                0 (self)
+            1498 STORE_ATTR              30 (cat_combo)
+
+4848        1508 LOAD_FAST                0 (self)
+            1510 LOAD_ATTR               60 (cat_combo)
+            1530 LOAD_ATTR               63 (NULL|self + addItem)
+            1550 LOAD_CONST              18 ('(all)')
+            1552 CALL                     1
+            1560 POP_TOP
+
+4849        1562 LOAD_FAST                0 (self)
+            1564 LOAD_ATTR               60 (cat_combo)
+            1584 LOAD_ATTR               64 (currentTextChanged)
+            1604 LOAD_ATTR               25 (NULL|self + connect)
+            1624 LOAD_FAST                0 (self)
+            1626 LOAD_ATTR               56 (_refresh_param_list)
+            1646 CALL                     1
+            1654 POP_TOP
+
+4850        1656 LOAD_FAST                6 (filt_row)
+            1658 LOAD_ATTR               29 (NULL|self + addWidget)
+            1678 LOAD_FAST                0 (self)
+            1680 LOAD_ATTR               60 (cat_combo)
+            1700 CALL                     1
+            1708 POP_TOP
+
+4851        1710 LOAD_FAST                5 (left_col)
+            1712 LOAD_ATTR               43 (NULL|self + addLayout)
+            1732 LOAD_FAST                6 (filt_row)
+            1734 CALL                     1
+            1742 POP_TOP
+
+4853        1744 LOAD_GLOBAL             67 (NULL + QTableWidget)
+            1754 CALL                     0
+            1762 LOAD_FAST                0 (self)
+            1764 STORE_ATTR              34 (param_list)
+
+4854        1774 LOAD_FAST                0 (self)
+            1776 LOAD_ATTR               68 (param_list)
+            1796 LOAD_ATTR               71 (NULL|self + setColumnCount)
+            1816 LOAD_CONST              19 (3)
+            1818 CALL                     1
+            1826 POP_TOP
+
+4855        1828 LOAD_FAST                0 (self)
+            1830 LOAD_ATTR               68 (param_list)
+            1850 LOAD_ATTR               73 (NULL|self + setHorizontalHeaderLabels)
+            1870 BUILD_LIST               0
+            1872 LOAD_CONST              20 (('Title', 'Kind', 'Addr'))
+            1874 LIST_EXTEND              1
+            1876 CALL                     1
+            1884 POP_TOP
+
+4856        1886 LOAD_FAST                0 (self)
+            1888 LOAD_ATTR               68 (param_list)
+            1908 LOAD_ATTR               75 (NULL|self + setEditTriggers)
+            1928 LOAD_GLOBAL             66 (QTableWidget)
+            1938 LOAD_ATTR               76 (EditTrigger)
+            1958 LOAD_ATTR               78 (NoEditTriggers)
+            1978 CALL                     1
+            1986 POP_TOP
+
+4857        1988 LOAD_FAST                0 (self)
+            1990 LOAD_ATTR               68 (param_list)
+            2010 LOAD_ATTR               81 (NULL|self + setSelectionBehavior)
+            2030 LOAD_GLOBAL             66 (QTableWidget)
+            2040 LOAD_ATTR               82 (SelectionBehavior)
+            2060 LOAD_ATTR               84 (SelectRows)
+            2080 CALL                     1
+            2088 POP_TOP
+
+4858        2090 LOAD_FAST                0 (self)
+            2092 LOAD_ATTR               68 (param_list)
+            2112 LOAD_ATTR               87 (NULL|self + setSelectionMode)
+            2132 LOAD_GLOBAL             66 (QTableWidget)
+            2142 LOAD_ATTR               88 (SelectionMode)
+            2162 LOAD_ATTR               90 (SingleSelection)
+            2182 CALL                     1
+            2190 POP_TOP
+
+4859        2192 LOAD_FAST                0 (self)
+            2194 LOAD_ATTR               68 (param_list)
+            2214 LOAD_ATTR               92 (itemSelectionChanged)
+            2234 LOAD_ATTR               25 (NULL|self + connect)
+            2254 LOAD_FAST                0 (self)
+            2256 LOAD_ATTR               94 (_on_param_selected)
+            2276 CALL                     1
+            2284 POP_TOP
+
+4860        2286 LOAD_FAST                0 (self)
+            2288 LOAD_ATTR               68 (param_list)
+            2308 LOAD_ATTR               35 (NULL|self + setStyleSheet)
+
+4861        2328 LOAD_CONST              21 ('QTableWidget { background: #1e1e1e; color: #fff; gridline-color: #444; selection-background-color: #2864A0; }QHeaderView::section { background: #303030; color: #fff; padding: 2px 6px; border: 1px solid #555; font-weight: bold; }')
+
+4860        2330 CALL                     1
+            2338 POP_TOP
+
+4865        2340 LOAD_FAST                5 (left_col)
+            2342 LOAD_ATTR               29 (NULL|self + addWidget)
+            2362 LOAD_FAST                0 (self)
+            2364 LOAD_ATTR               68 (param_list)
+            2384 LOAD_CONST              16 (1)
+            2386 CALL                     2
+            2394 POP_TOP
+
+4866        2396 LOAD_FAST                4 (body)
+            2398 LOAD_ATTR               43 (NULL|self + addLayout)
+            2418 LOAD_FAST                5 (left_col)
+            2420 LOAD_CONST               8 (2)
+            2422 CALL                     2
+            2430 POP_TOP
+
+4869        2432 LOAD_GLOBAL             15 (NULL + QVBoxLayout)
+            2442 CALL                     0
+            2450 STORE_FAST               7 (right_col)
+
+4870        2452 LOAD_GLOBAL             31 (NULL + QLabel)
+            2462 LOAD_CONST              22 ('(no parameter selected)')
+            2464 CALL                     1
+            2472 LOAD_FAST                0 (self)
+            2474 STORE_ATTR              48 (detail_title)
+
+4871        2484 LOAD_FAST                0 (self)
+            2486 LOAD_ATTR               96 (detail_title)
+            2506 LOAD_ATTR               35 (NULL|self + setStyleSheet)
+
+4872        2526 LOAD_CONST              23 ('color: #fff; font-weight: bold; font-size: 12pt; padding: 4px;')
+
+4871        2528 CALL                     1
+            2536 POP_TOP
+
+4873        2538 LOAD_FAST                7 (right_col)
+            2540 LOAD_ATTR               29 (NULL|self + addWidget)
+            2560 LOAD_FAST                0 (self)
+            2562 LOAD_ATTR               96 (detail_title)
+            2582 CALL                     1
+            2590 POP_TOP
+
+4875        2592 LOAD_GLOBAL             31 (NULL + QLabel)
+            2602 LOAD_CONST              24 ('')
+            2604 CALL                     1
+            2612 LOAD_FAST                0 (self)
+            2614 STORE_ATTR              49 (detail_meta)
+
+4876        2624 LOAD_FAST                0 (self)
+            2626 LOAD_ATTR               98 (detail_meta)
+            2646 LOAD_ATTR               35 (NULL|self + setStyleSheet)
+
+4877        2666 LOAD_CONST              25 ('color: #aaa; padding: 4px; font-family: Consolas, monospace;')
+
+4876        2668 CALL                     1
+            2676 POP_TOP
+
+4878        2678 LOAD_FAST                0 (self)
+            2680 LOAD_ATTR               98 (detail_meta)
+            2700 LOAD_ATTR               47 (NULL|self + setWordWrap)
+            2720 LOAD_CONST              13 (True)
+            2722 CALL                     1
+            2730 POP_TOP
+
+4879        2732 LOAD_FAST                0 (self)
+            2734 LOAD_ATTR               98 (detail_meta)
+            2754 LOAD_ATTR              101 (NULL|self + setTextFormat)
+            2774 LOAD_GLOBAL            102 (Qt)
+            2784 LOAD_ATTR              104 (TextFormat)
+            2804 LOAD_ATTR              106 (RichText)
+            2824 CALL                     1
+            2832 POP_TOP
+
+4880        2834 LOAD_FAST                7 (right_col)
+            2836 LOAD_ATTR               29 (NULL|self + addWidget)
+            2856 LOAD_FAST                0 (self)
+            2858 LOAD_ATTR               98 (detail_meta)
+            2878 CALL                     1
+            2886 POP_TOP
+
+4882        2888 LOAD_GLOBAL             67 (NULL + QTableWidget)
+            2898 CALL                     0
+            2906 LOAD_FAST                0 (self)
+            2908 STORE_ATTR              54 (detail_grid)
+
+4883        2918 LOAD_FAST                0 (self)
+            2920 LOAD_ATTR              108 (detail_grid)
+            2940 LOAD_ATTR               75 (NULL|self + setEditTriggers)
+            2960 LOAD_GLOBAL             66 (QTableWidget)
+            2970 LOAD_ATTR               76 (EditTrigger)
+            2990 LOAD_ATTR               78 (NoEditTriggers)
+            3010 CALL                     1
+            3018 POP_TOP
+
+4884        3020 LOAD_FAST                0 (self)
+            3022 LOAD_ATTR              108 (detail_grid)
+            3042 LOAD_ATTR               35 (NULL|self + setStyleSheet)
+
+4885        3062 LOAD_CONST              26 ('QTableWidget { background: #1e1e1e; color: #fff; gridline-color: #444; }QHeaderView::section { background: #303030; color: #fff; padding: 2px 6px; border: 1px solid #555; font-weight: bold; }')
+
+4884        3064 CALL                     1
+            3072 POP_TOP
+
+4889        3074 LOAD_FAST                7 (right_col)
+            3076 LOAD_ATTR               29 (NULL|self + addWidget)
+            3096 LOAD_FAST                0 (self)
+            3098 LOAD_ATTR              108 (detail_grid)
+            3118 LOAD_CONST              16 (1)
+            3120 CALL                     2
+            3128 POP_TOP
+
+4892        3130 LOAD_GLOBAL             17 (NULL + QHBoxLayout)
+            3140 CALL                     0
+            3148 STORE_FAST               8 (action_row)
+
+4893        3150 LOAD_GLOBAL             19 (NULL + QPushButton)
+            3160 LOAD_CONST              27 ('Copy Table (TSV)')
+            3162 CALL                     1
+            3170 LOAD_FAST                0 (self)
+            3172 STORE_ATTR              55 (copy_btn)
+
+4894        3182 LOAD_FAST                0 (self)
+            3184 LOAD_ATTR              110 (copy_btn)
+            3204 LOAD_ATTR              113 (NULL|self + setEnabled)
+            3224 LOAD_CONST               4 (False)
+            3226 CALL                     1
+            3234 POP_TOP
+
+4895        3236 LOAD_FAST                0 (self)
+            3238 LOAD_ATTR              110 (copy_btn)
+            3258 LOAD_ATTR              115 (NULL|self + setToolTip)
+
+4896        3278 LOAD_CONST              28 ("Copy selected parameter's values to clipboard as TSV (paste-compatible with HP Tuners VCM Editor).")
+
+4895        3280 CALL                     1
+            3288 POP_TOP
+
+4898        3290 LOAD_FAST                0 (self)
+            3292 LOAD_ATTR              110 (copy_btn)
+            3312 LOAD_ATTR               22 (clicked)
+            3332 LOAD_ATTR               25 (NULL|self + connect)
+            3352 LOAD_FAST                0 (self)
+            3354 LOAD_ATTR              116 (_copy_table)
+            3374 CALL                     1
+            3382 POP_TOP
+
+4899        3384 LOAD_FAST                8 (action_row)
+            3386 LOAD_ATTR               29 (NULL|self + addWidget)
+            3406 LOAD_FAST                0 (self)
+            3408 LOAD_ATTR              110 (copy_btn)
+            3428 CALL                     1
+            3436 POP_TOP
+
+4900        3438 LOAD_FAST                8 (action_row)
+            3440 LOAD_ATTR              119 (NULL|self + addStretch)
+            3460 LOAD_CONST              16 (1)
+            3462 CALL                     1
+            3470 POP_TOP
+
+4901        3472 LOAD_GLOBAL             19 (NULL + QPushButton)
+            3482 LOAD_CONST              29 ('Close')
+            3484 CALL                     1
+            3492 STORE_FAST               9 (close_btn)
+
+4902        3494 LOAD_FAST                9 (close_btn)
+            3496 LOAD_ATTR               22 (clicked)
+            3516 LOAD_ATTR               25 (NULL|self + connect)
+            3536 LOAD_FAST                0 (self)
+            3538 LOAD_ATTR              120 (close)
+            3558 CALL                     1
+            3566 POP_TOP
+
+4903        3568 LOAD_FAST                8 (action_row)
+            3570 LOAD_ATTR               29 (NULL|self + addWidget)
+            3590 LOAD_FAST                9 (close_btn)
+            3592 CALL                     1
+            3600 POP_TOP
+
+4904        3602 LOAD_FAST                7 (right_col)
+            3604 LOAD_ATTR               43 (NULL|self + addLayout)
+            3624 LOAD_FAST                8 (action_row)
+            3626 CALL                     1
+            3634 POP_TOP
+
+4906        3636 LOAD_FAST                4 (body)
+            3638 LOAD_ATTR               43 (NULL|self + addLayout)
+            3658 LOAD_FAST                7 (right_col)
+            3660 LOAD_CONST              19 (3)
+            3662 CALL                     2
+            3670 POP_TOP
+
+4907        3672 LOAD_FAST                2 (root)
+            3674 LOAD_ATTR               43 (NULL|self + addLayout)
+            3694 LOAD_FAST                4 (body)
+            3696 LOAD_CONST              16 (1)
+            3698 CALL                     2
+            3706 POP_TOP
+            3708 RETURN_CONST             0 (None)
