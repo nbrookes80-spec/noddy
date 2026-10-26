@@ -17,11 +17,19 @@ Tested on **Zorin OS 18.1** (Ubuntu 24.04 base) with Python 3.12.
 | venv (for the private Python environment) | `python3 -m venv --help` | `sudo apt install python3-venv` |
 | Internet access | — | Needed once, to download PyQt6 and pandas |
 | git (to download the code) | `git --version` | `sudo apt install git` |
+| Qt window library (xcb-cursor) | `ldconfig -p \| grep libxcb-cursor` | `sudo apt install libxcb-cursor0` |
 
 If the Setup wizard reports a missing module, run both commands:
 
 ```bash
 sudo apt install python3-tk python3-venv
+```
+
+The program window also needs `libxcb-cursor0`. Without it the app installs but does not open, and the
+Setup log shows a warning. Install it with:
+
+```bash
+sudo apt install libxcb-cursor0
 ```
 
 ---

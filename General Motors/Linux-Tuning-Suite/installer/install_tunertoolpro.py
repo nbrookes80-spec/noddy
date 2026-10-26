@@ -23,6 +23,7 @@ Needs Python 3.10+ with Tkinter and venv. On Zorin OS or Ubuntu:
   sudo apt install python3-tk python3-venv
 """
 
+import ctypes.util
 import importlib.util
 import json
 import queue
@@ -73,6 +74,14 @@ def check_python():
     if sys.version_info < MIN_PYTHON:
         raise RuntimeError(f'Python {MIN_PYTHON[0]}.{MIN_PYTHON[1]} or newer is required; '
                            f'this is {sys.version.split()[0]}')
+
+
+def missing_qt_libraries(find=ctypes.util.find_library):
+    """System packages the Qt window needs that are not installed, as apt package names."""
+    missing = []
+    if not find('xcb-cursor'):
+        missing.append('libxcb-cursor0')
+    return missing
 
 
 def preflight():
@@ -240,6 +249,9 @@ def install(target, options, log=print, pip_install=True):
         'user_dir': str(settings.user_dir()),
     }
     (target / MANIFEST).write_text(json.dumps(manifest, indent=2), encoding='utf-8')
+    for package in missing_qt_libraries():
+        log(f'Warning: TunerToolPro needs the system package {package} to show its window. '
+            f'Install it with: sudo apt install {package}')
     log(f'Installed {PRODUCT} {manifest["version"]}. Start it from the applications menu, '
         f'or run {launcher}')
     return launcher

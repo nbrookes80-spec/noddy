@@ -122,3 +122,11 @@ class InstallFlowTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class QtLibraryCheckTests(unittest.TestCase):
+    def test_reports_missing_xcb_cursor_package(self):
+        self.assertEqual(setup.missing_qt_libraries(find=lambda name: None), ['libxcb-cursor0'])
+
+    def test_no_warning_when_library_present(self):
+        self.assertEqual(setup.missing_qt_libraries(find=lambda name: '/usr/lib/libxcb-cursor.so.0'), [])

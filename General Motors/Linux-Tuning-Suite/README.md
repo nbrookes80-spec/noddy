@@ -92,6 +92,7 @@ TunerToolPro opens with seven tabs. Each tab is one job.
 - Linux with a desktop: tested on **Zorin OS 18.1** (based on Ubuntu 24.04).
 - **Python 3.10 or newer**, with Tkinter and venv for the installer:
   `sudo apt install python3-tk python3-venv`
+- The `libxcb-cursor0` system package for the program window: `sudo apt install libxcb-cursor0`.
 - An internet connection for the first install (it downloads PyQt6 and pandas).
 - Optional: an Anthropic API key for the AI Assistant.
 
