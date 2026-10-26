@@ -130,3 +130,12 @@ class QtLibraryCheckTests(unittest.TestCase):
 
     def test_no_warning_when_library_present(self):
         self.assertEqual(setup.missing_qt_libraries(find=lambda name: '/usr/lib/libxcb-cursor.so.0'), [])
+
+
+class LibraryNoticeTests(unittest.TestCase):
+    def test_no_notice_when_nothing_missing(self):
+        self.assertEqual(setup.missing_library_notice([]), '')
+
+    def test_notice_names_the_apt_command(self):
+        text = setup.missing_library_notice(['libxcb-cursor0'])
+        self.assertIn('sudo apt install libxcb-cursor0', text)

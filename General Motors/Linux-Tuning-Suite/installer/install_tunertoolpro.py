@@ -84,6 +84,15 @@ def missing_qt_libraries(find=ctypes.util.find_library):
     return missing
 
 
+def missing_library_notice(missing):
+    """Text for the Finish page when a system package is missing, or '' when nothing is missing."""
+    if not missing:
+        return ''
+    return ('Before you start TunerToolPro, install the system package it needs to open its window:\n\n'
+            f'    sudo apt install {" ".join(missing)}\n\n'
+            'Then start it from the applications menu.')
+
+
 def preflight():
     """Return the problems that would stop an install. Empty when all is well."""
     problems = []
@@ -554,7 +563,12 @@ def run_wizard(uninstall_mode=False):
         elif status == 'ok':
             set_header(f'Completed the {PRODUCT} Setup Wizard',
                        'TunerToolPro is installed. Click Finish to close Setup.')
-            ttk.Checkbutton(body, text=f'Start {PRODUCT} now', variable=state['launch']).pack(anchor='w')
+            notice = missing_library_notice(missing_qt_libraries())
+            if notice:
+                state['launch'].set(False)
+                wrapped(body, notice)
+            else:
+                ttk.Checkbutton(body, text=f'Start {PRODUCT} now', variable=state['launch']).pack(anchor='w')
         else:
             set_header('Setup failed' if not uninstall_mode else 'Removal failed', detail)
             wrapped(body, 'Setup did not finish. Fix the problem above and run Setup again. Your settings '
