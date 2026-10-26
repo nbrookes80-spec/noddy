@@ -29,7 +29,7 @@ class GuiSmokeTests(unittest.TestCase):
     def test_all_tabs_present(self):
         names = [self.tabs.tabText(i) for i in range(self.tabs.count())]
         self.assertEqual(names, ['Shift Points', 'Pressure & Timing', 'Dyno & Drag',
-                                 'Datalog', 'XDF / BIN', 'BCT Tunes'])
+                                 'Datalog', 'XDF / BIN', 'BCT Tunes', 'AI Assistant'])
 
     def test_shift_calculate_fills_tables(self):
         tab = self.tabs.widget(0)

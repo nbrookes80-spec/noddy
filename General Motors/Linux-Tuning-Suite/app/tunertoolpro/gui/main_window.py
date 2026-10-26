@@ -5,19 +5,14 @@ import sys
 from PyQt6.QtWidgets import (QApplication, QLabel, QMainWindow, QMessageBox, QTabWidget)
 
 from .. import __version__
+from ..legal import DISCLAIMER
+from .ai_tab import AiTab, tables_context
 from .bct_tab import BctTab
 from .dyno_tab import DynoDragTab
 from .log_tab import LogTab
 from .pressure_tab import PressureTab
 from .shift_tab import ShiftTab
 from .xdf_tab import XdfTab
-
-DISCLAIMER = (
-    'TunerToolPro is a calculation aid for transmission calibration. Every value must be '
-    'checked against your own vehicle, hardware and a road test before it is written to a '
-    'controller. The author and contributors accept no responsibility for damage, warranty '
-    'loss or injury from its use.'
-)
 
 
 class MainWindow(QMainWindow):
@@ -26,12 +21,14 @@ class MainWindow(QMainWindow):
         self.setWindowTitle(f'TunerToolPro {__version__}')
         self.resize(1200, 820)
         tabs = QTabWidget()
-        tabs.addTab(ShiftTab(), 'Shift Points')
+        shift = ShiftTab()
+        tabs.addTab(shift, 'Shift Points')
         tabs.addTab(PressureTab(), 'Pressure & Timing')
         tabs.addTab(DynoDragTab(), 'Dyno & Drag')
         tabs.addTab(LogTab(), 'Datalog')
         tabs.addTab(XdfTab(), 'XDF / BIN')
         tabs.addTab(BctTab(), 'BCT Tunes')
+        tabs.addTab(AiTab(context_provider=lambda: tables_context(shift)), 'AI Assistant')
         self.setCentralWidget(tabs)
         self.statusBar().addPermanentWidget(QLabel('Read the user guide before use'))
         about = self.menuBar().addMenu('Help').addAction('About / Disclaimer')
