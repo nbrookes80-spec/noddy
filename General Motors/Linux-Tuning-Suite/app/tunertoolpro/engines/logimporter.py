@@ -274,7 +274,8 @@ class LogImporter:
                 "No gear column — can't detect shift events. "
                 "VCM Scanner: enable PID 'Current Gear' (TCM).")
 
-        # Stall: peak RPM while moving slowly under light throttle filter.
+        # Stall: peak RPM at standstill (under 5 mph) with throttle above 80%.
+        # Checked against analyze.dis 1807-1818: keep rows with mph < 5 and tps > 80.
         if all(k in self.col_map for k in ('rpm', 'mph', 'tps')):
             stall_samples = []
             for row in self.rows:
@@ -283,18 +284,19 @@ class LogImporter:
                 tps = self.get_col(row, 'tps')
                 if rpm is None or mph is None or tps is None:
                     continue
-                if mph >= 5 and tps <= 80:
+                if mph < 5 and tps > 80:
                     stall_samples.append(rpm)
             if stall_samples:
                 result['stall_peak_rpm'] = max(stall_samples)
 
         # WOT slip: engine RPM vs. RPM implied by vehicle speed and gear ratio.
+        # The original reads the tire size from 'tire_dia' (default 28.0), analyze.dis 1825.
         ratios = (cfg or {}).get('ratios', [])
         if ratios:
             axle = cfg.get('axle', 1.0)
             chain = cfg.get('chain', 1.0)
             final_drive = axle * chain
-            tire = cfg.get('tire', 28.0)
+            tire = cfg.get('tire_dia', 28.0)
             slips = []
             for row in self.rows:
                 vals = [self.get_col(row, k) for k in ('rpm', 'mph', 'tps', 'gear')]

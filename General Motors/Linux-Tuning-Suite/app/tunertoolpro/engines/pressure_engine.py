@@ -10,7 +10,7 @@ Constants come from constants.py, which holds exact copies of the original
 module-level data.
 """
 
-from constants import (
+from .constants import (
     BRAKE_SHIFT_4SPD_MAX_PSI,
     BRAKE_SHIFT_4SPD_SHIFTS,
     BRAKE_SHIFT_4SPD_TORQUE_COLS,
