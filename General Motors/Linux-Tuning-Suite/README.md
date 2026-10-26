@@ -1,130 +1,183 @@
-# 6L80e TunerToolPro — Linux-Tuning-Suite
+# TunerToolPro
 
-Merged Linux port of two Windows tools:
+**A Linux desktop tool for GM 4L60E and 6L80E transmission calibration work.**
 
-1. **Pro Transmission Calibration Studio** (`Ewalts Auto Tuning Transmission Calibration Studio v2.0.exe`, PyInstaller bundle, Python 3.12 + PyQt6)
-2. **Bluecat Transmission Tool** (`BC_Trans.exe` v1.1.9.0 + `BCGrid.dll` v3.1.3.2, .NET Framework 2.0 WinForms)
+TunerToolPro calculates shift points, pressure and timing tables, TCC values and
+dyno/drag results. It reads the files that common GM tuning tools export, and it keeps
+your vehicle details in one place. It is a calculator and a planning aid. It never
+writes to a vehicle or a controller.
 
-Merged product name: **6L80e TunerToolPro**. Version 0.1.0.
+> **Read before use.** Every value it produces must be checked against your vehicle,
+> your converter, your cooler and a road test before it goes into a controller. A
+> transmission calibration can damage the transmission, void a warranty or cause an
+> accident. You use this tool at your own risk. See [Safety](#safety).
+
+---
+
+## Contents
+
+- [What it does](#what-it-does)
+- [What it can read](#what-it-can-read)
+- [What it does not do](#what-it-does-not-do)
+- [Requirements](#requirements)
+- [Install](#install)
+- [Documentation](#documentation)
+- [Status](#status)
+- [Help wanted](#help-wanted)
+- [Safety](#safety)
+- [Licence and attribution](#licence-and-attribution)
+
+---
+
+## What it does
+
+TunerToolPro opens with seven tabs. Each tab is one job.
+
+| Tab | What it does |
+|---|---|
+| **Shift Points** | Calculates upshift, downshift, TCC unlock and TCC lock speeds from your gear ratios, final drive, tyre size, stall speed and shift settings. Exports TPS x Gear matrices for VCM Editor or TunerPro. Can load a Bluecat `.BTC` tune and calculate it the way BC Trans does. |
+| **Vehicle** | Stores your car, engine, transmission, final drive, tyre, weight, power, torque, ECU torque limit and redline in a profile. Runs consistency checks that flag contradictory or risky values. Imports an EFILive calibration or comparison export. |
+| **Pressure & Timing** | Builds base shift, TCC apply and coast pressure tables, 4-speed shift times and TCC duty maximums from torque and driving intent. |
+| **Dyno & Drag** | Loads a dyno curve, adds an optional boost model, and simulates a launch to a quarter mile. |
+| **Datalog** | Imports a scan-tool CSV, lists the columns it recognised, and reports stall RPM, wide-open-throttle slip, shift events and transmission temperature. |
+| **XDF / BIN** | Browses an XDF definition and reads values from a calibration BIN file that you own. |
+| **BCT Tunes** | Opens and edits Bluecat `.BTC` tune files, applies transmission and slope presets, and shows the resulting shift speeds. |
+| **AI Assistant** *(optional)* | Answers questions about your values using an Anthropic API key. It can propose changes, but a change takes effect only when you press **Apply** in the tab that owns that setting. |
+
+### Highlights
+
+- **Calculation engines rebuilt from the original program.** The shift-point, pressure,
+  timing, torque-curve, boost, drag and reader engines were re-derived from the compiled
+  code of the original Windows tools and checked against them. Every check matched:
+  34,685 comparisons, with the two edge cases listed in
+  [Status](#status).
+- **Vehicle library.** Built-in transmission data for the stock 6L80, a modified 6L80,
+  ZF 8HP45/8HP70, and the 2-speed Powerglide, with the source of each ratio listed.
+- **Plain-language consistency checks.** Findings are labelled *Error*, *Check* or *Note*,
+  so you can see what contradicts what before you change a setting.
+- **Safe AI use.** The assistant reads your settings and proposes changes. It cannot
+  write to a controller, and every value it proposes must fall inside the allowed range
+  of that setting.
+- **Runs on Linux.** Installs like a Windows program, with a Start-menu entry, a desktop
+  shortcut and a `tunertoolpro` command.
+
+---
+
+## What it can read
+
+| File | Source | Used by |
+|---|---|---|
+| EFILive calibration or comparison export (`.csv`, "EFILive Calibration Export" / "EFILive Comparison Export") | EFILive Tune, *Export* | Vehicle tab |
+| Scan-tool datalog (`.csv`) | Any scan tool that writes CSV | Datalog tab |
+| Dyno curve (`.csv` with rpm, hp, tq) | Your dyno | Dyno & Drag tab |
+| XDF definition and calibration BIN (files you own) | Your tuning tools | XDF / BIN tab |
+| Bluecat `.BTC` tunes, `Trans_Presets.txt`, `Slope_Presets.txt` | Bluecat Transmission Tool | BCT Tunes and Shift Points tabs |
+
+## What it does not do
+
+- **It does not connect to a vehicle, a scan tool or a controller.** It has no live
+  data link and does not flash or write calibrations.
+- **It does not read every tuning-tool format.** HP Tuners `.hpt`, `.hpl` and `.HPTdb`
+  files are encrypted and are not read. EFILive `.calz` and `.ctz` files are not read.
+  EFILive datalog `.log` files are not read yet. The EFILive **CSV export** is the route
+  that works today.
+- **It does not know your vehicle.** It uses only the numbers you give it.
+- **It does not send your data anywhere** unless you turn on the AI Assistant and press
+  Ask. Then only your question and the values shown in the tab go to the Anthropic API.
+
+---
+
+## Requirements
+
+- Linux with a desktop: tested on **Zorin OS 18.1** (based on Ubuntu 24.04).
+- **Python 3.10 or newer**, with Tkinter and venv for the installer:
+  `sudo apt install python3-tk python3-venv`
+- An internet connection for the first install (it downloads PyQt6 and pandas).
+- Optional: an Anthropic API key for the AI Assistant.
+
+---
+
+## Install
+
+The full steps, with troubleshooting, are in **[docs/INSTALL.md](docs/INSTALL.md)**.
+The short version:
+
+```bash
+git clone -b claude/keen-hawking-ite6nw https://github.com/nbrookes80-spec/noddy.git
+cd noddy/"General Motors/Linux-Tuning-Suite"
+python3 installer/install_tunertoolpro.py
+```
+
+The Setup wizard installs the program, creates a private Python environment, and adds
+the menu entries and the `tunertoolpro` command. To remove it, choose
+**Uninstall TunerToolPro** from the applications menu.
+
+To run it from the source folder without installing, see
+[docs/COMMANDS.md](docs/COMMANDS.md).
+
+---
+
+## Documentation
+
+| Guide | For |
+|---|---|
+| [docs/INSTALL.md](docs/INSTALL.md) | Installing, starting, updating and removing the tool |
+| [docs/USER_GUIDE.md](docs/USER_GUIDE.md) | How to use each tab, with the limits of this release |
+| [docs/COMMANDS.md](docs/COMMANDS.md) | Commands, tests, settings locations and environment variables |
+| [docs/ECU_TOOLS.md](docs/ECU_TOOLS.md) | Working alongside EFILive and HP Tuners, and why the AI does not write to a car |
+| [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) | Project layout, how the engines were rebuilt, and the verification results |
+| [docs/DESIGN_TEMPLATE.md](docs/DESIGN_TEMPLATE.md) | The colour palette and interface components |
+
+---
 
 ## Status
 
-| Step | State |
+**Version 0.1.0.** Early release.
+
+| Area | State |
 |---|---|
-| Static analysis of both programs | Done |
-| Decompile BC_Trans.exe + BCGrid.dll to C# | Done — `recovered/bct-csharp/` |
-| Disassemble the Python app's bytecode | Done — `recovered/6l80e-python-disasm/` |
-| Reconstruct the calculation engines | Done (see table below). All verified against the original |
-| BC Trans data formats (`.BTC`, presets, speed math) | Done. All 33 shipped tunes round-trip byte-for-byte |
-| BC Trans `Calc_Shifts` port | Ported to `app/tunertoolpro/bct/calc_shifts.py`. Matches the decompiled original on 433 cases (33 tunes + 400 random variants) within 5e-05. Not compared with BC Trans itself, which cannot be run here. Notes in `recovered/bct-csharp/CALC_SHIFTS_NOTES.md` |
-| Merged PyQt6 application | Done — `app/`. Six tabs. Tests pass headless (111 tests) |
-| GUI installer | Done — `installer/`. Tested in CLI mode |
-| User guide | Done — `docs/USER_GUIDE.md` |
-| Differential tests against the original | Done for all reconstructed engines and readers: 34,685 checks, 0 failures (see below) |
-| Commits / push | Local commits only, when asked. Nothing pushed |
+| Calculation engines | Matched against the original program on 34,685 checks, with 0 failures. Two edge cases are not covered (see the user guide). |
+| Automated tests | 111 app tests pass headless (one skipped when a reference file is absent). 9 installer tests pass. |
+| Installer | Tested in command-line mode. The graphical uninstall window and reinstall path are not yet tested on a desktop. |
+| On a real vehicle | **Not yet validated.** No calibration produced by this tool has been road-tested and reported back. |
+| EFILive | CSV export import works, and it has been checked against six sample exports. The EFILive log format is not yet read. |
+| HP Tuners | Not read. The encrypted files cannot be used without HP Tuners' own text or CSV export, and no reader for that export exists yet. |
 
-## Folder layout
+---
 
-```
-app/                         the application (install copies this folder)
-  requirements.txt           PyQt6, pandas
-  tunertoolpro/
-    __main__.py              python3 -m tunertoolpro
-    core.py                  GUI-free logic: profiles, intents, tables, TPS x Gear export, dyno, drag, logs
-    engines/                 reconstructed calculation engines (see table)
-    bct/                     BC Trans data: tune.py (.BTC), presets.py, shiftmath.py, shift_cfg.py (.BTC to Shift Points inputs)
-    vehicle.py               car, engine, transmission library, vehicle profile (vehicle.json)
-    consistency.py           checks that the inputs agree with each other and with the ECU limits
-    ai_tools.py              tools the AI may use: read settings, propose a change, ask the user
-    gui/                     PyQt6 tabs: shift_tab, vehicle_tab, pressure_tab, dyno_tab, log_tab, xdf_tab, bct_tab, ai_tab; theme.py (palette, icons)
-  tests/                     unittest suite (111 tests; one skipped if the XDF reference is absent)
-installer/tests/             install and uninstall tests (9), run with HOME set to a scratch folder
-installer/
-  install_tunertoolpro.py    Windows-style Setup wizard (Tkinter); also the uninstaller
-docs/
-  USER_GUIDE.md              how to use each tab, limits, troubleshooting
-recovered/
-  bct-csharp/
-    BC_Trans/   C# project from ILSpy 9.1 (Main_Form.cs holds Calc_Shifts, Gen_Table, Update_VSS, ...)
-    BCGrid/     C# project for the grid control (BCGridControl.cs)
-  6l80e-python-disasm/
-    NNNNN_<function>.dis.txt   CPython 3.12 disassembly, one file per code object, named by source line
-    _index.json                function name, line, op count and string constants
-```
+## Help wanted
 
-Recovered sources are kept here for reference and porting. The original binaries are not copied into this folder.
+- **Sample files.** EFILive datalogs (`.log`) and HP Tuners text or CSV exports, so the
+  readers can be extended. Share only files you are allowed to share, and remove any
+  VIN or personal data first.
+- **Testers on Zorin OS and Ubuntu**, especially for the install, uninstall and
+  reinstall steps.
+- **Road-test reports.** Tell us what you checked and what you changed. Honest reports,
+  including ones where a value was wrong, are the most useful feedback.
+- **Bug reports and suggestions**, through GitHub issues.
 
-## Running
+---
 
-```
-python3 -m venv venv && . venv/bin/activate
-pip install -r app/requirements.txt
-cd app && python3 -m tunertoolpro
-```
+## Safety
 
-Install as a menu app with `python3 installer/install_tunertoolpro.py`.
+- TunerToolPro calculates. **You** decide what goes into a controller, and you make each
+  change yourself in your own tuning tool.
+- Check every value against your vehicle and your road test. Do not rely on the
+  consistency checks alone. They catch common contradictions, not every mistake.
+- A transmission calibration can cause damage, loss of control or a crash. Do not use
+  values you do not understand.
+- The AI Assistant can be wrong. Treat its answers and proposals as suggestions to check.
+- Only use tuning files, calibrations and data that you own or have permission to use.
 
-Tests (from `app/`, offscreen for the GUI tests):
+---
 
-```
-QT_QPA_PLATFORM=offscreen python3 -m unittest discover -s tests -t .
-```
+## Licence and attribution
 
-The BC Trans tests read the shipped `.BTC` and preset files from `BCT_DIR`, which defaults to
-`/home/nathan/Downloads/BCT+1.42/Bluecat Transmission Tool`. Set `BCT_DIR` to point elsewhere.
+**Licence: to be chosen.** This repository does not yet include a licence file, so no
+one may assume they can reuse or redistribute the code until one is added.
 
-## Reconstructed engines
+Some of the material used to rebuild the calculations came from third-party sources. It is
+not included in this folder, and its own licences apply to it.
 
-| Module | Status | Verification |
-|---|---|---|
-| `engines/calc_engine.py` — `CalcEngine` | Hand-transcribed from the disassembly, each line cites its source line | Differential test `verify_calc_engine.py`: 22,400 checks, 0 failures |
-| `engines/constants.py` — 54 plain-data constants | Generated from the original by `reconstructed/python/tests/gen_constants.py` | Not differentially checked |
-| `engines/pressure_engine.py` — `PressureEngine` | Transcribed from the disassembly and corrected against it | Differential test `verify_engines.py`: all checks match. `tcc_apply_pressure_ramp` takes a `max_torque` argument the original never uses |
-| `engines/shift_time_engine.py` — `ShiftTimeEngine` | Transcribed from `06308..06333` | Hand checks (first value 0.575 s, full-torque value 0.3 s) |
-| `engines/tcc_duty_engine.py` — `TCCDutyEngine` | Transcribed from `06341..06372` | Hand check: 151 °F at 0 psi = 95.0% |
-| `engines/torque_curve.py` — `TorqueCurve` | Transcribed from `01293..01457` | Smoke and unit tests. Rows with blank cells are dropped |
-| `engines/boost_curve.py` — `BoostCurve` | Transcribed from `01214..01280` | Smoke tests |
-| `engines/drag_simulator.py` — `DragSimulator` | Transcribed from `01863..01960` | Test: 0–60 mph within 3–9 s on a synthetic curve |
-| `engines/bin_reader.py` — `BinReader` | Transcribed from `01160..01204` | Not yet run against a real `.bin` |
-| `engines/xdf.py` — `XDFDefinition` | Transcribed from `00905..01157` | All 22 XML `.xdf` files under `General Motors/` parse. The other 30 are 17 binaries and 13 empty placeholders |
-| `engines/logimporter.py` — `LogImporter` | Transcribed from `01499..01831` | Synthetic log test: pandas and csv-module paths give identical results |
-
-Not yet reconstructed: nothing in the Python app's engine set is missing.
-
-Known issues (not fixed):
-- `calc_engine.py`: `init_lock_logic` is read but never used. `calculate` has an unreachable `else base = min_speed` branch.
-- `xdf.py`: `_apply_math` evaluates an expression from the XDF with empty builtins. `**` is allowed, so a crafted XDF can force heavy computation. Treat as a hardening task.
-- `logimporter.py`: the WOT section skips rows with `rpm <= 0`. The original divides by zero there.
-- GUI: the Shift Points torque-lead mode uses 75% of rated HP, not the dyno curve. BC Trans's own `Calc_Shifts` also uses 75% of RWHP, so this matches BC here. Without a loaded tune, per-gear delays are the fixed fallback (0.5 s up, 0.15 s down).
-- Shift Points has two engines, chosen by the **Engine** selector. *CalcEngine* maps a loaded `.BTC` tune's keys to its inputs (`bct/shift_cfg.py`; see the mapping table in `docs/USER_GUIDE.md`). *BC Trans (Calc_Shifts)* runs the `bct/calc_shifts.py` port on the tune as written. The port matches the decompiled `Calc_Shifts` on 433 cases within 5e-05. It is not checked against BC Trans running on a car, because BC Trans cannot be run here.
-- `bct/shift_cfg.py` reads `Gear` as the final drive and sets the chain ratio to 1.0. BC Trans has no separate chain ratio.
-
-Differential results (run 2026-10-26 with your approval, on the extracted main module `.pyc` only, in an empty folder with `python3 -I` and no network):
-- `reconstructed/python/tests/verify_calc_engine.py`: 22,400 checks, 0 failures
-- `reconstructed/python/tests/verify_engines.py`: 12,285 checks, 0 failures. Covers PressureEngine (including the TCC ramp eras), ShiftTimeEngine, TCCDutyEngine, TorqueCurve, BoostCurve, DragSimulator, BinReader and XDFDefinition on the reference XDF, and LogImporter.
-
-Run both as: `python3 -I <script> "<path to orig.pyc>"`. Use `unshare -rn` to block network where available.
-
-Not covered by the differential run: the pandas `from_dataframe` path (both sides used pandas when available, so only the path choice is shared), and `LogImporter` rows where RPM is zero with WOT slip. The original would divide by zero there; the reconstruction skips the row.
-
-## How the Python side was decompiled
-
-The first attempt was `pycdc` (zrax/pycdc). Building it meant fetching and compiling external code, and the action was blocked, so it was not built. Instead the code objects were loaded with the standard library `marshal` module and disassembled with `dis` (Python 3.12.3 matches the bytecode). That gives complete, accurate disassembly. The engines were then transcribed by hand from the disassembly.
-
-## Key findings so far
-
-- **Shared shift math (BC_Trans `Calc_Shifts`):** speed at each gear is `RPM / (ratio × final drive) × tire × 3.14 × 60 / 12 / 5280` (MPH). The original writes the literal 3.14 for π, and the port keeps it. The stall slip is `(stall/1000)^1.7 / 100`. Upshift and downshift points are interpolated between `MinSpeed` and the per-gear speed using slope factors from the Slope table, with an optional override table.
-- **Lock/unlock:** `MinTCCSpeed` sets the floor for TCC unlock/lock speeds. Lock/unlock spreads and the stall-logic floor are applied after that.
-- **Data format:** `.BTC` tune files are CRLF text with one key line and one value line per field. `Trans_Presets.txt` and `Slope_Presets.txt` are tab-separated with a `#` comment header.
-- **Python app:** the module docstring describes an output of TPS × Gear matrices for HP Tuners VCM Editor and TunerPro paste. It includes engines for shift points, pressure/TCC, shift time, TCC duty, a drag simulator, and XDF/BIN and datalog import.
-
-## Attribution
-
-Reference material under `General Motors/T43_6L80E_reference/` is third-party and carries its own licences (see that folder's README).
-
-## Guides
-
-- `docs/USER_GUIDE.md` — how to use each tab, the Vehicle tab, the AI proposals, and the limits.
-- `docs/COMMANDS.md` — install, start, test and remove commands, and where settings are kept.
-- `docs/ECU_TOOLS.md` — working with EFILive and HP Tuners, and why the AI does not write to a car.
-- `docs/DESIGN_TEMPLATE.md` — the colour palette and components.
+Bluecat, HP Tuners, EFILive and GM are the names of their owners. This project is not
+affiliated with or endorsed by any of them.
