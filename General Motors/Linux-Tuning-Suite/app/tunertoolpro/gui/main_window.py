@@ -28,11 +28,16 @@ class MainWindow(QMainWindow):
         tabs.addTab(LogTab(), 'Datalog')
         tabs.addTab(XdfTab(), 'XDF / BIN')
         tabs.addTab(BctTab(), 'BCT Tunes')
-        tabs.addTab(AiTab(context_provider=lambda: tables_context(shift)), 'AI Assistant')
+        self.ai_tab = AiTab(context_provider=lambda: tables_context(shift))
+        tabs.addTab(self.ai_tab, 'AI Assistant')
         self.setCentralWidget(tabs)
         self.statusBar().addPermanentWidget(QLabel('Read the user guide before use'))
         about = self.menuBar().addMenu('Help').addAction('About / Disclaimer')
         about.triggered.connect(self.show_about)
+
+    def closeEvent(self, event):
+        self.ai_tab.shutdown()
+        super().closeEvent(event)
 
     def show_about(self):
         QMessageBox.information(self, 'About TunerToolPro',

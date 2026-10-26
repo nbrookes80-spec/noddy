@@ -104,6 +104,12 @@ class AskTests(unittest.TestCase):
             ai_assistant.ask('Hi', 'sk-test', 'claude-sonnet-5-5', opener=opener)
         self.assertIn('Could not reach', str(ctx.exception))
 
+    def test_cut_off_reply_says_so(self):
+        payload = {'content': [{'type': 'thinking', 'thinking': '...'}], 'stop_reason': 'max_tokens'}
+        with self.assertRaises(ai_assistant.AIError) as ctx:
+            ai_assistant.ask('Hi', 'sk-test', 'claude-sonnet-5-5', opener=opener_returning(payload))
+        self.assertIn('cut off', str(ctx.exception))
+
     def test_empty_reply_is_an_error(self):
         with self.assertRaises(ai_assistant.AIError):
             ai_assistant.ask('Hi', 'sk-test', 'claude-sonnet-5-5',

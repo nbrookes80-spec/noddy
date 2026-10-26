@@ -24,15 +24,12 @@ class InstallFlowTests(unittest.TestCase):
         self.home.mkdir()
         self.env = mock.patch.dict(os.environ, {'HOME': str(self.home)})
         self.env.start()
-        self.env_settings = mock.patch.dict(os.environ, {}, clear=False)
-        self.env_settings.start()
         os.environ.pop('TUNERTOOLPRO_HOME', None)
         os.environ.pop('XDG_CONFIG_HOME', None)
         self.target = Path(self.tmp.name) / 'Program' / 'TunerToolPro'
         self.lines = []
 
     def tearDown(self):
-        self.env_settings.stop()
         self.env.stop()
         self.tmp.cleanup()
 
@@ -73,6 +70,21 @@ class InstallFlowTests(unittest.TestCase):
         self.assertEqual(data['ai']['api_key'], 'sk-test-999')
         self.assertEqual(data['ai']['model'], 'claude-haiku-5-5')
         self.assertNotIn('sk-test-999', '\n'.join(self.lines))
+
+    def test_ai_key_not_saved_when_ai_is_off(self):
+        setup.install(self.target, self.options(ai_enabled=False, ai_key='sk-off-1'),
+                      log=self.lines.append, pip_install=False)
+        from tunertoolpro import settings
+        self.assertFalse(settings.settings_path().exists())
+
+    def test_settings_keep_unknown_sections_on_save(self):
+        from tunertoolpro import settings
+        settings.save({'future': {'x': 1}})
+        setup.install(self.target, self.options(ai_enabled=True, ai_key='sk-keep-2'),
+                      log=self.lines.append, pip_install=False)
+        data = json.loads(settings.settings_path().read_text(encoding='utf-8'))
+        self.assertEqual(data['future'], {'x': 1})
+        self.assertEqual(data['ai']['api_key'], 'sk-keep-2')
 
     def test_refuses_home_and_non_empty_folders(self):
         with self.assertRaises(ValueError):

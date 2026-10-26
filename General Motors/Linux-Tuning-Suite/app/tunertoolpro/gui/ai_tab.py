@@ -12,8 +12,8 @@ class _AskWorker(QThread):
     answered = pyqtSignal(str)
     failed = pyqtSignal(str)
 
-    def __init__(self, question, api_key, model, context):
-        super().__init__()
+    def __init__(self, question, api_key, model, context, parent=None):
+        super().__init__(parent)
         self._args = (question, api_key, model, context)
 
     def run(self):
@@ -110,11 +110,16 @@ class AiTab(QWidget):
         self.ask_btn.setEnabled(False)
         self.status.setText('Asking...')
         self._worker = _AskWorker(self.question.toPlainText(), self.key_edit.text().strip(),
-                                  self.model_box.currentText(), context)
+                                  self.model_box.currentText(), context, parent=self)
         self._worker.answered.connect(self._show_answer)
         self._worker.failed.connect(self._show_error)
         self._worker.finished.connect(lambda: self.ask_btn.setEnabled(True))
         self._worker.start()
+
+    def shutdown(self):
+        """Wait for a running request to finish before the window closes."""
+        if self._worker is not None and self._worker.isRunning():
+            self._worker.wait(70000)  # longer than the request timeout
 
     def _show_answer(self, text):
         self.answer.setPlainText(text)

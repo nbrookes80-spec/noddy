@@ -25,11 +25,13 @@ Needs Python 3.10+ with Tkinter and venv. On Zorin OS or Ubuntu:
 
 import importlib.util
 import json
+import queue
 import re
 import shutil
 import subprocess
 import sys
 import threading
+import traceback
 import venv
 from datetime import datetime, timezone
 from pathlib import Path
@@ -148,12 +150,12 @@ def install(target, options, log=print, pip_install=True):
     """Install into target and return the launcher path.
 
     options keys: desktop, menu, command (bools); ai_enabled (bool), ai_key (str),
-    ai_model (str). Existing settings are kept and only the AI section is replaced.
+    ai_model (str). The AI key is saved only when ai_enabled is set. Other settings are kept.
     pip_install=False skips the package download; the tests use it.
     """
     check_python()
+    check_target(target)  # checks the path as typed, before it is resolved
     target = Path(target).expanduser().resolve()
-    check_target(target)
     _, settings = app_modules()
     target.mkdir(parents=True, exist_ok=True)
     recorded = []
@@ -218,7 +220,7 @@ def install(target, options, log=print, pip_install=True):
         recorded.append(str(link))
         log(f'Added the command {link}')
 
-    if options.get('ai_enabled') or options.get('ai_key'):
+    if options.get('ai_enabled'):
         data = settings.load()
         data['ai'] = {
             'enabled': bool(options.get('ai_enabled')),
@@ -267,6 +269,8 @@ def uninstall(target, delete_settings=False, log=print):
     if delete_settings and user.name == 'TunerToolPro' and user.is_dir():
         shutil.rmtree(user)
         log(f'Removed your settings in {user}')
+    elif delete_settings:
+        log(f'Did not delete {user}: the folder name is not TunerToolPro. Remove it by hand if wanted.')
     else:
         log(f'Kept your settings in {user}.')
     log(f'{PRODUCT} has been removed.')
@@ -298,7 +302,11 @@ def run_wizard(uninstall_mode=False):
         legal, settings = app_modules()
         problems = preflight()
 
-    root = tk.Tk()
+    try:
+        root = tk.Tk()
+    except tk.TclError as exc:
+        sys.stderr.write(f'Setup needs a graphical desktop to show its window: {exc}\n')
+        return 1
     root.title(('Uninstall ' if uninstall_mode else 'Setup - ') + PRODUCT)
     style = ttk.Style(root)
     if 'clam' in style.theme_names():
@@ -468,28 +476,49 @@ def run_wizard(uninstall_mode=False):
         log_frame.pack(fill='both', expand=True)
         log_box = log_frame.text
 
+        # Tk is not thread-safe: the worker only queues lines, and the window drains the queue.
+        messages = queue.Queue()
+        done = {'flag': False}
+
         def write(msg):
-            def append():
+            messages.put(msg)
+
+        def drain():
+            while True:
+                try:
+                    msg = messages.get_nowait()
+                except queue.Empty:
+                    break
                 log_box.configure(state='normal')
                 log_box.insert('end', msg + '\n')
                 log_box.see('end')
                 log_box.configure(state='disabled')
-            root.after(0, append)
+            if done['flag'] and messages.empty():
+                finished()
+            else:
+                root.after(150, drain)
 
         def worker():
             try:
                 state['result'] = ('ok', run(write))
             except Exception as exc:  # any failure must reach the Finish page, not crash the window
                 write(f'FAILED: {exc}')
+                write(traceback.format_exc().rstrip())
                 state['result'] = ('error', str(exc))
-            root.after(0, finished)
+            done['flag'] = True
 
         def finished():
             bar.stop()
             bar.configure(mode='determinate', value=100)
+            cancel_btn.configure(state='normal')
+            root.protocol('WM_DELETE_WINDOW', root.destroy)
             go_next(force=True)
 
+        # Cancel and the window close button stay off until the work has ended.
+        cancel_btn.configure(state='disabled')
+        root.protocol('WM_DELETE_WINDOW', lambda: None)
         threading.Thread(target=worker, daemon=True).start()
+        root.after(150, drain)
 
     def start_install():
         options = {
@@ -516,8 +545,8 @@ def run_wizard(uninstall_mode=False):
             ttk.Checkbutton(body, text=f'Start {PRODUCT} now', variable=state['launch']).pack(anchor='w')
         else:
             set_header('Setup failed' if not uninstall_mode else 'Removal failed', detail)
-            wrapped(body, 'Fix the problem above and run Setup again. Settings and existing files were '
-                          'not removed.')
+            wrapped(body, 'Setup did not finish. Fix the problem above and run Setup again. Your settings '
+                          'are not removed.')
 
     def finish():
         if not uninstall_mode and state['result'] and state['result'][0] == 'ok' and state['launch'].get():

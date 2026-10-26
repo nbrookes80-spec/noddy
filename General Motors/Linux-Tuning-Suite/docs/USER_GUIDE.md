@@ -31,20 +31,29 @@ used, and it is what the tests were run with.
 python3 installer/install_tunertoolpro.py
 ```
 
-Choose an install folder, leave the menu-entry box ticked if you want it, and press
-**Install**. The installer creates a private Python environment, installs PyQt6 and
-pandas into it, copies the application, and writes a launcher. It needs internet
-access for the first install.
+The Setup wizard works like a Windows installer. Its pages are: Welcome, License and terms
+(accept to continue), Install folder, Select options, Ready to install, Installing, and
+Completed. Setup creates a private Python environment, installs PyQt6 and pandas into it,
+copies the application, and writes a launcher. The first install needs internet access.
 
-**Without a window** (for scripts or a server):
+Setup needs Tkinter and venv. On Zorin OS or Ubuntu, if the wizard reports them missing:
 
 ```
-python3 installer/install_tunertoolpro.py --cli --target ~/TunerToolPro [--no-desktop]
+sudo apt install python3-tk python3-venv
 ```
+
+**Optional AI assistant.** On the Select options page you can enable the AI assistant and
+enter an Anthropic API key. The key is saved in your settings file, which only your account
+can read (`~/.config/TunerToolPro/settings.json`). You can also add it later in the
+AI Assistant tab. Questions go to api.anthropic.com only when you press Ask.
+
+**Uninstalling.** Choose "Uninstall TunerToolPro" in the applications menu. It removes the
+program folder, the menu entries, the desktop shortcut and the command. Your settings are
+kept unless you tick "Also delete my settings and AI key".
 
 **Starting the app.** Open the TunerToolPro menu entry, or run
 `~/.local/share/TunerToolPro/run-tunertoolpro.sh`, or type `tunertoolpro` if the
-installer added the command.
+setup added the command.
 
 ## Tabs at a glance
 
