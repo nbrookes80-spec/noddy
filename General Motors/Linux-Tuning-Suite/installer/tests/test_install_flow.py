@@ -149,3 +149,11 @@ class FolderPermissionTests(unittest.TestCase):
 
     def test_accepts_a_folder_inside_the_home_folder(self):
         setup.check_target(str(setup.DEFAULT_TARGET))
+
+class LibraryNoticeTests(unittest.TestCase):
+    def test_no_notice_when_nothing_missing(self):
+        self.assertEqual(setup.missing_library_notice([]), '')
+
+    def test_notice_names_the_apt_command(self):
+        text = setup.missing_library_notice(['libxcb-cursor0'])
+        self.assertIn('sudo apt install libxcb-cursor0', text)
