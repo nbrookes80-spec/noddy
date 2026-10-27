@@ -14,6 +14,7 @@ from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
+from kivy.uix.spinner import SpinnerOption
 from kivy.uix.widget import Widget
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -43,6 +44,22 @@ BODY = dp(14)
 
 def icon(name):
     return os.path.join(ICON_DIR, f'{name}.png')
+
+
+class WrapOption(SpinnerOption):
+    """A dropdown row that wraps long text instead of clipping it at the edges."""
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.background_normal = ''
+        self.background_color = RAISED
+        self.color = TEXT
+        self.font_size = dp(15)
+        self.halign = 'center'
+        self.valign = 'middle'
+        self.size_hint_y = None
+        self.height = dp(56)
+        self.bind(width=lambda w, _: setattr(w, 'text_size', (w.width - dp(16), None)))
 
 
 def style_button(button, primary=False):

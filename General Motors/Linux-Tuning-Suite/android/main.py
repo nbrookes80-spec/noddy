@@ -43,11 +43,11 @@ from scanner.session import Session  # noqa: E402
 from table_view import HEX, table_blocks  # noqa: E402
 from tunertoolpro import core  # noqa: E402
 from ui_kit import (ACCENT, ALERT, BG, BLUE, BORDER, GAP, MUTED, RAISED, TEXT, Card,  # noqa: E402
-                    HeaderBar, button_row, icon, make_button, panel_label, section_title, stack,
+                    HeaderBar, WrapOption, button_row, icon, make_button, panel_label, section_title, stack,
                     style_button)
 
 MONO = os.path.join(kivy_data_dir, 'fonts', 'RobotoMono-Regular.ttf')
-APP_VERSION = '0.2.5'
+APP_VERSION = '0.2.6'
 
 # How the 23 shift settings are grouped into cards.
 GROUPS = [
@@ -131,8 +131,8 @@ class ShiftScreen(BoxLayout):
                                     'move to match. Type the true flash stall in Stall RPM first if you know it.',
                                     color=MUTED, font_size=dp(13)))
         self.converter_box = Spinner(text=converter_live.LABELS[0], values=converter_live.LABELS,
-                                     size_hint_y=None, height=dp(44))
-        self.diff_box = Spinner(text='', values=[], size_hint_y=None, height=dp(44))
+                                     size_hint_y=None, height=dp(44), option_cls=WrapOption)
+        self.diff_box = Spinner(text='', values=[], size_hint_y=None, height=dp(44), option_cls=WrapOption)
         for spinner in (self.converter_box, self.diff_box):
             style_button(spinner)
         self.converter_box.bind(text=lambda _s, _t: self._converter_picked())
@@ -143,8 +143,11 @@ class ShiftScreen(BoxLayout):
         conv.add_widget(self.converter_box)
         conv.add_widget(panel_label('Differential ratio (sets the Axle ratio)', color=MUTED))
         conv.add_widget(self.diff_box)
-        self.conv_notes = panel_label('', color=MUTED, font_size=dp(12))
+        self.conv_notes = panel_label('', color=MUTED, font_size=dp(13))
         conv.add_widget(self.conv_notes)
+        self._summary, self._detail, self._detail_open = '', '', False
+        self.detail_button = make_button('Show details and TCM settings', self._toggle_detail)
+        conv.add_widget(self.detail_button)
         widgets.append(conv)
 
         self.status = panel_label(color=ALERT)
@@ -166,6 +169,27 @@ class ShiftScreen(BoxLayout):
     def _gear_count(self):
         return len([r for r in self.ratio_box.text.replace(' ', '').split(',') if r])
 
+    def _show_conv(self, summary, detail=''):
+        """A short line is always shown. The full notes and TCM settings sit behind a button."""
+        self._summary, self._detail = summary, detail
+        self.detail_button.opacity = 1 if detail else 0
+        self.detail_button.disabled = not detail
+        self.detail_button.height = dp(48) if detail else 0
+        self._detail_open = False
+        self._paint_conv()
+
+    def _paint_conv(self):
+        if self._detail_open:
+            self.conv_notes.text = self._summary + '\n\n' + self._detail
+            self.detail_button.text = 'Hide details'
+        else:
+            self.conv_notes.text = self._summary
+            self.detail_button.text = 'Show details and TCM settings'
+
+    def _toggle_detail(self):
+        self._detail_open = not self._detail_open
+        self._paint_conv()
+
     def _reset_converter(self):
         """The boxes now hold stock-converter numbers. Remember them as the base and show Stock."""
         self._quiet = True
@@ -173,7 +197,7 @@ class ShiftScreen(BoxLayout):
         self.converter_box.text = converter_live.LABELS[0]
         self._fill_diff()
         self._quiet = False
-        self.conv_notes.text = '\n'.join(converter_live.diff_summary(self.ratio_box.text, self._values()))
+        self._show_conv('\n'.join(converter_live.diff_summary(self.ratio_box.text, self._values())))
 
     def _fill_diff(self):
         axle = self.inputs['axle'].text
@@ -190,21 +214,27 @@ class ShiftScreen(BoxLayout):
         values = self._values()
         changes, stall_logic, notes, advice = converter_live.choose(
             values, self._base, self.converter_box.text, self._gear_count())
-        lines = list(notes)
-        if changes:
-            self._syncing = True
-            for key, text in changes.items():
-                if key in self.inputs:
-                    self.inputs[key].text = text
-                    lo, hi, _ = self.ranges[key]
-                    self.sliders[key].value = min(max(float(text), lo), hi)
-            self._syncing = False
-            self.stall_box.text = 'On' if stall_logic else 'Off'
-            if advice:
-                lines.append('Set these in the TCM tune (the app cannot calculate them):')
-                lines.extend('  ' + a for a in advice)
-        lines.extend(converter_live.diff_summary(self.ratio_box.text, self._values()))
-        self.conv_notes.text = '\n'.join(lines)
+        if not changes:
+            self._show_conv('\n'.join(notes))
+            return
+        self._syncing = True
+        for key, text in changes.items():
+            if key in self.inputs:
+                self.inputs[key].text = text
+                lo, hi, _ = self.ranges[key]
+                self.sliders[key].value = min(max(float(text), lo), hi)
+        self._syncing = False
+        self.stall_box.text = 'On' if stall_logic else 'Off'
+        summary = (f'{self.converter_box.text}: stall {changes["stall_rpm"]}, idle {changes["idle_rpm"]}, '
+                   f'shift {changes["shift_rpm"]}, minimum lock {changes["min_tcc_rpm"]} rpm. '
+                   f'Stall lock logic {"on" if stall_logic else "off"}.')
+        diff = converter_live.diff_summary(self.ratio_box.text, self._values())
+        detail = list(notes)
+        if advice:
+            detail.append('Set these in the TCM tune (the app cannot calculate them):')
+            detail.extend('  ' + a for a in advice)
+        detail.extend(diff)
+        self._show_conv(summary + ('\n' + diff[0] if diff else ''), '\n'.join(detail))
         self.recalculate()
 
     def _diff_picked(self):
@@ -222,7 +252,7 @@ class ShiftScreen(BoxLayout):
             return
         report = converter_live.diff_report(self.ratio_box.text, old, new, self._values())
         self.inputs['axle'].text = new     # the text handler moves the slider and recalculates
-        self.conv_notes.text = '\n'.join(report)
+        self._show_conv('\n'.join(report))
 
     # --- car and transmission, chosen on the Settings screen -------------------------------------
 
