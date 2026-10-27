@@ -8,11 +8,13 @@ import os
 from kivy.core.image import Image as CoreImage
 from kivy.graphics import Color, Line, Rectangle, RoundedRectangle
 from kivy.metrics import dp
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
+from kivy.uix.widget import Widget
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ICON_DIR = os.path.join(HERE, 'icons')
@@ -109,8 +111,8 @@ class Chip(Label):
     """A small rounded status label, for example DEMO, LIVE or OFFLINE."""
 
     def __init__(self, text='', colour=MUTED, **kwargs):
-        super().__init__(text=text, bold=True, font_size=dp(12), color=BG, size_hint=(None, None),
-                         size=(dp(84), dp(26)), **kwargs)
+        super().__init__(text=text, bold=True, font_size=dp(11), color=BG, size_hint=(None, None),
+                         size=(dp(66), dp(24)), **kwargs)
         self._colour = colour
         self.bind(pos=self._draw, size=self._draw)
 
@@ -125,10 +127,31 @@ class Chip(Label):
             RoundedRectangle(pos=self.pos, size=self.size, radius=[self.height / 2])
 
 
+class MenuButton(ButtonBehavior, Widget):
+    """Three bars that open the Settings screen. Drawn, so it does not depend on a font having a symbol."""
+
+    def __init__(self, on_press_cb, **kwargs):
+        super().__init__(size_hint_x=None, width=dp(34), **kwargs)
+        self._cb = on_press_cb
+        with self.canvas:
+            Color(*TEXT)
+            self._bars = [Line(points=[0, 0, 0, 0], width=dp(1.6)) for _ in range(3)]
+        self.bind(pos=self._place, size=self._place)
+
+    def _place(self, *_):
+        left, right = self.x + dp(6), self.right - dp(6)
+        for i, bar in enumerate(self._bars):
+            y = self.center_y + (1 - i) * dp(7)
+            bar.points = [left, y, right, y]
+
+    def on_release(self):
+        self._cb()
+
+
 class HeaderBar(BoxLayout):
     """The title strip at the top of every screen: app name, screen name, and the data-source chip."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, on_settings=None, **kwargs):
         super().__init__(size_hint_y=None, height=dp(64), padding=(GAP, dp(8)), spacing=GAP, **kwargs)
         titles = BoxLayout(orientation='vertical')
         self.app_name = Label(text='TunerToolPro', bold=True, font_size=dp(17), color=TEXT, halign='left',
@@ -138,10 +161,12 @@ class HeaderBar(BoxLayout):
             label.bind(size=lambda w, _: setattr(w, 'text_size', (w.width, w.height)))
             titles.add_widget(label)
         self.chip = Chip('OFFLINE')
-        holder = BoxLayout(size_hint_x=None, width=dp(84), padding=(0, dp(12)))
+        holder = BoxLayout(size_hint_x=None, width=dp(66), padding=(0, dp(13)))
         holder.add_widget(self.chip)
         self.add_widget(titles)
         self.add_widget(holder)
+        if on_settings is not None:
+            self.add_widget(MenuButton(on_settings))
         self.canvas.after.clear()
         with self.canvas.after:
             Color(*BORDER)

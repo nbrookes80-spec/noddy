@@ -30,11 +30,13 @@ from kivy.uix.widget import Widget  # noqa: E402
 import dyno_live  # noqa: E402
 import grading  # noqa: E402
 import shift_live  # noqa: E402
+import vehicles  # noqa: E402
 from agent_ui import AgentScreen  # noqa: E402
 from link_ui import LinkScreen  # noqa: E402
 from splash_ui import SplashOverlay  # noqa: E402
 from live_ui import LiveScreen, StreamRunner  # noqa: E402
 from scan_ui import ScanScreen  # noqa: E402
+from settings_ui import SettingsScreen  # noqa: E402
 from scanner.session import Session  # noqa: E402
 from table_view import HEX, table_blocks  # noqa: E402
 from tunertoolpro import core  # noqa: E402
@@ -77,7 +79,7 @@ class ShiftScreen(BoxLayout):
     """Each input has a slider and a typed box that stay in step. Any change recalculates the
     shift tables and asks the Dyno screen to run again."""
 
-    def __init__(self, on_change, **kwargs):
+    def __init__(self, on_change, on_settings=None, **kwargs):
         super().__init__(orientation='vertical', **kwargs)
         self.on_change = on_change
         self._syncing = False
@@ -85,6 +87,13 @@ class ShiftScreen(BoxLayout):
         self.inputs, self.sliders, self.ranges, self.decimals = {}, {}, {}, {}
         fields = {f[0]: f for f in shift_live.FIELDS}
         widgets = []
+        if on_settings:
+            choose = Card()
+            choose.add_widget(section_title('Car and transmission'))
+            self.car_label = panel_label('', color=MUTED, font_size=dp(13))
+            choose.add_widget(self.car_label)
+            choose.add_widget(make_button('Change car or transmission', on_settings, primary=True))
+            widgets.append(choose)
         for title, keys in GROUPS:
             card = Card()
             card.add_widget(section_title(title))
@@ -122,6 +131,29 @@ class ShiftScreen(BoxLayout):
         widgets += [self.status, section_title('Shift tables (MPH)'), self.tables]
         self.add_widget(stack(*widgets))
         self.recalculate()
+
+    # --- car and transmission, chosen on the Settings screen -------------------------------------
+
+    def _set_all(self, values, ratios):
+        """Put new values in every box and slider, then recalculate once."""
+        self._syncing = True
+        for key, text in values.items():
+            if key in self.inputs:
+                self.inputs[key].text = text
+                lo, hi, _ = self.ranges[key]
+                self.sliders[key].value = min(max(float(text), lo), hi)
+        self.ratio_box.text = ratios
+        self._syncing = False
+        self.recalculate()
+
+    def apply_profile(self, name):
+        values, ratios = shift_live.default_inputs(name)
+        self._set_all(values, ratios)
+
+    def apply_transmission(self, transmission):
+        values = vehicles.fit_gears({key: box.text for key, box in self.inputs.items()},
+                                    len(transmission.ratios))
+        self._set_all(values, vehicles.ratios_text(transmission))
 
     def _field_row(self, key, label, lo, hi, step, decimals, text):
         self.ranges[key] = (lo, hi, step)
@@ -489,8 +521,8 @@ class TunerToolProApp(App):
         self._refresh_event = None  # must exist before the Shift screen runs its first recalculation
         self.session = Session()
         self.manager = ScreenManager()
-        self.header = HeaderBar()
-        self.shift = ShiftScreen(on_change=self.request_dyno_refresh)
+        self.header = HeaderBar(on_settings=lambda: self.show('settings'))
+        self.shift = ShiftScreen(on_change=self.request_dyno_refresh, on_settings=lambda: self.show('settings'))
         self.dyno = DynoScreen(self.shift)
         self.runner = StreamRunner(self.session, self.shift.model)
         self.live = LiveScreen(self.session, self.runner, on_open_link=lambda: self.show('link'))
@@ -501,6 +533,11 @@ class TunerToolProApp(App):
         self.agent = AgentScreen(self.agent_state, {k: (f[2], f[3]) for k, f in fields.items()},
                                  {k: f[1] for k, f in fields.items()},
                                  lambda key: self.shift.inputs[key].text, self.shift.set_value)
+        self.settings = SettingsScreen(self.shift, os.path.join(self.user_data_dir, 'vehicle.json'),
+                                       APP_VERSION)
+        self.settings.restore()
+        self.settings.on_changed = self.show_car
+        self.show_car()
         screens = (('shift', 'Shift', 'Shift points', self.shift),
                    ('dyno', 'Dyno', 'Dyno and launch simulation', self.dyno),
                    ('live', 'Live', 'Live engine and transmission', self.live),
@@ -508,8 +545,9 @@ class TunerToolProApp(App):
                    ('link', 'Link', 'Bluetooth, Wi-Fi and demo', self.link),
                    ('agent', 'Agent', 'Connect your AI agent', self.agent))
         self.titles = {name: subtitle for name, _t, subtitle, _c in screens}
+        self.titles['settings'] = 'Settings'
         self.navs = {}
-        for name, _title, _subtitle, content in screens:
+        for name, _title, _subtitle, content in (*screens, ('settings', '', '', self.settings)):
             screen = Screen(name=name)
             screen.add_widget(content)
             self.manager.add_widget(screen)
@@ -533,6 +571,9 @@ class TunerToolProApp(App):
         self.frame.add_widget(root)
         self.frame.add_widget(SplashOverlay())
         return self.frame
+
+    def show_car(self):
+        self.shift.car_label.text = (f'{self.settings.summary()}\n{self.shift.ratio_box.text}')
 
     def show(self, name):
         self.manager.current = name
@@ -579,7 +620,7 @@ class TunerToolProApp(App):
         grades = self.shift.grading()
         stream = self.runner.stream
         state = {'app': 'TunerToolPro', 'version': APP_VERSION, 'source': self.session.status,
-                 'settings': self.shift.settings(), 'ratios': self.shift.ratio_box.text,
+                 'transmission': self.settings.summary(), 'settings': self.shift.settings(), 'ratios': self.shift.ratio_box.text,
                  'live': stream.snapshot() if stream is not None else {},
                  'grades': None, 'tables': {}}
         if grades is not None:

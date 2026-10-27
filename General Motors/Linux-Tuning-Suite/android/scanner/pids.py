@@ -4,6 +4,7 @@ The catalogue (pid_table.py) is generated from that app's Kotlin source. Rows ma
 "unverified" in their description have not been confirmed against a real vehicle.
 """
 
+import re
 from dataclasses import dataclass
 from typing import Callable
 
@@ -21,6 +22,7 @@ MONITOR_PIDS = [
     '221991', '22199A', '0101', '0103',
 ]
 PAGE_SIZE = 4
+KIND_WIDTH = {'byte': 1, 'word': 2, 'bytes3': 3, 'dword': 4}   # data bytes per reading
 
 
 @dataclass(frozen=True)
@@ -35,6 +37,8 @@ class Pid:
     header: str
     kind: str
     decode: Callable[[int], float]
+    source: str = ''         # where an added PID came from (a Torque CSV, a profile); empty for the built-in set
+    trusted: bool = True     # False for anything that has not been checked against a real car
 
     @property
     def mode(self):
@@ -53,21 +57,51 @@ class Pid:
     @property
     def verified(self):
         text = self.description.lower()
-        return 'probable' not in text and 'unverified' not in text
+        return self.trusted and 'probable' not in text and 'unverified' not in text
+
+    @property
+    def width(self):
+        """How many data bytes the reply carries for this reading."""
+        return KIND_WIDTH[self.kind]
 
     def parse(self, data):
         """Decode the data bytes (hex text, after the reply echo). None when too short or invalid."""
-        width = 4 if self.kind == 'word' else 2
+        width = self.width * 2
         if len(data) < width:
             return None
         try:
             raw = int(data[:width], 16)
-        except ValueError:
+            return float(self.decode(raw))
+        except (ValueError, ZeroDivisionError, OverflowError):
             return None
-        return float(self.decode(raw))
 
 
-CATALOG = {row[0]: Pid(*row) for row in pid_table.ROWS}
+BUILT_IN = {row[0]: Pid(*row) for row in pid_table.ROWS}
+CATALOG = dict(BUILT_IN)     # the built-in set plus whatever the active car profile has added
+
+
+def valid_id(pid):
+    """True for a read-only id: Mode 01 with one hex byte, or Mode 22 with two. Nothing else is ever sent."""
+    pid = pid.upper()
+    return bool(re.fullmatch(r'01[0-9A-F]{2}|22[0-9A-F]{4}', pid))
+
+
+def use_extras(extras):
+    """Make the built-in set plus these PIDs the catalogue. Built-in definitions always win.
+
+    Returns the ids that were skipped because the built-in set already defines them or because they are
+    not a Mode 01/22 read. Because the adapter only sends catalogued ids, this is also what lets an
+    imported PID be read, and nothing outside Mode 01 and 22 can get in.
+    """
+    skipped = []
+    CATALOG.clear()
+    CATALOG.update(BUILT_IN)
+    for pid in extras:
+        if pid.pid in BUILT_IN or not valid_id(pid.pid):
+            skipped.append(pid.pid)
+        else:
+            CATALOG[pid.pid] = pid
+    return skipped
 
 
 def get(pid):
