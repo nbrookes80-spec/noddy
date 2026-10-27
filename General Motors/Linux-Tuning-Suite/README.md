@@ -58,8 +58,11 @@ TunerToolPro opens with seven tabs. Each tab is one job.
 - **Safe AI use.** The assistant reads your settings and proposes changes. It cannot
   write to a controller, and every value it proposes must fall inside the allowed range
   of that setting.
-- **Runs on Linux.** Installs like a Windows program, with a Start-menu entry, a desktop
-  shortcut and a `tunertoolpro` command.
+- **Runs on Linux and Windows.** On Linux it installs with a Start-menu entry, a desktop
+  shortcut and a `tunertoolpro` command. On Windows, download the `TunerToolPro-<version>-setup.exe`
+  installer built by the *Windows build* workflow (Actions tab, or a release). Settings live in
+  `%APPDATA%\TunerToolPro` and are kept when you uninstall. The Windows build is new and has only
+  been built by CI, not yet tried on a Windows PC.
 
 ---
 
