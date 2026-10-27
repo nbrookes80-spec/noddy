@@ -126,6 +126,14 @@ class AgentScreen(BoxLayout):
     # --- approvals -------------------------------------------------------------------------------
 
     def refresh(self, _dt):
+        try:
+            self._refresh()
+        except Exception:   # show the problem on screen rather than leaving a blank tab
+            import traceback
+            self.status.text = 'Agent screen error:\n' + traceback.format_exc()[-900:]
+            self.status.color = STATUS['bad']
+
+    def _refresh(self):
         pending = self.bridge.pending() if self.bridge else []
         notes = self.bridge.notes() if self.bridge else []
         signature = (tuple(p['id'] for p in pending), tuple(n['time'] for n in notes))
