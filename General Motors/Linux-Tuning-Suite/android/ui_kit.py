@@ -10,6 +10,7 @@ from kivy.metrics import dp
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 
@@ -129,6 +130,9 @@ class HeaderBar(BoxLayout):
 
     def __init__(self, **kwargs):
         super().__init__(size_hint_y=None, height=dp(64), padding=(GAP, dp(8)), spacing=GAP, **kwargs)
+        car = Image(source=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets', 'logo_car.png'),
+                    size_hint_x=None, width=dp(78), allow_stretch=True, keep_ratio=True)
+        self.add_widget(car)
         titles = BoxLayout(orientation='vertical')
         self.app_name = Label(text='TunerToolPro', bold=True, font_size=dp(17), color=TEXT, halign='left',
                               valign='bottom')

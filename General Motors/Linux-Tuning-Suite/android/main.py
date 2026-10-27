@@ -13,6 +13,7 @@ from kivy.metrics import dp  # noqa: E402
 from kivy.properties import ListProperty  # noqa: E402
 from kivy.uix.behaviors import ButtonBehavior  # noqa: E402
 from kivy.uix.boxlayout import BoxLayout  # noqa: E402
+from kivy.uix.floatlayout import FloatLayout  # noqa: E402
 from kivy.uix.button import Button  # noqa: E402
 from kivy.uix.filechooser import FileChooserListView  # noqa: E402
 from kivy.uix.gridlayout import GridLayout  # noqa: E402
@@ -31,6 +32,7 @@ import grading  # noqa: E402
 import shift_live  # noqa: E402
 from agent_ui import AgentScreen  # noqa: E402
 from link_ui import LinkScreen  # noqa: E402
+from splash_ui import SplashOverlay  # noqa: E402
 from live_ui import LiveScreen, StreamRunner  # noqa: E402
 from scan_ui import ScanScreen  # noqa: E402
 from scanner.session import Session  # noqa: E402
@@ -41,7 +43,7 @@ from ui_kit import (ACCENT, ALERT, BG, BLUE, BORDER, GAP, MUTED, RAISED, TEXT, C
                     style_button)
 
 MONO = os.path.join(kivy_data_dir, 'fonts', 'RobotoMono-Regular.ttf')
-APP_VERSION = '0.2.0'
+APP_VERSION = '0.2.1'
 
 # How the 23 shift settings are grouped into cards.
 GROUPS = [
@@ -527,7 +529,10 @@ class TunerToolProApp(App):
         Clock.schedule_interval(self.update_cursor, 1.0)
         Clock.schedule_interval(self.check_connection, 2.0)
         self.show('shift')
-        return root
+        self.frame = FloatLayout()
+        self.frame.add_widget(root)
+        self.frame.add_widget(SplashOverlay())
+        return self.frame
 
     def show(self, name):
         self.manager.current = name
