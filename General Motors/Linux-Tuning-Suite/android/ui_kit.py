@@ -27,6 +27,10 @@ ACCENT = (0.96, 0.65, 0.14, 1)
 BLUE = (0.47, 0.78, 1.0, 1)
 ALERT = (1.0, 0.45, 0.40, 1)
 GOOD = (0.40, 0.80, 0.55, 1)
+CAUTION = (1.0, 0.85, 0.25, 1)
+
+# Green, yellow and red for grades. The same colours as the table text in table_view.py.
+STATUS = {'good': GOOD, 'ok': CAUTION, 'bad': ALERT, 'off': (0.42, 0.46, 0.52, 1)}
 
 RADIUS = dp(12)
 GAP = dp(12)
@@ -72,25 +76,31 @@ def section_title(text):
 class Card(BoxLayout):
     """A rounded panel with a 1 dp border. Grows to fit what is inside it."""
 
-    def __init__(self, fill=PANEL, **kwargs):
+    def __init__(self, fill=PANEL, border=BORDER, **kwargs):
         kwargs.setdefault('orientation', 'vertical')
         kwargs.setdefault('padding', GAP)
         kwargs.setdefault('spacing', dp(8))
         kwargs.setdefault('size_hint_y', None)
         super().__init__(**kwargs)
         self._fill = fill
+        self._border = border
         self.bind(minimum_height=self._fit_height, pos=self._draw, size=self._draw)
 
     def _fit_height(self, _widget, value):
         if self.size_hint_y is None:
             self.height = value
 
+    def set_border(self, colour):
+        """Change the outline colour (for example to a grade colour). Width and corners stay the same."""
+        self._border = colour
+        self._draw()
+
     def _draw(self, *_):
         self.canvas.before.clear()
         with self.canvas.before:
             Color(*self._fill)
             RoundedRectangle(pos=self.pos, size=self.size, radius=[RADIUS])
-            Color(*BORDER)
+            Color(*self._border)
             Line(rounded_rectangle=(self.x, self.y, self.width, self.height, RADIUS), width=BORDER_WIDTH)
 
 
