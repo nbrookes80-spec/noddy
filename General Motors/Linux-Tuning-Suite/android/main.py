@@ -257,9 +257,9 @@ class StatTile(Card):
         self.caption = Label(text=caption, color=MUTED, font_size=dp(12), size_hint_y=None, height=dp(18),
                              halign='left')
         self.caption.bind(size=lambda w, _: setattr(w, 'text_size', (w.width, None)))
-        self.number = Label(text='--', color=ACCENT, bold=True, font_size=dp(28), size_hint_y=None,
-                            height=dp(40), halign='left')
-        self.number.bind(size=lambda w, _: setattr(w, 'text_size', (w.width, None)))
+        self.number = Label(text='--', color=ACCENT, bold=True, font_size=dp(24), size_hint_y=None,
+                            height=dp(40), halign='left', valign='middle', shorten=True)
+        self.number.bind(size=lambda w, _: setattr(w, 'text_size', (w.width, w.height)))
         self.add_widget(self.caption)
         self.add_widget(self.number)
 
