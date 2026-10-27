@@ -26,6 +26,8 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(pids.get('0105').parse('78'), 80.0)             # A-40
         self.assertAlmostEqual(pids.get('010B').parse('FF'), 300.0)      # scaled for the 3 bar sensor
         self.assertAlmostEqual(pids.get('0111').parse('80'), 50.2, places=1)
+        self.assertAlmostEqual(pids.get('0114').parse('90'), 0.72)       # A/200 volts
+        self.assertAlmostEqual(pids.get('0114').parse('FF'), 1.275)      # top of its range
 
     def test_short_or_bad_data_gives_none(self):
         self.assertIsNone(pids.get('010C').parse('1A'))

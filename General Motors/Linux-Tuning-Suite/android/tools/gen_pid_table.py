@@ -33,7 +33,7 @@ NAMED = {
     'parseFuelLevel': ('byte', 'x * 100.0 / 255.0'),
     'parseFuelPressure': ('byte', 'x * 3'),
     'parseIgnitionTiming': ('byte', 'x / 2.0 - 64.0'),
-    'parseO2Voltage': ('byte', 'x * 8.0 / 65535.0'),
+    'parseO2Voltage': ('byte', 'x / 200.0'),
     'parseShortFuelTrim': ('byte', '(x - 128) * 100.0 / 128.0'),
     'parseLongFuelTrim': ('byte', '(x - 128) * 100.0 / 128.0'),
     'parseVehicleSpeed': ('byte', 'x'),
