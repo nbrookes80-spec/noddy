@@ -8,6 +8,12 @@ import os
 import tempfile
 import unittest
 
+
+def tab_page(tabs, index):
+    """The tab's own widget, even when the window wraps it in a scroll area."""
+    from tunertoolpro.gui.main_window import tab_page as page_of
+    return page_of(tabs, index)
+
 os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 
 try:
@@ -29,8 +35,8 @@ class VehicleAiGuiTests(unittest.TestCase):
         os.environ['TUNERTOOLPRO_HOME'] = self._tmp.name
         from tunertoolpro.gui.main_window import MainWindow
         self.window = MainWindow()
-        self.shift = self.window.centralWidget().widget(0)
-        self.vehicle = self.window.centralWidget().widget(1)
+        self.shift = tab_page(self.window.centralWidget(), 0)
+        self.vehicle = tab_page(self.window.centralWidget(), 1)
         self.ai = self.window.ai_tab
 
     def tearDown(self):

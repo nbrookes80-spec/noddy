@@ -30,7 +30,7 @@ class CalibrationBridgeTests(unittest.TestCase):
         os.environ['TUNERTOOLPRO_HOME'] = self._tmp.name
         from tunertoolpro.gui.main_window import MainWindow
         self.window = MainWindow()
-        self.vehicle = self.window.centralWidget().widget(1)
+        self.vehicle = self.window.centralWidget().widget(1).widget()
 
     def tearDown(self):
         self.window.close()
