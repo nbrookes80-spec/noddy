@@ -5,12 +5,12 @@ Keeping these in one place is what keeps the border width, spacing and scale the
 
 import os
 
-from kivy.graphics import Color, Line, RoundedRectangle
+from kivy.core.image import Image as CoreImage
+from kivy.graphics import Color, Line, Rectangle, RoundedRectangle
 from kivy.metrics import dp
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 
@@ -130,9 +130,6 @@ class HeaderBar(BoxLayout):
 
     def __init__(self, **kwargs):
         super().__init__(size_hint_y=None, height=dp(64), padding=(GAP, dp(8)), spacing=GAP, **kwargs)
-        car = Image(source=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets', 'logo_car.png'),
-                    size_hint_x=None, width=dp(78), allow_stretch=True, keep_ratio=True)
-        self.add_widget(car)
         titles = BoxLayout(orientation='vertical')
         self.app_name = Label(text='TunerToolPro', bold=True, font_size=dp(17), color=TEXT, halign='left',
                               valign='bottom')
@@ -149,7 +146,20 @@ class HeaderBar(BoxLayout):
         with self.canvas.after:
             Color(*BORDER)
             self._rule = Line(points=[0, 0, 0, 0], width=BORDER_WIDTH)
+        # The car sits faintly behind the title, so it fits whatever the screen width.
+        logo = CoreImage(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets', 'logo_car.png'))
+        self._car_ratio = logo.width / logo.height
+        with self.canvas.before:
+            Color(1, 1, 1, 0.42)
+            self._car = Rectangle(texture=logo.texture, pos=self.pos, size=(0, 0))
+        self.bind(x=self._place_car, y=self._place_car, width=self._place_car, height=self._place_car)
         self.bind(x=self._place_rule, y=self._place_rule, width=self._place_rule, height=self._place_rule)
+
+    def _place_car(self, *_):
+        width = min(self.width - 2 * GAP, (self.height - dp(10)) * self._car_ratio)
+        height = width / self._car_ratio
+        self._car.size = (width, height)
+        self._car.pos = (self.x + GAP, self.y + (self.height - height) / 2)
 
     def _place_rule(self, *_):
         self._rule.points = [self.x, self.y, self.x + self.width, self.y]
