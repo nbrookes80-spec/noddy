@@ -28,12 +28,14 @@ class WindowsSettingsTests(unittest.TestCase):
     def test_saving_works_where_the_system_has_no_fchmod(self):
         with tempfile.TemporaryDirectory() as home, \
                 mock.patch.dict(os.environ, {'TUNERTOOLPRO_HOME': home}):
-            real = os.fchmod
-            del os.fchmod                      # Windows has no os.fchmod
+            real = getattr(os, 'fchmod', None)
+            if real is not None:
+                del os.fchmod                  # Windows has no os.fchmod
             try:
                 path = settings.save({'ai': {'enabled': True}})
             finally:
-                os.fchmod = real
+                if real is not None:
+                    os.fchmod = real
             self.assertTrue(settings.load()['ai']['enabled'])
             self.assertEqual(path.parent, Path(home))
 
