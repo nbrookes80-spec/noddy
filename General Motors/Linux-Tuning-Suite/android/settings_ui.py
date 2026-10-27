@@ -9,6 +9,7 @@ from kivy.metrics import dp
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.spinner import Spinner
 
+import trans_data
 import vehicles
 from tunertoolpro import core
 from ui_kit import MUTED, STATUS, TEXT, Card, make_button, panel_label, section_title, stack, style_button
@@ -37,9 +38,10 @@ class SettingsScreen(BoxLayout):
         self.trans_box.bind(text=self._trans_changed)
         self.detail = panel_label('', color=MUTED, font_size=dp(13))
         self.apply_button = make_button('Use this transmission', self.apply_transmission, primary=True)
+        self.car_status = panel_label('', color=STATUS['good'], font_size=dp(13))
         for widget in (panel_label('Make', color=MUTED), self.make_box,
                        panel_label('Automatic transmission', color=MUTED), self.trans_box,
-                       self.detail, self.apply_button):
+                       self.detail, self.apply_button, self.car_status):
             car.add_widget(widget)
 
         profile = Card()
@@ -50,14 +52,16 @@ class SettingsScreen(BoxLayout):
         names = core.profile_names()
         self.profile_box = spinner(names, self.choice['profile'] or names[0])
         profile.add_widget(self.profile_box)
-        profile.add_widget(make_button('Load this vehicle', self.apply_profile))
+        self.load_button = make_button('Load this vehicle', self.apply_profile, primary=True)
+        profile.add_widget(self.load_button)
+        self.profile_status = panel_label('', color=STATUS['good'], font_size=dp(13))
+        profile.add_widget(self.profile_status)
 
-        self.status = panel_label('', color=STATUS['good'], font_size=dp(13))
         about = Card()
         about.add_widget(section_title('About'))
         about.add_widget(panel_label(f'TunerToolPro {version}. Read-only: the app never writes to the car.',
                                      color=MUTED, font_size=dp(13)))
-        self.add_widget(stack(car, profile, self.status, about))
+        self.add_widget(stack(car, profile, about))
         self._refill_transmissions(self.choice['transmission'])
 
     # --- the transmission list -------------------------------------------------------------------
@@ -82,7 +86,7 @@ class SettingsScreen(BoxLayout):
             return
         state = 'Ratios checked against the shared tuning data.' if found.verified else found.note
         self.detail.text = (f'{len(found.ratios)} gears, {found.drive}. Ratios {vehicles.ratios_text(found)}.\n'
-                            f'{state}')
+                            f'{state}\n\n{trans_data.summary(trans_data.for_transmission(found))}')
 
     # --- applying --------------------------------------------------------------------------------
 
@@ -90,28 +94,39 @@ class SettingsScreen(BoxLayout):
         found = vehicles.find(self.trans_box.text)
         if found is None:
             return
-        self.shift.apply_transmission(found)
+        data = self.shift.apply_transmission(found)
         self.choice.update(make=self.make_box.text, transmission=found.name)
         vehicles.save(self.choice_path, self.choice)
         self.on_changed()
-        self.status.text = f'Using {found.name} ({len(found.ratios)} gears). The shift tables have updated.'
+        self.profile_status.text = ''
+        self.car_status.text = (f'Loaded {found.name}: {len(found.ratios)} gears, shift delays, lead and converter-lock '
+                                f'rules ({"derived" if data.derived else "Blue Cat"}). The shift tables have updated.')
 
     def apply_profile(self):
         name = self.profile_box.text
         self.shift.apply_profile(name)
-        self.choice.update(profile=name, transmission='')
+        from tunertoolpro.engines import constants
+        trans = constants.STARTER_PROFILES[name]['trans_name']
+        self.choice.update(profile=name, transmission=trans, make='GM')
         vehicles.save(self.choice_path, self.choice)
-        self._refill_transmissions()
+        self.make_box.text = 'GM'
+        self._refill_transmissions(trans)
         self.on_changed()
-        self.status.text = f'Loaded {name}. The shift tables have updated.'
+        self.car_status.text = ''
+        self.profile_status.text = f'Loaded {name} with its {trans} data. The shift tables have updated.'
 
     def restore(self):
         """Re-apply what was chosen last time. Called once at start-up."""
         if self.choice['profile']:
             self.shift.apply_profile(self.choice['profile'])
         found = vehicles.find(self.choice['transmission'])
-        if found:
+        if found and found.name != self._profile_transmission(self.choice['profile']):
             self.shift.apply_transmission(found)
+
+    @staticmethod
+    def _profile_transmission(name):
+        from tunertoolpro.engines import constants
+        return constants.STARTER_PROFILES[name]['trans_name'] if name in constants.STARTER_PROFILES else None
 
     def summary(self):
         found = vehicles.find(self.choice['transmission'])

@@ -30,6 +30,7 @@ from kivy.uix.widget import Widget  # noqa: E402
 import dyno_live  # noqa: E402
 import grading  # noqa: E402
 import shift_live  # noqa: E402
+import trans_data  # noqa: E402
 import vehicles  # noqa: E402
 from agent_ui import AgentScreen  # noqa: E402
 from link_ui import LinkScreen  # noqa: E402
@@ -45,7 +46,7 @@ from ui_kit import (ACCENT, ALERT, BG, BLUE, BORDER, GAP, MUTED, RAISED, TEXT, C
                     style_button)
 
 MONO = os.path.join(kivy_data_dir, 'fonts', 'RobotoMono-Regular.ttf')
-APP_VERSION = '0.2.2'
+APP_VERSION = '0.2.3'
 
 # How the 23 shift settings are grouped into cards.
 GROUPS = [
@@ -83,6 +84,7 @@ class ShiftScreen(BoxLayout):
         super().__init__(orientation='vertical', **kwargs)
         self.on_change = on_change
         self._syncing = False
+        self.delays = None            # (prep, react) per shift for the chosen transmission; None = default
         values, ratios = shift_live.default_inputs()
         self.inputs, self.sliders, self.ranges, self.decimals = {}, {}, {}, {}
         fields = {f[0]: f for f in shift_live.FIELDS}
@@ -147,13 +149,21 @@ class ShiftScreen(BoxLayout):
         self.recalculate()
 
     def apply_profile(self, name):
+        """Load a whole vehicle. Its own settings are kept; the transmission's shift delays come from its data."""
+        from tunertoolpro.engines import constants
         values, ratios = shift_live.default_inputs(name)
+        found = vehicles.find(constants.STARTER_PROFILES[name]['trans_name'])
+        self.delays = trans_data.for_transmission(found).delays if found else None
         self._set_all(values, ratios)
 
     def apply_transmission(self, transmission):
-        values = vehicles.fit_gears({key: box.text for key, box in self.inputs.items()},
-                                    len(transmission.ratios))
-        self._set_all(values, vehicles.ratios_text(transmission))
+        """Load the gear ratios and the transmission's own data (delays, lead, converter-lock rules)."""
+        data = trans_data.for_transmission(transmission)
+        values = vehicles.fit_gears({key: box.text for key, box in self.inputs.items()}, len(transmission.ratios))
+        self.delays = data.delays
+        self.lead_box.text = data.lead_mode
+        self._set_all(trans_data.apply(values, data), vehicles.ratios_text(transmission))
+        return data
 
     def _field_row(self, key, label, lo, hi, step, decimals, text):
         self.ranges[key] = (lo, hi, step)
@@ -209,7 +219,7 @@ class ShiftScreen(BoxLayout):
 
     def recalculate(self):
         values, ratios, lead, stall = self.current()
-        tables, error = shift_live.calculate(values, ratios, lead, stall)
+        tables, error = shift_live.calculate(values, ratios, lead, stall, self.delays)
         self.tables.clear_widgets()
         self.table_labels = {}
         if error:
@@ -217,7 +227,7 @@ class ShiftScreen(BoxLayout):
             self.last = None
         else:
             self.status.text = ''
-            cfg = shift_live.build_cfg(values, ratios, lead, stall)
+            cfg = shift_live.build_cfg(values, ratios, lead, stall, self.delays)
             grades = grading.grade_tables(tables, cfg)
             self.last = (cfg, tables, grades)
             self.tables.add_widget(self._summary_card(grades))
@@ -620,7 +630,7 @@ class TunerToolProApp(App):
         grades = self.shift.grading()
         stream = self.runner.stream
         state = {'app': 'TunerToolPro', 'version': APP_VERSION, 'source': self.session.status,
-                 'transmission': self.settings.summary(), 'settings': self.shift.settings(), 'ratios': self.shift.ratio_box.text,
+                 'transmission': self.settings.summary(), 'shift_delays': self.shift.delays, 'settings': self.shift.settings(), 'ratios': self.shift.ratio_box.text,
                  'live': stream.snapshot() if stream is not None else {},
                  'grades': None, 'tables': {}}
         if grades is not None:
