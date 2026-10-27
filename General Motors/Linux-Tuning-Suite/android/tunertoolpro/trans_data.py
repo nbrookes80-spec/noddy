@@ -52,7 +52,7 @@ class TransData:
 
 
 def _torque(name):
-    from tunertoolpro.engines import constants
+    from .engines import constants
     entry = constants.TRANS_DB.get(name)
     return entry['torque'] if entry else None
 

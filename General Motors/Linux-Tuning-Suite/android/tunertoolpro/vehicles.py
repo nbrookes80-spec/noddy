@@ -9,7 +9,7 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
-from tunertoolpro import core
+from . import core
 
 MAKES = ('GM', 'Holden', 'Pontiac', 'Ford')
 LOCK_GEAR_KEYS = ('min_tcc_gear', 'accel_lock_gear', 'wot_lock_gear')
@@ -55,7 +55,7 @@ _EXTRAS = [
 
 
 def _build():
-    from tunertoolpro.engines import constants
+    from .engines import constants
     everything = []
     for name in core.transmission_names():
         data = constants.TRANS_DB[name]

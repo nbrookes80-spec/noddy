@@ -31,8 +31,8 @@ import converter_live  # noqa: E402
 import dyno_live  # noqa: E402
 import grading  # noqa: E402
 import shift_live  # noqa: E402
-import trans_data  # noqa: E402
-import vehicles  # noqa: E402
+from tunertoolpro import trans_data  # noqa: E402
+from tunertoolpro import vehicles  # noqa: E402
 from agent_ui import AgentScreen  # noqa: E402
 from link_ui import LinkScreen  # noqa: E402
 from splash_ui import SplashOverlay  # noqa: E402

@@ -6,8 +6,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import shift_live  # noqa: E402
-import trans_data  # noqa: E402
-import vehicles  # noqa: E402
+from tunertoolpro import trans_data  # noqa: E402
+from tunertoolpro import vehicles  # noqa: E402
 
 
 def data(name):

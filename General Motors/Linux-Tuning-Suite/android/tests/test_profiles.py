@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-import vehicles  # noqa: E402
+from tunertoolpro import vehicles  # noqa: E402
 from link import obd  # noqa: E402
 from live import LiveStream  # noqa: E402
 from scanner import pids, profiles  # noqa: E402

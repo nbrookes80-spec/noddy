@@ -9,8 +9,8 @@ from kivy.metrics import dp
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.spinner import Spinner
 
-import trans_data
-import vehicles
+from tunertoolpro import trans_data
+from tunertoolpro import vehicles
 from tunertoolpro import core
 from ui_kit import MUTED, STATUS, TEXT, Card, make_button, panel_label, section_title, stack, style_button
 
