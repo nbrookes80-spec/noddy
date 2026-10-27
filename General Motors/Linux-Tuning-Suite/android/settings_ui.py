@@ -41,7 +41,7 @@ class SettingsScreen(BoxLayout):
         self.car_status = panel_label('', color=STATUS['good'], font_size=dp(13))
         for widget in (panel_label('Make', color=MUTED), self.make_box,
                        panel_label('Automatic transmission', color=MUTED), self.trans_box,
-                       self.detail, self.apply_button, self.car_status):
+                       self.apply_button, self.car_status, self.detail):
             car.add_widget(widget)
 
         profile = Card()
@@ -81,6 +81,7 @@ class SettingsScreen(BoxLayout):
     def _show_detail(self):
         found = vehicles.find(self.trans_box.text)
         self.apply_button.disabled = found is None
+        self.apply_button.text = 'Use this transmission' if found else 'Pick a transmission above first'
         if found is None:
             self.detail.text = ''
             return

@@ -46,7 +46,7 @@ from ui_kit import (ACCENT, ALERT, BG, BLUE, BORDER, GAP, MUTED, RAISED, TEXT, C
                     style_button)
 
 MONO = os.path.join(kivy_data_dir, 'fonts', 'RobotoMono-Regular.ttf')
-APP_VERSION = '0.2.3'
+APP_VERSION = '0.2.4'
 
 # How the 23 shift settings are grouped into cards.
 GROUPS = [
