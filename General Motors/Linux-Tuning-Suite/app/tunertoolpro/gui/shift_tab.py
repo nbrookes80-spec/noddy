@@ -2,10 +2,10 @@
 
 from PyQt6.QtWidgets import (QComboBox, QDoubleSpinBox, QFileDialog,
                              QGridLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit,
-                             QMessageBox, QPushButton, QSpinBox, QTabWidget, QVBoxLayout,
-                             QWidget)
+                             QMessageBox, QPlainTextEdit, QPushButton, QSpinBox,
+                             QTabWidget, QVBoxLayout, QWidget)
 
-from .. import core
+from .. import converter, core
 from ..bct.shift_cfg import shift_cfg_from_btc
 from ..bct.tune import BtcTune
 from .theme import icon
@@ -108,6 +108,28 @@ class ShiftTab(QWidget):
         grid.addWidget(self.lead_box, row, 1)
         grid.addWidget(QLabel('Stall-based lock floor'), row, 2)
         grid.addWidget(self.stall_logic, row, 3)
+        row += 1
+        self.converter_box = QComboBox()
+        self.converter_box.addItems([converter.label(k) for k in converter.type_keys()])
+        self.converter_box.setToolTip('Choose the converter fitted. The stall, idle, shift RPM and minimum lock RPM '
+                                      'move to match. Type the converter\'s true flash stall in Stall RPM first '
+                                      'if you know it.')
+        grid.addWidget(QLabel('Torque converter'), row, 0)
+        grid.addWidget(self.converter_box, row, 1)
+        self.diff_box = QComboBox()
+        self.diff_box.setToolTip('Common differential ratios. The Axle ratio box above is set to the one you pick.')
+        grid.addWidget(QLabel('Differential presets'), row, 2)
+        grid.addWidget(self.diff_box, row, 3)
+        row += 1
+        self.advice = QPlainTextEdit()
+        self.advice.setReadOnly(True)
+        self.advice.setMaximumHeight(130)
+        self.advice.setPlaceholderText('Converter and differential notes appear here.')
+        grid.addWidget(self.advice, row, 0, 1, 4)
+        self._base = None
+        self.converter_box.currentIndexChanged.connect(lambda _: self._converter_changed())
+        self.diff_box.activated.connect(lambda _: self._diff_picked())
+        self._widgets['axle'].valueChanged.connect(lambda _: self._axle_edited())
 
         buttons = QHBoxLayout()
         calc_btn = QPushButton(icon(self, 'calculate'), 'Calculate')
@@ -186,6 +208,7 @@ class ShiftTab(QWidget):
         self._tune = None
         self.btc_label.setText('')
         self._engine_changed()
+        self._reset_converter()
 
     def load_btc(self):
         """Fill the form from a Bluecat .BTC tune. The intent is set to Custom so no clamp applies."""
@@ -216,6 +239,86 @@ class ShiftTab(QWidget):
             note += ' Outside the form range, so the form shows the nearest value: ' + ', '.join(clipped) + '.'
         self.btc_label.setText(note)
         self._engine_changed()
+        self._reset_converter(guess=True)
+
+    # --- converter and differential -------------------------------------------------------------
+
+    CONVERTER_FIELDS = ('stall_rpm', 'idle_rpm', 'shift_rpm', 'min_tcc_rpm')
+
+    def _reset_converter(self, guess=False):
+        """The form now holds stock-converter numbers (or a loaded tune's). Remember them as the base."""
+        self._base = {k: self._widgets[k].value() for k in self.CONVERTER_FIELDS}
+        key = 'stock'
+        if guess:
+            key = converter.classify(self._base['stall_rpm'], 2000)
+        self.converter_box.blockSignals(True)
+        self.converter_box.setCurrentText(converter.label(key))
+        self.converter_box.blockSignals(False)
+        self._fill_diff_box()
+        self._show_notes([], converter.tcm_advice(key) if key != 'stock' else [])
+
+    def _fill_diff_box(self):
+        axle = self._widgets['axle'].value()
+        self.diff_box.blockSignals(True)
+        self.diff_box.clear()
+        options = converter.diff_options(axle)
+        self.diff_box.addItems([f'{r:g}' for r in options])
+        nearest = min(range(len(options)), key=lambda i: abs(options[i] - axle))
+        self.diff_box.setCurrentIndex(nearest)
+        self.diff_box.blockSignals(False)
+
+    def _show_notes(self, calc_notes, advice):
+        lines = list(calc_notes)
+        if advice:
+            lines.append('Set these in the TCM tune (the app cannot calculate them):')
+            lines.extend('  ' + a for a in advice)
+        try:
+            cfg = self.build_cfg()
+            _, diff_lines = converter.diff_effect(cfg['ratios'], cfg['axle'], cfg['tire_dia'],
+                                                  cfg['shift_rpm'], cfg['chain'])
+            lines.extend(diff_lines)
+        except (ValueError, KeyError, ZeroDivisionError):
+            pass
+        self.advice.setPlainText('\n'.join(lines))
+
+    def _converter_changed(self):
+        key = converter.key_for_label(self.converter_box.currentText())
+        base = self._base or {k: self._widgets[k].value() for k in self.CONVERTER_FIELDS}
+        typed = self._widgets['stall_rpm'].value()
+        # A stall figure typed over the base is the user's own number for this converter.
+        stall = typed if abs(typed - base['stall_rpm']) > 1 and key != 'stock' else None
+        changes, stall_logic, notes = converter.adjust(self._current_for(base), key, stall_rpm=stall,
+                                                       base=base, n_gears=self._gear_count())
+        for name, value in changes.items():
+            self.set_value(name, value)
+        self.stall_logic.setCurrentIndex(1 if stall_logic else 0)
+        self._tables_data = None
+        self._show_notes(notes, converter.tcm_advice(key))
+
+    def _current_for(self, base):
+        return {k: self._widgets[k].value() for k in self.CONVERTER_FIELDS}
+
+    def _gear_count(self):
+        try:
+            return len([r for r in self.ratios.text().replace(' ', '').split(',') if r])
+        except ValueError:
+            return 6
+
+    def _diff_picked(self):
+        old = self._widgets['axle'].value()
+        new = float(self.diff_box.currentText())
+        self.set_value('axle', new)
+        try:
+            cfg = self.build_cfg()
+            lines = converter.diff_change(cfg['ratios'], old, new, cfg['tire_dia'], cfg['shift_rpm'], cfg['chain'])
+        except (ValueError, KeyError, ZeroDivisionError):
+            lines = []
+        self._tables_data = None
+        self.advice.setPlainText('\n'.join(lines))
+
+    def _axle_edited(self):
+        if self.diff_box.count():
+            self._fill_diff_box()
 
     def _engine_changed(self):
         """BC Trans runs on the loaded tune as written, so the form is read-only in that mode."""
