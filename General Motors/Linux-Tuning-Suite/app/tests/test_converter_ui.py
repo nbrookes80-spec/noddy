@@ -66,3 +66,51 @@ class ConverterPickerTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+@unittest.skipUnless(HAVE_QT, 'PyQt6 not installed')
+class TransmissionPickerTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.app = QApplication.instance() or QApplication([])
+
+    def setUp(self):
+        import tempfile
+        os.environ['TUNERTOOLPRO_HOME'] = tempfile.mkdtemp()
+        from tunertoolpro.gui.shift_tab import ShiftTab
+        self.tab = ShiftTab()
+
+    def test_all_four_makes_and_a_list_for_each(self):
+        self.assertEqual([self.tab.make_box.itemText(i) for i in range(self.tab.make_box.count())],
+                         ['GM', 'Holden', 'Pontiac', 'Ford'])
+        for make in ('GM', 'Holden', 'Pontiac', 'Ford'):
+            self.tab.make_box.setCurrentText(make)
+            self.assertGreaterEqual(self.tab.trans_box.count(), 4, make)
+
+    def test_using_a_ford_transmission_loads_its_ratios_lead_and_delays(self):
+        self.tab.make_box.setCurrentText('Ford')
+        self.tab.trans_box.setCurrentText('6R80 (2009-Current)')
+        self.tab.apply_transmission()
+        self.assertEqual(self.tab.ratios.text(), '4.17, 2.34, 1.52, 1.14, 0.87, 0.69')
+        self.assertEqual(self.tab.lead_box.currentText(), 'torque')
+        cfg = self.tab.build_cfg()
+        self.assertEqual(len(cfg['delays']), 6)
+        self.assertEqual(cfg['delays'][0], (0.45, 0.15))
+        self.tab.calculate()
+        self.assertIsNotNone(self.tab._tables_data)
+
+    def test_the_choice_is_remembered(self):
+        self.tab.make_box.setCurrentText('Holden')
+        self.tab.trans_box.setCurrentText('6L80 (2006-Current)')
+        self.tab.apply_transmission()
+        from tunertoolpro.gui.shift_tab import ShiftTab
+        again = ShiftTab()
+        self.assertEqual((again.make_box.currentText(), again.trans_box.currentText()),
+                         ('Holden', '6L80 (2006-Current)'))
+
+    def test_converter_is_back_to_stock_after_a_new_transmission(self):
+        self.tab.converter_box.setCurrentText('High stall, single plate')
+        self.tab.make_box.setCurrentText('GM')
+        self.tab.trans_box.setCurrentText('4L80E (1991-2013)')
+        self.tab.apply_transmission()
+        self.assertEqual(self.tab.converter_box.currentText(), 'Stock')

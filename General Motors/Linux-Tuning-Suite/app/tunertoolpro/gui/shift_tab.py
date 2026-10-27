@@ -5,8 +5,9 @@ from PyQt6.QtWidgets import (QComboBox, QDoubleSpinBox, QFileDialog,
                              QMessageBox, QPlainTextEdit, QPushButton, QSpinBox,
                              QTabWidget, QVBoxLayout, QWidget)
 
-from .. import converter, core
+from .. import converter, core, settings, trans_data, vehicles
 from ..bct.shift_cfg import shift_cfg_from_btc
+from ..engines import constants
 from ..bct.tune import BtcTune
 from .theme import icon
 from .widgets import fill_grid, make_read_only_table
@@ -149,8 +150,29 @@ class ShiftTab(QWidget):
             self.tables[key] = table
             self.results.addTab(table, title)
 
+        car = QHBoxLayout()
+        self.make_box = QComboBox()
+        self.make_box.addItems(vehicles.MAKES)
+        self.trans_box = QComboBox()
+        use_btn = QPushButton('Use this transmission')
+        use_btn.setToolTip('Load the gear ratios and the transmission\'s own shift delays, lead and converter-lock rules.')
+        car.addWidget(QLabel('Make'))
+        car.addWidget(self.make_box, 1)
+        car.addWidget(QLabel('Transmission'))
+        car.addWidget(self.trans_box, 3)
+        car.addWidget(use_btn)
+        self.car_note = QLabel()
+        self.car_note.setWordWrap(True)
+        self._delays = None   # (prep, react) per shift for the chosen transmission; None = default
+        self.make_box.currentIndexChanged.connect(lambda _: self._fill_transmissions())
+        self.trans_box.currentIndexChanged.connect(lambda _: self._show_transmission())
+        use_btn.clicked.connect(self.apply_transmission)
+        self._fill_transmissions(initial=True)
+
         layout = QVBoxLayout(self)
         layout.addLayout(top)
+        layout.addLayout(car)
+        layout.addWidget(self.car_note)
         layout.addWidget(form_box)
         layout.addWidget(self.btc_label)
         self.calc_note = QLabel()
@@ -206,6 +228,8 @@ class ShiftTab(QWidget):
         self.stall_logic.setCurrentIndex(0)
         self._btc = None
         self._tune = None
+        found = vehicles.find(constants.STARTER_PROFILES[self.profile_box.currentText()]['trans_name'])
+        self._delays = trans_data.for_transmission(found).delays if found else None
         self.btc_label.setText('')
         self._engine_changed()
         self._reset_converter()
@@ -240,6 +264,59 @@ class ShiftTab(QWidget):
         self.btc_label.setText(note)
         self._engine_changed()
         self._reset_converter(guess=True)
+
+    # --- car and transmission -------------------------------------------------------------------
+
+    def _choice_path(self):
+        return settings.user_dir() / 'vehicle.json'
+
+    def _fill_transmissions(self, initial=False):
+        """List the automatics for the chosen make. The first run restores the last choice."""
+        if initial:
+            saved = vehicles.load(self._choice_path())
+            self.make_box.blockSignals(True)
+            self.make_box.setCurrentText(saved['make'])
+            self.make_box.blockSignals(False)
+        listed = vehicles.transmissions(self.make_box.currentText())
+        self.trans_box.blockSignals(True)
+        self.trans_box.clear()
+        self.trans_box.addItems([t.name for t in listed])
+        if initial and saved['transmission'] in [t.name for t in listed]:
+            self.trans_box.setCurrentText(saved['transmission'])
+        self.trans_box.blockSignals(False)
+        self._show_transmission()
+
+    def _show_transmission(self):
+        found = vehicles.find(self.trans_box.currentText())
+        if not found:
+            self.car_note.setText('')
+            return
+        state = 'Gear ratios checked against the shared tuning data.' if found.verified else found.note
+        self.car_note.setText(f'{len(found.ratios)} gears, {found.drive}. Ratios {vehicles.ratios_text(found)}. {state}\n'
+                              + trans_data.summary(trans_data.for_transmission(found)))
+
+    def apply_transmission(self):
+        """Load the gear ratios and the transmission's own data (delays, lead, converter-lock rules)."""
+        found = vehicles.find(self.trans_box.currentText())
+        if not found:
+            return
+        data = trans_data.for_transmission(found)
+        current = {k: str(w.value()) for k, w in self._widgets.items()}
+        applied = trans_data.apply(vehicles.fit_gears(current, len(found.ratios)), data)
+        for key in ('min_tcc_rpm', 'min_tcc_gear', 'accel_lock_gear', 'wot_lock_gear', 'lead_value'):
+            self.set_value(key, float(applied[key]))
+        self.ratios.setText(vehicles.ratios_text(found))
+        self.lead_box.setCurrentText(data.lead_mode)
+        self._delays = data.delays
+        self._tables_data = None
+        self._reset_converter()
+        try:
+            self._choice_path().parent.mkdir(parents=True, exist_ok=True)
+        except OSError:
+            pass
+        vehicles.save(self._choice_path(), {'make': self.make_box.currentText(), 'transmission': found.name,
+                                            'profile': self.profile_box.currentText()})
+        self._show_transmission()
 
     # --- converter and differential -------------------------------------------------------------
 
@@ -341,6 +418,9 @@ class ShiftTab(QWidget):
         cfg['lead_mode'] = self.lead_box.currentText()
         cfg['lead_value'] = float(self._widgets['lead_value'].value())
         cfg['delays'] = [core.DEFAULT_DELAY] * n
+        if self._delays:
+            pairs = [(float(p), float(r)) for p, r in self._delays]
+            cfg['delays'] = [pairs[min(g, len(pairs) - 1)] for g in range(n)]   # one per gear, last repeats
         cfg['stall_lock_logic'] = self.stall_logic.currentIndex() == 1
         if self._btc is not None:
             # Per-shift delays and RPMs from the tune. A shorter list keeps its last entry.
