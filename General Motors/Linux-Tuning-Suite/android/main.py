@@ -27,6 +27,7 @@ from kivy.uix.spinner import Spinner  # noqa: E402
 from kivy.uix.textinput import TextInput  # noqa: E402
 from kivy.uix.widget import Widget  # noqa: E402
 
+import converter_live  # noqa: E402
 import dyno_live  # noqa: E402
 import grading  # noqa: E402
 import shift_live  # noqa: E402
@@ -46,7 +47,7 @@ from ui_kit import (ACCENT, ALERT, BG, BLUE, BORDER, GAP, MUTED, RAISED, TEXT, C
                     style_button)
 
 MONO = os.path.join(kivy_data_dir, 'fonts', 'RobotoMono-Regular.ttf')
-APP_VERSION = '0.2.4'
+APP_VERSION = '0.2.5'
 
 # How the 23 shift settings are grouped into cards.
 GROUPS = [
@@ -124,6 +125,28 @@ class ShiftScreen(BoxLayout):
         gears.add_widget(self.stall_box)
         widgets.append(gears)
 
+        conv = Card()
+        conv.add_widget(section_title('Converter and differential'))
+        conv.add_widget(panel_label('Pick the converter fitted. The stall, idle, shift RPM and minimum lock RPM '
+                                    'move to match. Type the true flash stall in Stall RPM first if you know it.',
+                                    color=MUTED, font_size=dp(13)))
+        self.converter_box = Spinner(text=converter_live.LABELS[0], values=converter_live.LABELS,
+                                     size_hint_y=None, height=dp(44))
+        self.diff_box = Spinner(text='', values=[], size_hint_y=None, height=dp(44))
+        for spinner in (self.converter_box, self.diff_box):
+            style_button(spinner)
+        self.converter_box.bind(text=lambda _s, _t: self._converter_picked())
+        self.diff_box.bind(text=lambda _s, _t: self._diff_picked())
+        self._quiet = False
+        self._base = None
+        conv.add_widget(panel_label('Torque converter', color=MUTED))
+        conv.add_widget(self.converter_box)
+        conv.add_widget(panel_label('Differential ratio (sets the Axle ratio)', color=MUTED))
+        conv.add_widget(self.diff_box)
+        self.conv_notes = panel_label('', color=MUTED, font_size=dp(12))
+        conv.add_widget(self.conv_notes)
+        widgets.append(conv)
+
         self.status = panel_label(color=ALERT)
         self.tables = BoxLayout(orientation='vertical', size_hint_y=None, spacing=GAP)
         self.tables.bind(minimum_height=self.tables.setter('height'))
@@ -132,7 +155,74 @@ class ShiftScreen(BoxLayout):
         self.table_labels = {}
         widgets += [self.status, section_title('Shift tables (MPH)'), self.tables]
         self.add_widget(stack(*widgets))
+        self._reset_converter()
         self.recalculate()
+
+    # --- converter and differential ---------------------------------------------------------------
+
+    def _values(self):
+        return {key: box.text for key, box in self.inputs.items()}
+
+    def _gear_count(self):
+        return len([r for r in self.ratio_box.text.replace(' ', '').split(',') if r])
+
+    def _reset_converter(self):
+        """The boxes now hold stock-converter numbers. Remember them as the base and show Stock."""
+        self._quiet = True
+        self._base = converter_live.read_base(self._values())
+        self.converter_box.text = converter_live.LABELS[0]
+        self._fill_diff()
+        self._quiet = False
+        self.conv_notes.text = '\n'.join(converter_live.diff_summary(self.ratio_box.text, self._values()))
+
+    def _fill_diff(self):
+        axle = self.inputs['axle'].text
+        self.diff_box.values = converter_live.diff_values(axle)
+        try:
+            near = min(self.diff_box.values, key=lambda v: abs(float(v) - float(axle)))
+        except ValueError:
+            near = ''
+        self.diff_box.text = near
+
+    def _converter_picked(self):
+        if self._quiet:
+            return
+        values = self._values()
+        changes, stall_logic, notes, advice = converter_live.choose(
+            values, self._base, self.converter_box.text, self._gear_count())
+        lines = list(notes)
+        if changes:
+            self._syncing = True
+            for key, text in changes.items():
+                if key in self.inputs:
+                    self.inputs[key].text = text
+                    lo, hi, _ = self.ranges[key]
+                    self.sliders[key].value = min(max(float(text), lo), hi)
+            self._syncing = False
+            self.stall_box.text = 'On' if stall_logic else 'Off'
+            if advice:
+                lines.append('Set these in the TCM tune (the app cannot calculate them):')
+                lines.extend('  ' + a for a in advice)
+        lines.extend(converter_live.diff_summary(self.ratio_box.text, self._values()))
+        self.conv_notes.text = '\n'.join(lines)
+        self.recalculate()
+
+    def _diff_picked(self):
+        if self._quiet or not self.diff_box.text:
+            return
+        old = self.inputs['axle'].text
+        new = self.diff_box.text
+        if old == new:
+            return
+        try:
+            same = abs(float(old) - float(new)) < 0.004
+        except ValueError:
+            same = False
+        if same:
+            return
+        report = converter_live.diff_report(self.ratio_box.text, old, new, self._values())
+        self.inputs['axle'].text = new     # the text handler moves the slider and recalculates
+        self.conv_notes.text = '\n'.join(report)
 
     # --- car and transmission, chosen on the Settings screen -------------------------------------
 
@@ -146,6 +236,7 @@ class ShiftScreen(BoxLayout):
                 self.sliders[key].value = min(max(float(text), lo), hi)
         self.ratio_box.text = ratios
         self._syncing = False
+        self._reset_converter()
         self.recalculate()
 
     def apply_profile(self, name):
@@ -210,6 +301,10 @@ class ShiftScreen(BoxLayout):
             self._syncing = True
             self.sliders[key].value = min(max(number, lo), hi)
             self._syncing = False
+        if key == 'axle' and not self._quiet:
+            self._quiet = True
+            self._fill_diff()
+            self._quiet = False
         self.recalculate()
 
     def current(self):
