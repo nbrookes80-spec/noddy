@@ -22,6 +22,9 @@ class FakeElm327:
         '0105': '410578',                   # 120 - 40 = 80 C
         '0111': '411180',                   # 128 * 100 / 255 = 50.2 %
         '010F': 'NO DATA',
+        'ATSH7DF': 'OK', 'ATSH7E0': 'OK', 'ATSH7E2': 'OK',
+        '22194F': '62194F78',               # transmission fluid temperature: 120 - 40 = 80 C
+        '03': '4303010420',                 # stored codes P0301 and P0420
     }
 
     def __init__(self):
@@ -93,15 +96,41 @@ class ElmTests(unittest.TestCase):
 
     def test_write_commands_are_refused_before_sending(self):
         sent_before = len(self.fake.received)
-        for command in ('0902', '0400', '04', 'ATSP6', '0101'):
+        for command in ('0902', '0400', '04', 'ATSP6', '14FF00', '1902', '2201FF', 'ATSH7E1',
+                        'ATSH7FF', '2F1234', '3101'):
             with self.subTest(command=command):
                 with self.assertRaises(obd.UnsafeCommand):
                     self.elm.command(command)
         self.assertEqual(len(self.fake.received), sent_before)
 
-    def test_only_mode_01_pids_can_be_read(self):
-        with self.assertRaises(obd.UnsafeCommand):
-            self.elm.read('0902')
+    def test_only_listed_pids_can_be_read(self):
+        for pid in ('0902', '2201FF', '04'):
+            with self.subTest(pid=pid):
+                with self.assertRaises(obd.UnsafeCommand):
+                    self.elm.read(pid)
+
+    def test_a_transmission_pid_switches_header_then_returns_to_broadcast(self):
+        value, unit = self.elm.read('22194F')
+        self.assertAlmostEqual(value, 80)
+        self.elm.read('010D')
+        sent = self.fake.received[len(obd.SETUP_COMMANDS):]
+        self.assertEqual(sent, ['ATSH7E2', '22194F', 'ATSH7DF', '010D'])
+
+    def test_stored_codes_are_decoded(self):
+        self.assertEqual(self.elm.read_dtcs(), ['P0301', 'P0420'])
+
+    def test_traffic_log_records_what_was_sent_and_received(self):
+        self.elm.read('010D')
+        self.assertIn(('TX', '010D'), self.elm.traffic)
+        self.assertIn(('RX', '410D3C'), self.elm.traffic)
+
+    def test_every_allowed_command_is_a_read(self):
+        from scanner import pids
+        for pid in pids.CATALOG:
+            self.assertTrue(pid[:2] in ('01', '22'), pid)
+        for command in obd.ALLOWED:
+            self.assertFalse(command.startswith(('04', '08', '09', '10', '14', '27', '2E', '2F', '31', '34')),
+                             command)
 
     def test_unreachable_wifi_adapter_gives_a_clear_error(self):
         probe = socket.socket()

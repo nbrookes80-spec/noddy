@@ -1,4 +1,4 @@
-"""Draw the app icon and the four screen icons into android/icons/. Run: python3 make_icons.py
+"""Draw the app icon and the screen icons into android/icons/. Run: python3 make_icons.py
 
 Pillow is needed (pip install pillow). The icons are plain shapes in one colour family so they read
 the same on a dark screen.
@@ -67,11 +67,71 @@ def upload_icon(size=SIZE):
     return img
 
 
+def _tile(d, k):
+    d.rounded_rectangle([40 * k, 40 * k, 472 * k, 472 * k], radius=72 * k, fill=BG)
+
+
+def scan_icon(size=SIZE):
+    """A round gauge with a needle: live scanner data."""
+    img, d, k = canvas(size)
+    _tile(d, k)
+    d.arc([96 * k, 120 * k, 416 * k, 440 * k], start=150, end=390, fill=LINE, width=int(26 * k))
+    d.arc([96 * k, 120 * k, 416 * k, 440 * k], start=330, end=390, fill=ACCENT, width=int(26 * k))
+    d.line([(256 * k, 300 * k), (340 * k, 215 * k)], fill=ACCENT, width=int(24 * k))
+    d.ellipse([228 * k, 272 * k, 284 * k, 328 * k], fill=ACCENT)
+    return img
+
+
+def app_icon(size=SIZE):
+    """The app icon: a tachometer arc over three rising shift bars."""
+    img, d, k = canvas(size)
+    _tile(d, k)
+    d.arc([86 * k, 86 * k, 426 * k, 426 * k], start=160, end=380, fill=LINE, width=int(24 * k))
+    d.arc([86 * k, 86 * k, 426 * k, 426 * k], start=320, end=380, fill=ACCENT, width=int(24 * k))
+    d.line([(256 * k, 270 * k), (336 * k, 190 * k)], fill=ACCENT, width=int(22 * k))
+    for i, height in enumerate((70, 110, 150)):
+        x = (160 + i * 70) * k
+        d.rounded_rectangle([x, (430 - height) * k, x + 46 * k, 430 * k], radius=8 * k, fill=ACCENT)
+    return img
+
+
+def demo_icon(size=SIZE):
+    """A play triangle in a ring: run the demo."""
+    img, d, k = canvas(size)
+    _tile(d, k)
+    d.ellipse([110 * k, 110 * k, 402 * k, 402 * k], outline=LINE, width=int(22 * k))
+    d.polygon([(220 * k, 180 * k), (220 * k, 332 * k), (346 * k, 256 * k)], fill=ACCENT)
+    return img
+
+
+def codes_icon(size=SIZE):
+    """A warning triangle: stored trouble codes."""
+    img, d, k = canvas(size)
+    _tile(d, k)
+    d.polygon([(256 * k, 110 * k), (410 * k, 390 * k), (102 * k, 390 * k)], outline=ACCENT,
+              width=int(24 * k))
+    d.line([(256 * k, 200 * k), (256 * k, 290 * k)], fill=ACCENT, width=int(26 * k))
+    d.ellipse([240 * k, 318 * k, 272 * k, 350 * k], fill=ACCENT)
+    return img
+
+
+def log_icon(size=SIZE):
+    """Three text lines: the traffic log."""
+    img, d, k = canvas(size)
+    _tile(d, k)
+    for i, length in enumerate((250, 180, 220)):
+        y = (170 + i * 80) * k
+        d.rounded_rectangle([130 * k, y, (130 + length) * k, y + 30 * k], radius=14 * k,
+                            fill=ACCENT if i == 0 else LINE)
+    return img
+
+
 def save_all():
     OUT.mkdir(exist_ok=True)
-    shift_icon().save(OUT / 'app_icon.png')
+    app_icon().save(OUT / 'app_icon.png')
     for name, make in (('shift', shift_icon), ('dyno', dyno_icon), ('link', link_icon),
-                       ('upload', upload_icon)):
+                       ('upload', upload_icon), ('scan', scan_icon),
+                       ('demo', demo_icon), ('codes', codes_icon), ('log', log_icon)):
         make(size=128).save(OUT / f'{name}.png')
     return sorted(p.name for p in OUT.glob('*.png'))
 

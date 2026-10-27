@@ -1,9 +1,10 @@
 """Read-only OBD-II link to an ELM327-compatible scan adapter, over Wi-Fi (TCP) or Bluetooth (RFCOMM).
 
-Only the commands in ALLOWED are ever sent. They set up the adapter and read live Mode 01 values
-(the same data a scan tool shows). Nothing here writes to the controller: no Mode 04 clears, no
-Mode 08 tests, no Mode 09 writes, no ECU programming. An unlisted command raises UnsafeCommand
-before anything is sent.
+Only commands that pass is_allowed() are ever sent: adapter set-up, Mode 01 and Mode 22 reads of PIDs
+in the scanner catalogue, the Mode 03 stored-code read, and a header switch to one of four known
+module addresses. Nothing here writes to the controller: no Mode 04 clears, no Mode 08 tests, no
+Mode 09 writes, no ECU programming, no free-form Mode 22 sweeps. Any other command raises
+UnsafeCommand before anything is sent.
 
 Wi-Fi is the fallback path: many adapters open a hotspot at 192.168.0.10 port 35000. Bluetooth
 Classic (SPP) needs the adapter paired in Android settings first. The Bluetooth path can only run
@@ -12,6 +13,8 @@ on Android, and it has not been tested with a real adapter yet.
 
 import re
 import socket
+
+from scanner import pids as catalog
 
 SPP_UUID = '00001101-0000-1000-8000-00805F9B34FB'
 DEFAULT_WIFI = ('192.168.0.10', 35000)
@@ -29,6 +32,16 @@ PIDS = {
     '0111': ('Throttle position', '%', 1, lambda a, b: a * 100 / 255),
 }
 ALLOWED |= set(PIDS)
+READ_DTC = '03'
+ALLOWED.add(READ_DTC)
+HEADER_COMMANDS = {f'ATSH{h}' for h in catalog.KNOWN_HEADERS}
+ALLOWED |= HEADER_COMMANDS
+
+
+def is_allowed(command):
+    """True for a read-only command: set-up, a header switch, Mode 03, or a catalogued Mode 01/22 PID."""
+    command = command.replace(' ', '').upper()
+    return command in ALLOWED or command in catalog.CATALOG
 
 ERROR_WORDS = ('NO DATA', 'ERROR', 'UNABLE', 'STOPPED', 'BUS INIT', '?', 'CAN ERROR')
 
@@ -90,6 +103,7 @@ class BluetoothTransport:
         except ImportError as exc:
             raise OBDError('Bluetooth needs the Android app. It cannot run on this computer.') from exc
         try:
+            self._ensure_permissions(autoclass)
             adapter = autoclass('android.bluetooth.BluetoothAdapter').getDefaultAdapter()
             if adapter is None or not adapter.isEnabled():
                 raise OBDError('Turn Bluetooth on in the phone settings first.')
@@ -104,6 +118,21 @@ class BluetoothTransport:
             raise
         except Exception as exc:  # Java exceptions surface through pyjnius
             raise OBDError(f'Could not connect over Bluetooth to {self.address}: {exc}') from exc
+
+    @staticmethod
+    def _ensure_permissions(autoclass):
+        """Android 12 and newer ask for Nearby devices at run time. Ask, then have the user retry."""
+        if autoclass('android.os.Build$VERSION').SDK_INT < 31:
+            return
+        try:
+            from android.permissions import check_permission, request_permissions
+        except ImportError:
+            return
+        needed = [p for p in ('android.permission.BLUETOOTH_CONNECT', 'android.permission.BLUETOOTH_SCAN')
+                  if not check_permission(p)]
+        if needed:
+            request_permissions(needed)
+            raise OBDError('Allow Nearby devices when Android asks, then tap Connect again.')
 
     def write(self, data):
         self._out.write([b - 256 if b > 127 else b for b in data])
@@ -128,11 +157,16 @@ class BluetoothTransport:
 class Elm327:
     """Sends allowlisted commands and decodes the replies. Use one instance per connection."""
 
+    label = 'Live'
+
     def __init__(self, transport):
         self.transport = transport
+        self.traffic = []   # (direction, text) of what this link sent and got back, newest last
+        self._header = catalog.DEFAULT_HEADER
 
     def open(self):
         self.transport.open()
+        self._header = catalog.DEFAULT_HEADER
         for command in SETUP_COMMANDS:
             self.command(command)
 
@@ -140,17 +174,41 @@ class Elm327:
         self.transport.close()
 
     def command(self, command):
-        if command not in ALLOWED:
+        if not is_allowed(command):
             raise UnsafeCommand(f'{command!r} is not a read-only command, so it was not sent')
+        command = command.replace(' ', '').upper()
+        self.traffic.append(('TX', command))
         self.transport.write((command + '\r').encode('ascii'))
         raw = self.transport.read_until(b'>')
-        return raw.decode('ascii', 'replace').replace('\r', '\n').strip()
+        reply = raw.decode('ascii', 'replace').replace('\r', '\n').strip()
+        self.traffic.append(('RX', reply.replace('\n', ' ')))
+        del self.traffic[:-200]
+        return reply
+
+    def set_header(self, header):
+        """Point requests at a module (7E0 engine, 7E2 transmission) or back at the broadcast address."""
+        target = catalog.DEFAULT_HEADER if header == 'Auto' else header
+        if target != self._header:
+            self.command(f'ATSH{target}')
+            self._header = target
+
+    def read_dtcs(self):
+        """Stored trouble codes (Mode 03), e.g. ['P0301']. An empty list means none are stored."""
+        self.set_header('Auto')
+        text = self.command(READ_DTC).upper()
+        if any(word in text for word in ('UNABLE', 'ERROR', 'STOPPED', '?')):
+            raise OBDError(f'Reading codes failed: the adapter replied "{text.splitlines()[-1].strip()}"')
+        if 'NO DATA' in text:
+            return []
+        hex_text = re.sub(r'[^0-9A-F]', '', text.replace('SEARCHING', ''))
+        return catalog.decode_dtcs(hex_text[2:] if hex_text.startswith('43') else hex_text)
 
     def read(self, pid):
-        """Return (value, unit) for one Mode 01 PID, or raise OBDError."""
+        """Return (value, unit) for one PID, or raise OBDError. Catalogue PIDs cover Mode 01 and Mode 22."""
         if pid not in PIDS:
-            raise UnsafeCommand(f'{pid!r} is not on the read list')
+            return self._read_catalog(pid)
         name, unit, width, decode = PIDS[pid]
+        self.set_header('Auto')
         text = self.command(pid).upper()
         if any(word in text for word in ERROR_WORDS):
             raise OBDError(f'{name}: the adapter replied "{text.splitlines()[-1].strip()}"')
@@ -175,3 +233,20 @@ class Elm327:
             except OBDError as exc:
                 errors[pid] = str(exc)
         return values, errors
+
+    def _read_catalog(self, pid_id):
+        pid = catalog.get(pid_id)
+        if pid is None:
+            raise UnsafeCommand(f'{pid_id!r} is not on the read list')
+        self.set_header(pid.header)
+        text = self.command(pid.command).upper()
+        if any(word in text for word in ERROR_WORDS):
+            raise OBDError(f'{pid.name}: the adapter replied "{text.splitlines()[-1].strip()}"')
+        hex_text = re.sub(r'[^0-9A-F]', '', text.replace('SEARCHING', ''))
+        at = hex_text.find(pid.echo)
+        if at < 0:
+            raise OBDError(f'{pid.name}: unexpected reply "{text}"')
+        value = pid.parse(hex_text[at + len(pid.echo):])
+        if value is None:
+            raise OBDError(f'{pid.name}: reply too short "{text}"')
+        return value, pid.unit
