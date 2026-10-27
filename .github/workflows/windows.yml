@@ -38,7 +38,8 @@ jobs:
         run: >
           pyinstaller --noconfirm --windowed --name TunerToolPro
           --icon packaging/windows/TunerToolPro.ico
-          --paths app --collect-submodules tunertoolpro app/run_tunertoolpro.py
+          --paths app --collect-submodules tunertoolpro
+          --add-data "app/tunertoolpro/gui/assets;tunertoolpro/gui/assets" app/run_tunertoolpro.py
       - name: Smoke test (starts, then is stopped after 8 seconds)
         env:
           QT_QPA_PLATFORM: offscreen
