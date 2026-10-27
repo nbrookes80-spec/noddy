@@ -7,7 +7,7 @@ sys.path.insert(0, str(ROOT))
 
 from scanner import pids, torque_csv  # noqa: E402
 
-DATA = Path(__file__).parent / 'data'
+DATA = ROOT / 'data'
 HEAD = '"Name", "ShortName", "ModeAndPID", "Equation", "Min Value", "Max Value", "Units", "Header", "startDiagnostic", "stopDiagnostic", "scale","minimumRefreshDelayMillis"\n'
 
 

@@ -21,6 +21,7 @@ MONITOR_PIDS = [
     '0106', '0107', '22194F', '22001F',
     '221991', '22199A', '0101', '0103',
 ]
+DEFAULT_MONITOR = list(MONITOR_PIDS)
 PAGE_SIZE = 4
 KIND_WIDTH = {'byte': 1, 'word': 2, 'bytes3': 3, 'dword': 4}   # data bytes per reading
 
