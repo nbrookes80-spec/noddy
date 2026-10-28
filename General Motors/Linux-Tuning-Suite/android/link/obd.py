@@ -13,6 +13,7 @@ on Android, and it has not been tested with a real adapter yet.
 
 import re
 import socket
+import threading
 
 from scanner import pids as catalog
 
@@ -44,10 +45,16 @@ def is_allowed(command):
     return command in ALLOWED or command in catalog.CATALOG
 
 ERROR_WORDS = ('NO DATA', 'ERROR', 'UNABLE', 'STOPPED', 'BUS INIT', '?', 'CAN ERROR')
+MISS_LIMIT = 3     # a reading with this many failures in a row is skipped...
+RETRY_EVERY = 8    # ...and tried again on every eighth later request
 
 
 class OBDError(Exception):
     """The adapter did not answer, or answered with an error or unexpected text."""
+
+
+class AdapterLost(OBDError):
+    """The adapter stopped answering or closed the link, as opposed to the car not having an answer."""
 
 
 class UnsafeCommand(Exception):
@@ -75,9 +82,9 @@ class WifiTransport:
             try:
                 chunk = self._sock.recv(256)
             except socket.timeout as exc:
-                raise OBDError('The adapter stopped answering') from exc
+                raise AdapterLost('The adapter stopped answering') from exc
             if not chunk:
-                raise OBDError('The adapter closed the connection')
+                raise AdapterLost('The adapter closed the connection')
             self._buffer += chunk
         reply, _, self._buffer = self._buffer.partition(prompt)
         return reply
@@ -143,7 +150,7 @@ class BluetoothTransport:
         while True:
             value = self._in.read()
             if value < 0:
-                raise OBDError('The adapter closed the connection')
+                raise AdapterLost('The adapter closed the connection')
             if value == prompt[0]:
                 return bytes(out)
             out.append(value & 0xFF)
@@ -163,6 +170,9 @@ class Elm327:
         self.transport = transport
         self.traffic = []   # (direction, text) of what this link sent and got back, newest last
         self._header = catalog.DEFAULT_HEADER
+        self._header_memory = {}   # PID -> the module address that answered for it
+        self._misses = {}          # PID -> failures in a row
+        self._lock = threading.RLock()   # one conversation with the adapter at a time
 
     def open(self):
         self.transport.open()
@@ -193,6 +203,10 @@ class Elm327:
             self._header = target
 
     def read_dtcs(self):
+        with self._lock:
+            return self._read_dtcs()
+
+    def _read_dtcs(self):
         """Stored trouble codes (Mode 03), e.g. ['P0301']. An empty list means none are stored."""
         self.set_header('Auto')
         text = self.command(READ_DTC).upper()
@@ -203,10 +217,14 @@ class Elm327:
         hex_text = re.sub(r'[^0-9A-F]', '', text.replace('SEARCHING', ''))
         return catalog.decode_dtcs(hex_text[2:] if hex_text.startswith('43') else hex_text)
 
-    def read(self, pid):
+    def read(self, pid, header=None, final=True):
+        with self._lock:
+            return self._read(pid, header, final)
+
+    def _read(self, pid, header, final):
         """Return (value, unit) for one PID, or raise OBDError. Catalogue PIDs cover Mode 01 and Mode 22."""
         if pid not in PIDS:
-            return self._read_catalog(pid)
+            return self._read_catalog(pid, header, final)
         name, unit, width, decode = PIDS[pid]
         self.set_header('Auto')
         text = self.command(pid).upper()
@@ -224,21 +242,70 @@ class Elm327:
         b = int(data[2:4], 16) if width == 2 else 0
         return decode(a, b), unit
 
-    def poll(self, pids):
-        """Read several PIDs. Returns {pid: (value, unit)} for those that answered, and {pid: error text}."""
-        values, errors = {}, {}
+    def poll(self, pids, headers=None):
+        """Read several PIDs. Returns {pid: (value, unit)} for those that answered, and {pid: error text}.
+
+        headers maps a PID to the module address to try first (for example the transmission at 7E2).
+        Readings that get no answer there are tried again together on their catalogue address, so the
+        adapter does not flip between modules for every miss. A lost adapter raises AdapterLost.
+        """
+        with self._lock:
+            return self._poll(pids, headers or {})
+
+    def _poll(self, pids, headers):
+        values, errors, retry = {}, {}, []
         for pid in pids:
+            info = catalog.get(pid)
+            first = headers.get(pid)
+            fallback = bool(first and info and first != info.header and pid not in self._header_memory)
+            try:
+                values[pid] = self.read(pid, header=first, final=not fallback)
+            except AdapterLost:
+                raise
+            except OBDError as exc:
+                if fallback:
+                    retry.append(pid)
+                else:
+                    errors[pid] = str(exc)
+        for pid in sorted(retry, key=lambda p: catalog.get(p).header):
             try:
                 values[pid] = self.read(pid)
+            except AdapterLost:
+                raise
             except OBDError as exc:
                 errors[pid] = str(exc)
         return values, errors
 
-    def _read_catalog(self, pid_id):
+    def _read_catalog(self, pid_id, header=None, final=True):
         pid = catalog.get(pid_id)
         if pid is None:
             raise UnsafeCommand(f'{pid_id!r} is not on the read list')
-        self.set_header(pid.header)
+        misses = self._misses.get(pid_id, 0)
+        if misses >= MISS_LIMIT and misses % RETRY_EVERY:
+            self._misses[pid_id] = misses + 1
+            raise OBDError(f'{pid.name}: no reply, skipped until it answers')
+        candidates = [self._header_memory.get(pid_id), header]
+        if final:
+            candidates.append(pid.header)
+        candidates = [h for h in candidates if h]
+        last = None
+        for candidate in dict.fromkeys(candidates):
+            try:
+                value = self._read_from(pid, candidate)
+            except AdapterLost:
+                raise
+            except OBDError as exc:
+                last = exc
+                continue
+            self._header_memory[pid_id] = candidate
+            self._misses.pop(pid_id, None)
+            return value
+        if final:
+            self._misses[pid_id] = misses + 1
+        raise last
+
+    def _read_from(self, pid, header):
+        self.set_header(header)
         text = self.command(pid.command).upper()
         if any(word in text for word in ERROR_WORDS):
             raise OBDError(f'{pid.name}: the adapter replied "{text.splitlines()[-1].strip()}"')

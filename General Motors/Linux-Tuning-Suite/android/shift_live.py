@@ -57,7 +57,7 @@ def default_inputs(profile_name=None):
     return values, ratios
 
 
-def build_cfg(values, ratios_text, lead_mode='rpm', stall_lock=False):
+def build_cfg(values, ratios_text, lead_mode='rpm', stall_lock=False, delays=None):
     """Turn the typed values into the settings core.calc_shift_tables expects.
 
     values: {key: text}. ratios_text: '3.06, 1.63, 1.00, 0.70'.
@@ -71,15 +71,23 @@ def build_cfg(values, ratios_text, lead_mode='rpm', stall_lock=False):
     cfg['ratios'] = ratios
     cfg['lead_mode'] = lead_mode
     cfg['lead_value'] = float(cfg['lead_value'])
-    cfg['delays'] = [core.DEFAULT_DELAY] * len(ratios)
+    cfg['delays'] = fit_delays(delays, len(ratios))
     cfg['stall_lock_logic'] = bool(stall_lock)
     return cfg
 
 
-def calculate(values, ratios_text, lead_mode='rpm', stall_lock=False):
+def fit_delays(delays, gear_count):
+    """One (prep, react) pair per shift. Missing pairs repeat the last one; with none given, the default."""
+    if not delays:
+        return [core.DEFAULT_DELAY] * gear_count
+    pairs = [(float(p), float(r)) for p, r in delays][:max(gear_count - 1, 1)]
+    return pairs + [pairs[-1]] * (gear_count - 1 - len(pairs))
+
+
+def calculate(values, ratios_text, lead_mode='rpm', stall_lock=False, delays=None):
     """Run the shift calculation. Returns (tables, error). error is '' when the tables are valid."""
     try:
-        cfg = build_cfg(values, ratios_text, lead_mode, stall_lock)
+        cfg = build_cfg(values, ratios_text, lead_mode, stall_lock, delays)
         return core.calc_shift_tables(cfg), ''
     except (ValueError, ZeroDivisionError, KeyError) as exc:
         return None, str(exc)

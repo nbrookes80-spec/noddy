@@ -7,6 +7,7 @@ Set TUNERTOOLPRO_HOME to use another folder. Standard library only.
 import copy
 import json
 import os
+import sys
 from pathlib import Path
 
 DEFAULTS = {
@@ -19,7 +20,10 @@ def user_dir():
     override = os.environ.get('TUNERTOOLPRO_HOME')
     if override:
         return Path(override).expanduser()
-    base = os.environ.get('XDG_CONFIG_HOME') or (Path.home() / '.config')
+    if sys.platform == 'win32':
+        base = os.environ.get('APPDATA') or (Path.home() / 'AppData' / 'Roaming')
+    else:
+        base = os.environ.get('XDG_CONFIG_HOME') or (Path.home() / '.config')
     return Path(base) / 'TunerToolPro'
 
 
@@ -58,7 +62,8 @@ def save(data):
     # O_EXCL refuses to follow a link; the mode is set on the open file before any key is written.
     fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
     with os.fdopen(fd, 'w', encoding='utf-8') as fh:
-        os.fchmod(fh.fileno(), 0o600)
+        if hasattr(os, 'fchmod'):   # not on Windows, where the folder under %APPDATA% is already per-user
+            os.fchmod(fh.fileno(), 0o600)
         json.dump(data, fh, indent=2)
     os.replace(tmp, path)
     return path

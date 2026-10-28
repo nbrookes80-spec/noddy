@@ -17,8 +17,21 @@ read-only link to a scan adapter. Demo mode runs the whole scanner with no adapt
   (idle, a launch through four gears, a cruise, a stop) and sample trouble codes. Nothing is sent to
   any adapter, so it works anywhere. The header chip shows DEMO, LIVE or OFFLINE.
 - **Link.** Connects to an ELM327-compatible adapter over **Bluetooth** (paired first in phone
-  settings) or **Wi-Fi** (the adapter's own network, usually 192.168.0.10 port 35000). It shows
-  engine speed, vehicle speed, throttle and coolant temperature once a second.
+  settings) or **Wi-Fi** (the adapter's own network, usually 192.168.0.10 port 35000). Bluetooth is
+  the first choice: the screen lists paired devices (a star marks likely scan adapters), asks for the
+  Nearby devices permission, offers to turn Bluetooth on, opens Android's pairing settings, and
+  remembers the last choice. A typed address works too.
+- **Live.** Streams the engine (ECU, 7E0) and the transmission (TCM, 7E2) together: 16 readings, five
+  health tiles (transmission fluid, engine speed, coolant, line pressure solenoid, gear follows
+  command) in green, yellow or red, and each shift compared with your upshift or downshift table.
+- **Grades on the shift tables.** Every cell of the four 6L80 tables is green (good), yellow
+  (satisfactory, worth a look) or red (likely a problem), with a reason you can read. The rules are
+  arithmetic on your own settings (shift RPM, idle, downshift RPM, minimum lock RPM, gear ratios):
+  engine speed before and after a shift, shift speeds that fall as the throttle opens, downshifts
+  too close to upshifts, converter lock or unlock speeds out of order. A `*` marks where the car is
+  while live data streams. The thresholds are rules of thumb in `grading.py`, not a standard.
+- **Agent.** Switch on a small web service so your own AI agent can read the tune, the graded tables
+  and the live stream, leave notes, and propose changes. See *Connect your own AI agent* below.
 
 The link only sends adapter set-up commands, reads of PIDs in the scanner catalogue (Mode 01, and GM
 Mode 22 through the engine 7E0 or transmission 7E2 address), a Mode 03 stored-code read, and a header
@@ -34,7 +47,10 @@ The original scanner's Clear codes (Mode 04), PID sweep and enhanced code servic
 | Scanner catalogue | Generated from the VE CALAIS Scanner source (`tools/gen_pid_table.py`). Formulas are tested; 'probable' PIDs are unconfirmed on a real vehicle. |
 | Demo mode | Simulated drive, tested for range and gear order. Not a measurement of any car. |
 | Wi-Fi link | Tested against a simulated ELM327 over TCP, including a Mode 22 read and a code read. Not yet tried with a real adapter. |
-| Bluetooth link | Written, not tested with a real adapter. Asks for the Nearby devices permission on Android 12 and newer. |
+| Bluetooth link | Device list, permission and pairing steps run on a phone; the connection itself is not tested with a real adapter. |
+| Live stream | Tested against a simulated ELM327 that has an engine and a transmission module: both stream, the header switches once per round, a missing TCM falls back to broadcast. GM Mode 22 transmission PIDs are unconfirmed on a real car. |
+| Table grading | Tested against worked examples. The stock LS3 6L80 tune grades 326 green, 14 yellow, 0 red. Thresholds are heuristics. |
+| Agent bridge | Tested over real HTTP on a desktop. Reachability from another device on a real Wi-Fi network is untested. |
 | Dyno and launch simulation | Same engine as the desktop Dyno & Drag tab. Not yet checked against a measured dyno run. |
 | CSV loading | Dyno CSV loads on a desktop. On a phone it uses the system file picker (plyer), which is untested on a device. |
 | Other desktop tabs | Not ported yet (Vehicle, Pressure and Timing, Datalog, XDF, BCT, AI). |
@@ -44,7 +60,14 @@ The original scanner's Clear codes (Mode 04), PID sweep and enhanced code servic
 
 | Path | What it is |
 |---|---|
-| `main.py` | The Shift Points, Dyno and Link screens, the header and the bottom bar |
+| `main.py` | The Shift Points and Dyno screens, the header and the bottom bar |
+| `link_ui.py` | The Link screen: Bluetooth list, Wi-Fi, demo |
+| `live_ui.py`, `live.py` | The Live screen, and the stream logic behind it (polling, health, shift comparison) |
+| `grading.py` | Green, yellow and red rules for the tables and live readings |
+| `table_view.py` | Coloured table text and the live cursor |
+| `agent_ui.py`, `agent_bridge.py` | The Agent screen, and the HTTP service it controls |
+| `prefs.py` | Remembers the last connection choice |
+| `link/devices.py` | Paired Bluetooth devices, permissions, Wi-Fi binding (Android only) |
 | `scan_ui.py` | The Scan screen: live dashboard, codes, log |
 | `ui_kit.py` | Shared colours, one corner radius and gap, cards, chips, buttons |
 | `scanner/` | PID catalogue (`pid_table.py` is generated), demo drive, shared data source |
@@ -87,9 +110,29 @@ buildozer -v android debug
 
 ## Bluetooth set-up
 
-1. Plug the ELM327 adapter in. Pair it in Android Settings > Bluetooth (PIN is often 1234 or 0000).
-2. In the app's Link tab, choose **Bluetooth adapter** and enter the adapter's address.
-3. Allow the Nearby devices permission when Android asks.
+1. Plug the ELM327 adapter in. Pair it in Android Settings > Bluetooth (PIN is often 1234 or 0000),
+   or tap **Pair a new adapter** on the Link tab.
+2. On the Link tab choose **Bluetooth**, allow the Nearby devices permission, tap **Refresh**, tap
+   your adapter in the list and **Connect**.
+3. Open the **Live** tab. The status line says when the engine and transmission are both streaming.
+
+## Connect your own AI agent
+
+On the **Agent** tab choose *Start on this Wi-Fi network* (or *this phone only*), then **Copy agent
+prompt** and paste it into your agent's chat. The prompt holds the address and a one-time token.
+
+| Request | Does |
+|---|---|
+| `GET /v1/help` | Lists what is allowed, with the range of each setting |
+| `GET /v1/state` | Settings, source (LIVE, DEMO, OFFLINE), grade summary, live data |
+| `GET /v1/tables` | The four tables with a level and a reason for every cell |
+| `GET /v1/live` | Readings with history, health tiles, recent shifts against the table |
+| `POST /v1/propose` | `{field, value, reason}`: waits for you to approve it on the Agent tab |
+| `POST /v1/note` | `{text, level}`: shows a note on the Agent tab |
+
+Every request needs `Authorization: Bearer <token>`. The service is off until you start it, cannot
+send anything to the adapter or car, and applies a change only after you tap Approve. Traffic is not
+encrypted, so use your own network or hotspot and stop the bridge when you are done.
 
 ## Notes
 

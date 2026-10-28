@@ -128,7 +128,9 @@ class ShiftTabBtcTests(unittest.TestCase):
         tab.load_profile()
         cfg = tab.build_cfg()
         self.assertNotIn('per_gear_rpm', cfg)
-        self.assertEqual(cfg['delays'][0], core.DEFAULT_DELAY)
+        self.assertIsNone(tab._btc)
+        # the starter profile's own transmission (4L60E) supplies its Blue Cat preset delays, 0 prep / 0.35 react
+        self.assertEqual(cfg['delays'][0], (0.0, 0.35))
 
 
 if __name__ == '__main__':

@@ -2,8 +2,10 @@
 
 import sys
 
-from PyQt6.QtWidgets import (QApplication, QFrame, QLabel, QMainWindow, QMessageBox, QScrollArea,
-                             QTabWidget)
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIcon, QPixmap
+from PyQt6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel, QMainWindow, QMessageBox, QScrollArea,
+                             QTabWidget, QWidget)
 
 from .. import __version__
 from ..legal import DISCLAIMER
@@ -14,6 +16,7 @@ from .dyno_tab import DynoDragTab
 from .log_tab import LogTab
 from .pressure_tab import PressureTab
 from .shift_tab import ShiftTab
+from .splash import SplashScreen, asset_path, splash_enabled
 from .vehicle_tab import VehicleTab
 from .xdf_tab import XdfTab
 
@@ -50,10 +53,27 @@ def fit_to_screen(window, width, height, margin=60):
     window.resize(min(width, available.width() - margin), min(height, available.height() - margin))
 
 
+def brand_badge():
+    """The car picture beside the name, shown in the corner of the tab bar."""
+    badge = QWidget()
+    row = QHBoxLayout(badge)
+    row.setContentsMargins(8, 2, 8, 2)
+    picture = QPixmap(str(asset_path('logo_car.png')))
+    if not picture.isNull():
+        car = QLabel()
+        car.setPixmap(picture.scaledToHeight(26, Qt.TransformationMode.SmoothTransformation))
+        row.addWidget(car)
+    name = QLabel('TunerToolPro')
+    name.setStyleSheet('font-weight: bold; color: #f5a623;')
+    row.addWidget(name)
+    return badge
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle(f'TunerToolPro {__version__}')
+        self.setWindowIcon(QIcon(str(asset_path('logo_car.png'))))
         fit_to_screen(self, 1200, 820)
         tabs = QTabWidget()
         shift = ShiftTab()
@@ -64,6 +84,7 @@ class MainWindow(QMainWindow):
                  ('BCT Tunes', BctTab()), ('AI Assistant', self.ai_tab)]
         for title, page in pages:
             tabs.addTab(scrollable(page), title)
+        tabs.setCornerWidget(brand_badge(), Qt.Corner.TopRightCorner)
         self.setCentralWidget(tabs)
         wrap_long_labels(self)
         self.statusBar().addPermanentWidget(QLabel('Read the user guide before use'))
@@ -84,5 +105,10 @@ def run(argv=None):
     app.setApplicationName('TunerToolPro')
     theme.apply(app)
     window = MainWindow()
-    window.show()
+    if splash_enabled():
+        intro = SplashScreen()
+        intro.finished.connect(window.show)
+        intro.start()
+    else:
+        window.show()
     return app.exec()
