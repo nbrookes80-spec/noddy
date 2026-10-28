@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install
-        run: python -m pip install -r app/requirements.txt pyinstaller
+        run: python -m pip install -r app/requirements.txt pyinstaller pillow
       - name: Tests
         env:
           QT_QPA_PLATFORM: offscreen
