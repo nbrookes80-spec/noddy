@@ -1,7 +1,6 @@
 """TunerToolPro for Android: Shift Points, Dyno, an OBD-II scanner and a read-only adapter link."""
 
 import os
-import threading
 
 os.environ.setdefault('KIVY_NO_ARGS', '1')
 
@@ -14,6 +13,7 @@ from kivy.metrics import dp  # noqa: E402
 from kivy.properties import ListProperty  # noqa: E402
 from kivy.uix.behaviors import ButtonBehavior  # noqa: E402
 from kivy.uix.boxlayout import BoxLayout  # noqa: E402
+from kivy.uix.floatlayout import FloatLayout  # noqa: E402
 from kivy.uix.button import Button  # noqa: E402
 from kivy.uix.filechooser import FileChooserListView  # noqa: E402
 from kivy.uix.gridlayout import GridLayout  # noqa: E402
@@ -27,20 +27,27 @@ from kivy.uix.spinner import Spinner  # noqa: E402
 from kivy.uix.textinput import TextInput  # noqa: E402
 from kivy.uix.widget import Widget  # noqa: E402
 
+import converter_live  # noqa: E402
 import dyno_live  # noqa: E402
+import grading  # noqa: E402
 import shift_live  # noqa: E402
-from link import obd  # noqa: E402
-from scan_ui import ScanScreen, format_value  # noqa: E402
+from tunertoolpro import trans_data  # noqa: E402
+from tunertoolpro import vehicles  # noqa: E402
+from agent_ui import AgentScreen  # noqa: E402
+from link_ui import LinkScreen  # noqa: E402
+from splash_ui import SplashOverlay  # noqa: E402
+from live_ui import LiveScreen, StreamRunner  # noqa: E402
+from scan_ui import ScanScreen  # noqa: E402
+from settings_ui import SettingsScreen  # noqa: E402
 from scanner.session import Session  # noqa: E402
+from table_view import HEX, table_blocks  # noqa: E402
 from tunertoolpro import core  # noqa: E402
 from ui_kit import (ACCENT, ALERT, BG, BLUE, BORDER, GAP, MUTED, RAISED, TEXT, Card,  # noqa: E402
-                    HeaderBar, button_row, icon, make_button, panel_label, section_title, stack,
+                    HeaderBar, WrapOption, button_row, icon, make_button, panel_label, section_title, stack,
                     style_button)
 
 MONO = os.path.join(kivy_data_dir, 'fonts', 'RobotoMono-Regular.ttf')
-LINK_KINDS = ['Wi-Fi adapter', 'Bluetooth adapter']
-LIVE_PIDS = [('010C', 'Engine speed'), ('010D', 'Vehicle speed'), ('0111', 'Throttle'),
-             ('0105', 'Coolant')]
+APP_VERSION = '0.2.6'
 
 # How the 23 shift settings are grouped into cards.
 GROUPS = [
@@ -62,7 +69,7 @@ def snap(value, lo, hi, step):
 def mono_scroller(text):
     """Monospace text that scrolls sideways, so wide tables keep their columns on a narrow screen."""
     label = Label(text=text, font_name=MONO, font_size=dp(11), color=TEXT, size_hint=(None, None),
-                  halign='left', valign='top')
+                  halign='left', valign='top', markup=True)
     label.bind(texture_size=lambda w, size: setattr(w, 'size', size))
     scroll = ScrollView(do_scroll_y=False, size_hint_y=None, bar_width=dp(3))
     scroll.add_widget(label)
@@ -74,14 +81,22 @@ class ShiftScreen(BoxLayout):
     """Each input has a slider and a typed box that stay in step. Any change recalculates the
     shift tables and asks the Dyno screen to run again."""
 
-    def __init__(self, on_change, **kwargs):
+    def __init__(self, on_change, on_settings=None, **kwargs):
         super().__init__(orientation='vertical', **kwargs)
         self.on_change = on_change
         self._syncing = False
+        self.delays = None            # (prep, react) per shift for the chosen transmission; None = default
         values, ratios = shift_live.default_inputs()
         self.inputs, self.sliders, self.ranges, self.decimals = {}, {}, {}, {}
         fields = {f[0]: f for f in shift_live.FIELDS}
         widgets = []
+        if on_settings:
+            choose = Card()
+            choose.add_widget(section_title('Car and transmission'))
+            self.car_label = panel_label('', color=MUTED, font_size=dp(13))
+            choose.add_widget(self.car_label)
+            choose.add_widget(make_button('Change car or transmission', on_settings, primary=True))
+            widgets.append(choose)
         for title, keys in GROUPS:
             card = Card()
             card.add_widget(section_title(title))
@@ -110,12 +125,166 @@ class ShiftScreen(BoxLayout):
         gears.add_widget(self.stall_box)
         widgets.append(gears)
 
+        conv = Card()
+        conv.add_widget(section_title('Converter and differential'))
+        conv.add_widget(panel_label('Pick the converter fitted. The stall, idle, shift RPM and minimum lock RPM '
+                                    'move to match. Type the true flash stall in Stall RPM first if you know it.',
+                                    color=MUTED, font_size=dp(13)))
+        self.converter_box = Spinner(text=converter_live.LABELS[0], values=converter_live.LABELS,
+                                     size_hint_y=None, height=dp(44), option_cls=WrapOption)
+        self.diff_box = Spinner(text='', values=[], size_hint_y=None, height=dp(44), option_cls=WrapOption)
+        for spinner in (self.converter_box, self.diff_box):
+            style_button(spinner)
+        self.converter_box.bind(text=lambda _s, _t: self._converter_picked())
+        self.diff_box.bind(text=lambda _s, _t: self._diff_picked())
+        self._quiet = False
+        self._base = None
+        conv.add_widget(panel_label('Torque converter', color=MUTED))
+        conv.add_widget(self.converter_box)
+        conv.add_widget(panel_label('Differential ratio (sets the Axle ratio)', color=MUTED))
+        conv.add_widget(self.diff_box)
+        self.conv_notes = panel_label('', color=MUTED, font_size=dp(13))
+        conv.add_widget(self.conv_notes)
+        self._summary, self._detail, self._detail_open = '', '', False
+        self.detail_button = make_button('Show details and TCM settings', self._toggle_detail)
+        conv.add_widget(self.detail_button)
+        widgets.append(conv)
+
         self.status = panel_label(color=ALERT)
         self.tables = BoxLayout(orientation='vertical', size_hint_y=None, spacing=GAP)
         self.tables.bind(minimum_height=self.tables.setter('height'))
+        self.last = None          # (cfg, tables, grades) of the latest valid calculation
+        self.cursor = None        # where the car is on the tables while live data streams
+        self.table_labels = {}
         widgets += [self.status, section_title('Shift tables (MPH)'), self.tables]
         self.add_widget(stack(*widgets))
+        self._reset_converter()
         self.recalculate()
+
+    # --- converter and differential ---------------------------------------------------------------
+
+    def _values(self):
+        return {key: box.text for key, box in self.inputs.items()}
+
+    def _gear_count(self):
+        return len([r for r in self.ratio_box.text.replace(' ', '').split(',') if r])
+
+    def _show_conv(self, summary, detail=''):
+        """A short line is always shown. The full notes and TCM settings sit behind a button."""
+        self._summary, self._detail = summary, detail
+        self.detail_button.opacity = 1 if detail else 0
+        self.detail_button.disabled = not detail
+        self.detail_button.height = dp(48) if detail else 0
+        self._detail_open = False
+        self._paint_conv()
+
+    def _paint_conv(self):
+        if self._detail_open:
+            self.conv_notes.text = self._summary + '\n\n' + self._detail
+            self.detail_button.text = 'Hide details'
+        else:
+            self.conv_notes.text = self._summary
+            self.detail_button.text = 'Show details and TCM settings'
+
+    def _toggle_detail(self):
+        self._detail_open = not self._detail_open
+        self._paint_conv()
+
+    def _reset_converter(self):
+        """The boxes now hold stock-converter numbers. Remember them as the base and show Stock."""
+        self._quiet = True
+        self._base = converter_live.read_base(self._values())
+        self.converter_box.text = converter_live.LABELS[0]
+        self._fill_diff()
+        self._quiet = False
+        self._show_conv('\n'.join(converter_live.diff_summary(self.ratio_box.text, self._values())))
+
+    def _fill_diff(self):
+        axle = self.inputs['axle'].text
+        self.diff_box.values = converter_live.diff_values(axle)
+        try:
+            near = min(self.diff_box.values, key=lambda v: abs(float(v) - float(axle)))
+        except ValueError:
+            near = ''
+        self.diff_box.text = near
+
+    def _converter_picked(self):
+        if self._quiet:
+            return
+        values = self._values()
+        changes, stall_logic, notes, advice = converter_live.choose(
+            values, self._base, self.converter_box.text, self._gear_count())
+        if not changes:
+            self._show_conv('\n'.join(notes))
+            return
+        self._syncing = True
+        for key, text in changes.items():
+            if key in self.inputs:
+                self.inputs[key].text = text
+                lo, hi, _ = self.ranges[key]
+                self.sliders[key].value = min(max(float(text), lo), hi)
+        self._syncing = False
+        self.stall_box.text = 'On' if stall_logic else 'Off'
+        summary = (f'{self.converter_box.text}: stall {changes["stall_rpm"]}, idle {changes["idle_rpm"]}, '
+                   f'shift {changes["shift_rpm"]}, minimum lock {changes["min_tcc_rpm"]} rpm. '
+                   f'Stall lock logic {"on" if stall_logic else "off"}.')
+        diff = converter_live.diff_summary(self.ratio_box.text, self._values())
+        detail = list(notes)
+        if advice:
+            detail.append('Set these in the TCM tune (the app cannot calculate them):')
+            detail.extend('  ' + a for a in advice)
+        detail.extend(diff)
+        self._show_conv(summary + ('\n' + diff[0] if diff else ''), '\n'.join(detail))
+        self.recalculate()
+
+    def _diff_picked(self):
+        if self._quiet or not self.diff_box.text:
+            return
+        old = self.inputs['axle'].text
+        new = self.diff_box.text
+        if old == new:
+            return
+        try:
+            same = abs(float(old) - float(new)) < 0.004
+        except ValueError:
+            same = False
+        if same:
+            return
+        report = converter_live.diff_report(self.ratio_box.text, old, new, self._values())
+        self.inputs['axle'].text = new     # the text handler moves the slider and recalculates
+        self._show_conv('\n'.join(report))
+
+    # --- car and transmission, chosen on the Settings screen -------------------------------------
+
+    def _set_all(self, values, ratios):
+        """Put new values in every box and slider, then recalculate once."""
+        self._syncing = True
+        for key, text in values.items():
+            if key in self.inputs:
+                self.inputs[key].text = text
+                lo, hi, _ = self.ranges[key]
+                self.sliders[key].value = min(max(float(text), lo), hi)
+        self.ratio_box.text = ratios
+        self._syncing = False
+        self._reset_converter()
+        self.recalculate()
+
+    def apply_profile(self, name):
+        """Load a whole vehicle. Its own settings are kept; the transmission's shift delays come from its data."""
+        from tunertoolpro.engines import constants
+        values, ratios = shift_live.default_inputs(name)
+        found = vehicles.find(constants.STARTER_PROFILES[name]['trans_name'])
+        self.delays = trans_data.for_transmission(found).delays if found else None
+        self._set_all(values, ratios)
+
+    def apply_transmission(self, transmission):
+        """Load the gear ratios and the transmission's own data (delays, lead, converter-lock rules)."""
+        data = trans_data.for_transmission(transmission)
+        values = vehicles.fit_gears({key: box.text for key, box in self.inputs.items()}, len(transmission.ratios))
+        self.delays = data.delays
+        self.lead_box.text = data.lead_mode
+        self._set_all(trans_data.apply(values, data), vehicles.ratios_text(transmission))
+        return data
 
     def _field_row(self, key, label, lo, hi, step, decimals, text):
         self.ranges[key] = (lo, hi, step)
@@ -162,6 +331,10 @@ class ShiftScreen(BoxLayout):
             self._syncing = True
             self.sliders[key].value = min(max(number, lo), hi)
             self._syncing = False
+        if key == 'axle' and not self._quiet:
+            self._quiet = True
+            self._fill_diff()
+            self._quiet = False
         self.recalculate()
 
     def current(self):
@@ -171,41 +344,89 @@ class ShiftScreen(BoxLayout):
 
     def recalculate(self):
         values, ratios, lead, stall = self.current()
-        tables, error = shift_live.calculate(values, ratios, lead, stall)
+        tables, error = shift_live.calculate(values, ratios, lead, stall, self.delays)
         self.tables.clear_widgets()
+        self.table_labels = {}
         if error:
             self.status.text = error
+            self.last = None
         else:
             self.status.text = ''
-            for title, text in table_blocks(tables):
+            cfg = shift_live.build_cfg(values, ratios, lead, stall, self.delays)
+            grades = grading.grade_tables(tables, cfg)
+            self.last = (cfg, tables, grades)
+            self.tables.add_widget(self._summary_card(grades))
+            for title, text in table_blocks(tables, grades.levels, self.cursor):
                 card = Card()
                 card.add_widget(panel_label(title, color=ACCENT, bold=True))
-                card.add_widget(mono_scroller(text))
+                scroller = mono_scroller(text)
+                self.table_labels[title] = scroller.children[0]
+                card.add_widget(scroller)
                 self.tables.add_widget(card)
         self.on_change()
 
+    def _summary_card(self, grades):
+        """How the settings grade: counts, the legend, and the few worst cells in words."""
+        counts = grades.counts
+        card = Card()
+        card.add_widget(section_title('How your settings grade'))
+        card.add_widget(panel_label(
+            f'[color=#{HEX["good"]}]{counts["good"]} green[/color]   '
+            f'[color=#{HEX["ok"]}]{counts["ok"]} yellow[/color]   '
+            f'[color=#{HEX["bad"]}]{counts["bad"]} red[/color]', markup=True, font_size=dp(16)))
+        problems = [f'[color=#{HEX[p["level"]]}]{self._cell_name(p)}: {p["message"]}[/color]'
+                    for p in grades.worst[:3]]
+        card.add_widget(panel_label('\n\n'.join(problems) if problems else 'Every cell is in range.',
+                                    markup=True, color=MUTED, font_size=dp(13)))
+        card.add_widget(panel_label('Green is good, yellow (~) is satisfactory and worth a look, red (!) is '
+                                    'likely a problem. * marks where the car is now while live data '
+                                    'streams. These are rules of thumb from your own settings.',
+                                    color=MUTED, font_size=dp(12)))
+        return card
 
-def table_blocks(tables):
-    """The four shift tables as (title, text) pairs, one block per table."""
-    blocks = []
-    tps = [f'{v:g}%' for v in core.tps_axis()]
-    gear_labels = [f'Gear {g + 1}' for g in range(tables['n_gears'])]
-    shift_labels = [f'{g + 1}-{g + 2}' for g in range(len(tables['upshift']))]
-    sections = [('Upshift MPH', shift_labels, tables['upshift']),
-                ('Downshift MPH', shift_labels, tables['downshift']),
-                ('TCC unlock MPH', gear_labels, tables['tcc_unlock']),
-                ('TCC lock MPH', gear_labels, tables['tcc_lock'])]
-    for title, labels, rows in sections:
-        lines = ['        ' + ' '.join(f'{t:>7}' for t in tps)]
-        for label, row in zip(labels, rows):
-            lines.append(f'{label:>8}' + ' '.join(f'{x:7.1f}' for x in row))
-        blocks.append((title, '\n'.join(lines)))
-    return blocks
+    @staticmethod
+    def _cell_name(problem):
+        axis = core.tps_axis()[problem['col']]
+        titles = {'upshift': 'Upshift', 'downshift': 'Downshift', 'tcc_lock': 'TCC lock',
+                  'tcc_unlock': 'TCC unlock'}
+        row = problem['row'] + 1
+        label = f'{row}-{row + 1}' if problem['table'] in ('upshift', 'downshift') else f'gear {row}'
+        return f'{titles[problem["table"]]} {label} at {axis:g}% throttle'
 
+    # --- hooks for the other screens -------------------------------------------------------------
 
-def format_tables(tables):
-    """Plain-text version of the four shift tables, one block per table."""
-    return '\n\n'.join(f'{title}\n{text}' for title, text in table_blocks(tables))
+    def model(self):
+        """(cfg, tables) of the latest calculation, or (None, None) while an input is invalid."""
+        return (self.last[0], self.last[1]) if self.last else (None, None)
+
+    def grading(self):
+        return self.last[2] if self.last else None
+
+    def settings(self):
+        """The numeric settings as the agent bridge reports them."""
+        out = {}
+        for key, box in self.inputs.items():
+            try:
+                out[key] = float(box.text)
+            except ValueError:
+                out[key] = None
+        return out
+
+    def set_value(self, key, number):
+        """Approved change from the agent: update the typed box, which moves the slider and recalculates."""
+        lo, hi, _step = self.ranges[key]
+        self.inputs[key].text = f'{min(max(number, lo), hi):.{self.decimals[key]}f}'
+
+    def set_cursor(self, cursor):
+        """Mark where the car is on the tables. Only the table text changes, so this is cheap."""
+        if cursor == self.cursor:
+            return
+        self.cursor = cursor
+        if self.last:
+            _cfg, tables, grades = self.last
+            for title, text in table_blocks(tables, grades.levels, cursor):
+                if title in self.table_labels:
+                    self.table_labels[title].text = text
 
 
 class DynoChart(Widget):
@@ -391,156 +612,6 @@ class DynoScreen(BoxLayout):
             grid.add_widget(panel_label(str(value), color=TEXT, font_size=dp(15), halign='right'))
 
 
-class LinkScreen(BoxLayout):
-    """Demo mode, and a connection to a scan adapter with live values. Read only: see link/obd.py."""
-
-    def __init__(self, session, **kwargs):
-        super().__init__(orientation='vertical', **kwargs)
-        self.session = session
-        self.busy = False
-        self._poll_event = None
-        self._connecting = False
-
-        demo_card = Card()
-        demo_card.add_widget(section_title('Demo mode'))
-        demo_card.add_widget(panel_label('Simulated readings from a repeating drive. Nothing is sent to '
-                                         'any adapter or car, so it works with no hardware.',
-                                         color=MUTED, font_size=dp(13)))
-        self.demo_button = make_button('Turn on demo', lambda: session.set_demo(not session.demo_on),
-                                       primary=True)
-        demo_card.add_widget(self.demo_button)
-
-        adapter_card = Card()
-        adapter_card.add_widget(section_title('Scan adapter'))
-        self.kind = Spinner(text=LINK_KINDS[0], values=LINK_KINDS)
-        style_button(self.kind)
-        self.address = TextInput(text=f'{obd.DEFAULT_WIFI[0]}:{obd.DEFAULT_WIFI[1]}', multiline=False,
-                                 size_hint_y=None, height=dp(44), background_color=RAISED,
-                                 foreground_color=TEXT, font_size=dp(14),
-                                 padding=[dp(10), dp(12), dp(10), dp(10)])
-        self.connect_button = style_button(Button(text='Connect'), primary=True)
-        self.connect_button.bind(on_release=self.toggle)
-        self.state = panel_label(text='Not connected.', color=MUTED)
-        self.kind.bind(text=self.on_kind)
-        for widget in (self.kind, self.address, self.connect_button, self.state):
-            adapter_card.add_widget(widget)
-
-        values_card = Card()
-        values_card.add_widget(section_title('Live values'))
-        self.readings = {pid: panel_label(text=f'{name}: --', font_size=dp(20), color=TEXT)
-                         for pid, name in LIVE_PIDS}
-        for label in self.readings.values():
-            values_card.add_widget(label)
-        notice = panel_label(text=('Read only: this app never sends a write or clear command to the car. '
-                                   'Bluetooth needs the adapter paired in phone settings first. Wi-Fi is '
-                                   'the backup if Bluetooth fails.'), font_size=dp(12), color=MUTED)
-        self.add_widget(stack(demo_card, adapter_card, values_card, notice))
-
-    # --- screen lifecycle ------------------------------------------------------------------------
-
-    def activate(self):
-        if self._poll_event is None:
-            self._poll_event = Clock.schedule_interval(self.refresh, 1.0)
-
-    def deactivate(self):
-        if self._poll_event is not None:
-            self._poll_event.cancel()
-            self._poll_event = None
-
-    def source_changed(self, status):
-        demo = status == 'DEMO'
-        self.demo_button.text = 'Turn off demo' if demo else 'Turn on demo'
-        style_button(self.demo_button, primary=not demo)
-        if status == 'OFFLINE':
-            for pid, name in LIVE_PIDS:
-                self.readings[pid].text = f'{name}: --'
-
-    # --- adapter connection ----------------------------------------------------------------------
-
-    def on_kind(self, _spinner, text):
-        if text == 'Bluetooth adapter':
-            self.address.text = ''
-            self.address.hint_text = 'Adapter address, e.g. 00:1D:A5:00:00:00'
-        else:
-            self.address.text = f'{obd.DEFAULT_WIFI[0]}:{obd.DEFAULT_WIFI[1]}'
-
-    def make_transport(self):
-        if self.kind.text == 'Bluetooth adapter':
-            return obd.BluetoothTransport(self.address.text.strip())
-        host, _, port = self.address.text.strip().partition(':')
-        return obd.WifiTransport(host or obd.DEFAULT_WIFI[0], int(port or obd.DEFAULT_WIFI[1]))
-
-    def toggle(self, *_):
-        if self.session.elm is None:
-            if self._connecting:
-                return
-            self._connecting = True
-            self.connect_button.disabled = True
-            self.state.text = 'Connecting...'
-            threading.Thread(target=self._connect, daemon=True).start()
-        else:
-            self.disconnect()
-
-    def _connect(self):
-        try:
-            elm = obd.Elm327(self.make_transport())
-            elm.open()
-        except (obd.OBDError, ValueError) as exc:
-            message = (str(exc) if isinstance(exc, obd.OBDError)
-                       else 'Enter the adapter as host:port, e.g. 192.168.0.10:35000')
-            Clock.schedule_once(lambda dt: self._failed(message))
-            return
-        Clock.schedule_once(lambda dt: self._connected(elm))
-
-    def _connected(self, elm):
-        self._connecting = False
-        self.connect_button.disabled = False
-        self.connect_button.text = 'Disconnect'
-        self.state.text = 'Connected. Reading live values every second.'
-        self.session.attach(elm)
-
-    def _failed(self, message):
-        self._connecting = False
-        self.connect_button.disabled = False
-        self.state.text = message
-
-    def disconnect(self):
-        self.session.detach()
-        self.connect_button.text = 'Connect'
-        self.state.text = 'Not connected.'
-
-    # --- reading ---------------------------------------------------------------------------------
-
-    def refresh(self, _dt):
-        source = self.session.active()
-        if self.busy or source is None:
-            return
-        self.busy = True
-        threading.Thread(target=self._poll, args=(source,), daemon=True).start()
-
-    def _poll(self, source):
-        try:
-            values, errors = source.poll([pid for pid, _ in LIVE_PIDS])
-        except obd.OBDError as exc:
-            Clock.schedule_once(lambda dt: self._lost(str(exc)))
-            return
-        Clock.schedule_once(lambda dt: self._show(values, errors))
-
-    def _show(self, values, errors):
-        self.busy = False
-        for pid, name in LIVE_PIDS:
-            if pid in values:
-                number, unit = format_value(*values[pid])
-                self.readings[pid].text = f'{name}: {number} {unit}'
-            else:
-                self.readings[pid].text = f'{name}: {errors.get(pid, "no reply")}'
-
-    def _lost(self, message):
-        self.busy = False
-        self.disconnect()
-        self.state.text = f'Connection lost: {message}'
-
-
 class NavButton(ButtonBehavior, BoxLayout):
     """An icon above a label. The label is amber when its screen is showing."""
 
@@ -585,18 +656,33 @@ class TunerToolProApp(App):
         self._refresh_event = None  # must exist before the Shift screen runs its first recalculation
         self.session = Session()
         self.manager = ScreenManager()
-        self.header = HeaderBar()
-        self.shift = ShiftScreen(on_change=self.request_dyno_refresh)
+        self.header = HeaderBar(on_settings=lambda: self.show('settings'))
+        self.shift = ShiftScreen(on_change=self.request_dyno_refresh, on_settings=lambda: self.show('settings'))
         self.dyno = DynoScreen(self.shift)
+        self.runner = StreamRunner(self.session, self.shift.model)
+        self.live = LiveScreen(self.session, self.runner, on_open_link=lambda: self.show('link'))
         self.scan = ScanScreen(self.session)
-        self.link = LinkScreen(self.session)
+        prefs_path = os.path.join(self.user_data_dir, 'prefs.json')
+        self.link = LinkScreen(self.session, prefs_path, on_open_live=lambda: self.show('live'))
+        fields = {f[0]: f for f in shift_live.FIELDS}
+        self.agent = AgentScreen(self.agent_state, {k: (f[2], f[3]) for k, f in fields.items()},
+                                 {k: f[1] for k, f in fields.items()},
+                                 lambda key: self.shift.inputs[key].text, self.shift.set_value)
+        self.settings = SettingsScreen(self.shift, os.path.join(self.user_data_dir, 'vehicle.json'),
+                                       APP_VERSION)
+        self.settings.restore()
+        self.settings.on_changed = self.show_car
+        self.show_car()
         screens = (('shift', 'Shift', 'Shift points', self.shift),
                    ('dyno', 'Dyno', 'Dyno and launch simulation', self.dyno),
+                   ('live', 'Live', 'Live engine and transmission', self.live),
                    ('scan', 'Scan', 'OBD-II scanner', self.scan),
-                   ('link', 'Link', 'Data source and adapter', self.link))
+                   ('link', 'Link', 'Bluetooth, Wi-Fi and demo', self.link),
+                   ('agent', 'Agent', 'Connect your AI agent', self.agent))
         self.titles = {name: subtitle for name, _t, subtitle, _c in screens}
+        self.titles['settings'] = 'Settings'
         self.navs = {}
-        for name, _title, _subtitle, content in screens:
+        for name, _title, _subtitle, content in (*screens, ('settings', '', '', self.settings)):
             screen = Screen(name=name)
             screen.add_widget(content)
             self.manager.add_widget(screen)
@@ -609,10 +695,20 @@ class TunerToolProApp(App):
             self.navs[name] = nav
             bar.add_widget(nav)
         root.add_widget(bar)
-        self.session.listeners += [self.header.set_source, self.scan.source_changed,
+        self.session.listeners += [self.header.set_source, self.runner.source_changed,
+                                   self.live.source_changed, self.scan.source_changed,
                                    self.link.source_changed]
+        self.runner.start()
+        Clock.schedule_interval(self.update_cursor, 1.0)
+        Clock.schedule_interval(self.check_connection, 2.0)
         self.show('shift')
-        return root
+        self.frame = FloatLayout()
+        self.frame.add_widget(root)
+        self.frame.add_widget(SplashOverlay())
+        return self.frame
+
+    def show_car(self):
+        self.shift.car_label.text = (f'{self.settings.summary()}\n{self.shift.ratio_box.text}')
 
     def show(self, name):
         self.manager.current = name
@@ -620,8 +716,12 @@ class TunerToolProApp(App):
         self.header.set_source(self.session.status)
         for key, nav in self.navs.items():
             nav.set_active(key == name)
-        (self.scan.activate if name == 'scan' else self.scan.deactivate)()
-        (self.link.activate if name == 'link' else self.link.deactivate)()
+        self.runner.paused = name == 'scan'      # the Scan tab reads the adapter itself
+        for key in ('live', 'scan', 'link', 'agent'):
+            screen = getattr(self, key)
+            (screen.activate if name == key else screen.deactivate)()
+        if name == 'shift':
+            self.update_cursor(0)
 
     def on_back(self, _window, key, *_args):
         """Android Back: return to Shift first, then leave the app."""
@@ -636,7 +736,40 @@ class TunerToolProApp(App):
             self._refresh_event.cancel()
         self._refresh_event = Clock.schedule_once(lambda dt: self.dyno.refresh(), 0.15)
 
+    def update_cursor(self, _dt):
+        """Mark the car's place on the Shift tables, while that screen is showing."""
+        if self.manager.current != 'shift':
+            return
+        stream = self.runner.stream
+        self.shift.set_cursor(stream.cursor() if stream is not None else None)
+
+    def check_connection(self, _dt):
+        """If a connected adapter stops answering, say so on the Link tab and drop the connection."""
+        stream = self.runner.stream
+        if self.session.elm is not None and stream is not None and stream.error and not self.session.demo_on:
+            self.link.connection_lost(stream.error)
+
+    def agent_state(self):
+        """Everything the agent bridge shares: settings, grades, tables and live data. Read only."""
+        cfg, tables = self.shift.model()
+        grades = self.shift.grading()
+        stream = self.runner.stream
+        state = {'app': 'TunerToolPro', 'version': APP_VERSION, 'source': self.session.status,
+                 'transmission': self.settings.summary(), 'shift_delays': self.shift.delays, 'settings': self.shift.settings(), 'ratios': self.shift.ratio_box.text,
+                 'live': stream.snapshot() if stream is not None else {},
+                 'grades': None, 'tables': {}}
+        if grades is not None:
+            state['grades'] = {'counts': grades.counts, 'worst': grades.worst[:20]}
+            axis = core.tps_axis()
+            state['tables'] = {'tps_axis': axis, 'cursor': stream.cursor() if stream else None}
+            for name in grading.TABLES:
+                state['tables'][name] = {'mph': tables[name], 'levels': grades.levels[name],
+                                         'reasons': grades.reasons[name]}
+        return state
+
     def on_stop(self):
+        self.runner.stop()
+        self.agent.shutdown()
         self.session.detach()
 
 

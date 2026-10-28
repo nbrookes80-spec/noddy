@@ -1,0 +1,31 @@
+"Name","ShortName","ModeAndPID","Equation","Min Value","Max Value","Units","Header","startDiagnostic","stopDiagnostic","scale","minimumRefreshDelayMillis"
+"E38 Engine Oil Temp","OilT","0x221154","A-40",-40,150,"C","7E0","","",1,0
+"E38 Engine Oil Pressure","OilP","0x221470","A*0.578",0,100,"psi","7E0","","",1,0
+"T43 Trans Fluid Temp","TFT","0x221940","A-40",-40,150,"C","7E2","","",1,0
+"E38 Knock Retard","KR","0x2211a6","(22.5*A)/256",0,50,"deg","7E0","","",1,0
+"T43 TCC Slip Speed","TCCSlip","0x221991","((signed(A)*256)+B)/8",-1000,4000,"rpm","7E2","","",1,0
+"T43 Last Shift Time","LastShift","0x221992","A/40",0,6,"sec","7E2","","",1,0
+"T43 Current Gear","Gear","0x22199a","A",0,6,"gear","7E2","","",1,0
+"T43 1-2 Shift Time","1-2Shift","0x221993","A/40",0,6,"sec","7E2","","",1,0
+"T43 2-3 Shift Time","2-3Shift","0x221994","A/40",0,6,"sec","7E2","","",1,0
+"T43 3-4 Shift Time","3-4Shift","0x221995","A/40",0,6,"sec","7E2","","",1,0
+"E38 Ethanol Content","ETH","0152","A*100/255",0,100,"%","7E0","","",1,0
+"T43 TCC Slip Speed ALT 221191","TCCSlipB","0x221191","((A*256)+B)/8",-1000,4000,"rpm","7E2","","",1,0
+"T43 Input Shaft Speed 221941","ISS","0x221941","((A*256)+B)/4",0,8000,"rpm","7E2","","",1,0
+"E38 Engine Torque 22203F","EngTq","0x22203f","((256*A)+B)/4",0,1500,"Nm","7E0","","",1,0
+"E38 Misfire Cyl 1 Current","MF1","0x221205","A",0,50,"count","7E0","","",1,0
+"E38 Misfire Cyl 2 Current","MF2","0x221206","A",0,50,"count","7E0","","",1,0
+"E38 Misfire Cyl 3 Current","MF3","0x221207","A",0,50,"count","7E0","","",1,0
+"E38 Misfire Cyl 4 Current","MF4","0x221208","A",0,50,"count","7E0","","",1,0
+"E38 Misfire Cyl 5 Current","MF5","0x2211ea","A",0,50,"count","7E0","","",1,0
+"E38 Misfire Cyl 6 Current","MF6","0x2211eb","A",0,50,"count","7E0","","",1,0
+"E38 Misfire Cyl 7 Current","MF7","0x2211ec","A",0,50,"count","7E0","","",1,0
+"E38 Misfire Cyl 8 Current","MF8","0x2211ed","A",0,50,"count","7E0","","",1,0
+"T43 PC Solenoid Actual Current","PCAct","0x22199e","A*0.0195",0,5,"A","7E2","","",1,0
+"T43 PC Solenoid Reference Current","PCRef","0x22199f","A*0.0195",0,5,"A","7E2","","",1,0
+"T43 1-2 Shift Error","1-2Err","0x221997","A/40",0,6,"sec","7E2","","",1,0
+"T43 2-3 Shift Error","2-3Err","0x221998","A/40",0,6,"sec","7E2","","",1,0
+"T43 3-4 Shift Error","3-4Err","0x221999","A/40",0,6,"sec","7E2","","",1,0
+"T43 Trans Oil Life","TOil","0x221990","A/2.55",0,100,"%","7E2","","",1,0
+"T43 Output Shaft Speed 221942","OSS","0x221942","((A*256)+B)*0.125",0,8000,"rpm","7E2","","",1,0
+"T43 Input Shaft Speed 221941 div8","ISS8","0x221941","((A*256)+B)*0.125",0,8000,"rpm","7E2","","",1,0

@@ -126,12 +126,35 @@ def log_icon(size=SIZE):
     return img
 
 
+def live_icon(size=SIZE):
+    """A pulse trace with a live dot: data streaming from the car."""
+    img, d, k = canvas(size)
+    _tile(d, k)
+    trace = [(90, 270), (170, 270), (205, 190), (255, 370), (300, 150), (340, 270), (410, 270)]
+    d.line([(x * k, y * k) for x, y in trace], fill=LINE, width=int(22 * k), joint='curve')
+    d.ellipse([384 * k, 120 * k, 432 * k, 168 * k], fill=ACCENT)
+    return img
+
+
+def agent_icon(size=SIZE):
+    """A speech bubble with three dots: your AI agent talking to the app."""
+    img, d, k = canvas(size)
+    _tile(d, k)
+    d.rounded_rectangle([96 * k, 120 * k, 416 * k, 340 * k], radius=56 * k, outline=LINE, width=int(22 * k))
+    d.polygon([(170 * k, 336 * k), (170 * k, 410 * k), (250 * k, 336 * k)], fill=LINE)
+    for i in range(3):
+        cx = (186 + i * 70) * k
+        d.ellipse([cx - 20 * k, 210 * k, cx + 20 * k, 250 * k], fill=ACCENT)
+    return img
+
+
 def save_all():
     OUT.mkdir(exist_ok=True)
     app_icon().save(OUT / 'app_icon.png')
     for name, make in (('shift', shift_icon), ('dyno', dyno_icon), ('link', link_icon),
                        ('upload', upload_icon), ('scan', scan_icon),
-                       ('demo', demo_icon), ('codes', codes_icon), ('log', log_icon)):
+                       ('demo', demo_icon), ('codes', codes_icon), ('log', log_icon),
+                       ('live', live_icon), ('agent', agent_icon)):
         make(size=128).save(OUT / f'{name}.png')
     return sorted(p.name for p in OUT.glob('*.png'))
 
