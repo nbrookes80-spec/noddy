@@ -47,7 +47,8 @@ class SettingsTests(unittest.TestCase):
         data = settings.load()
         data['ai'] = {'enabled': True, 'api_key': 'sk-test', 'model': 'claude-haiku-5-5'}
         path = settings.save(data)
-        self.assertEqual(stat.S_IMODE(os.stat(path).st_mode), 0o600)
+        if os.name != 'nt':   # Windows has no owner-only file mode; the %APPDATA% folder is per-user
+            self.assertEqual(stat.S_IMODE(os.stat(path).st_mode), 0o600)
         again = settings.load()
         self.assertTrue(again['ai']['enabled'])
         self.assertEqual(again['ai']['api_key'], 'sk-test')

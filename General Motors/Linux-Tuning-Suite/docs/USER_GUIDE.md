@@ -92,8 +92,41 @@ Notes:
   lead uses 75% of the rated horsepower in this release. It does not yet read the dyno
   curve from the Dyno & Drag tab. **Stall-based lock floor** adds the stall-based floor
   to the lock tables.
-- Without a tune loaded, the per-gear **delays** use the original program's fallback of
-  0.5 s up and 0.15 s down. A loaded BC Trans tune supplies its own delays for each shift.
+- The per-shift **delays** come from the transmission: a starter profile uses the Blue Cat data for its
+  own transmission, and **Use this transmission** loads the data for the one you pick. A loaded BC Trans
+  tune supplies its own delays for each shift. The original program's 0.5 s up and 0.15 s down is only the
+  fallback when no data is known.
+
+### Car and transmission
+
+Pick a **Make** (GM, Holden, Pontiac or Ford) and a **Transmission**, then press **Use this transmission**.
+It loads the gear ratios, the shift delays, the lead, and the converter-lock rules (minimum lock RPM and
+the minimum, accelerator and WOT lock gears) for that unit, and resets the converter to Stock. Your tyres,
+diff, weight, power and engine speeds are left alone. The choice is remembered.
+
+GM units use Blue Cat Transmission Tool data (the 4L60/65, 4L70, 4L80/85, 6L80/90, 8L90 and 10L90 presets
+and its shipped tunes). Units Blue Cat has no data for (Ford, 5L40E, and so on) use the Blue Cat class with
+the same number of gears. They are marked *derived* and are starting points to check. Ford and the extra
+Holden and Pontiac ratios are from published specifications and have not been checked against a car.
+
+### Torque converter and differential
+
+**Torque converter** moves the stall, idle, shift RPM and minimum lock RPM to suit the converter fitted
+(Stock, Mild stall, High stall single plate, High stall triple plate, Other / custom) and switches the stall
+lock floor on for any non-stock converter. The steps follow what Blue Cat's own base tunes do for a
+high-stall build: idle +100, shift RPM +200, minimum lock RPM +100 on a 4-speed or +200 on 5 gears and up.
+Type the converter's true flash stall (full throttle, output stopped, not the maker's rating) into **Stall
+RPM** first if you know it. Choosing a type again starts from the stock numbers, so steps do not stack.
+
+The notes box lists the TCM settings the app cannot calculate but that go with a loose converter: TCC desired
+slip, apply and release, engine and transmission torque management, and the turbine transition times. Each
+line says whether it comes from the VCM Performance guide, the HP Tuners videos, Blue Cat, or is a starting
+point chosen here. No published source separates single-plate from triple-plate calibrations, so triple plate
+uses the same calculated numbers as high stall single plate.
+
+**Differential presets** set the Axle ratio from a list of common ratios and report the cruise RPM at
+100 km/h in top gear and the first-gear top speed at your shift RPM. The diff ratio changes road speeds, not
+shift RPM, so the shift tables move with it. Set the speedometer calibration for the new ratio.
 
 ### Load a BC Trans tune
 
