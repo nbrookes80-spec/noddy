@@ -31,6 +31,7 @@ from ui_kit import (ACCENT, ALERT, GOOD, MUTED, RAISED, TEXT, Card, WrapOption, 
 MONO = os.path.join(kivy_data_dir, 'fonts', 'RobotoMono-Regular.ttf')
 POLL_SECONDS = 0.05
 CHECK_SECONDS = 60     # how long 'Check this car' records the bus
+CHECK_LINES = 30       # lines of the result shown on screen; the full report is in the saved files
 REFRESH_SECONDS = 0.2
 SOURCES = ('Simulated', 'Adapter', 'Log file')
 LABELS = {'Simulated': 'Demo'}      # the button text, where it has to be shorter than the source's name
@@ -208,10 +209,14 @@ class SnifferScreen(BoxLayout):
         if error:
             self._check_message(f'The check stopped: {error}', error=True)
             return
-        lines = [result['scan_text'], '',
-                 f'Recorded {result["frames"]} frames.' + (f' {result["capture_error"]}' if result['capture_error'] else ''),
-                 '', result['report'], '',
-                 'Saved to:', result['raw'], result['report_path'], result['csv']]
+        note = f' {result["capture_error"]}' if result['capture_error'] else ''
+        body = result['scan_text'].splitlines() + [''] + result['report'].splitlines()
+        shown = body[:CHECK_LINES]
+        if len(body) > CHECK_LINES:
+            shown.append(f'... {len(body) - CHECK_LINES} more lines in the saved report.')
+        lines = [f'Recorded {result["frames"]} frames.{note}', ''] + shown + [
+                 '', 'Saved to:', result['raw'], result['report_path'], result['csv']]
+        self._check_message('\n'.join(lines))
         self._check_message('\n'.join(lines))
 
     @staticmethod
