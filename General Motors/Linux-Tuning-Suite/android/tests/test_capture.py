@@ -137,3 +137,41 @@ class CarCheckTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class DroppingTransport:
+    """Streams frames, but leaves monitor mode with BUFFER FULL and a prompt until ATMA is sent again."""
+
+    def __init__(self):
+        self.listening, self.atma_sent, self.drops = False, 0, 0
+
+    def open(self):
+        pass
+
+    def write(self, data):
+        text = data.decode().strip()
+        if text == 'ATMA':
+            self.listening = True
+            self.atma_sent += 1
+
+    def read_until(self, prompt=b'>'):
+        return b'OK\r'
+
+    def read_chunk(self, timeout=0.2):
+        if not self.listening:
+            return b''
+        if self.drops < 3:
+            self.drops += 1
+            self.listening = False
+            return b'1EB 01 82\r1ED C1 90\rBUFFER FULL\r\r>'
+        return b'1EB 01 7D\r'
+
+
+class LongRecordingTests(unittest.TestCase):
+    def test_monitoring_starts_again_after_the_adapter_drops_out(self):
+        transport = DroppingTransport()
+        result = capture.record(transport, 0.3)
+        self.assertEqual(result['restarts'], 3)
+        self.assertEqual(transport.atma_sent, 4)          # the first start plus three restarts
+        self.assertGreater(len(result['frames']), 6)
+        self.assertTrue(result['complete'])

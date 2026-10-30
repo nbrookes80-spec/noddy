@@ -15,7 +15,10 @@ STEP_SECONDS = 0.2     # how long each read waits for the adapter
 
 def record(transport, seconds, protocol=PROTOCOL, rx_filter=None, lock=None, clock=time.monotonic,
            progress=None):
-    """Listen for the given time. Returns a dict with frames, overruns, complete and error.
+    """Listen for the given time. Returns a dict with frames, overruns, restarts, complete and error.
+
+    A busy bus makes the adapter drop out of monitor mode; the monitor starts it again (restarts counts these),
+    so a recording of any length keeps listening. Some frames are lost in each gap.
 
     lock, when given, is held for the whole recording so no other request reaches the adapter meanwhile.
     progress(elapsed, seconds) is called after each read. A link lost part way returns the frames heard
@@ -38,4 +41,4 @@ def record(transport, seconds, protocol=PROTOCOL, rx_filter=None, lock=None, clo
                 monitor.stop()
             except MonitorError as exc:
                 error = error or str(exc)
-    return {'frames': frames, 'overruns': monitor.overruns, 'complete': not error, 'error': error}
+    return {'frames': frames, 'overruns': monitor.overruns, 'restarts': monitor.restarts, 'complete': not error, 'error': error}

@@ -66,6 +66,8 @@ class ElmMonitor:
         self.clock = clock
         self.running = False
         self.overruns = 0
+        self.restarts = 0        # times monitoring was started again after the adapter ended it
+        self._ended = False      # the adapter has left monitor mode (buffer full), so ATMA must be sent again
         self.traffic = []        # (direction, text) of the set-up conversation, newest last
         self._partial = ''
         self._started_at = 0.0
@@ -100,6 +102,8 @@ class ElmMonitor:
         self.traffic.append(('TX', 'ATMA'))
         self.running = True
         self.overruns = 0
+        self.restarts = 0
+        self._ended = False
         self._partial = ''
         self._started_at = self.clock()
         self._last_chunk = 0.0
@@ -113,15 +117,27 @@ class ElmMonitor:
         except Exception as exc:
             self.running = False
             raise MonitorError(f'The adapter stopped sending: {exc}') from exc
-        if not chunk:
-            return []
-        return self.parse(chunk.decode('ascii', 'replace'))
+        frames = self.parse(chunk.decode('ascii', 'replace')) if chunk else []
+        if self._ended:
+            # A busy bus fills the adapter's buffer, and it then drops out of monitor mode with a prompt.
+            # Start listening again, so a long recording keeps going instead of stopping after a moment.
+            self._ended = False
+            self.restarts += 1
+            try:
+                self.transport.write(b'ATMA\r')
+            except Exception as exc:
+                self.running = False
+                raise MonitorError(f'The adapter stopped sending: {exc}') from exc
+            self._partial = ''
+        return frames
 
     def parse(self, text):
         """Frames in a block of monitor text. The adapter sends no timestamps, so the frames of one
         block are spread evenly over the time since the previous block; that keeps per-ID spacing,
         and so Delta and Frequency, close to the truth even when several frames arrive at once."""
         now = self.clock() - self._started_at
+        if '>' in text:
+            self._ended = True    # the prompt only comes back when the adapter has stopped monitoring
         text = self._partial + text.replace('\r', '\n')
         *lines, self._partial = text.split('\n')
         parsed = []
@@ -134,6 +150,9 @@ class ElmMonitor:
                 parsed.append(frame)
             elif 'BUFFER FULL' in line.upper():
                 self.overruns += 1
+                self._ended = True
+            elif 'STOPPED' in line.upper():
+                self._ended = True
         span = max(0.0, now - self._last_chunk)
         frames = [Frame(f.can_id, f.data, f.extended, self._last_chunk + span * (i + 1) / len(parsed))
                   for i, f in enumerate(parsed)]
