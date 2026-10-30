@@ -172,6 +172,35 @@ class SnifferTabTests(unittest.TestCase):
         self.assertFalse(self.tab.running)
         self.assertTrue(FakeAdapter.instances[0].closed)
 
+    def test_serial_source_passes_the_port_and_baud_and_rejects_a_bad_baud(self):
+        seen = []
+
+        class Recorder(FakeAdapter):
+            def __init__(self, port, baud=38400):
+                super().__init__()
+                seen.append((port, baud))
+
+        self.tab.source_box.setCurrentIndex(3)
+        self.tab.port_box.setCurrentText('/dev/rfcomm0')
+        self.tab.baud_box.setCurrentText('115200')
+        with mock.patch('tunertoolpro.gui.sniffer_tab.SerialTransport', Recorder):
+            self.tab.start()
+            self.tab.stop()
+        self.assertEqual(seen, [('/dev/rfcomm0', 115200)])
+        self.tab.baud_box.setCurrentText('fast')
+        with mock.patch('tunertoolpro.gui.sniffer_tab.SerialTransport', Recorder), \
+                mock.patch('tunertoolpro.gui.sniffer_tab.QMessageBox.warning') as warning:
+            self.tab.start()
+        warning.assert_called_once()
+        self.assertFalse(self.tab.running)
+
+    def test_serial_source_needs_a_port(self):
+        self.tab.source_box.setCurrentIndex(3)
+        self.tab.port_box.setCurrentText('')
+        with mock.patch('tunertoolpro.gui.sniffer_tab.QMessageBox.warning') as warning:
+            self.tab.start()
+        warning.assert_called_once()
+
     def test_log_file_source_replays_a_saved_capture(self):
         frames = [Frame(0x123, b'\x01\x02', False, 0.0), Frame(0x456, b'\x03', False, 0.5)]
         from tunertoolpro.canbus import format_candump

@@ -283,8 +283,8 @@ frame from this tab.
 ### On a car
 
 1. Choose the source: **Wi-Fi adapter** (host and port, usually `192.168.0.10:35000`) or **Serial / USB /
-   Bluetooth adapter** (a port such as `/dev/ttyUSB0`, `/dev/rfcomm0` or `COM3`; on Windows and Linux a Bluetooth
-   adapter must be paired and bound to a port by the operating system first).
+   Bluetooth adapter** (a port such as `/dev/ttyUSB0`, `/dev/rfcomm0` or `COM3`, with its baud rate: 38400 for most clones,
+   115200 for many others; a Bluetooth adapter must be paired and bound to a port by the operating system first).
 2. Pick the **Bus**. Most cars including Holden and Pontiac are `6: CAN 500 kbit/s, 11-bit IDs`.
 3. Optionally type one ID in the receive filter to quieten a busy bus (for example `7E8`).
 4. Press **Start**. Keep the car still and press **Notch** a few times, then move the thing you are hunting for and

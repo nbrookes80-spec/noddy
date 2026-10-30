@@ -80,6 +80,10 @@ class SnifferTab(QWidget):
         self.port_box = QComboBox()
         self.port_box.setEditable(True)
         self.refresh_ports = QPushButton('Refresh')
+        self.baud_box = QComboBox()
+        self.baud_box.setEditable(True)
+        self.baud_box.addItems(['38400', '115200', '9600', '500000'])
+        self.baud_box.setToolTip('Serial speed of the adapter: 38400 for most clones, 115200 for many others')
         self.protocol_box = QComboBox()
         for key, label in PROTOCOLS.items():
             self.protocol_box.addItem(f'{key}: {label}', key)
@@ -129,7 +133,7 @@ class SnifferTab(QWidget):
 
         source_row = QHBoxLayout()
         for widget in (QLabel('Source'), self.source_box, self.choose_log, self.host_edit, self.port_box,
-                       self.refresh_ports, QLabel('Bus'), self.protocol_box, self.filter_edit, self.start_btn):
+                       self.refresh_ports, self.baud_box, QLabel('Bus'), self.protocol_box, self.filter_edit, self.start_btn):
             source_row.addWidget(widget)
         source_row.addStretch(1)
         tool_row = QHBoxLayout()
@@ -199,6 +203,7 @@ class SnifferTab(QWidget):
         self.host_edit.setVisible(name == 'Wi-Fi adapter')
         self.port_box.setVisible(name == SOURCES[3])
         self.refresh_ports.setVisible(name == SOURCES[3])
+        self.baud_box.setVisible(name == SOURCES[3])
         self.protocol_box.setVisible(adapter)
         self.filter_edit.setVisible(adapter)
 
@@ -273,7 +278,11 @@ class SnifferTab(QWidget):
             if not self.port_box.currentText().strip():
                 raise ValueError('Choose the serial port of the adapter first (for example /dev/ttyUSB0, '
                                  '/dev/rfcomm0 or COM3).')
-            transport = SerialTransport(self.port_box.currentText().strip())
+            try:
+                baud = int(self.baud_box.currentText())
+            except ValueError:
+                raise ValueError('The baud rate must be a number such as 38400 or 115200.') from None
+            transport = SerialTransport(self.port_box.currentText().strip(), baud)
         self.session.start_adapter(transport, self.protocol_box.currentData(),
                                    self.filter_edit.text().strip() or None, label=name)
 
