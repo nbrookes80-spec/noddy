@@ -147,8 +147,8 @@ class LiveScreen(BoxLayout):
         health = Card()
         health.add_widget(section_title('Health'))
         for key, label in (('trans_temp', 'Transmission fluid'), ('engine_rpm', 'Engine speed'),
-                           ('coolant', 'Coolant'), ('pc_current', 'Line pressure solenoid'),
-                           ('gear_follow', 'Gear follows command')):
+                           ('coolant', 'Coolant'), ('line_pressure', 'Line pressure'),
+                           ('gear_follow', 'Gear matches shaft speeds')):
             tile = HealthTile(label)
             self.health_tiles[key] = tile
             health.add_widget(tile)

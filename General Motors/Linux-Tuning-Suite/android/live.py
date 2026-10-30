@@ -19,10 +19,15 @@ from tunertoolpro import core
 
 # Engine (ECU, answers on the broadcast address) first, then the transmission (TCM, 7E2) grouped
 # together so the adapter only switches module once per round.
-FAST_PIDS = ['010C', '010D', '0111', '22199A', '223D03', '221991']
-SLOW_PIDS = ['0105', '0104', '010B', '010E', '22194F', '22001F', '221941', '221942', '22199E', '22199F']
+# The Holden VE's TCM refuses commanded gear (223D03) and the PC solenoid current pair (22199E/F), so the
+# gear check uses the gear its shaft speeds imply, and the pressure tile shows line pressure (22001F).
+FAST_PIDS = ['010C', '010D', '0111', '22199A', '221991', '221941', '221942']
+SLOW_PIDS = ['0105', '0104', '010B', '010E', '22194F', '22001F']
 STREAM_PIDS = FAST_PIDS + SLOW_PIDS
-TCM_PIDS = {'22199A', '223D03', '22194F', '221991', '22001F', '221941', '221942', '22199E', '22199F'}
+TCM_PIDS = {'22199A', '22194F', '221991', '22001F', '221941', '221942'}
+GEAR_RATIOS = (4.027, 2.364, 1.532, 1.152, 0.852, 0.667)   # 6L80: input shaft turns per output shaft turn
+RATIO_TOLERANCE = 0.12    # a ratio further than this from every gear is a shift in progress, so no verdict
+MIN_OUTPUT_RPM = 100      # below this the ratio is mostly noise (stopped or crawling)
 TCM_HEADER = '7E2'
 SLOW_EVERY = 4
 HISTORY = 60
@@ -31,8 +36,8 @@ RATE_WINDOW = 10
 SHIFT_LOG = 12
 
 HEALTH = [('trans_temp', 'Transmission fluid'), ('engine_rpm', 'Engine speed'),
-          ('coolant', 'Coolant'), ('pc_current', 'Line pressure solenoid'),
-          ('gear_follow', 'Gear follows command')]
+          ('coolant', 'Coolant'), ('line_pressure', 'Line pressure'),
+          ('gear_follow', 'Gear matches shaft speeds')]
 
 
 def _ordered(pid_list):
@@ -85,12 +90,23 @@ class LiveStream:
         self._track_gear(now)
         self._prev_speed = self._value('010D')
 
+    def implied_gear(self):
+        """The gear the shaft speeds say the box is in (1-6), or None when stopped or between gears."""
+        turbine, output = self._value('221941'), self._value('221942')
+        if turbine is None or output is None or output < MIN_OUTPUT_RPM:
+            return None
+        ratio = turbine / output
+        gear = min(range(len(GEAR_RATIOS)), key=lambda i: abs(ratio - GEAR_RATIOS[i]) / GEAR_RATIOS[i])
+        if abs(ratio - GEAR_RATIOS[gear]) / GEAR_RATIOS[gear] > RATIO_TOLERANCE:
+            return None
+        return gear + 1
+
     def _value(self, pid):
         reading = self.latest.get(pid)
         return None if reading is None else reading[0]
 
     def _track_gear(self, now):
-        gear, commanded = self._value('22199A'), self._value('223D03')
+        gear, commanded = self._value('22199A'), self.implied_gear()
         if gear is not None and commanded is not None and round(gear) != round(commanded):
             if self._mismatch_since is None:
                 self._mismatch_since = now
@@ -147,14 +163,14 @@ class LiveStream:
             result = None
             if key in graded:
                 result = graded[key](self._value(sources[key]))
-            elif key == 'pc_current':
-                actual, ref = self._value('22199E'), self._value('22199F')
-                if actual is not None and ref is not None:
-                    result = grading.grade_pc_current(actual, ref)
+            elif key == 'line_pressure':
+                pressure = self._value('22001F')
+                if pressure is not None:   # no limits are known for this car, so it shows the reading only
+                    result = (grading.GOOD, f'{pressure:.0f} kPa')
             elif key == 'gear_follow':
                 seconds = (self._mismatch_now - self._mismatch_since
                            if self._mismatch_since is not None else 0.0)
-                gear, commanded = self._value('22199A'), self._value('223D03')
+                gear, commanded = self._value('22199A'), self.implied_gear()
                 if gear is not None and commanded is not None:
                     result = grading.grade_gear_follow(gear, commanded, seconds)
             level, text = result if result else (grading.OFF, 'no reading yet')
