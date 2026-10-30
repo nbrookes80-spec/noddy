@@ -30,6 +30,7 @@ from kivy.uix.widget import Widget  # noqa: E402
 import converter_live  # noqa: E402
 import dyno_live  # noqa: E402
 import grading  # noqa: E402
+import prefs  # noqa: E402
 import shift_live  # noqa: E402
 from tunertoolpro import trans_data  # noqa: E402
 from tunertoolpro import vehicles  # noqa: E402
@@ -39,7 +40,9 @@ from splash_ui import SplashOverlay  # noqa: E402
 from live_ui import LiveScreen, StreamRunner  # noqa: E402
 from scan_ui import ScanScreen  # noqa: E402
 from sniffer_ui import SnifferScreen  # noqa: E402
+from app_menu import AppMenu  # noqa: E402
 from settings_ui import SettingsScreen  # noqa: E402
+from scanner import car_scan, manual_pids, profiles  # noqa: E402
 from scanner.session import Session  # noqa: E402
 from table_view import HEX, table_blocks  # noqa: E402
 from tunertoolpro import core  # noqa: E402
@@ -48,6 +51,7 @@ from ui_kit import (ACCENT, ALERT, BG, BLUE, BORDER, GAP, MUTED, RAISED, TEXT, C
                     style_button)
 
 MONO = os.path.join(kivy_data_dir, 'fonts', 'RobotoMono-Regular.ttf')
+ADAPTER_SCREENS = ('shift', 'dyno', 'live', 'scan', 'sniff', 'agent')   # opening any of these connects, then they share it
 APP_VERSION = '0.4.0'
 
 # How the 23 shift settings are grouped into cards.
@@ -657,7 +661,7 @@ class TunerToolProApp(App):
         self._refresh_event = None  # must exist before the Shift screen runs its first recalculation
         self.session = Session()
         self.manager = ScreenManager()
-        self.header = HeaderBar(on_settings=lambda: self.show('settings'))
+        self.header = HeaderBar(on_menu=self.open_menu)
         self.shift = ShiftScreen(on_change=self.request_dyno_refresh, on_settings=lambda: self.show('settings'))
         self.dyno = DynoScreen(self.shift)
         self.runner = StreamRunner(self.session, self.shift.model)
@@ -667,6 +671,8 @@ class TunerToolProApp(App):
                                    on_open_link=lambda: self.show('link'))
         prefs_path = os.path.join(self.user_data_dir, 'prefs.json')
         self.link = LinkScreen(self.session, prefs_path, on_open_live=lambda: self.show('live'))
+        self.runner.set_transmission(self.link.saved['live_transmission'])   # the saved Live choice
+        self.restore_car()
         fields = {f[0]: f for f in shift_live.FIELDS}
         self.agent = AgentScreen(self.agent_state, {k: (f[2], f[3]) for k, f in fields.items()},
                                  {k: f[1] for k, f in fields.items()},
@@ -715,14 +721,46 @@ class TunerToolProApp(App):
     def show_car(self):
         self.shift.car_label.text = (f'{self.settings.summary()}\n{self.shift.ratio_box.text}')
 
+    def open_menu(self):
+        """The three bars: connection, Live, adapter speed, car and about. Built fresh so it shows the current state."""
+        cars = os.path.join(self.user_data_dir, 'cars')
+        AppMenu(self.link.saved, self.link.prefs_path, self.session, self.runner, self.link,
+                lambda: self.show('settings'), APP_VERSION, profiles.everything(cars), cars,
+                self.pids_saved).open()
+
+    def pids_saved(self, profile, _pids):
+        """A PID was saved to a profile: make that profile the active one, so Live and Scan show it at once."""
+        self.activate_car(profile)
+        self.scan.render()
+
+    def activate_car(self, profile):
+        """Make this profile the one Live and Scan read, and remember it for the next start."""
+        data = self.user_data_dir
+        extra = manual_pids.pids_for(os.path.join(data, 'cars'), profile.key)
+        profiles.activate(profile, scan=car_scan.load_scan(os.path.join(data, 'car_scans'), profile.key),
+                          manual=extra)
+        self.link.saved['scan_profile'] = profile.key
+        prefs.save(self.link.prefs_path, self.link.saved)
+
+    def restore_car(self):
+        """At start-up, activate the profile chosen last time, so its dashboard and manual PIDs are there again."""
+        cars = os.path.join(self.user_data_dir, 'cars')
+        key = self.link.saved['scan_profile']
+        profile = next((p for p in profiles.everything(cars) if p.key == key), None)
+        if profile is not None:
+            self.activate_car(profile)
+
     def show(self, name):
         self.manager.current = name
+        if name in ADAPTER_SCREENS:
+            self.link.ensure_connected()   # these screens need the adapter, so open it when they are opened
         self.header.set_screen(self.titles[name])
         self.header.set_source(self.session.status)
         for key, nav in self.navs.items():
             nav.set_active(key == name)
-        # the Scan tab reads the adapter itself, and the sniffer owns it while it listens
-        self.runner.paused = name == 'scan' or self.sniff.holds_adapter()
+        # the adapter is used only by the screen the user opened: Live polls only on its own screen, and the
+        # sniffer owns the adapter while it listens, so the Live reader stands aside then
+        self.runner.paused = name != 'live' or self.sniff.holds_adapter()
         for key in ('live', 'scan', 'link', 'sniff', 'agent'):
             screen = getattr(self, key)
             (screen.activate if name == key else screen.deactivate)()
@@ -762,6 +800,7 @@ class TunerToolProApp(App):
         stream = self.runner.stream
         state = {'app': 'TunerToolPro', 'version': APP_VERSION, 'source': self.session.status,
                  'transmission': self.settings.summary(), 'shift_delays': self.shift.delays, 'settings': self.shift.settings(), 'ratios': self.shift.ratio_box.text,
+                 'adapter': self.session.adapter_info(),
                  'live': stream.snapshot() if stream is not None else {},
                  'grades': None, 'tables': {}}
         if grades is not None:

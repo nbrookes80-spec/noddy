@@ -41,11 +41,12 @@ def _ordered(pid_list):
 
 
 class LiveStream:
-    def __init__(self, source, cfg=None, tables=None, clock=time.monotonic):
+    def __init__(self, source, cfg=None, tables=None, clock=time.monotonic, transmission=True):
         self.source = source
         self.cfg = cfg
         self.tables = tables
         self.clock = clock
+        self.transmission = transmission   # False: ask only the engine, so the TCM is never polled
         self.rounds = 0
         self.error = None
         self.latest = {}
@@ -65,6 +66,8 @@ class LiveStream:
 
     def step(self):
         wanted = STREAM_PIDS if self.rounds % SLOW_EVERY == 0 else FAST_PIDS
+        if not self.transmission:
+            wanted = [p for p in wanted if p not in TCM_PIDS]
         wanted = _ordered(wanted)
         headers = {p: TCM_HEADER for p in wanted if p in TCM_PIDS}
         try:

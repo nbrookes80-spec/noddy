@@ -14,13 +14,14 @@ from kivy.metrics import dp
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
+from kivy.uix.togglebutton import ToggleButton
 
 from live import STREAM_PIDS, LiveStream
 from scan_ui import CARD_HEIGHT, PidCard
 from scanner import pids
 from table_view import HEX
 from ui_kit import (BG, GAP, MUTED, STATUS, TEXT, Card, make_button, panel_label, section_title,
-                    stack)
+                    stack, style_button)
 
 ROUND_SECONDS = 0.25     # fastest the background reader goes; a real adapter is slower than this
 BACKOFF_SECONDS = 1.0    # wait this long after a failed round before trying again
@@ -34,6 +35,7 @@ class StreamRunner:
         self.model = model            # callable returning (cfg, tables), either may be None
         self.stream = None
         self.paused = False
+        self.transmission = False     # reading the TCM too is a second conversation with the car, so it is opt-in
         self._source = None
         self._stop = threading.Event()
         self._thread = None
@@ -52,7 +54,14 @@ class StreamRunner:
         if source is not self._source:
             self._source = source
             cfg, tables = self.model()
-            self.stream = LiveStream(source, cfg=cfg, tables=tables) if source is not None else None
+            self.stream = (LiveStream(source, cfg=cfg, tables=tables, transmission=self.transmission)
+                           if source is not None else None)
+
+    def set_transmission(self, on):
+        """Turn the TCM reads on or off. Takes effect on the next round."""
+        self.transmission = bool(on)
+        if self.stream is not None:
+            self.stream.transmission = self.transmission
 
     def refresh_model(self):
         if self.stream is not None:
@@ -152,7 +161,20 @@ class LiveScreen(BoxLayout):
         hint = panel_label('Green: within 8% of the table. Yellow: within 20%. Red: further out. The '
                            'average of the speeds either side of a shift is used.', font_size=dp(12),
                            color=MUTED)
-        self.add_widget(stack(self.status, health, section_title('Readings'), grid, shifts, hint))
+        self.transmission_button = ToggleButton(text='Also read the transmission (7E2)', size_hint_y=None,
+                                                height=dp(44), state='down' if self.runner.transmission else 'normal')
+        self._style_transmission()
+        self.transmission_button.bind(state=self._transmission_changed)
+        self.add_widget(stack(self.status, self.transmission_button, health, section_title('Readings'), grid,
+                              shifts, hint))
+
+    def _style_transmission(self):
+        style_button(self.transmission_button, primary=self.transmission_button.state == 'down')
+
+    def _transmission_changed(self, _button, state):
+        self._style_transmission()
+        self.runner.set_transmission(state == 'down')
+        self.status.text = ''
 
     # --- updating --------------------------------------------------------------------------------
 
@@ -168,7 +190,8 @@ class LiveScreen(BoxLayout):
             self.status.text = f'Adapter not answering: {snap["error"]}'
             self.status.color = STATUS['bad']
         else:
-            self.status.text = f'{label}: engine (ECU) and transmission (TCM) streaming, {rate:.1f} rounds per second'
+            what = 'engine (ECU) and transmission (TCM)' if self.runner.transmission else 'engine (ECU) only'
+            self.status.text = f'{label}: {what} streaming, {rate:.1f} rounds per second'
             self.status.color = MUTED
         for tile in snap['health']:
             self.health_tiles[tile['key']].set(tile['level'], tile['text'])

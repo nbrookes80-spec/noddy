@@ -40,10 +40,34 @@ HEADER_COMMANDS = {f'ATSH{h}' for h in catalog.KNOWN_HEADERS}
 ALLOWED |= HEADER_COMMANDS
 
 
+# Adapter timing, for speed settings: ATAT0/1/2 is adaptive timing, ATST sets the response timeout in units of
+# 4 ms. Both only change how long the adapter waits for a car, so they are allowed on their own.
+TIMING_COMMAND = re.compile(r'ATAT[012]|ATST[0-9A-F]{2}')
+
+
+def timing_commands(adaptive, timeout_ms):
+    """The adapter set-up for the speed settings: ATAT1 (adaptive timing) or ATAT0 (off), then ATST when a
+    timeout is chosen. ATST counts 4 ms steps, so 200 ms is 50 steps, sent as ATST32."""
+    commands = [f'ATAT{1 if adaptive else 0}']
+    if timeout_ms:
+        steps = min(255, max(1, round(timeout_ms / 4)))
+        commands.append(f'ATST{steps:02X}')
+    return commands
+
+
+def send_timing(elm, adaptive, timeout_ms):
+    """Send the speed settings to a connected adapter, one command at a time. Returns the commands sent."""
+    sent = timing_commands(adaptive, timeout_ms)
+    for command in sent:
+        with elm._lock:
+            elm.command(command)
+    return sent
+
+
 def is_allowed(command):
-    """True for a read-only command: set-up, a header switch, Mode 03, or a catalogued Mode 01/22 PID."""
+    """True for a read-only command: set-up, a header switch, Mode 03, adapter timing, or a catalogued Mode 01/22 PID."""
     command = command.replace(' ', '').upper()
-    return command in ALLOWED or command in catalog.CATALOG
+    return command in ALLOWED or command in catalog.CATALOG or bool(TIMING_COMMAND.fullmatch(command))
 
 ERROR_WORDS = ('NO DATA', 'ERROR', 'UNABLE', 'STOPPED', 'BUS INIT', '?', 'CAN ERROR')
 MISS_LIMIT = 3     # a reading with this many failures in a row is skipped...

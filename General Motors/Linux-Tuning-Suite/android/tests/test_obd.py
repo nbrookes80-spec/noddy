@@ -128,6 +128,14 @@ class ElmTests(unittest.TestCase):
         self.assertIn(('TX', '010D'), self.elm.traffic)
         self.assertIn(('RX', '410D3C'), self.elm.traffic)
 
+    def test_adapter_timing_commands_are_allowed_and_nothing_else_in_at(self):
+        for command in ('ATAT0', 'ATAT1', 'ATAT2', 'ATST32', 'ATSTFF'):
+            with self.subTest(command=command):
+                self.assertTrue(obd.is_allowed(command))
+        for command in ('ATAT3', 'ATST', 'ATSTZZ', 'ATDP', 'ATPC', 'ATWS', 'ATSP6'):
+            with self.subTest(command=command):
+                self.assertFalse(obd.is_allowed(command))
+
     def test_every_allowed_command_is_a_read(self):
         from scanner import pids
         for pid in pids.CATALOG:
@@ -157,3 +165,33 @@ class BluetoothTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class TimingCommandTests(unittest.TestCase):
+    def test_adaptive_timing_is_switched_on_or_off_explicitly(self):
+        self.assertEqual(obd.timing_commands(True, 0), ['ATAT1'])
+        self.assertEqual(obd.timing_commands(False, 0), ['ATAT0'])
+
+    def test_a_timeout_is_sent_in_four_millisecond_steps(self):
+        self.assertEqual(obd.timing_commands(True, 200), ['ATAT1', 'ATST32'])
+        self.assertEqual(obd.timing_commands(False, 100), ['ATAT0', 'ATST19'])
+
+    def test_every_timing_command_passes_the_guard(self):
+        for command in obd.timing_commands(True, 400):
+            self.assertTrue(obd.is_allowed(command), command)
+
+
+class SendTimingTests(unittest.TestCase):
+    class FakeAdapter:
+        def __init__(self):
+            self._lock = threading.RLock()
+            self.sent = []
+
+        def command(self, command):
+            self.sent.append(command)
+            return 'OK'
+
+    def test_the_speed_settings_are_sent_in_order(self):
+        adapter = self.FakeAdapter()
+        self.assertEqual(obd.send_timing(adapter, True, 200), ['ATAT1', 'ATST32'])
+        self.assertEqual(adapter.sent, ['ATAT1', 'ATST32'])

@@ -6,7 +6,12 @@ from pathlib import Path
 from link.devices import normalise_address
 
 KINDS = ('Bluetooth', 'Wi-Fi')
-DEFAULTS = {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': '192.168.0.10:35000', 'auto_connect': False}
+DEFAULTS = {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': '192.168.0.10:35000', 'auto_connect': False,
+            'live_transmission': False,   # read the transmission (7E2) on the Live screen
+            'adaptive_timing': False,     # ATAT1: let the adapter adjust its wait to the car
+            'timeout_ms': 0,              # 0 keeps the adapter's own response timeout; else ATST in 4 ms steps
+            'scan_profile': ''}           # the car profile Live and Scan read (its key); '' for the built-in list
+TIMEOUT_CHOICES_MS = (0, 100, 200, 400)
 
 
 def load(path):
@@ -27,6 +32,13 @@ def load(path):
         result['auto_connect'] = data['auto_connect']
     if isinstance(data.get('wifi'), str) and data['wifi'].strip():
         result['wifi'] = data['wifi'].strip()
+    for key in ('live_transmission', 'adaptive_timing'):
+        if isinstance(data.get(key), bool):
+            result[key] = data[key]
+    if data.get('timeout_ms') in TIMEOUT_CHOICES_MS:
+        result['timeout_ms'] = data['timeout_ms']
+    if isinstance(data.get('scan_profile'), str):
+        result['scan_profile'] = data['scan_profile'][:80]
     return result
 
 

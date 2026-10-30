@@ -145,7 +145,7 @@ class Chip(Label):
 
 
 class MenuButton(ButtonBehavior, Widget):
-    """Three bars that open the Settings screen. Drawn, so it does not depend on a font having a symbol."""
+    """Three bars that open the menu. Drawn, so it does not depend on a font having a symbol."""
 
     def __init__(self, on_press_cb, **kwargs):
         super().__init__(size_hint_x=None, width=dp(34), **kwargs)
@@ -168,7 +168,7 @@ class MenuButton(ButtonBehavior, Widget):
 class HeaderBar(BoxLayout):
     """The title strip at the top of every screen: app name, screen name, and the data-source chip."""
 
-    def __init__(self, on_settings=None, **kwargs):
+    def __init__(self, on_menu=None, **kwargs):
         super().__init__(size_hint_y=None, height=dp(64), padding=(GAP, dp(8)), spacing=GAP, **kwargs)
         titles = BoxLayout(orientation='vertical')
         self.app_name = Label(text='TunerToolPro', bold=True, font_size=dp(17), color=TEXT, halign='left',
@@ -182,8 +182,8 @@ class HeaderBar(BoxLayout):
         holder.add_widget(self.chip)
         self.add_widget(titles)
         self.add_widget(holder)
-        if on_settings is not None:
-            self.add_widget(MenuButton(on_settings))
+        if on_menu is not None:
+            self.add_widget(MenuButton(on_menu))
         self.canvas.after.clear()
         with self.canvas.after:
             Color(*BORDER)

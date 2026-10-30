@@ -1,4 +1,5 @@
 import json
+import shutil
 import sys
 import tempfile
 import unittest
@@ -52,3 +53,39 @@ class AutoConnectPrefTests(unittest.TestCase):
         self.assertTrue(prefs.load(path)['auto_connect'])
         prefs.save(path, dict(prefs.load(path), link_kind='Wi-Fi'))
         self.assertTrue(prefs.load(path)['auto_connect'])
+
+
+class MenuSettingsPrefTests(unittest.TestCase):
+    def setUp(self):
+        self.folder = tempfile.mkdtemp()
+        self.path = Path(self.folder, 'prefs.json')
+
+    def tearDown(self):
+        shutil.rmtree(self.folder, ignore_errors=True)
+
+    def test_menu_settings_default_to_off(self):
+        result = prefs.load(self.path)
+        self.assertFalse(result['live_transmission'])
+        self.assertFalse(result['adaptive_timing'])
+        self.assertEqual(result['timeout_ms'], 0)
+
+    def test_menu_settings_round_trip(self):
+        prefs.save(self.path, dict(prefs.DEFAULTS, live_transmission=True, adaptive_timing=True, timeout_ms=200))
+        result = prefs.load(self.path)
+        self.assertTrue(result['live_transmission'])
+        self.assertTrue(result['adaptive_timing'])
+        self.assertEqual(result['timeout_ms'], 200)
+
+    def test_a_bad_timeout_or_flag_falls_back_to_the_default(self):
+        self.path.write_text(json.dumps({'live_transmission': 'yes', 'adaptive_timing': 1, 'timeout_ms': 999}))
+        result = prefs.load(self.path)
+        self.assertFalse(result['live_transmission'])
+        self.assertFalse(result['adaptive_timing'])
+        self.assertEqual(result['timeout_ms'], 0)
+
+    def test_the_chosen_scanner_profile_is_remembered(self):
+        self.assertEqual(prefs.load(self.path)['scan_profile'], '')
+        prefs.save(self.path, dict(prefs.DEFAULTS, scan_profile='holden-ve'))
+        self.assertEqual(prefs.load(self.path)['scan_profile'], 'holden-ve')
+        self.path.write_text(json.dumps({'scan_profile': 7}))
+        self.assertEqual(prefs.load(self.path)['scan_profile'], '')

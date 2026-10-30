@@ -119,7 +119,8 @@ class AgentBridge:
                      'advise. Nothing you send can reach the car.',
             'auth': 'Send the token as "Authorization: Bearer <token>", or as ?token=<token>.',
             'endpoints': {
-                'GET /v1/state': 'Settings, data source (LIVE, DEMO or OFFLINE), grade summary, live data.',
+                'GET /v1/state': 'Settings, data source (LIVE, DEMO or OFFLINE), the adapter (connected, and the '
+                                 'latest commands and replies to debug a connection), grade summary, live data.',
                 'GET /v1/tables': 'The four shift tables with a green/yellow/red level and a reason for each cell.',
                 'GET /v1/live': 'Latest engine and transmission readings, their history, health tiles and '
                                 'the last shifts compared with the table.',

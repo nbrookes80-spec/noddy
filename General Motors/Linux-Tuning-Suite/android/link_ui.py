@@ -189,7 +189,13 @@ class LinkScreen(BoxLayout):
 
     def auto_connect(self):
         """Called once when the app opens: connect to the last adapter if the user asked for that."""
-        if not self.saved['auto_connect'] or self.session.elm is not None or self._connecting:
+        if self.saved['auto_connect']:
+            self.ensure_connected()
+
+    def ensure_connected(self):
+        """Connect to the saved adapter unless a connection is already open or opening. A screen that needs
+        the adapter calls this when it is opened, so each one uses the single shared connection."""
+        if self.session.elm is not None or self._connecting:
             return
         try:
             transport, address = self.make_transport()
@@ -233,8 +239,17 @@ class LinkScreen(BoxLayout):
         prefs.save(self.prefs_path, dict(self.saved, link_kind=self.kind, bt_address=address or self.bt_address,
                                          wifi=self.wifi_box.text.strip() or self.saved['wifi']))
         self.session.attach(elm)
+        if self.saved['adaptive_timing'] or self.saved['timeout_ms']:
+            threading.Thread(target=self._send_speed, args=(elm,), daemon=True).start()
         if self.live_button.parent is None:
             self.adapter_card.add_widget(self.live_button)
+
+    def _send_speed(self, elm):
+        """The saved speed settings, sent once the connection is open. A refusal leaves the adapter's own timing."""
+        try:
+            obd.send_timing(elm, self.saved['adaptive_timing'], self.saved['timeout_ms'])
+        except obd.OBDError:
+            pass
 
     def _failed(self, message):
         self._connecting = False

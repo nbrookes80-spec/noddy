@@ -16,7 +16,9 @@ from ui_kit import MUTED, STATUS, TEXT, Card, make_button, panel_label, section_
 
 
 def spinner(values, text):
-    box = Spinner(text=text, values=values, size_hint_y=None, height=dp(48))
+    # One line that ends in "..." when the choice is too long, instead of running past the box.
+    box = Spinner(text=text, values=values, size_hint_y=None, height=dp(48), shorten=True, shorten_from='right')
+    box.bind(size=lambda w, _: setattr(w, 'text_size', (w.width - dp(24), w.height)))
     style_button(box)
     return box
 

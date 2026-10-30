@@ -105,7 +105,9 @@ class SnifferScreen(BoxLayout):
         self.source_note = panel_label('', color=MUTED, font_size=dp(13))
         source.add_widget(self.source_note)
         self.bus_box = Spinner(text=self._bus_label('6'), values=[self._bus_label(k) for k in PROTOCOLS],
-                               size_hint_y=None, height=dp(48), option_cls=WrapOption)
+                               size_hint_y=None, height=dp(48), option_cls=WrapOption, shorten=True,
+                               shorten_from='right')
+        self.bus_box.bind(width=lambda box, width: setattr(box, 'text_size', (width - dp(32), None)))
         self.filter_box = _text_box('Hear only this ID, hex (optional)')
         self.log_button = make_button('Choose a log file', self.choose_log)
         self.extra = BoxLayout(orientation='vertical', size_hint_y=None, height=0, spacing=dp(8))   # per-source controls

@@ -25,6 +25,18 @@ class Session:
             return DEMO
         return LIVE if self.elm is not None else OFFLINE
 
+    def adapter_info(self, recent=40):
+        """What the Agent may read about the adapter: whether it is connected and the latest commands and replies.
+
+        Read only. Nothing here can send a command; it only copies the traffic log the adapter already keeps.
+        """
+        elm = self.elm
+        if elm is None:
+            return {'connected': False, 'demo': self.demo_on, 'recent': []}
+        with elm._lock:
+            traffic = [[direction, text] for direction, text in elm.traffic[-recent:]]
+        return {'connected': True, 'demo': self.demo_on, 'recent': traffic}
+
     def set_demo(self, on):
         self.demo_on = bool(on)
         self._notify()

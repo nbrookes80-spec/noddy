@@ -8,7 +8,7 @@ sys.path.insert(0, str(ROOT))
 import shift_live  # noqa: E402
 from grading import BAD, GOOD, OK  # noqa: E402
 from link import obd  # noqa: E402
-from live import FAST_PIDS, SLOW_PIDS, STREAM_PIDS, LiveStream  # noqa: E402
+from live import FAST_PIDS, SLOW_PIDS, STREAM_PIDS, TCM_PIDS, LiveStream  # noqa: E402
 
 
 class Clock:
@@ -63,6 +63,15 @@ class PollingTests(unittest.TestCase):
         self.assertEqual(set(source.asked[1]), set(FAST_PIDS))
         self.assertEqual(set(source.asked[3]), set(FAST_PIDS))
         self.assertEqual(set(source.asked[4]), set(STREAM_PIDS))      # fifth round: slow ones again
+
+    def test_engine_only_stream_never_asks_the_transmission(self):
+        source, clock = ScriptedSource(), Clock()
+        stream = LiveStream(source, clock=clock, transmission=False)
+        for _ in range(5):
+            stream.step()
+        for asked in source.asked:
+            self.assertFalse(set(asked) & TCM_PIDS)
+        self.assertIn('010C', source.asked[0])
 
     def test_snapshot_gives_names_units_values_and_a_short_history(self):
         source, clock = ScriptedSource(), Clock()
