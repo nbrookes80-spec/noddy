@@ -41,3 +41,14 @@ class PrefsTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class AutoConnectPrefTests(unittest.TestCase):
+    def test_the_auto_connect_choice_survives_saving_the_link(self):
+        import tempfile
+        from pathlib import Path as P
+        path = P(tempfile.mkdtemp()) / 'prefs.json'
+        prefs.save(path, dict(prefs.load(path), auto_connect=True))
+        self.assertTrue(prefs.load(path)['auto_connect'])
+        prefs.save(path, dict(prefs.load(path), link_kind='Wi-Fi'))
+        self.assertTrue(prefs.load(path)['auto_connect'])
