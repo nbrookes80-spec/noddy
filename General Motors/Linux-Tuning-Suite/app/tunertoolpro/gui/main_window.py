@@ -16,6 +16,7 @@ from .dyno_tab import DynoDragTab
 from .log_tab import LogTab
 from .pressure_tab import PressureTab
 from .shift_tab import ShiftTab
+from .sniffer_tab import SnifferTab
 from .splash import SplashScreen, asset_path, splash_enabled
 from .vehicle_tab import VehicleTab
 from .xdf_tab import XdfTab
@@ -78,10 +79,11 @@ class MainWindow(QMainWindow):
         tabs = QTabWidget()
         shift = ShiftTab()
         vehicle_tab = VehicleTab(shift_inputs=shift.inputs_or_none, on_saved=shift.take_vehicle)
+        self.sniffer_tab = SnifferTab()
         self.ai_tab = AiTab(SettingsBridge(shift, vehicle_tab), context_provider=lambda: tables_context(shift))
         pages = [('Shift Points', shift), ('Vehicle', vehicle_tab), ('Pressure & Timing', PressureTab()),
                  ('Dyno & Drag', DynoDragTab()), ('Datalog', LogTab()), ('XDF / BIN', XdfTab()),
-                 ('BCT Tunes', BctTab()), ('AI Assistant', self.ai_tab)]
+                 ('BCT Tunes', BctTab()), ('CAN Sniffer', self.sniffer_tab), ('AI Assistant', self.ai_tab)]
         for title, page in pages:
             tabs.addTab(scrollable(page), title)
         tabs.setCornerWidget(brand_badge(), Qt.Corner.TopRightCorner)
@@ -92,6 +94,7 @@ class MainWindow(QMainWindow):
         about.triggered.connect(self.show_about)
 
     def closeEvent(self, event):
+        self.sniffer_tab.shutdown()
         self.ai_tab.shutdown()
         super().closeEvent(event)
 
