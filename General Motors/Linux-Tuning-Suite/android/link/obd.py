@@ -235,9 +235,18 @@ class BluetoothTransport:
         self._out.write([b - 256 if b > 127 else b for b in data])
         self._out.flush()
 
-    def read_until(self, prompt=b'>'):
+    def read_until(self, prompt=b'>', timeout=5.0):
+        """Bytes up to the prompt. An adapter that goes quiet raises AdapterLost instead of waiting forever,
+        which used to freeze every screen until the app was restarted."""
+        import time
         out = bytearray()
+        deadline = time.monotonic() + timeout
         while True:
+            if self._in.available() == 0:
+                if time.monotonic() >= deadline:
+                    raise AdapterLost('The adapter stopped answering')
+                time.sleep(0.005)
+                continue
             value = self._in.read()
             if value < 0:
                 raise AdapterLost('The adapter closed the connection')
@@ -300,9 +309,11 @@ class Elm327:
         try:
             self.transport.write((command + '\r').encode('ascii'))
             raw = self.transport.read_until(b'>')
-        except OBDError as exc:
+        except Exception as exc:   # also a closed or broken socket, so the log shows why a reading stopped
             self._tell('ERR', f'{type(exc).__name__}: {exc}')
-            raise
+            if isinstance(exc, (OBDError, UnsafeCommand)):
+                raise
+            raise AdapterLost(f'The adapter connection failed: {exc}') from exc
         reply = raw.decode('ascii', 'replace').replace('\r', '\n').strip()
         self.traffic.append(('RX', reply.replace('\n', ' ')))
         self._tell('RX', reply.replace('\n', ' '))

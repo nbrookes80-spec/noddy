@@ -227,6 +227,7 @@ class LinkScreen(BoxLayout):
     def _connect(self, transport, address):
         try:
             elm = obd.Elm327(transport)
+            elm.on_traffic = self.session.log.write   # so the set-up handshake is logged too
             elm.open()
         except obd.OBDError as exc:
             self.session.log.write('ERR', f'connect failed: {type(exc).__name__}: {exc}')

@@ -73,7 +73,11 @@ class StreamRunner:
             if stream is None or self.paused:
                 time.sleep(0.2)
                 continue
-            stream.step()
+            try:
+                stream.step()
+            except Exception as exc:   # one bad round must not end the reader for good
+                stream.error = f'{type(exc).__name__}: {exc}'
+                self.session.log.write('ERR', f'live reader: {stream.error}')
             time.sleep(BACKOFF_SECONDS if stream.error else max(0.0, ROUND_SECONDS - (time.monotonic() - began)))
 
 

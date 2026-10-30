@@ -69,5 +69,32 @@ class TrafficLogTests(unittest.TestCase):
         self.assertEqual(elm.command('ATZ'), 'OK\n\n>')
 
 
+    def test_a_broken_socket_becomes_adapter_lost_and_is_logged(self):
+        from link import obd
+        seen = []
+        elm = obd.Elm327(FakeTransport(fail=OSError('socket closed')))
+        elm.on_traffic = lambda kind, text: seen.append(kind)
+        with self.assertRaises(obd.AdapterLost):
+            elm.command('0100')
+        self.assertEqual(seen, ['TX', 'ERR'])
+
+
+class SilentStream:
+    def available(self):
+        return 0
+
+    def read(self):
+        raise AssertionError('must not block on read')
+
+
+class BluetoothTimeoutTests(unittest.TestCase):
+    def test_a_silent_adapter_times_out_instead_of_hanging(self):
+        from link import obd
+        transport = obd.BluetoothTransport('00:00:00:00:00:00')
+        transport._in = SilentStream()
+        with self.assertRaises(obd.AdapterLost):
+            transport.read_until(b'>', timeout=0.05)
+
+
 if __name__ == '__main__':
     unittest.main()
