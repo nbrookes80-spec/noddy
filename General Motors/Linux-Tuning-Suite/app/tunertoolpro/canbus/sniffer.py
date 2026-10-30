@@ -198,20 +198,24 @@ class Sniffer:
     def rows(self):
         """One dict per visible ID, in ID order, ready to draw."""
         now = self.clock()
-        rows = []
-        for item in self._visible_items():
-            delta = item.delta()
-            freq = f'{round(1 / delta)} hz' if delta > 0 else '0 hz'
-            cells = []
-            for i in range(MAX_BYTES):
-                if i >= item.length:
-                    cells.append(None)
-                    continue
-                cells.append({'text': f'{item.current[i]:02X}', 'change': item.change(i),
-                              'fade': item.fade(i) if self.fade_inactive else 0,
-                              'notched': item.notch[i], 'bits': item.bits(i)})
-            rows.append({'id': item.can_id, 'extended': item.extended,
-                         'id_text': f'{item.can_id:08X}' if item.extended else f'{item.can_id:03X}',
-                         'delta': delta, 'freq': freq,
-                         'stale': item.elapsed(now) > STALE_SECONDS, 'bytes': cells})
-        return rows
+        return [self._row(item, now) for item in self._visible_items()]
+
+    def row_for(self, can_id):
+        """The row for one ID whether or not the filter shows it, or None if it is not on the bus."""
+        item = self.items.get(can_id)
+        return self._row(item, self.clock()) if item is not None else None
+
+    def _row(self, item, now):
+        delta = item.delta()
+        freq = f'{round(1 / delta)} hz' if delta > 0 else '0 hz'
+        cells = []
+        for i in range(MAX_BYTES):
+            if i >= item.length:
+                cells.append(None)
+                continue
+            cells.append({'text': f'{item.current[i]:02X}', 'change': item.change(i),
+                          'fade': item.fade(i) if self.fade_inactive else 0,
+                          'notched': item.notch[i], 'bits': item.bits(i)})
+        return {'id': item.can_id, 'extended': item.extended,
+                'id_text': f'{item.can_id:08X}' if item.extended else f'{item.can_id:03X}',
+                'delta': delta, 'freq': freq, 'stale': item.elapsed(now) > STALE_SECONDS, 'bytes': cells}

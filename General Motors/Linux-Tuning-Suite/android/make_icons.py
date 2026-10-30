@@ -148,13 +148,26 @@ def agent_icon(size=SIZE):
     return img
 
 
+def sniff_icon(size=SIZE):
+    """A grid of bit squares, some just set (amber) and some just cleared (blue): the CAN sniffer."""
+    img, d, k = canvas(size)
+    _tile(d, k)
+    pattern = ('ALLA', 'LAAL', 'ALAL', 'LLAA')
+    for r, row in enumerate(pattern):
+        for c, cell in enumerate(row):
+            x, y = (120 + c * 66) * k, (120 + r * 66) * k
+            d.rounded_rectangle([x, y, x + 50 * k, y + 50 * k], radius=10 * k,
+                                fill=ACCENT if cell == 'A' else LINE)
+    return img
+
+
 def save_all():
     OUT.mkdir(exist_ok=True)
     app_icon().save(OUT / 'app_icon.png')
     for name, make in (('shift', shift_icon), ('dyno', dyno_icon), ('link', link_icon),
                        ('upload', upload_icon), ('scan', scan_icon),
                        ('demo', demo_icon), ('codes', codes_icon), ('log', log_icon),
-                       ('live', live_icon), ('agent', agent_icon)):
+                       ('live', live_icon), ('agent', agent_icon), ('sniff', sniff_icon)):
         make(size=128).save(OUT / f'{name}.png')
     return sorted(p.name for p in OUT.glob('*.png'))
 

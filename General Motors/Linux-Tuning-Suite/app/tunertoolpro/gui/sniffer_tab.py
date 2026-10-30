@@ -5,8 +5,6 @@ to the car (see canbus/monitor.py). It can also play back a log file or a simula
 learned with no hardware. Based on the Sniffer window in SavvyCAN; see docs/THIRD_PARTY.md.
 """
 
-import queue
-import threading
 import time
 
 from PyQt6.QtCore import Qt, QTimer
@@ -15,14 +13,12 @@ from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QFileDialo
                              QLineEdit, QListWidget, QListWidgetItem, QMessageBox, QPushButton, QSpinBox,
                              QStyledItemDelegate, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 
-from ..canbus import (DemoBus, ElmMonitor, LogPlayer, MonitorError, PROTOCOLS, Sniffer, format_candump,
-                      format_csv, read_log)
+from ..canbus import MonitorError, PROTOCOLS, SnifferSession, read_log
 from ..canbus.sniffer import DEC, INC
-from ..canbus.transports import DEFAULT_WIFI, SerialTransport, TcpTransport, TransportError, serial_ports
+from ..canbus.transports import DEFAULT_WIFI, SerialTransport, TcpTransport, serial_ports
 
 SOURCES = ('Simulated bus', 'Log file', 'Wi-Fi adapter', 'Serial / USB / Bluetooth adapter')
 FIXED_COLUMNS = ('ID', 'Delta', 'Frequency')
-CAPTURE_LIMIT = 500_000
 POLL_MS = 50
 REFRESH_MS = 200
 
@@ -70,16 +66,10 @@ class SnifferTab(QWidget):
     def __init__(self, parent=None, clock=time.monotonic):
         super().__init__(parent)
         self.clock = clock
-        self.sniffer = Sniffer(clock)
-        self.source = None
-        self.monitor = None
-        self.worker = None
-        self.stop_flag = threading.Event()
-        self.inbox = queue.Queue()
-        self.captured = []
+        self.session = SnifferSession(clock)
+        self.sniffer = self.session.sniffer
         self.log_frames = None
         self.log_path = ''
-        self.error = ''
         self._known_ids = set()
         self._dark = _dark(self)
 
@@ -241,7 +231,11 @@ class SnifferTab(QWidget):
     # --- start and stop --------------------------------------------------------------------------
     @property
     def running(self):
-        return self.source is not None or self.worker is not None
+        return self.session.running
+
+    @property
+    def captured(self):
+        return self.session.captured
 
     def toggle(self):
         if self.running:
@@ -251,21 +245,19 @@ class SnifferTab(QWidget):
 
     def start(self):
         name = self.source_name
-        self.error = ''
         try:
             if name == SOURCES[0]:
-                self.source = DemoBus(self.clock)
+                self.session.start_demo()
             elif name == 'Log file':
                 if not self.log_frames:
                     self._pick_log()
                     if not self.log_frames:
                         return
-                self.source = LogPlayer(self.log_frames, self.clock)
+                self.session.start_log(self.log_frames, self.log_path)
             else:
                 self._start_adapter(name)
-        except (MonitorError, TransportError, ValueError) as exc:
+        except (MonitorError, ValueError) as exc:
             QMessageBox.warning(self, 'Could not start', str(exc))
-            self.source = None
             return
         self.start_btn.setText('Stop')
         self.poll_timer.start()
@@ -282,78 +274,33 @@ class SnifferTab(QWidget):
                 raise ValueError('Choose the serial port of the adapter first (for example /dev/ttyUSB0, '
                                  '/dev/rfcomm0 or COM3).')
             transport = SerialTransport(self.port_box.currentText().strip())
-        transport.open()
-        monitor = ElmMonitor(transport, self.clock)
-        try:
-            monitor.start(self.protocol_box.currentData(), self.filter_edit.text().strip() or None)
-        except Exception:
-            transport.close()
-            raise
-        self.monitor = monitor
-        self.stop_flag.clear()
-        self.worker = threading.Thread(target=self._read_loop, args=(monitor, transport), daemon=True)
-        self.worker.start()
-
-    def _read_loop(self, monitor, transport):
-        try:
-            while not self.stop_flag.is_set():
-                frames = monitor.poll(0.1)
-                if frames:
-                    self.inbox.put(frames)
-        except Exception as exc:
-            self.inbox.put(str(exc))
-        finally:
-            try:
-                monitor.stop()
-            except Exception:
-                pass
-            transport.close()
+        self.session.start_adapter(transport, self.protocol_box.currentData(),
+                                   self.filter_edit.text().strip() or None, label=name)
 
     def stop(self):
         self.poll_timer.stop()
         self.refresh_timer.stop()
         self.notch_timer.stop()
-        self.stop_flag.set()
-        if self.worker is not None:
-            self.worker.join(timeout=5)
-        self.worker = self.monitor = self.source = None
+        self.session.stop()
         self.start_btn.setText('Start')
-        self.status.setText(self.error or f'Stopped. {self.sniffer.frames_seen} frames seen.')
+        self.status.setText(self.session.error or f'Stopped. {self.sniffer.frames_seen} frames seen.')
 
     def shutdown(self):
-        if self.running:
+        if self.running or self.poll_timer.isActive():
             self.stop()
 
     # --- frames in, rows out ---------------------------------------------------------------------
     def poll(self):
-        incoming = []
-        if self.source is not None:
-            incoming = self.source.poll()
-            if getattr(self.source, 'finished', False):
-                self.stop()
-        while True:
-            try:
-                item = self.inbox.get_nowait()
-            except queue.Empty:
-                break
-            if isinstance(item, str):
-                self.error = f'Stopped: {item}'
-                self.stop()
-                break
-            incoming.extend(item)
-        if incoming:
-            self.sniffer.feed(incoming)
-            room = CAPTURE_LIMIT - len(self.captured)
-            if room > 0:
-                self.captured.extend(incoming[:room])
+        self.session.poll()
+        if self.poll_timer.isActive() and not self.session.running:   # a log ended or the adapter dropped
+            self.stop()
 
     def feed(self, frames):
         """Hand frames in directly (used by tests and by anything that already has them)."""
-        self.sniffer.feed(frames)
-        self.captured.extend(frames[:max(0, CAPTURE_LIMIT - len(self.captured))])
+        self.session.feed(list(frames))
 
     def refresh(self):
-        gone = self.sniffer.tick()
+        gone = self.session.tick()
         for can_id in gone:
             self._remove_id(can_id)
         rows = self.sniffer.rows()
@@ -362,7 +309,7 @@ class SnifferTab(QWidget):
         self.table.setRowCount(len(rows))
         for r, row in enumerate(rows):
             self._paint_row(r, row)
-        overruns = self.monitor.overruns if self.monitor else 0
+        overruns = self.session.overruns
         text = f'{self.sniffer.frames_seen} frames seen, {len(rows)} IDs shown'
         if overruns:
             text += f'. The adapter dropped frames {overruns} times: set a receive filter to quieten the bus.'
@@ -454,8 +401,7 @@ class SnifferTab(QWidget):
 
     # --- housekeeping ----------------------------------------------------------------------------
     def clear(self):
-        self.sniffer.clear()
-        self.captured.clear()
+        self.session.clear()
         self._known_ids.clear()
         self.id_list.clear()
         self.table.setRowCount(0)
@@ -469,12 +415,14 @@ class SnifferTab(QWidget):
                                                    'candump log (*.log);;CSV (*.csv)')
         if not path:
             return
-        text = format_csv(self.captured) if chosen.startswith('CSV') or path.endswith('.csv') \
-            else format_candump(self.captured)
+        want_csv = chosen.startswith('CSV')
+        if want_csv and not path.lower().endswith('.csv'):
+            path += '.csv'
+        elif not want_csv and '.' not in path.rsplit('/', 1)[-1]:
+            path += '.log'
         try:
-            with open(path, 'w', encoding='utf-8') as handle:
-                handle.write(text)
+            count = self.session.save(path)
         except OSError as exc:
             QMessageBox.warning(self, 'Could not save', str(exc))
             return
-        self.status.setText(f'Saved {len(self.captured)} frames to {path}.')
+        self.status.setText(f'Saved {count} frames to {path}.')

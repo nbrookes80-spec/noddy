@@ -1,7 +1,10 @@
 import unittest
 
-from tunertoolpro.canbus import (DemoBus, ElmMonitor, Frame, LogPlayer, MonitorError, Sniffer, UnsafeCommand,
-                                 format_candump, format_csv, is_allowed, read_log)
+import threading
+import time
+
+from tunertoolpro.canbus import (DemoBus, ElmMonitor, Frame, LogPlayer, MonitorError, Sniffer, SnifferSession,
+                                 UnsafeCommand, format_candump, format_csv, is_allowed, read_log)
 from tunertoolpro.canbus import frames as fr
 from tunertoolpro.canbus import monitor as mon
 from tunertoolpro.canbus.sniffer import DEC, INC, NONE
@@ -214,6 +217,13 @@ class SnifferTests(unittest.TestCase):
         self.s.feed([frame(0x300, 1), Frame(0x18DAF110, b'\x01', True), frame(0x100, 1)])
         self.assertEqual([r['id_text'] for r in self.s.rows()], ['100', '300', '18DAF110'])
 
+    def test_row_for_ignores_the_filter(self):
+        self.s.feed([frame(0x100, 1), frame(0x200, 2)])
+        self.s.hide_all()
+        self.assertEqual(self.s.rows(), [])
+        self.assertEqual(self.s.row_for(0x200)['bytes'][0]['text'], '02')
+        self.assertIsNone(self.s.row_for(0x999))
+
     def test_clear(self):
         self.s.feed([frame(0x100, 1)])
         self.s.clear()
@@ -382,6 +392,135 @@ class SourceTests(unittest.TestCase):
 
     def test_empty_log(self):
         self.assertEqual(LogPlayer([]).poll(), [])
+
+
+class LiveTransport(FakeTransport):
+    """Like FakeTransport but with a closed flag, an open() and a slow trickle of frames."""
+
+    def __init__(self, chunks=(), fail_on=None):
+        super().__init__(chunks)
+        self.opened = self.closed = False
+        self.fail_on = fail_on
+
+    def open(self):
+        self.opened = True
+
+    def close(self):
+        self.closed = True
+
+    def write(self, data):
+        super().write(data)
+        if self.fail_on and data.decode().strip() == self.fail_on:
+            self.reply = b'?\r'
+
+    reply = b'OK\r'
+
+    def read_until(self, prompt=b'>'):
+        reply, self.reply = self.reply, b'OK\r'
+        return reply
+
+    def read_chunk(self, timeout=0.2):
+        if self.chunks:
+            chunk = self.chunks.pop(0)
+            if isinstance(chunk, Exception):
+                raise chunk
+            return chunk
+        time.sleep(0.01)
+        return b''
+
+
+def wait_for(condition, seconds=3.0):
+    end = time.time() + seconds
+    while time.time() < end:
+        if condition():
+            return True
+        time.sleep(0.01)
+    return False
+
+
+class SessionTests(unittest.TestCase):
+    def test_demo_session_collects_and_saves_frames(self):
+        clock = Clock()
+        session = SnifferSession(clock)
+        session.start_demo()
+        clock.advance(1.0)
+        self.assertGreater(session.poll(), 100)
+        self.assertEqual(len(session.captured), session.sniffer.frames_seen)
+        session.stop()
+        self.assertFalse(session.running)
+        import os
+        import tempfile
+        with tempfile.TemporaryDirectory() as folder:
+            self.assertEqual(session.save(os.path.join(folder, 'a.csv')), len(session.captured))
+            with open(os.path.join(folder, 'a.csv')) as handle:
+                self.assertEqual(len(read_log(handle.read())), len(session.captured))
+
+    def test_log_session_refuses_an_empty_log(self):
+        with self.assertRaises(MonitorError):
+            SnifferSession().start_log([])
+
+    def test_adapter_session_runs_the_monitor_and_hands_the_adapter_back(self):
+        t = LiveTransport([b'7E8 01 02\r7E8 03 04\r'])
+        session = SnifferSession()
+        session.start_adapter(t, '6', '7E8')
+        self.assertTrue(t.opened)
+        self.assertTrue(wait_for(lambda: session.poll() or session.sniffer.frames_seen == 2))
+        session.stop()
+        sent = [s.decode().strip() for s in t.sent]
+        self.assertIn('ATMA', sent)
+        self.assertEqual(sent[-1], 'ATSP0')
+        self.assertTrue(t.closed)
+        self.assertFalse(session.running)
+
+    def test_borrowed_transport_stays_open_and_the_lock_is_held_only_while_listening(self):
+        t = LiveTransport()
+        lock = threading.RLock()
+        session = SnifferSession()
+        session.start_adapter(t, lock=lock, owns_transport=False)
+        self.assertFalse(t.opened)                         # the caller already opened it
+        got = []
+        thread = threading.Thread(target=lambda: got.append(lock.acquire(timeout=0.3)))
+        thread.start()
+        thread.join()
+        self.assertEqual(got, [False])                     # nobody else can talk to the adapter now
+        session.stop()
+        self.assertFalse(t.closed)                         # not ours to close
+        self.assertTrue(lock.acquire(timeout=1))           # released again
+        lock.release()
+
+    def test_busy_adapter_is_reported(self):
+        session = SnifferSession()
+        busy = type('Busy', (), {'acquire': staticmethod(lambda timeout=None: False),
+                                 'release': staticmethod(lambda: None)})()
+        with self.assertRaises(MonitorError):
+            session.start_adapter(LiveTransport(), lock=busy, owns_transport=False)
+        self.assertFalse(session.running)
+
+    def test_failed_start_puts_the_adapter_back(self):
+        t = LiveTransport(fail_on='ATS1')
+        session = SnifferSession()
+        with self.assertRaises(MonitorError):
+            session.start_adapter(t, owns_transport=False)
+        sent = [s.decode().strip() for s in t.sent]
+        self.assertEqual(sent[-1], 'ATSP0')
+        self.assertNotIn('ATMA', sent)
+        self.assertFalse(session.running)
+
+    def test_a_dropped_adapter_stops_the_session_with_a_message(self):
+        t = LiveTransport([b'7E8 01\r', OSError('link lost')])
+        session = SnifferSession()
+        session.start_adapter(t)
+        self.assertTrue(wait_for(lambda: (session.poll(), not session.running)[1]))
+        self.assertIn('link lost', session.error)
+
+    def test_starting_again_stops_the_previous_run(self):
+        t = LiveTransport()
+        session = SnifferSession()
+        session.start_adapter(t)
+        session.start_demo()
+        self.assertTrue(t.closed)
+        self.assertFalse(session.listening_to_adapter)
+        session.stop()
 
 
 if __name__ == '__main__':

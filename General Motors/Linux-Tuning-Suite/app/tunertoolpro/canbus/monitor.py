@@ -140,15 +140,19 @@ class ElmMonitor:
         self._last_chunk = now
         return frames
 
+    def restore(self):
+        """Put the adapter back as the OBD link expects it (headers and spaces off, auto protocol)."""
+        for command in RESTORE_COMMANDS:
+            self.command(command)
+
     def stop(self):
-        """Leave monitor mode and put the adapter back as the OBD link expects it. Safe to call twice."""
+        """Leave monitor mode and hand the adapter back. Safe to call twice."""
         if not self.running:
             return
         self.running = False
         try:
             self.transport.write(b'\r')   # any character interrupts ATMA
             self.transport.read_until(b'>')
-            for command in RESTORE_COMMANDS:
-                self.command(command)
+            self.restore()
         except Exception as exc:
             raise MonitorError(f'Could not hand the adapter back cleanly: {exc}') from exc

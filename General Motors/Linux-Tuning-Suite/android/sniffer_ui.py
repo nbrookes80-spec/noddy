@@ -1,0 +1,378 @@
+"""The Sniff screen: watch which CAN IDs are active and which bytes and bits change.
+
+Receive only. On the adapter that is connected on the Link tab it listens with the ELM327 "monitor
+all" command and sends nothing to the car (see tunertoolpro/canbus/monitor.py). It can also play a
+log file or a simulated bus, so it can be learned with no adapter. The ID tracking is a port of the
+Sniffer in SavvyCAN; see docs/THIRD_PARTY.md. The row text comes from sniffer_view.py.
+"""
+
+import os
+import threading
+
+from kivy import kivy_data_dir
+from kivy.clock import Clock
+from kivy.metrics import dp
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.filechooser import FileChooserListView
+from kivy.uix.label import Label
+from kivy.uix.popup import Popup
+from kivy.uix.spinner import Spinner
+from kivy.uix.textinput import TextInput
+from kivy.uix.togglebutton import ToggleButton
+
+import sniffer_view
+from tunertoolpro.canbus import MonitorError, PROTOCOLS, SnifferSession, read_log
+from ui_kit import (ACCENT, ALERT, GOOD, MUTED, RAISED, TEXT, Card, WrapOption, button_row, make_button,
+                    panel_label, section_title, stack, style_button)
+
+MONO = os.path.join(kivy_data_dir, 'fonts', 'RobotoMono-Regular.ttf')
+POLL_SECONDS = 0.05
+REFRESH_SECONDS = 0.2
+SOURCES = ('Simulated', 'Adapter', 'Log file')
+
+
+def _mono_label(**kwargs):
+    label = Label(font_name=MONO, font_size=dp(11), color=TEXT, size_hint_y=None, halign='left', valign='top',
+                  markup=True, **kwargs)
+    label.bind(width=lambda w, _: setattr(w, 'text_size', (w.width, None)))
+    label.bind(texture_size=lambda w, size: setattr(w, 'height', size[1]))
+    return label
+
+
+def _text_box(hint, text=''):
+    return TextInput(text=text, hint_text=hint, multiline=False, size_hint_y=None, height=dp(44),
+                     background_color=RAISED, foreground_color=TEXT, hint_text_color=MUTED,
+                     font_size=dp(14), padding=[dp(10), dp(12), dp(10), dp(10)])
+
+
+class SnifferScreen(BoxLayout):
+    def __init__(self, session, runner, folder, on_open_link=None, **kwargs):
+        super().__init__(orientation='vertical', **kwargs)
+        self.app_session = session          # the connected adapter, if any (Link tab)
+        self.runner = runner                # the Live reader, which must stand aside while we listen
+        self.folder = folder                # where captures are saved
+        self.on_open_link = on_open_link
+        self.sniff = SnifferSession()
+        self.kind = 'Simulated'
+        self.log_frames = None
+        self.log_name = ''
+        self.active = False
+        self._starting = False
+        self._events = []
+
+        source = Card()
+        source.add_widget(section_title('CAN sniffer'))
+        source.add_widget(panel_label(
+            'Shows only the CAN IDs that are updating. A byte that went up is green (+), one that went down '
+            'is red (-). Hold still and press Notch a few times to mute the bits that always change, then '
+            'move the thing you are hunting for (steering, a pedal, a switch) and watch which ID lights up. '
+            'Receive only: nothing is sent to the car.', color=MUTED, font_size=dp(13)))
+        self.source_buttons = {}
+        buttons = []
+        for name in SOURCES:
+            button = style_button(Button(text=name))
+            button.bind(on_release=lambda _b, n=name: self.set_kind(n))
+            self.source_buttons[name] = button
+            buttons.append(button)
+        source.add_widget(button_row(*buttons))
+        self.source_note = panel_label('', color=MUTED, font_size=dp(13))
+        source.add_widget(self.source_note)
+        self.bus_box = Spinner(text=self._bus_label('6'), values=[self._bus_label(k) for k in PROTOCOLS],
+                               size_hint_y=None, height=dp(48), option_cls=WrapOption)
+        self.filter_box = _text_box('Hear only this ID, hex (optional)')
+        self.log_button = make_button('Choose a log file', self.choose_log)
+        self.extra = BoxLayout(orientation='vertical', size_hint_y=None, height=0, spacing=dp(8))   # per-source controls
+        self.extra.bind(minimum_height=self.extra.setter('height'))
+        source.add_widget(self.extra)
+        self.start_button = style_button(Button(text='Start', size_hint_y=None, height=dp(52)), primary=True)
+        self.start_button.bind(on_release=lambda *_: self.toggle())
+        source.add_widget(self.start_button)
+        self.state = panel_label('Stopped.', color=MUTED)
+        source.add_widget(self.state)
+
+        controls = Card()
+        controls.add_widget(section_title('Notching'))
+        self.notch_button = make_button('Notch', lambda: self.sniff.sniffer.notch(), primary=True)
+        self.unnotch_button = make_button('Un-notch', lambda: self.sniff.sniffer.unnotch())
+        self.clear_button = make_button('Clear', self.clear)
+        controls.add_widget(button_row(self.notch_button, self.unnotch_button, self.clear_button))
+        self.options = {}
+        for key, text in (('never_expire', 'Never expire IDs'), ('mute_notched', 'Mute notched bits'),
+                          ('fade_inactive', 'Fade quiet bytes')):
+            toggle = ToggleButton(text=text, size_hint_y=None, height=dp(44))
+            style_button(toggle)
+            toggle.bind(state=lambda b, state, k=key: setattr(self.sniff.sniffer, k, state == 'down'))
+            self.options[key] = toggle
+        controls.add_widget(button_row(*self.options.values(), height=dp(44)))
+        self.only_box = _text_box('Only show these IDs, hex (empty = all)')
+        self.only_box.bind(on_text_validate=lambda *_: self.apply_filter(), focus=self._leave_filter)
+        controls.add_widget(self.only_box)
+        self.bits_box = _text_box('Show the bits of one ID, hex')
+        controls.add_widget(self.bits_box)
+
+        frames = Card()
+        frames.add_widget(section_title('Frames'))
+        self.table = _mono_label(text='Press Start.')
+        frames.add_widget(self.table)
+        self.bits_card = Card()
+        self.bits_card.add_widget(section_title('Bits'))
+        self.bits = _mono_label(text='')
+        self.bits_card.add_widget(self.bits)
+        saving = Card()
+        saving.add_widget(section_title('Save'))
+        saving.add_widget(make_button('Save the captured frames', self.save))
+        self.save_note = panel_label('', color=MUTED, font_size=dp(13))
+        saving.add_widget(self.save_note)
+
+        self.add_widget(stack(source, controls, frames, self.bits_card, saving))
+        self.set_kind('Simulated')
+
+    @staticmethod
+    def _bus_label(key):
+        return f'{key}: {PROTOCOLS[key]}'
+
+    # --- screen lifecycle ------------------------------------------------------------------------
+    def activate(self):
+        self.active = True
+        if not self._events:
+            self._events = [Clock.schedule_interval(self._poll, POLL_SECONDS),
+                            Clock.schedule_interval(self._refresh, REFRESH_SECONDS),
+                            Clock.schedule_interval(lambda dt: self.sniff.sniffer.tick_notch(), REFRESH_SECONDS)]
+        self._draw()
+
+    def deactivate(self):
+        self.active = False
+
+    def source_changed(self, _status=None):
+        """The adapter was connected or dropped on the Link tab."""
+        if self.sniff.listening_to_adapter and self.app_session.elm is None:
+            self.stop()
+        self._explain_source()
+
+    def holds_adapter(self):
+        return self.sniff.listening_to_adapter
+
+    # --- choosing a source -----------------------------------------------------------------------
+    def set_kind(self, name):
+        self.kind = name
+        for key, button in self.source_buttons.items():
+            button.color = ACCENT if key == name else TEXT
+        self.extra.clear_widgets()
+        if name == 'Adapter':
+            self.extra.add_widget(self.bus_box)
+            self.extra.add_widget(self.filter_box)
+        elif name == 'Log file':
+            self.extra.add_widget(self.log_button)
+        self._explain_source()
+
+    def _explain_source(self):
+        if self.kind == 'Simulated':
+            text = 'Made-up traffic from five invented messages, to practise notching on. No adapter needed.'
+        elif self.kind == 'Adapter':
+            if self.app_session.elm is None:
+                text = 'Connect your scan adapter on the Link tab first (demo mode does not count).'
+            else:
+                text = ('Listens through the adapter connected on the Link tab. While it listens, Live and Scan '
+                        'wait. Pick the bus speed; most cars, including GM, are 500 kbit/s 11-bit.')
+        else:
+            text = self.log_name or 'Play back a saved capture (candump, CSV from this app, SLCAN or ELM text).'
+        self.source_note.text = text
+
+    def choose_log(self):
+        try:
+            from plyer import filechooser
+        except ImportError:
+            filechooser = None
+        if filechooser is not None:
+            try:
+                filechooser.open_file(on_selection=self._native_picked, filters=['*.log', '*.csv', '*.txt'],
+                                      multiple=False)
+                return
+            except Exception:   # the platform chooser is missing or refused; use the built-in one
+                pass
+        self._open_picker()
+
+    def _native_picked(self, selection):
+        if selection:
+            path = selection[0]
+            Clock.schedule_once(lambda dt: self.load_log(path))
+
+    def _open_picker(self):
+        chooser = FileChooserListView(path=os.path.expanduser('~'), filters=['*.log', '*.csv', '*.txt'])
+        body = BoxLayout(orientation='vertical', spacing=dp(8), padding=dp(8))
+        body.add_widget(chooser)
+        cancel = style_button(Button(text='Cancel'))
+        open_button = style_button(Button(text='Open'), primary=True)
+        body.add_widget(button_row(cancel, open_button))
+        popup = Popup(title='Choose a CAN log', content=body, size_hint=(0.95, 0.9))
+        cancel.bind(on_release=lambda *_: popup.dismiss())
+
+        def open_selected(*_):
+            popup.dismiss()
+            if chooser.selection:
+                self.load_log(chooser.selection[0])
+
+        open_button.bind(on_release=open_selected)
+        popup.open()
+
+    def load_log(self, path):
+        try:
+            with open(path, encoding='utf-8', errors='replace') as handle:
+                frames = read_log(handle.read())
+        except OSError:
+            self.source_note.text = 'Could not open that file. Copy it into Downloads, then choose it again.'
+            return
+        if not frames:
+            self.source_note.text = 'No CAN frames found in that file.'
+            return
+        self.log_frames, self.log_name = frames, f'{os.path.basename(path)}: {len(frames)} frames'
+        self._explain_source()
+
+    # --- start and stop --------------------------------------------------------------------------
+    def toggle(self):
+        if self.sniff.running:
+            self.stop()
+        elif not self._starting:
+            self.start()
+
+    def start(self):
+        try:
+            if self.kind == 'Simulated':
+                self.sniff.start_demo()
+            elif self.kind == 'Log file':
+                if not self.log_frames:
+                    self.source_note.text = 'Choose a log file first.'
+                    return
+                self.sniff.start_log(self.log_frames, self.log_name)
+            else:
+                self._start_adapter()
+                return
+        except MonitorError as exc:
+            self.state.text = str(exc)
+            self.state.color = ALERT
+            return
+        self._started()
+
+    def _start_adapter(self):
+        elm = self.app_session.elm
+        if elm is None:
+            self.state.text = 'Connect your scan adapter on the Link tab first.'
+            self.state.color = ALERT
+            if self.on_open_link:
+                self.on_open_link()
+            return
+        protocol = self.bus_box.text.split(':', 1)[0]
+        rx_filter = self.filter_box.text.strip() or None
+        self._starting = True
+        self.start_button.text = 'Starting...'
+        self.runner.paused = True       # the Live reader must not touch the adapter from here on
+
+        def work():
+            error = None
+            try:
+                self.sniff.start_adapter(elm.transport, protocol, rx_filter, lock=elm._lock, owns_transport=False,
+                                         label='Adapter')
+            except MonitorError as exc:
+                error = str(exc)
+            Clock.schedule_once(lambda dt: self._adapter_started(error))
+
+        threading.Thread(target=work, daemon=True).start()
+
+    def _adapter_started(self, error):
+        self._starting = False
+        if error:
+            self.runner.paused = False
+            self.start_button.text = 'Start'
+            self.state.text = error
+            self.state.color = ALERT
+            return
+        self._started()
+
+    def _started(self):
+        self.start_button.text = 'Stop'
+        self.state.text = f'Listening: {self.sniff.label}.'
+        self.state.color = GOOD
+        if self.active:
+            self.activate()
+
+    def stop(self):
+        self.sniff.stop()
+        self.runner.paused = False
+        self.start_button.text = 'Start'
+        self.state.text = self.sniff.error or f'Stopped. {self.sniff.sniffer.frames_seen} frames seen.'
+        self.state.color = ALERT if self.sniff.error else MUTED
+
+    def clear(self):
+        self.sniff.clear()
+        self.table.text = 'Cleared.'
+        self.bits.text = ''
+
+    # --- filtering and drawing -------------------------------------------------------------------
+    def _leave_filter(self, _box, focused):
+        if not focused:
+            self.apply_filter()
+
+    def apply_filter(self):
+        try:
+            wanted = sniffer_view.parse_ids(self.only_box.text)
+        except ValueError as exc:
+            self.state.text = str(exc)
+            self.state.color = ALERT
+            return
+        sniffer = self.sniff.sniffer
+        if not wanted:
+            sniffer.show_all()
+            return
+        sniffer.hide_all()
+        for can_id in wanted:
+            sniffer.set_visible(can_id, True)
+
+    def _poll(self, _dt):
+        self.sniff.poll()
+        if self.start_button.text == 'Stop' and not self.sniff.running:   # the log ended or the adapter dropped
+            self.stop()
+
+    def _refresh(self, _dt):
+        self.sniff.tick()
+        if self.active:
+            self._draw()
+
+    def _draw(self):
+        sniffer = self.sniff.sniffer
+        rows = sniffer.rows()
+        if rows:
+            self.table.text = sniffer_view.table_text(rows)
+        elif self.sniff.running:
+            self.table.text = 'Listening... no frames yet.'
+        status = f'Listening: {self.sniff.label}. ' if self.sniff.running else ''
+        if self.sniff.overruns:
+            status += f'The adapter dropped frames {self.sniff.overruns} times: use the ID filter to quieten it.'
+        if status and self.sniff.running:
+            self.state.text = status
+        self._draw_bits()
+
+    def _draw_bits(self):
+        text = self.bits_box.text.strip()
+        if not text:
+            self.bits.text = ''
+            return
+        try:
+            wanted = sniffer_view.parse_ids(text)
+        except ValueError as exc:
+            self.bits.text = str(exc)
+            return
+        can_id = next(iter(wanted), None)
+        self.bits.text = sniffer_view.bits_text(self.sniff.sniffer.row_for(can_id)) if can_id is not None else ''
+
+    # --- saving ----------------------------------------------------------------------------------
+    def save(self):
+        if not self.sniff.captured:
+            self.save_note.text = 'Nothing captured yet.'
+            return
+        try:
+            path, count = sniffer_view.save_capture(self.sniff, self.folder)
+        except OSError as exc:
+            self.save_note.text = f'Could not save: {exc}'
+            return
+        self.save_note.text = f'Saved {count} frames to {path}'
