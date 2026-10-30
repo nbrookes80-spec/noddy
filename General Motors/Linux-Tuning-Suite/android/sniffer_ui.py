@@ -55,6 +55,13 @@ def _mono_label(chars, **kwargs):
     return label
 
 
+def _restyle_option(toggle, state):
+    """An option button shows amber while it is on, so the user can see it took the tap."""
+    style_button(toggle, primary=(state == 'down'))
+    toggle.height = dp(44)
+    toggle.font_size = dp(12)
+
+
 def _text_box(hint, text=''):
     return TextInput(text=text, hint_text=hint, multiline=False, size_hint_y=None, height=dp(44),
                      background_color=RAISED, foreground_color=TEXT, hint_text_color=MUTED,
@@ -112,7 +119,7 @@ class SnifferScreen(BoxLayout):
 
         controls = Card()
         controls.add_widget(section_title('Notching'))
-        self.notch_button = make_button('Notch', lambda: self.sniff.sniffer.notch(), primary=True)
+        self.notch_button = make_button('Notch', lambda: self.sniff.sniffer.notch())
         self.unnotch_button = make_button('Unnotch', lambda: self.sniff.sniffer.unnotch())
         self.clear_button = make_button('Clear', self.clear)
         for button in (self.notch_button, self.unnotch_button, self.clear_button):
@@ -122,10 +129,8 @@ class SnifferScreen(BoxLayout):
         for key, text in (('never_expire', 'Keep IDs'), ('mute_notched', 'Mute notched'),
                           ('fade_inactive', 'Fade quiet')):
             toggle = ToggleButton(text=text)
-            style_button(toggle)
-            toggle.height = dp(44)
-            toggle.font_size = dp(12)
-            toggle.bind(state=lambda b, state, k=key: setattr(self.sniff.sniffer, k, state == 'down'))
+            _restyle_option(toggle, 'normal')
+            toggle.bind(state=lambda b, state, k=key: self._set_option(b, k, state))
             self.options[key] = toggle
         controls.add_widget(button_row(*self.options.values(), height=dp(44)))
         self.only_box = _text_box('Only these IDs, hex')
@@ -218,6 +223,10 @@ class SnifferScreen(BoxLayout):
                  '', 'Saved to:', result['raw'], result['report_path'], result['csv']]
         self._check_message('\n'.join(lines))
         self._check_message('\n'.join(lines))
+
+    def _set_option(self, toggle, key, state):
+        setattr(self.sniff.sniffer, key, state == 'down')
+        _restyle_option(toggle, state)
 
     @staticmethod
     def _bus_label(key):
