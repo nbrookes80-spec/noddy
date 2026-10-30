@@ -1,4 +1,4 @@
-"""The pages behind the Settings menu: dashboard layout and themes, PID manager, log data parameters, and the
+"""The pages behind the Settings menu: dashboard layout, themes, units, HUD, PID manager, log data parameters, and the
 pre-defined GM and Holden PID lists. Each function returns the cards for one page.
 
 `menu` is the AppMenu that shows them. A page reads and saves its choices through menu.saved and menu._save, so
@@ -14,10 +14,10 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
 
 import pid_card
-from scanner import car_scan, manual_pids, pid_view, pids, predefined, profiles, themes
+from scanner import car_scan, manual_pids, pid_view, pids, predefined, profiles, themes, units
 from settings_ui import spinner
 from tunertoolpro import vehicles
-from ui_kit import MUTED, RAISED, STATUS, TEXT, Card, make_button, panel_label, section_title, style_button
+from ui_kit import MUTED, RAISED, STATUS, TEXT, Card, make_button, panel_label, section_title, style_button, toggle
 
 COLUMN_LABELS = {0: 'Automatic (as many as fit)', 2: '2 across', 3: '3 across', 4: '4 across'}
 SCOPE_LABELS = {'all': 'Everything: Live stream and dashboard', 'live': 'Live stream sensors only',
@@ -57,7 +57,6 @@ def dashboard_cards(menu):
         pid_card.set_columns(count)
     columns.bind(text=set_columns)
     layout.add_widget(columns)
-    layout.add_widget(make_button('Full screen live data', menu._fullscreen))
 
     style = Card()
     style.add_widget(section_title('Sensor display'))
@@ -86,8 +85,8 @@ def dashboard_cards(menu):
 
     colours = Card()
     colours.add_widget(section_title('Gauge colours'))
-    colours.add_widget(panel_label('The colour of the gauge bars, graph lines and needles. Red lines stay red in '
-                                   'every theme.', color=MUTED, font_size=dp(12)))
+    colours.add_widget(panel_label('The colour of the gauge bars, graph lines and needles. The red, blue and green bands '
+                                   'keep their colours in every theme.', color=MUTED, font_size=dp(12)))
     chosen = spinner([t.label for t in themes.THEMES.values()], themes.THEMES[saved['dash_theme']].label)
 
     def set_theme(_box, text):
@@ -97,7 +96,46 @@ def dashboard_cards(menu):
         _redraw()
     chosen.bind(text=set_theme)
     colours.add_widget(chosen)
-    return [layout, style, colours]
+
+    readings = Card()
+    readings.add_widget(section_title('Units'))
+    readings.add_widget(panel_label('How temperatures, pressures and speeds are shown on the dashboard. A recording '
+                                    'keeps each sensor\'s own unit.', color=MUTED, font_size=dp(12)))
+    for group, label in (('temperature', 'Temperature'), ('pressure', 'Pressure'), ('speed', 'Speed and distance')):
+        readings.add_widget(panel_label(label, color=MUTED))
+        box = spinner(list(units.CHOICES[group]), saved[f'unit_{group}'])
+
+        def set_unit(_box, text, group=group):
+            menu._save(**{f'unit_{group}': text})
+            if pid_card.hooks.views is not None:
+                pid_card.hooks.views.set_units({g: menu.saved[f'unit_{g}'] for g in units.CHOICES})
+            _redraw()
+        box.bind(text=set_unit)
+        readings.add_widget(box)
+
+    extras = Card()
+    extras.add_widget(section_title('Range and average'))
+    extras.add_widget(panel_label('Shows the range (lowest to highest) and the average reading under each '
+                                  'sensor, and marks the lowest and highest on the bar and dial. Tap a sensor '
+                                  'and choose "Reset" to start it again.', color=MUTED, font_size=dp(12)))
+
+    def set_stats(on):
+        menu._save(dash_stats=on)
+        pid_card.set_stats(on)
+        _redraw()
+    extras.add_widget(toggle('Show range and average under each sensor', saved['dash_stats'], set_stats))
+    extras.add_widget(make_button('Reset every sensor now', pid_card.reset_stats))
+
+    hud = Card()
+    hud.add_widget(section_title('HUD mode'))
+    hud.add_widget(panel_label('Draws full screen mirrored, so a phone lying flat on the dashboard reads correctly '
+                               'as a reflection in the windscreen. The HUD button in full screen turns it on and '
+                               'off. A mirrored picture ignores touches: use the Exit button.',
+                               color=MUTED, font_size=dp(12)))
+    hud.add_widget(toggle('Mirror the full screen (HUD)', saved['hud_mirror'],
+                          lambda on: menu.on_hud(on) if menu.on_hud is not None else menu._save(hud_mirror=on)))
+    hud.add_widget(make_button('Full screen live data', menu._fullscreen))
+    return [layout, style, colours, readings, extras, hud]
 
 
 # --- PID manager -----------------------------------------------------------------------------------
