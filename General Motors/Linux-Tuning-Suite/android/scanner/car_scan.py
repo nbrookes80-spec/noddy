@@ -14,12 +14,16 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from link.obd import AdapterLost, OBDError
+import prefs as app_prefs
+from link.obd import (AdapterLost, BluetoothTransport, DEFAULT_WIFI, Elm327, OBDError, SerialTransport,
+                      WifiTransport)
 from scanner import pids
 
 SCAN_SUFFIX = '.scan.json'
 VERSION = 1
 AUTO = 'Auto'      # the header for "let the adapter pick", as Elm327.set_header uses it
+LINK_WIFI, LINK_BLUETOOTH, LINK_CABLE = 'wifi', 'bluetooth', 'cable'
+LINKS = (LINK_WIFI, LINK_BLUETOOTH, LINK_CABLE)
 
 
 def scan_ids(profile_pids, mode01_only=False):
@@ -113,3 +117,52 @@ def headers(scan_result):
     if scan_result is None or not scan_result['complete']:
         return {}
     return {p: info['header'] for p, info in scan_result['answered'].items() if info['header'] != AUTO}
+
+
+# --- which link to scan over ---------------------------------------------------------------------
+
+def link_from_prefs(prefs):
+    """The link the user last picked on the Link screen: 'bluetooth' or 'wifi'."""
+    return LINK_BLUETOOTH if prefs.get('link_kind') == 'Bluetooth' else LINK_WIFI
+
+
+def transport_for(link, bt_address='', wifi='', serial_port='', baud=38400):
+    """The transport for one link, built but not opened. Bluetooth works only on the phone; a cable only
+    where pyserial is installed (desktop)."""
+    if link == LINK_WIFI:
+        host, _, port = (wifi or '').strip().partition(':')
+        try:
+            return WifiTransport(host or DEFAULT_WIFI[0], int(port or DEFAULT_WIFI[1]))
+        except ValueError as exc:
+            raise OBDError(f'The Wi-Fi adapter address {wifi!r} needs a port number, e.g. 192.168.0.10:35000') from exc
+    if link == LINK_BLUETOOTH:
+        if not bt_address:
+            raise OBDError('No Bluetooth adapter is chosen. Pick it on the Link screen first.')
+        return BluetoothTransport(bt_address)
+    if link == LINK_CABLE:
+        if not serial_port:
+            raise OBDError('No cable port is given.')
+        return SerialTransport(serial_port, baud)
+    raise OBDError(f'Unknown link {link!r}')
+
+
+def choose_link(session_elm, prefs, serial_port='', baud=38400):
+    """Returns (elm, owned). If the app is already connected, its adapter is reused over whatever link it
+    uses. Otherwise a new connection is opened over the saved link (or the cable when a port is given).
+    owned is True when this call opened the connection, so the caller must close it."""
+    if session_elm is not None:
+        return session_elm, False
+    link = LINK_CABLE if serial_port else link_from_prefs(prefs)
+    elm = Elm327(transport_for(link, bt_address=prefs.get('bt_address', ''), wifi=prefs.get('wifi', ''),
+                               serial_port=serial_port, baud=baud))
+    try:
+        elm.open()
+    except Exception:
+        elm.close()
+        raise
+    return elm, True
+
+
+def saved_prefs(path=None):
+    """The app's saved link choices, or the defaults when no file is given."""
+    return app_prefs.load(path) if path else dict(app_prefs.DEFAULTS)

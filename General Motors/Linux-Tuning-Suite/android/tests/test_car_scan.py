@@ -190,7 +190,7 @@ class ScriptTests(unittest.TestCase):
         self.addCleanup(fake.close)
         folder = tempfile.mkdtemp()
         args = scan_car.build_parser().parse_args([
-            'holden-ve', '--host', '127.0.0.1', '--port', str(fake.port), '--folder', folder])
+            'holden-ve', '--wifi', f'127.0.0.1:{fake.port}', '--folder', folder])
         out = io.StringIO()
         with redirect_stdout(out):
             code = scan_car.run(args, out=print)
@@ -211,6 +211,154 @@ class ScriptTests(unittest.TestCase):
         lines = []
         self.assertEqual(scan_car.run(args, out=lines.append), 0)
         self.assertTrue(any('holden-ve' in line for line in lines))
+
+
+class FakeSerialPort:
+    """Stands in for pyserial: replies come from a script, one prompt-terminated answer per command."""
+
+    def __init__(self, replies):
+        self.replies = replies
+        self.pending = b''
+        self.written = []
+        self.in_waiting = 0
+        self.timeout = None
+
+    def write(self, data):
+        self.written.append(data.decode('ascii').strip())
+        self.pending += (self.replies.get(self.written[-1], '?') + '\r>').encode('ascii')
+
+    def flush(self):
+        pass
+
+    def read(self, count):
+        chunk, self.pending = self.pending[:count], self.pending[count:]
+        return chunk
+
+    def close(self):
+        pass
+
+
+class LinkChoiceTests(unittest.TestCase):
+    def test_a_saved_bluetooth_or_wifi_link_maps_to_its_name(self):
+        self.assertEqual(car_scan.link_from_prefs({'link_kind': 'Bluetooth'}), car_scan.LINK_BLUETOOTH)
+        self.assertEqual(car_scan.link_from_prefs({'link_kind': 'Wi-Fi'}), car_scan.LINK_WIFI)
+
+    def test_each_link_gets_its_own_transport(self):
+        wifi = car_scan.transport_for(car_scan.LINK_WIFI, wifi='10.0.0.5:3500')
+        self.assertIsInstance(wifi, obd.WifiTransport)
+        self.assertEqual((wifi.host, wifi.port), ('10.0.0.5', 3500))
+        self.assertIsInstance(car_scan.transport_for(car_scan.LINK_BLUETOOTH, bt_address='AA:BB'),
+                              obd.BluetoothTransport)
+        self.assertIsInstance(car_scan.transport_for(car_scan.LINK_CABLE, serial_port='COM3'), obd.SerialTransport)
+
+    def test_a_link_without_its_address_says_what_is_missing(self):
+        with self.assertRaisesRegex(obd.OBDError, 'Bluetooth adapter'):
+            car_scan.transport_for(car_scan.LINK_BLUETOOTH)
+        with self.assertRaisesRegex(obd.OBDError, 'cable port'):
+            car_scan.transport_for(car_scan.LINK_CABLE)
+        with self.assertRaisesRegex(obd.OBDError, 'port number'):
+            car_scan.transport_for(car_scan.LINK_WIFI, wifi='192.168.0.10:abc')
+
+    def test_a_live_app_connection_is_reused_and_not_reopened(self):
+        live = StubElm({})
+        elm, owned = car_scan.choose_link(live, {'link_kind': 'Bluetooth', 'bt_address': ''})
+        self.assertIs(elm, live)
+        self.assertFalse(owned)
+
+    def test_with_no_connection_the_saved_wifi_link_is_opened_and_owned(self):
+        fake = FakeElm327()
+        self.addCleanup(fake.close)
+        prefs = {'link_kind': 'Wi-Fi', 'bt_address': '', 'wifi': f'127.0.0.1:{fake.port}'}
+        elm, owned = car_scan.choose_link(None, prefs)
+        self.addCleanup(elm.close)
+        self.assertTrue(owned)
+        self.assertEqual(elm.read('010C')[0], 1726.0)
+
+    def test_a_saved_bluetooth_link_without_an_adapter_is_refused(self):
+        with self.assertRaisesRegex(obd.OBDError, 'Bluetooth adapter'):
+            car_scan.choose_link(None, {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': ''})
+
+    def test_a_cable_port_overrides_the_saved_link(self):
+        sys.modules['serial'] = FakeSerialModule({'ATZ': 'ELM327 v1.5'})
+        self.addCleanup(sys.modules.pop, 'serial', None)
+        elm, owned = car_scan.choose_link(None, {'link_kind': 'Wi-Fi', 'wifi': ''}, serial_port='COM3')
+        self.addCleanup(elm.close)
+        self.assertTrue(owned)
+        self.assertIsInstance(elm.transport, obd.SerialTransport)
+
+
+class FakeSerialModule:
+    """A stand-in for the pyserial module, so the cable path can be tested without a port."""
+
+    class SerialException(Exception):
+        pass
+
+    def __init__(self, replies):
+        self.replies = replies
+
+    def Serial(self, port, baud, **kwargs):
+        if port == 'NOPE':
+            raise OSError('no such port')
+        return FakeSerialPort(self.replies)
+
+
+class SerialTransportTests(unittest.TestCase):
+    def test_a_cable_reads_to_the_prompt_and_round_trips_a_command(self):
+        sys.modules['serial'] = FakeSerialModule({'ATZ': 'ELM327 v1.5', '010C': '410C1AF8'})
+        self.addCleanup(sys.modules.pop, 'serial', None)
+        transport = obd.SerialTransport('COM3')
+        transport.open()
+        transport.write(b'ATZ\r')
+        self.assertEqual(transport.read_until(b'>').strip(), b'ELM327 v1.5')
+        transport.write(b'010C\r')
+        self.assertEqual(transport.read_until(b'>').strip(), b'410C1AF8')
+        transport.close()
+
+    def test_a_port_that_will_not_open_is_an_obd_error(self):
+        sys.modules['serial'] = FakeSerialModule({})
+        self.addCleanup(sys.modules.pop, 'serial', None)
+        with self.assertRaisesRegex(obd.OBDError, 'NOPE'):
+            obd.SerialTransport('NOPE').open()
+
+    def test_a_script_run_on_a_cable_without_pyserial_says_so(self):
+        sys.modules['serial'] = None   # import fails, as on a machine without pyserial
+        self.addCleanup(sys.modules.pop, 'serial', None)
+        args = scan_car.build_parser().parse_args(['holden-ve', '--serial', 'COM3'])
+        lines = []
+        self.assertEqual(scan_car.run(args, out=lines.append), 1)
+        self.assertIn('pyserial', lines[-1])
+
+
+class BluetoothOnDesktopTests(unittest.TestCase):
+    def test_bluetooth_is_refused_clearly_off_the_phone(self):
+        args = scan_car.build_parser().parse_args(['holden-ve', '--link', 'bluetooth', '--bluetooth', 'AA:BB:CC:DD:EE:FF'])
+        lines = []
+        self.assertEqual(scan_car.run(args, out=lines.append), 1)
+        self.assertIn('Android app', lines[-1])
+
+
+class FollowsTheAppLinkTests(unittest.TestCase):
+    def write_prefs(self, choices):
+        path = Path(tempfile.mkdtemp()) / 'prefs.json'
+        path.write_text(json.dumps(choices))
+        return str(path)
+
+    def test_the_saved_wifi_link_and_address_are_used(self):
+        fake = FakeElm327()
+        self.addCleanup(fake.close)
+        prefs = self.write_prefs({'link_kind': 'Wi-Fi', 'bt_address': '', 'wifi': f'127.0.0.1:{fake.port}'})
+        folder = tempfile.mkdtemp()
+        args = scan_car.build_parser().parse_args(['holden-ve', '--prefs', prefs, '--folder', folder])
+        lines = []
+        self.assertEqual(scan_car.run(args, out=lines.append), 0, lines)
+        self.assertTrue(car_scan.load_scan(folder, 'holden-ve')['complete'])
+
+    def test_a_saved_bluetooth_link_is_used_when_the_app_chose_it(self):
+        prefs = self.write_prefs({'link_kind': 'Bluetooth', 'bt_address': 'AA:BB:CC:DD:EE:FF', 'wifi': ''})
+        args = scan_car.build_parser().parse_args(['holden-ve', '--prefs', prefs])
+        lines = []
+        self.assertEqual(scan_car.run(args, out=lines.append), 1)
+        self.assertIn('Android app', lines[-1])
 
 
 if __name__ == '__main__':

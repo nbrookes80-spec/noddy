@@ -120,12 +120,18 @@ OBD link's settings. Saved captures go to the app's `captures` folder. It has no
 
 ## Car scan (per-profile PID check)
 
-`tools/scan_car.py` reads every catalogued Mode 01 and Mode 22 reading for a profile once, from a Wi-Fi
-ELM327 adapter, and saves which ones the car answers and on which module address, to
+`tools/scan_car.py` reads every catalogued Mode 01 and Mode 22 reading for a profile once, from an ELM327
+adapter over Wi-Fi, Bluetooth or a cable, and saves which ones the car answers and on which module address, to
 `<folder>/<profile key>.scan.json`. Turn the ignition on first.
 
     python3 tools/scan_car.py --list
     python3 tools/scan_car.py holden-ve --folder car_scans
+    python3 tools/scan_car.py holden-ve --prefs ~/.local/share/tunertoolpro/prefs.json
+    python3 tools/scan_car.py holden-ve --link cable --serial /dev/ttyUSB0
+
+The link follows the app. The phone's scan uses the live connection if the app is connected, otherwise
+the link saved on the Link screen (Wi-Fi or Bluetooth). The desktop script reads that saved link from
+`--prefs`, or uses Wi-Fi, or a cable with `--serial` (pyserial). Bluetooth needs the Android app.
 
 The app loads that file when the profile is chosen (`profiles.activate(profile, scan=...)`). It then lists
 only the readings the car answered, and asks for the transmission readings on the module that replied.
@@ -133,6 +139,7 @@ With no scan, nothing is hidden. A scan cut short by a lost adapter never replac
 
 The scan sends only the same read-only requests the app already allows. The phone does not run it yet:
 no Scan screen has a save-profile step, so the scan is run from a computer for now.
+
 
 ## Bluetooth set-up
 

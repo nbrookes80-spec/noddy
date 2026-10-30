@@ -14,6 +14,7 @@ on Android, and it has not been tested with a real adapter yet.
 import re
 import socket
 import threading
+import time
 
 from scanner import pids as catalog
 
@@ -109,6 +110,55 @@ class WifiTransport:
         if self._sock is not None:
             self._sock.close()
             self._sock = None
+
+
+class SerialTransport:
+    """A USB or RS-232 cable to the adapter. Desktop only: needs pyserial, which the phone does not have."""
+
+    def __init__(self, port, baud=38400, timeout=5.0):
+        self.port, self.baud, self.timeout = port, baud, timeout
+        self._serial = None
+        self._buffer = b''
+
+    def open(self):
+        try:
+            import serial
+        except ImportError as exc:
+            raise OBDError('A cable needs the pyserial package (pip install pyserial)') from exc
+        try:
+            self._serial = serial.Serial(self.port, self.baud, timeout=0.2, write_timeout=2)
+        except (OSError, serial.SerialException) as exc:
+            raise OBDError(f'Could not open the cable port {self.port} ({exc})') from exc
+
+    def write(self, data):
+        self._serial.write(data)
+        self._serial.flush()
+
+    def read_until(self, prompt=b'>'):
+        """Read until the adapter's prompt character arrives. Returns the text before it."""
+        last = time.monotonic()
+        while prompt not in self._buffer:
+            chunk = self._serial.read(max(1, self._serial.in_waiting))
+            if chunk:
+                self._buffer += chunk
+                last = time.monotonic()
+            elif time.monotonic() - last > self.timeout:
+                raise AdapterLost('The adapter stopped answering')
+        reply, _, self._buffer = self._buffer.partition(prompt)
+        return reply
+
+    def read_chunk(self, timeout=0.2):
+        """Whatever the adapter has sent (b'' if nothing arrived within timeout). Used by the CAN sniffer."""
+        if self._buffer:
+            chunk, self._buffer = self._buffer, b''
+            return chunk
+        self._serial.timeout = timeout
+        return self._serial.read(max(1, self._serial.in_waiting))
+
+    def close(self):
+        if self._serial is not None:
+            self._serial.close()
+            self._serial = None
 
 
 class BluetoothTransport:
