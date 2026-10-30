@@ -205,7 +205,7 @@ class SnifferScreen(BoxLayout):
 
     def _check_done(self, result, error):
         self._checking = False
-        self.runner.paused = self.sniff.holds_adapter()
+        self.runner.paused = self.holds_adapter()
         if error:
             self._check_message(f'The check stopped: {error}', error=True)
             return
