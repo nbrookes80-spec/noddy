@@ -84,6 +84,13 @@ class TableTextTests(unittest.TestCase):
             self.assertEqual(plain[start + 4 * i:start + 4 * i + 2], f'{0x11 * (i + 1):02X}')
 
 
+    def test_line_chars_covers_the_widest_row(self):
+        import re
+        _s, rows = make_rows([Frame(0x18DAF110, bytes(range(1, 9)), True, 0.0)])
+        for line in view.table_text(rows).splitlines():
+            self.assertLessEqual(len(re.sub(r'\[/?color[^\]]*\]', '', line)), view.LINE_CHARS)
+
+
 class BitsTextTests(unittest.TestCase):
     def test_bits_show_set_unset_rose_fell_and_notched(self):
         sniffer, _ = make_rows([Frame(0x1E5, b'\xA0', False, 0.0)], [Frame(0x1E5, b'\xC0', False, 0.1)])

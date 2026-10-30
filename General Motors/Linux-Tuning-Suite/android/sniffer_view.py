@@ -15,6 +15,7 @@ MARKER = {'inc': '+', 'dec': '-', 'none': ' '}
 ROW_LIMIT = 60
 ID_WIDTH = 8
 RATE_WIDTH = 6
+LINE_CHARS = ID_WIDTH + 1 + RATE_WIDTH + 1 + 8 * 3 + 7 + 1    # the widest row, so the screen can size its font
 
 
 def _tag(colour, text):

@@ -32,10 +32,20 @@ REFRESH_SECONDS = 0.2
 SOURCES = ('Simulated', 'Adapter', 'Log file')
 
 
-def _mono_label(**kwargs):
+MONO_WIDTH = 0.62      # width of a RobotoMono character as a fraction of its font size
+
+
+def _mono_label(chars, **kwargs):
+    """A monospace label whose font shrinks until `chars` characters fit on one line, so rows never wrap."""
     label = Label(font_name=MONO, font_size=dp(11), color=TEXT, size_hint_y=None, halign='left', valign='top',
                   markup=True, **kwargs)
-    label.bind(width=lambda w, _: setattr(w, 'text_size', (w.width, None)))
+
+    def fit(widget, width):
+        widget.text_size = (width, None)
+        if width > 0:
+            widget.font_size = max(dp(6), min(dp(11), width / (chars * MONO_WIDTH)))
+
+    label.bind(width=fit)
     label.bind(texture_size=lambda w, size: setattr(w, 'height', size[1]))
     return label
 
@@ -71,7 +81,7 @@ class SnifferScreen(BoxLayout):
         self.source_buttons = {}
         buttons = []
         for name in SOURCES:
-            button = style_button(Button(text=name))
+            button = style_button(Button(text=name, font_size=dp(13)))
             button.bind(on_release=lambda _b, n=name: self.set_kind(n))
             self.source_buttons[name] = button
             buttons.append(button)
@@ -96,11 +106,13 @@ class SnifferScreen(BoxLayout):
         self.notch_button = make_button('Notch', lambda: self.sniff.sniffer.notch(), primary=True)
         self.unnotch_button = make_button('Un-notch', lambda: self.sniff.sniffer.unnotch())
         self.clear_button = make_button('Clear', self.clear)
+        for button in (self.notch_button, self.unnotch_button, self.clear_button):
+            button.font_size = dp(13)
         controls.add_widget(button_row(self.notch_button, self.unnotch_button, self.clear_button))
         self.options = {}
-        for key, text in (('never_expire', 'Never expire IDs'), ('mute_notched', 'Mute notched bits'),
-                          ('fade_inactive', 'Fade quiet bytes')):
-            toggle = ToggleButton(text=text, size_hint_y=None, height=dp(44))
+        for key, text in (('never_expire', 'Keep IDs'), ('mute_notched', 'Mute notched'),
+                          ('fade_inactive', 'Fade quiet')):
+            toggle = ToggleButton(text=text, size_hint_y=None, height=dp(44), font_size=dp(13))
             style_button(toggle)
             toggle.bind(state=lambda b, state, k=key: setattr(self.sniff.sniffer, k, state == 'down'))
             self.options[key] = toggle
@@ -113,11 +125,11 @@ class SnifferScreen(BoxLayout):
 
         frames = Card()
         frames.add_widget(section_title('Frames'))
-        self.table = _mono_label(text='Press Start.')
+        self.table = _mono_label(sniffer_view.LINE_CHARS, text='Press Start.')
         frames.add_widget(self.table)
         self.bits_card = Card()
         self.bits_card.add_widget(section_title('Bits'))
-        self.bits = _mono_label(text='')
+        self.bits = _mono_label(30, text='')
         self.bits_card.add_widget(self.bits)
         saving = Card()
         saving.add_widget(section_title('Save'))
@@ -125,7 +137,8 @@ class SnifferScreen(BoxLayout):
         self.save_note = panel_label('', color=MUTED, font_size=dp(13))
         saving.add_widget(self.save_note)
 
-        self.add_widget(stack(source, controls, frames, self.bits_card, saving))
+        self.scroller = stack(source, controls, frames, self.bits_card, saving)
+        self.add_widget(self.scroller)
         self.set_kind('Simulated')
 
     @staticmethod
@@ -136,6 +149,7 @@ class SnifferScreen(BoxLayout):
     def activate(self):
         self.active = True
         if not self._events:
+            Clock.schedule_once(lambda dt: setattr(self.scroller, 'scroll_y', 1), 0.1)   # open at the top
             self._events = [Clock.schedule_interval(self._poll, POLL_SECONDS),
                             Clock.schedule_interval(self._refresh, REFRESH_SECONDS),
                             Clock.schedule_interval(lambda dt: self.sniff.sniffer.tick_notch(), REFRESH_SECONDS)]
