@@ -137,5 +137,30 @@ class DecodeScriptTests(unittest.TestCase):
         self.assertIn('1726 RPM', report_path.read_text())
 
 
+class CsvRowsTests(unittest.TestCase):
+    def test_module_readings_and_broadcast_ids_become_rows(self):
+        frames = [frame(0x3E9, f'{i % 256:02X} 55 00 00 00 00 00 00', i * 0.01) for i in range(11)]
+        frames.append(frame(0x7E8, '04 41 0C 1A F8 00 00 00', 0.5))
+        rows = can_discovery.csv_rows(frames)
+        self.assertEqual(rows[0], can_discovery.CSV_HEADER)
+        reading = [r for r in rows if r[0] == 'module reading'][0]
+        self.assertEqual(reading[1:4], ['7E0', '010C', 'Engine RPM'])
+        self.assertEqual(reading[6:9], [1726.0, 1726.0, 'RPM'])
+        broadcast = [r for r in rows if r[0] == 'broadcast'][0]
+        self.assertEqual(broadcast[2], '3E9')
+        self.assertEqual(broadcast[4], 11)
+        self.assertEqual(broadcast[9], '0')
+
+    def test_the_csv_text_parses_back_to_the_same_rows(self):
+        import csv, io
+        from scanner.can_discovery import csv_rows as rows_of
+        frames = [frame(0x7E8, '04 41 0C 1A F8 00 00 00', 0.0)]
+        buffer = io.StringIO()
+        csv.writer(buffer).writerows(rows_of(frames))
+        parsed = list(csv.reader(io.StringIO(buffer.getvalue())))
+        self.assertEqual(parsed[0], can_discovery.CSV_HEADER)
+        self.assertEqual(parsed[1][2], '010C')
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -176,3 +176,18 @@ def choose_link(session_elm, prefs, serial_port='', baud=38400):
 def saved_prefs(path=None):
     """The app's saved link choices, or the defaults when no file is given."""
     return app_prefs.load(path) if path else dict(app_prefs.DEFAULTS)
+
+
+def describe(result):
+    """A plain-text summary of a scan, for the screen and the command line."""
+    answered, silent = result['answered'], result['silent']
+    lines = [f'{len(answered)} of {len(result["tried"])} readings answered.']
+    for pid in sorted(answered):
+        info = answered[pid]
+        module = '' if info['header'] == AUTO else f' on module {info["header"]}'
+        lines.append(f'  yes  {pid}  {info["name"]}{module}')
+    if silent:
+        lines.append(f'No reply to {len(silent)}: ' + ', '.join(silent))
+    if not result['complete']:
+        lines.append('The adapter stopped answering part way through, so this scan is incomplete and is not used.')
+    return '\n'.join(lines)

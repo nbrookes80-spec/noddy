@@ -174,3 +174,27 @@ def report(frames):
     lines.append('Changing bytes in a broadcast ID are candidates for a reading. Match them against a known')
     lines.append('value (for example the coolant gauge) before trusting them.')
     return '\n'.join(lines)
+
+
+CSV_HEADER = ['section', 'module', 'id', 'name', 'count', 'rate_hz', 'value_min', 'value_max', 'unit',
+              'changing_bytes', 'last_data']
+
+
+def csv_rows(frames):
+    """The report as spreadsheet rows (header first): one row per module reading, then one per broadcast ID."""
+    replies, streams = _split(frames)
+    grouped = defaultdict(list)
+    for frame, (reading, value, unit, name) in replies:
+        module, _ = module_of(frame.can_id)
+        grouped[(module, reading, name, unit)].append(value)
+    rows = [CSV_HEADER]
+    for (module, reading, name, unit), values in sorted(grouped.items()):
+        known = [v for v in values if v is not None]
+        rows.append(['module reading', f'{module:03X}', reading, name, len(values), '',
+                     min(known) if known else '', max(known) if known else '', unit, '', ''])
+    for can_id in sorted(streams):
+        stream = streams[can_id]
+        rate = '' if stream.rate is None else round(stream.rate, 1)
+        rows.append(['broadcast', '', f'{can_id:03X}', '', stream.count, rate, '', '', '',
+                     ' '.join(str(i) for i in stream.changing), _hex(stream.last_data)])
+    return rows

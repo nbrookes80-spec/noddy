@@ -11,16 +11,15 @@ car. Turn the ignition on first. Then decode the file with tools/decode_can.py.
 
 import argparse
 import sys
-import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from link.obd import OBDError  # noqa: E402
-from scanner import car_scan  # noqa: E402
+from scanner import capture, car_scan  # noqa: E402
 from tunertoolpro.canbus.frames import format_candump  # noqa: E402
-from tunertoolpro.canbus.monitor import ElmMonitor, MonitorError, PROTOCOLS  # noqa: E402
+from tunertoolpro.canbus.monitor import PROTOCOLS  # noqa: E402
 
 
 def build_parser():
@@ -54,32 +53,23 @@ def open_transport(args):
     return transport
 
 
-def run(args, out=print, sleep=time.sleep):
+def run(args, out=print):
     try:
         transport = open_transport(args)
     except OBDError as exc:
         out(str(exc))
         return 1
-    monitor = ElmMonitor(transport)
-    frames = []
     try:
-        monitor.start(args.protocol, args.rx_filter)
         out(f'Listening for {args.seconds:g} s on protocol {args.protocol}. Ignition on, please.')
-        end = time.monotonic() + args.seconds
-        while time.monotonic() < end:
-            frames += monitor.poll(0.2)
-    except (MonitorError, OBDError) as exc:
-        out(f'Capture stopped early: {exc}')
+        result = capture.record(transport, args.seconds, args.protocol, args.rx_filter)
     finally:
-        try:
-            monitor.stop()
-        except MonitorError as exc:
-            out(str(exc))
         transport.close()
-    Path(args.out).write_text(format_candump(frames), encoding='utf-8')
-    out(f'Saved {len(frames)} frames to {args.out}. Overruns (adapter buffer full): {monitor.overruns}.')
+    if result['error']:
+        out(f'Capture stopped early: {result["error"]}')
+    Path(args.out).write_text(format_candump(result['frames']), encoding='utf-8')
+    out(f'Saved {len(result["frames"])} frames to {args.out}. Overruns (adapter buffer full): {result["overruns"]}.')
     out(f'Decode it with: python3 tools/decode_can.py {args.out}')
-    return 0 if frames else 1
+    return 0 if result['frames'] else 1
 
 
 if __name__ == '__main__':
