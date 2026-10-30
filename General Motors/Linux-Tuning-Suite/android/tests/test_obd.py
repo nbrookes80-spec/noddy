@@ -96,12 +96,28 @@ class ElmTests(unittest.TestCase):
 
     def test_write_commands_are_refused_before_sending(self):
         sent_before = len(self.fake.received)
-        for command in ('0902', '0400', '04', 'ATSP6', '14FF00', '1902', '2201FF', 'ATSH7E1',
+        for command in ('0902', '0400', '04', 'ATSPA', '14FF00', '1902', '2201FF', 'ATSH7E1',
                         'ATSH7FF', '2F1234', '3101'):
             with self.subTest(command=command):
                 with self.assertRaises(obd.UnsafeCommand):
                     self.elm.command(command)
         self.assertEqual(len(self.fake.received), sent_before)
+
+    def test_protocol_choices_are_allowed_and_no_other_protocol_is(self):
+        """ATSP only picks how the adapter speaks on the bus. The five listed codes pass, anything else is refused."""
+        for code in obd.PROTOCOLS:
+            with self.subTest(code=code):
+                self.assertTrue(obd.is_allowed(f'ATSP{code}'))
+        for command in ('ATSPA', 'ATSPB', 'ATSPZ', 'ATSP', 'ATSP66', 'ATTP6'):
+            with self.subTest(command=command):
+                self.assertFalse(obd.is_allowed(command))
+
+    def test_sending_a_protocol_follows_the_timing_commands(self):
+        sent = obd.send_timing(self.elm, True, 200, protocol='6')
+        self.assertEqual(sent, ['ATAT1', 'ATST32', 'ATSP6'])
+        self.assertEqual(obd.send_timing(self.elm, False, 0), ['ATAT0'])             # None leaves the protocol alone
+        self.assertEqual(obd.send_timing(self.elm, False, 0, protocol='9'), ['ATAT0', 'ATSP9'])
+        self.assertEqual(obd.send_timing(self.elm, False, 0, protocol='A'), ['ATAT0'])   # an unknown code is not sent
 
     def test_only_listed_pids_can_be_read(self):
         for pid in ('0902', '2201FF', '04'):
@@ -132,7 +148,7 @@ class ElmTests(unittest.TestCase):
         for command in ('ATAT0', 'ATAT1', 'ATAT2', 'ATST32', 'ATSTFF'):
             with self.subTest(command=command):
                 self.assertTrue(obd.is_allowed(command))
-        for command in ('ATAT3', 'ATST', 'ATSTZZ', 'ATDP', 'ATPC', 'ATWS', 'ATSP6'):
+        for command in ('ATAT3', 'ATST', 'ATSTZZ', 'ATDP', 'ATPC', 'ATWS', 'ATSPA'):
             with self.subTest(command=command):
                 self.assertFalse(obd.is_allowed(command))
 

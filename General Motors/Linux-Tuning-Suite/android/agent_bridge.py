@@ -28,13 +28,15 @@ NOTE_LEVELS = ('info', 'warn', 'alert')
 
 
 class AgentBridge:
-    def __init__(self, get_state, bounds, host='0.0.0.0', port=DEFAULT_PORT, token=None):
+    def __init__(self, get_state, bounds, host='0.0.0.0', port=DEFAULT_PORT, token=None, check_pid=None):
         self.get_state = get_state
+        self.check_pid = check_pid    # callable(entry dict) -> the checked entry; raises when it is no good
         self.bounds = dict(bounds)
         self.host, self.port = host, port
         self.token = token or secrets.token_urlsafe(18)
         self._lock = threading.Lock()
         self._proposals = []
+        self._pid_proposals = []
         self._notes = deque(maxlen=MAX_NOTES)
         self._next_id = 1
         self._server = None
@@ -83,6 +85,18 @@ class AgentBridge:
         with self._lock:
             return list(reversed(self._notes))
 
+    def pending_pids(self):
+        with self._lock:
+            return [dict(p) for p in self._pid_proposals if p['status'] == 'pending']
+
+    def resolve_pid(self, proposal_id, approved):
+        with self._lock:
+            for proposal in self._pid_proposals:
+                if proposal['id'] == proposal_id and proposal['status'] == 'pending':
+                    proposal['status'] = 'approved' if approved else 'rejected'
+                    return dict(proposal)
+        return None
+
     # --- what the agent does ---------------------------------------------------------------------
 
     def propose(self, field, value, reason):
@@ -102,6 +116,26 @@ class AgentBridge:
             self._next_id += 1
             self._proposals.append(proposal)
             del self._proposals[:-100]
+            return dict(proposal), ''
+
+    def propose_pid(self, body):
+        """A sensor definition for the user to approve: {pid, name, unit, equation, header, low, high, reason}.
+        Returns (proposal or None, error text). The definition is checked here, so a bad one is refused at once."""
+        if self.check_pid is None:
+            return None, 'This app cannot take sensor proposals.'
+        entry = {key: body.get(key) for key in ('pid', 'name', 'unit', 'equation', 'header', 'low', 'high')}
+        try:
+            entry = self.check_pid(entry)
+        except Exception as exc:   # the app's own checker explains what is wrong in plain words
+            return None, str(exc)
+        with self._lock:
+            if sum(p['status'] == 'pending' for p in self._pid_proposals) >= MAX_PENDING:
+                return 'full', 'Too many sensor proposals are waiting for the user.'
+            proposal = {'id': self._next_id, 'entry': entry, 'reason': str(body.get('reason') or '')[:500],
+                        'status': 'pending', 'time': time.time()}
+            self._next_id += 1
+            self._pid_proposals.append(proposal)
+            del self._pid_proposals[:-100]
             return dict(proposal), ''
 
     def add_note(self, text, level):
@@ -126,6 +160,14 @@ class AgentBridge:
                                 'the last shifts compared with the table.',
                 'GET /v1/proposals': 'Proposals and whether the user approved or rejected them.',
                 'GET /v1/notes': 'Notes already left for the user.',
+                'GET /v1/focus': 'The sensor the user triple tapped to ask about: its id, name, unit, range, '
+                                 'module, how it is read, the latest value, whether the car answered, and '
+                                 'the raw replies. Null if none. Use it to find the right module, mode and '
+                                 'equation for the PID.',
+                'POST /v1/propose_pid': 'JSON {pid, name, unit, equation, header: Auto|7E0|7E2|7E3, low, high, '
+                                        'reason}. A Mode 01 (4 digits) or Mode 22 (6 digits) sensor. The '
+                                        'equation uses the reply bytes A, B, C, D. Waits for the user to approve '
+                                        'it; then it is saved to their car profile.',
                 'POST /v1/propose': 'JSON {field, value, reason}. Waits for the user to approve it in the app. '
                                     'Nothing changes until they do.',
                 'POST /v1/note': 'JSON {text, level: info|warn|alert}. Shown on the Agent screen.',
@@ -189,6 +231,8 @@ class _Handler(BaseHTTPRequestHandler):
         if method == 'GET':
             if url.path == '/v1/help':
                 return self._send(200, bridge.help())
+            if url.path == '/v1/focus':
+                return self._send(200, {'focus': bridge.get_state().get('focus')})
             if url.path in ('/v1/state', '/v1/tables', '/v1/live'):
                 state = bridge.get_state()
                 if url.path == '/v1/tables':
@@ -198,13 +242,21 @@ class _Handler(BaseHTTPRequestHandler):
                 return self._send(200, {k: v for k, v in state.items() if k != 'tables'})
             if url.path == '/v1/proposals':
                 with bridge._lock:
-                    return self._send(200, {'proposals': [dict(p) for p in bridge._proposals]})
+                    return self._send(200, {'proposals': [dict(p) for p in bridge._proposals],
+                                            'pid_proposals': [dict(p) for p in bridge._pid_proposals]})
             if url.path == '/v1/notes':
                 return self._send(200, {'notes': bridge.notes()})
-        if method == 'POST' and url.path in ('/v1/propose', '/v1/note'):
+        if method == 'POST' and url.path in ('/v1/propose', '/v1/note', '/v1/propose_pid'):
             body = self._body()
             if body is None:
                 return
+            if url.path == '/v1/propose_pid':
+                proposal, error = bridge.propose_pid(body)
+                if proposal == 'full':
+                    return self._send(429, {'error': error})
+                if proposal is None:
+                    return self._send(422, {'error': error})
+                return self._send(201, proposal)
             if url.path == '/v1/propose':
                 proposal, error = bridge.propose(body.get('field'), body.get('value'), body.get('reason'))
                 if proposal == 'full':
@@ -258,10 +310,17 @@ def build_agent_prompt(url, token, help_info):
         'with a reason\n'
         '  GET /v1/live       live engine and transmission readings, health tiles, recent shifts vs the table\n'
         'Act:\n'
+        '  GET /v1/focus      the sensor I triple tapped to ask about (null if none), with how it is read\n'
+        '  POST /v1/propose_pid  {"pid": "22194F", "name": "...", "unit": "...", "equation": "A-40", '
+        '"header": "7E2", "low": 0, "high": 100, "reason": "..."} suggests a sensor definition (Mode 01 or '
+        'Mode 22). Nothing is saved until I approve it in the app.\n'
         '  POST /v1/note      {"text": "...", "level": "info|warn|alert"} shows a note on my screen\n'
         '  POST /v1/propose   {"field": "...", "value": 0, "reason": "..."} suggests a change. Nothing '
         'changes until I approve it in the app.\n\n'
         f'Settings you may propose changes to: {settings}.\n'
+        'When I ask about a sensor (GET /v1/focus), work out the right module, mode and equation for it from '
+        'the raw replies and the sensor details, explain it, and if it needs fixing propose it with '
+        '/v1/propose_pid. '
         'You cannot send anything to the car. Watch the live data, point out problems in plain words, and '
         'propose small changes with a reason. Never say a change is applied until /v1/proposals shows it '
         'as approved.'

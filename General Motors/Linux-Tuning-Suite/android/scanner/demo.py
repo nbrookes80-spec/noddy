@@ -103,6 +103,7 @@ class DemoSource:
         self._clock = clock
         self._start = clock()
         self.traffic = []
+        self.on_values = None   # optional callback({pid: (value, unit)}) for the data log
 
     def now(self):
         return self._clock() - self._start
@@ -117,7 +118,10 @@ class DemoSource:
         return reading, pid.unit
 
     def poll(self, pid_ids, headers=None):
-        return {p: self.read(p) for p in pid_ids if pids.get(p) is not None}, {}
+        values = {p: self.read(p) for p in pid_ids if pids.get(p) is not None}
+        if self.on_values is not None and values:
+            self.on_values(values)
+        return values, {}
 
     def read_dtcs(self):
         self.traffic.append(('TX', '03'))

@@ -44,6 +44,11 @@ ALLOWED |= HEADER_COMMANDS
 # 4 ms. Both only change how long the adapter waits for a car, so they are allowed on their own.
 TIMING_COMMAND = re.compile(r'ATAT[012]|ATST[0-9A-F]{2}')
 
+# The protocol the adapter talks to the car in. ATSP picks how the adapter speaks on the bus, so it is allowed on
+# its own: it adds no request. The choices are the CAN protocols a GM car answers on (0 lets the adapter choose).
+PROTOCOLS = {'0': 'Automatic', '6': 'CAN 11-bit, 500 kbaud (Holden VE/VF, most GM since 2008)',
+             '7': 'CAN 29-bit, 500 kbaud', '8': 'CAN 11-bit, 250 kbaud', '9': 'CAN 29-bit, 250 kbaud'}
+
 
 def timing_commands(adaptive, timeout_ms):
     """The adapter set-up for the speed settings: ATAT1 (adaptive timing) or ATAT0 (off), then ATST when a
@@ -55,9 +60,12 @@ def timing_commands(adaptive, timeout_ms):
     return commands
 
 
-def send_timing(elm, adaptive, timeout_ms):
-    """Send the speed settings to a connected adapter, one command at a time. Returns the commands sent."""
+def send_timing(elm, adaptive, timeout_ms, protocol=None):
+    """Send the speed settings to a connected adapter, one command at a time. Returns the commands sent.
+    protocol is a key of PROTOCOLS to select too, or None to leave the adapter's protocol alone."""
     sent = timing_commands(adaptive, timeout_ms)
+    if protocol in PROTOCOLS:
+        sent.append(f'ATSP{protocol}')
     for command in sent:
         with elm._lock:
             elm.command(command)
@@ -67,7 +75,8 @@ def send_timing(elm, adaptive, timeout_ms):
 def is_allowed(command):
     """True for a read-only command: set-up, a header switch, Mode 03, adapter timing, or a catalogued Mode 01/22 PID."""
     command = command.replace(' ', '').upper()
-    return command in ALLOWED or command in catalog.CATALOG or bool(TIMING_COMMAND.fullmatch(command))
+    return (command in ALLOWED or command in catalog.CATALOG or bool(TIMING_COMMAND.fullmatch(command))
+            or command in {f'ATSP{code}' for code in PROTOCOLS})
 
 ERROR_WORDS = ('NO DATA', 'ERROR', 'UNABLE', 'STOPPED', 'BUS INIT', '?', 'CAN ERROR')
 MISS_LIMIT = 3     # a reading with this many failures in a row is skipped...
@@ -285,6 +294,7 @@ class Elm327:
         self.transport = transport
         self.traffic = []   # (direction, text) of what this link sent and got back, newest last
         self.on_traffic = None   # optional callback(kind, text) for a debug log: TX, RX, REFUSED or ERR
+        self.on_values = None    # optional callback({pid: (value, unit)}) for the data log, after each poll
         self._header = catalog.DEFAULT_HEADER
         self._header_memory = {}   # PID -> the module address that answered for it
         self._misses = {}          # PID -> failures in a row
@@ -392,7 +402,13 @@ class Elm327:
         adapter does not flip between modules for every miss. A lost adapter raises AdapterLost.
         """
         with self._lock:
-            return self._poll(pids, headers or {})
+            result = self._poll(pids, headers or {})
+        if self.on_values is not None and result[0]:
+            try:
+                self.on_values(result[0])
+            except Exception:   # a broken data log must never stop a reading
+                pass
+        return result
 
     def _poll(self, pids, headers):
         values, errors, retry = {}, {}, []

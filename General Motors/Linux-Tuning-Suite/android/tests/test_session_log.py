@@ -36,9 +36,9 @@ class SessionLogTests(unittest.TestCase):
 
     def test_old_runs_are_pruned(self):
         for n in range(session_log.KEEP_FILES + 3):
-            Path(self.tmp.name, f'session-20200101-0000{n:02d}.log').write_text('x')
+            Path(self.tmp.name, f'2020-01-01_00-00-{n:02d}.txt').write_text('x')
         SessionLog(self.tmp.name).write('APP', 'start')
-        logs = [n for n in os.listdir(self.tmp.name) if n.endswith('.log')]
+        logs = [n for n in os.listdir(self.tmp.name) if n.endswith('.txt')]
         self.assertEqual(len(logs), session_log.KEEP_FILES)
 
     def test_size_cap_stops_writing(self):

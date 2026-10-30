@@ -16,13 +16,15 @@ token is never written), and it can be switched off from the menu.
 """
 
 import os
+import re
 import threading
 import time
-from datetime import datetime
+
+from . import storage
 
 KEEP_FILES = 15            # older run logs are deleted when a new one starts
 MAX_BYTES = 5_000_000      # one run stops writing past this, so a long drive cannot fill the phone
-FILE_PREFIX = 'session-'
+FILE_NAME = re.compile(r'^\d{4}-\d\d-\d\d_\d\d-\d\d-\d\d\.(txt|log)$')   # 2026-10-31_14-05-33.txt (.log was used before)
 
 
 class NullLog:
@@ -110,13 +112,12 @@ class SessionLog:
 
     def _open(self):
         os.makedirs(self.folder, exist_ok=True)
-        stamp = datetime.fromtimestamp(self._clock()).strftime('%Y%m%d-%H%M%S')
-        self.path = os.path.join(self.folder, f'{FILE_PREFIX}{stamp}.log')
+        self.path = os.path.join(self.folder, f'{storage.stamp(self._clock())}.txt')   # .txt: Android keeps that name when it copies the file to Documents
         self._handle = open(self.path, 'a', encoding='utf-8')
         self._prune()
 
     def _prune(self):
-        names = sorted(n for n in os.listdir(self.folder) if n.startswith(FILE_PREFIX) and n.endswith('.log'))
+        names = sorted(n for n in os.listdir(self.folder) if FILE_NAME.match(n))
         for name in names[:-KEEP_FILES]:
             try:
                 os.remove(os.path.join(self.folder, name))

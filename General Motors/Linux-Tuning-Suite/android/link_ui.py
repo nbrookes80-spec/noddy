@@ -243,7 +243,7 @@ class LinkScreen(BoxLayout):
         prefs.save(self.prefs_path, dict(self.saved, link_kind=self.kind, bt_address=address or self.bt_address,
                                          wifi=self.wifi_box.text.strip() or self.saved['wifi']))
         self.session.attach(elm)
-        if self.saved['adaptive_timing'] or self.saved['timeout_ms']:
+        if self.saved['adaptive_timing'] or self.saved['timeout_ms'] or self.saved['adapter_protocol'] != '0':
             threading.Thread(target=self._send_speed, args=(elm,), daemon=True).start()
         if self.live_button.parent is None:
             self.adapter_card.add_widget(self.live_button)
@@ -251,7 +251,9 @@ class LinkScreen(BoxLayout):
     def _send_speed(self, elm):
         """The saved speed settings, sent once the connection is open. A refusal leaves the adapter's own timing."""
         try:
-            obd.send_timing(elm, self.saved['adaptive_timing'], self.saved['timeout_ms'])
+            protocol = self.saved['adapter_protocol']
+            obd.send_timing(elm, self.saved['adaptive_timing'], self.saved['timeout_ms'],
+                            protocol=None if protocol == '0' else protocol)
         except obd.OBDError:
             pass
 

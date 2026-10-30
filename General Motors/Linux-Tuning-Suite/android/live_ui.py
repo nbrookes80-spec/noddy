@@ -17,13 +17,14 @@ from kivy.uix.label import Label
 from kivy.uix.togglebutton import ToggleButton
 
 from live import STREAM_PIDS, LiveStream
-from scan_ui import CARD_HEIGHT, PidCard
+from pid_card import PidCard, equalize, fit_columns
 from scanner import pids
 from table_view import HEX
-from ui_kit import (BG, GAP, MUTED, STATUS, TEXT, Card, make_button, panel_label, section_title,
+from ui_kit import (BG, hide, GAP, MUTED, STATUS, TEXT, Card, make_button, panel_label, section_title,
                     stack, style_button)
 
 ROUND_SECONDS = 0.25     # fastest the background reader goes; a real adapter is slower than this
+EXTRA_CHUNK = 4          # other sensors read per round while recording
 BACKOFF_SECONDS = 1.0    # wait this long after a failed round before trying again
 
 
@@ -37,6 +38,8 @@ class StreamRunner:
         self.paused = False
         self.transmission = False     # reading the TCM too is a second conversation with the car, so it is opt-in
         self._source = None
+        self.extras = None            # callable returning more sensors to read while a data log is recording
+        self._cursor = 0
         self._stop = threading.Event()
         self._thread = None
 
@@ -67,6 +70,21 @@ class StreamRunner:
         if self.stream is not None:
             self.stream.set_model(*self.model())
 
+    def _read_extras(self):
+        """While recording, also read the other dashboard sensors a few at a time, so the data log holds
+        every sensor without slowing the Live readings much."""
+        wanted = self.extras() if self.extras else []
+        source = self.session.active()
+        if not wanted or source is None:
+            return
+        count = min(EXTRA_CHUNK, len(wanted))
+        chunk = [wanted[(self._cursor + i) % len(wanted)] for i in range(count)]
+        self._cursor = (self._cursor + count) % len(wanted)
+        try:
+            source.poll(chunk)
+        except Exception as exc:   # a lost adapter is caught by the next Live round
+            self.session.log.write('ERR', f'data log extras: {type(exc).__name__}: {exc}')
+
     def _loop(self):
         while not self._stop.is_set():
             stream, began = self.stream, time.monotonic()
@@ -78,6 +96,8 @@ class StreamRunner:
             except Exception as exc:   # one bad round must not end the reader for good
                 stream.error = f'{type(exc).__name__}: {exc}'
                 self.session.log.write('ERR', f'live reader: {stream.error}')
+            if not stream.error:
+                self._read_extras()
             time.sleep(BACKOFF_SECONDS if stream.error else max(0.0, ROUND_SECONDS - (time.monotonic() - began)))
 
 
@@ -105,18 +125,23 @@ class HealthTile(Card):
 
 
 class LiveScreen(BoxLayout):
-    def __init__(self, session, runner, on_open_link=None, **kwargs):
+    def __init__(self, session, runner, on_open_link=None, on_fullscreen=None, **kwargs):
         super().__init__(orientation='vertical', **kwargs)
         self.session = session
         self.runner = runner
         self.on_open_link = on_open_link
+        self.on_fullscreen = on_fullscreen
         self._event = None
         self.cards = {}
+        self.chrome = []
+        self.full = False
         self.render()
 
     # --- lifecycle -------------------------------------------------------------------------------
 
     def activate(self):
+        for card in self.cards.values():
+            card.apply_view()       # pick up a display or red line changed on another screen
         if self._event is None:
             self._event = Clock.schedule_interval(self.refresh, 0.5)
 
@@ -127,6 +152,12 @@ class LiveScreen(BoxLayout):
 
     def source_changed(self, _status=None):
         self.render()
+
+    def set_full(self, on):
+        """Full screen: show only the sensors, with the status, health and shift panels put away."""
+        self.full = on
+        for widget in self.chrome:
+            hide(widget, on)
 
     # --- layout ----------------------------------------------------------------------------------
 
@@ -152,12 +183,14 @@ class LiveScreen(BoxLayout):
             tile = HealthTile(label)
             self.health_tiles[key] = tile
             health.add_widget(tile)
-        grid = GridLayout(cols=2, spacing=GAP, size_hint_y=None,
-                          height=((len(STREAM_PIDS) + 1) // 2) * (CARD_HEIGHT + GAP))
+        grid = GridLayout(spacing=GAP, size_hint_y=None)
+        fit_columns(grid)
+        grid.bind(minimum_height=grid.setter('height'))
         for pid_id in STREAM_PIDS:
             card = PidCard(pids.get(pid_id))
             self.cards[pid_id] = card
             grid.add_widget(card)
+        Clock.schedule_once(lambda dt: equalize(grid), 0)
         self.shift_log = panel_label('No shifts yet.', markup=True, color=TEXT, font_size=dp(13))
         shifts = Card()
         shifts.add_widget(section_title('Shifts against your table'))
@@ -169,8 +202,12 @@ class LiveScreen(BoxLayout):
                                                 height=dp(44), state='down' if self.runner.transmission else 'normal')
         self._style_transmission()
         self.transmission_button.bind(state=self._transmission_changed)
-        self.add_widget(stack(self.status, self.transmission_button, health, section_title('Readings'), grid,
+        readings_title = section_title('Readings')
+        full_button = make_button('Full screen: live data only', lambda: self.on_fullscreen and self.on_fullscreen(True))
+        self.chrome = [self.status, self.transmission_button, full_button, health, readings_title, shifts, hint]
+        self.add_widget(stack(self.status, self.transmission_button, full_button, health, readings_title, grid,
                               shifts, hint))
+        self.set_full(self.full)
 
     def _style_transmission(self):
         style_button(self.transmission_button, primary=self.transmission_button.state == 'down')

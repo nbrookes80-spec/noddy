@@ -148,5 +148,51 @@ class PromptTests(unittest.TestCase):
         self.assertNotIn('/v1/command', text)
 
 
+
+def check_pid(entry):
+    if not entry.get('equation'):
+        raise ValueError('The equation is missing.')
+    return dict(entry, pid=str(entry['pid']).upper())
+
+
+class SensorHelpTests(Bridge):
+    def setUp(self):
+        super().setUp()
+        self.bridge.check_pid = check_pid
+        self.focus = {'pid': '22194F', 'name': 'Trans Fluid Temp', 'latest': -34.0}
+        self.bridge.get_state = lambda: dict(state(), focus=self.focus)
+
+    def test_the_agent_can_read_the_sensor_the_user_asked_about(self):
+        code, body = self.call('/v1/focus')
+        self.assertEqual((code, body['focus']['pid']), (200, '22194F'))
+        self.focus = None
+        self.assertIsNone(self.call('/v1/focus')[1]['focus'])
+
+    def test_a_sensor_proposal_waits_for_the_user_and_can_be_approved(self):
+        code, body = self.call('/v1/propose_pid', {'pid': '22194f', 'name': 'Trans temp', 'equation': 'A-40',
+                                                    'header': '7E2', 'reason': 'scaling looked wrong'})
+        self.assertEqual(code, 201)
+        pending = self.bridge.pending_pids()
+        self.assertEqual([p['entry']['pid'] for p in pending], ['22194F'])
+        self.assertEqual(self.bridge.resolve_pid(pending[0]['id'], True)['status'], 'approved')
+        self.assertEqual(self.bridge.pending_pids(), [])
+        self.assertEqual(self.call('/v1/proposals')[1]['pid_proposals'][0]['status'], 'approved')
+
+    def test_a_bad_sensor_proposal_is_refused_with_the_reason(self):
+        code, body = self.call('/v1/propose_pid', {'pid': '22194F', 'name': 'x'})
+        self.assertEqual(code, 422)
+        self.assertIn('equation', body['error'])
+        self.assertEqual(self.bridge.pending_pids(), [])
+
+    def test_sensor_proposals_need_the_token_and_a_checker(self):
+        self.assertEqual(self.call('/v1/propose_pid', {'pid': '22194F'}, token=None)[0], 401)
+        self.bridge.check_pid = None
+        self.assertEqual(self.call('/v1/propose_pid', {'pid': '22194F'})[0], 422)
+
+    def test_the_help_and_the_prompt_tell_the_agent_about_sensor_help(self):
+        self.assertIn('POST /v1/propose_pid', self.call('/v1/help')[1]['endpoints'])
+        self.assertIn('/v1/focus', build_agent_prompt('http://x', 't', self.bridge.help()))
+
+
 if __name__ == '__main__':
     unittest.main()

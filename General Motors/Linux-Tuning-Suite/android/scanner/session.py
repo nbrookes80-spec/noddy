@@ -15,6 +15,8 @@ class Session:
         self.elm = None
         self.listeners = []
         self.log = NullLog()   # replaced by a SessionLog when the app starts
+        self.data_log = None   # a DataLogger when the app starts; every reading the screens take goes to it
+        self.demo.on_values = self._values
 
     def active(self):
         if self.demo_on:
@@ -47,6 +49,7 @@ class Session:
     def attach(self, elm):
         self.elm = elm
         elm.on_traffic = self.log.write
+        elm.on_values = self._values
         self.log.write('LINK', 'adapter attached')
         self._notify()
 
@@ -56,6 +59,10 @@ class Session:
             self.log.write('LINK', 'adapter detached')
             elm.close()
         self._notify()
+
+    def _values(self, values):
+        if self.data_log is not None:
+            self.data_log.update(values)
 
     def _notify(self):
         for listener in self.listeners:

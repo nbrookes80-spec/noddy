@@ -128,8 +128,8 @@ class Chip(Label):
     """A small rounded status label, for example DEMO, LIVE or OFFLINE."""
 
     def __init__(self, text='', colour=MUTED, **kwargs):
-        super().__init__(text=text, bold=True, font_size=dp(11), color=BG, size_hint=(None, None),
-                         size=(dp(66), dp(24)), **kwargs)
+        super().__init__(text=text, bold=True, font_size=dp(11), color=BG, size_hint=(1, None),
+                         height=dp(24), **kwargs)
         self._colour = colour
         self.bind(pos=self._draw, size=self._draw)
 
@@ -148,7 +148,7 @@ class MenuButton(ButtonBehavior, Widget):
     """Three bars that open the menu. Drawn, so it does not depend on a font having a symbol."""
 
     def __init__(self, on_press_cb, **kwargs):
-        super().__init__(size_hint_x=None, width=dp(34), **kwargs)
+        super().__init__(size_hint_x=None, width=dp(48), **kwargs)   # a full-size thumb target, whatever the screen width
         self._cb = on_press_cb
         with self.canvas:
             Color(*TEXT)
@@ -168,20 +168,27 @@ class MenuButton(ButtonBehavior, Widget):
 class HeaderBar(BoxLayout):
     """The title strip at the top of every screen: app name, screen name, and the data-source chip."""
 
-    def __init__(self, on_menu=None, **kwargs):
-        super().__init__(size_hint_y=None, height=dp(64), padding=(GAP, dp(8)), spacing=GAP, **kwargs)
-        titles = BoxLayout(orientation='vertical')
-        self.app_name = Label(text='TunerToolPro', bold=True, font_size=dp(17), color=TEXT, halign='left',
-                              valign='bottom')
-        self.screen_name = Label(text='', font_size=dp(12), color=MUTED, halign='left', valign='top')
+    def __init__(self, on_menu=None, on_rec=None, **kwargs):
+        super().__init__(size_hint_y=None, height=dp(64), padding=(dp(10), dp(8)), spacing=dp(4), **kwargs)
+        titles = BoxLayout(orientation='vertical', size_hint_x=0.39)
+        self.app_name = Label(text='TunerToolPro', bold=True, font_size=dp(16), color=TEXT, halign='left',
+                              valign='bottom', shorten=True, shorten_from='right')
+        self.screen_name = Label(text='', font_size=dp(11), color=MUTED, halign='left', valign='top',
+                                 shorten=True, shorten_from='right')
         for label in (self.app_name, self.screen_name):
             label.bind(size=lambda w, _: setattr(w, 'text_size', (w.width, w.height)))
             titles.add_widget(label)
         self.chip = Chip('OFFLINE')
-        holder = BoxLayout(size_hint_x=None, width=dp(66), padding=(0, dp(13)))
+        holder = BoxLayout(size_hint_x=0.23, padding=(0, dp(13)))
         holder.add_widget(self.chip)
         self.add_widget(titles)
         self.add_widget(holder)
+        self.rec = None
+        if on_rec is not None:
+            slot = BoxLayout(size_hint_x=0.22, padding=(0, dp(11)))
+            self.rec = RecButton(on_rec)
+            slot.add_widget(self.rec)
+            self.add_widget(slot)
         if on_menu is not None:
             self.add_widget(MenuButton(on_menu))
         self.canvas.after.clear()
@@ -209,6 +216,10 @@ class HeaderBar(BoxLayout):
     def set_screen(self, title):
         self.screen_name.text = title
 
+    def set_recording(self, text):
+        if self.rec is not None:
+            self.rec.set_recording(text)
+
     def set_source(self, status):
         colour = {'DEMO': ACCENT, 'LIVE': GOOD}.get(status, MUTED)
         self.chip.set_state(status, colour)
@@ -223,6 +234,44 @@ def stack(*widgets, spacing=GAP, padding=GAP):
     scroll = ScrollView(do_scroll_x=False, bar_width=dp(3))
     scroll.add_widget(column)
     return scroll
+
+
+class RecButton(ButtonBehavior, Label):
+    """The record button in the header: grey REC when idle, a red dot and the running time while recording."""
+
+    def __init__(self, on_press_cb, **kwargs):
+        super().__init__(text='REC', bold=True, font_size=dp(12), color=TEXT, size_hint=(1, None),
+                         height=dp(30), **kwargs)
+        self._cb = on_press_cb
+        self._colour = RAISED
+        self.bind(pos=self._draw, size=self._draw)
+
+    def set_recording(self, text):
+        """text is the running time while recording, or None when idle."""
+        self.text = 'REC' if text is None else f'REC {text}'
+        self._colour = RAISED if text is None else (0.35, 0.12, 0.12, 1)
+        self._draw()
+
+    def _draw(self, *_):
+        self.canvas.before.clear()
+        with self.canvas.before:
+            Color(*self._colour)
+            RoundedRectangle(pos=self.pos, size=self.size, radius=[self.height / 2])
+            Color(*BORDER)
+            Line(rounded_rectangle=(self.x, self.y, self.width, self.height, self.height / 2), width=BORDER_WIDTH)
+
+    def on_release(self):
+        self._cb()
+
+
+def hide(widget, hidden):
+    """Take a widget out of sight and out of the layout (height 0), or put it back as it was."""
+    if hidden and not hasattr(widget, '_shown_as'):
+        widget._shown_as = (widget.size_hint_y, widget.height, widget.opacity, widget.disabled)
+        widget.size_hint_y, widget.height, widget.opacity, widget.disabled = None, 0, 0, True
+    elif not hidden and hasattr(widget, '_shown_as'):
+        widget.size_hint_y, widget.height, widget.opacity, widget.disabled = widget._shown_as
+        del widget._shown_as
 
 
 def button_row(*buttons, height=dp(48)):

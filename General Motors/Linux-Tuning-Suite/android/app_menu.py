@@ -1,8 +1,11 @@
-"""The menu behind the three bars at the top right: connection, Live, adapter speed, car and about.
+"""The menu behind the three bars at the top right: a list of settings pages that open inside the same popup.
 
-Everything here is saved in prefs.json, so it is the same the next time the app opens. The speed settings
-send only the adapter set-up commands from obd.timing_commands, through the same read-only guard as everything
-else.
+Pages: dashboard layout and themes, PID manager, log data parameters, OBD-II adapter settings and tweaks, the
+pre-defined GM and Holden PID lists, the debug log, and the car and about page. The pages that are mostly cards
+of choices live in menu_pages.py.
+
+Everything here is saved in prefs.json, so it is the same the next time the app opens. The adapter settings
+send only the set-up commands from obd.send_timing, through the same read-only guard as everything else.
 """
 
 import threading
@@ -10,6 +13,7 @@ import threading
 from kivy.clock import Clock
 from kivy.core.clipboard import Clipboard
 from kivy.metrics import dp
+from kivy.uix.button import Button
 from kivy.uix.modalview import ModalView
 from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
@@ -18,7 +22,18 @@ import prefs
 from link import obd
 from pid_editor_ui import PidEditor
 from settings_ui import spinner
+import menu_pages
 from ui_kit import MUTED, RAISED, TEXT, STATUS, Card, make_button, panel_label, section_title, stack, style_button
+
+PAGES = (
+    ('dashboard', 'Dashboard layout and themes', 'Cards across, sensor display, gauge colours, full screen'),
+    ('pids', 'PID manager', 'Switch sensors on and off, enter a PID by hand'),
+    ('logging', 'Log data parameters', 'Which sensors and how often a data log row is written'),
+    ('adapter', 'OBD-II adapter settings and tweaks', 'Connection, timing, timeout, protocol'),
+    ('lists', 'GM and Holden PID lists', 'Pre-defined lists, saved to a profile for your car'),
+    ('debug', 'Debug log', 'What happened, for finding faults'),
+    ('about', 'Car and about', 'Car and transmission, version'),
+)
 
 
 def _toggle(text, state, on_change):
@@ -34,18 +49,63 @@ def _toggle(text, state, on_change):
 
 class AppMenu(ModalView):
     def __init__(self, saved, prefs_path, session, runner, link, open_settings, version, profiles, cars_folder,
-                 on_pids_saved, **kwargs):
+                 on_pids_saved, recorder=None, on_fullscreen=None, **kwargs):
         super().__init__(size_hint=(0.92, 0.9), background_color=(0, 0, 0, 0.6), **kwargs)
         self.saved, self.prefs_path = saved, prefs_path   # the same dict the Link screen keeps
         self.session, self.runner, self.link = session, runner, link
         self.open_settings = open_settings
         self.profiles, self.cars_folder, self.on_pids_saved = profiles, cars_folder, on_pids_saved
+        self.recorder, self.on_fullscreen, self.version = recorder, on_fullscreen, version
 
-        # A scrollable column, so every section can be reached on a short screen.
-        self.add_widget(stack(section_title('Settings'), self._connection_card(), self._live_card(),
-                              self._speed_card(), self._pids_card(), self._log_card(), self._car_card(version)))
+        self.show_hub()
+
+    # --- pages --------------------------------------------------------------------------------------
+
+    def active_profile(self):
+        """The car whose PID list is on the dashboard now, or None for the standard list."""
+        return next((p for p in self.profiles if p.key == self.saved['scan_profile']), None)
+
+    def show_hub(self):
+        """The list of pages, with the connection on top."""
+        self._forget_page()
+        self._set_page(section_title('Settings'), self._connection_card(), *self._page_buttons())
         self.refresh()
+
+    def open_page(self, key):
+        title = next(t for k, t, _d in PAGES if k == key)
+        builders = {'dashboard': menu_pages.dashboard_cards, 'pids': menu_pages.pid_manager_cards,
+                    'logging': menu_pages.log_cards, 'adapter': self._adapter_cards, 'lists': menu_pages.lists_cards,
+                    'debug': lambda _menu: [self._log_card()], 'about': lambda _menu: [self._car_card(self.version)]}
+        back = make_button('< Settings', self.show_hub)
+        self._forget_page()
+        self._set_page(back, section_title(title), *builders[key](self))
         self._show_log_path()
+        self._show_recording()
+        self.refresh()
+
+    def _forget_page(self):
+        """Drop the handles to the widgets of the page being left, before the next page builds its own."""
+        for name in ('connection_status', 'connect_button', 'log_button', 'record_button'):
+            self.__dict__.pop(name, None)
+
+    def _set_page(self, *widgets):
+        """Replace what the popup shows. A scrollable column, so every section can be reached on a short screen."""
+        self.clear_widgets()
+        self.add_widget(stack(*widgets))
+
+    def _page_buttons(self):
+        buttons = []
+        for key, title, detail in PAGES:
+            small = int(dp(12))     # markup sizes are pixels, not dp
+            button = Button(text=f'{title}\n[size={small}][color=bfc9d6]{detail}[/color][/size]', markup=True)
+            style_button(button)
+            button.height = dp(76)
+            button.bind(on_release=lambda _b, key=key: self.open_page(key))
+            buttons.append(button)
+        return buttons
+
+    def _adapter_cards(self, _menu):
+        return [self._connection_card(), self._live_card(), self._speed_card()]
 
     def _save(self, **changes):
         self.saved.update(changes)
@@ -77,7 +137,7 @@ class AppMenu(ModalView):
 
     def _speed_card(self):
         card = Card()
-        card.add_widget(section_title('Adapter speed'))
+        card.add_widget(section_title('Adapter timing and protocol'))
         card.add_widget(_toggle('Adaptive timing (ATAT1)', self.saved['adaptive_timing'],
                                 lambda on: self._save(adaptive_timing=on)))
         labels = {0: 'Adapter default', 100: '100 ms', 200: '200 ms', 400: '400 ms'}
@@ -87,6 +147,14 @@ class AppMenu(ModalView):
         self.timeout_box.bind(text=lambda _box, text: self._save(
             timeout_ms=next(t for t, label in labels.items() if label == text)))
         card.add_widget(self.timeout_box)
+        names = {code: f'{code}: {name}' if code != '0' else name for code, name in obd.PROTOCOLS.items()}
+        card.add_widget(panel_label('Protocol', color=MUTED))
+        self.protocol_box = spinner(list(names.values()), names[self.saved['adapter_protocol']])
+        self.protocol_box.bind(text=lambda _box, text: self._save(
+            adapter_protocol=next(code for code, label in names.items() if label == text)))
+        card.add_widget(self.protocol_box)
+        card.add_widget(panel_label('Leave the protocol on Automatic unless the adapter cannot find the car. A '
+                                    'Holden VE or VF talks CAN 11-bit at 500 kbaud.', color=MUTED, font_size=dp(12)))
         self.apply_button = make_button('Send to the adapter', self._apply_speed, primary=True)
         card.add_widget(self.apply_button)
         self.speed_status = panel_label('Connect first, then send. The settings are also sent on each connection '
@@ -94,24 +162,33 @@ class AppMenu(ModalView):
         card.add_widget(self.speed_status)
         return card
 
-    def _pids_card(self):
-        card = Card()
-        card.add_widget(section_title('Manual PIDs'))
-        card.add_widget(panel_label('Type in a sensor the app does not know yet: its id, formula and unit. It is '
-                                    'saved to the car profile you choose, and shows on Live and Scan from then on.',
-                                    color=MUTED, font_size=dp(12)))
-        card.add_widget(make_button('Enter a PID and save to a profile', self._open_pid_editor, primary=True))
-        return card
-
     def _open_pid_editor(self):
         self.dismiss()
         PidEditor(self.profiles, self.cars_folder, self.on_pids_saved).open()
 
+    def _toggle_recording(self):
+        if self.recorder is not None:
+            self.record_status.text = self.recorder.toggle()
+            self.record_status.color = STATUS['good'] if self.recorder.running else MUTED
+            self._show_recording()
+
+    def _show_recording(self):
+        if not hasattr(self, 'record_button'):
+            return
+        running = self.recorder is not None and self.recorder.running
+        self.record_button.text = 'Stop recording' if running else 'Start recording'
+
+    def _fullscreen(self):
+        self.dismiss()
+        if self.on_fullscreen is not None:
+            self.on_fullscreen(True)
+
     def _log_card(self):
         card = Card()
-        card.add_widget(section_title('Debug log'))
+        card.add_widget(section_title('Debug log (what happened)'))
         card.add_widget(panel_label('Saves a file of each run: screens opened, what the adapter was sent and '
-                                    'answered, errors and crashes. Bring it back to find out what went wrong.',
+                                    'answered, errors and crashes. Files are named by date and time in Tuner Tool Info / '
+                                    'Debug logs. Bring one back to find out what went wrong.',
                                     color=MUTED, font_size=dp(12)))
         self.log_button = make_button('', self._toggle_log, primary=True)
         card.add_widget(self.log_button)
@@ -123,6 +200,7 @@ class AppMenu(ModalView):
         card.add_widget(self.note_box)
         card.add_widget(make_button('Add note to the log', self._add_note))
         card.add_widget(make_button('Copy the end of the log', self._copy_log))
+        card.add_widget(make_button('Save a copy to Documents now', self._publish_log))
         self.log_status = panel_label('', color=MUTED, font_size=dp(12))
         card.add_widget(self.log_status)
         return card
@@ -138,6 +216,8 @@ class AppMenu(ModalView):
         self._show_log_path()
 
     def _show_log_path(self):
+        if not hasattr(self, 'log_button'):
+            return
         log = self.session.log
         self.log_button.text = 'Stop logging' if log.enabled else 'Start logging'
         self.log_path.text = (f'Logging to: {log.path}' if log.path else 'Logging.') if log.enabled else 'Logging is off.'
@@ -149,6 +229,11 @@ class AppMenu(ModalView):
             self.note_box.text = ''
             self.log_status.text = 'Note added.'
         self._show_log_path()
+
+    def _publish_log(self):
+        if self.recorder is not None:
+            self.recorder.publish_debug()
+            self.log_status.text = 'Copying to Documents / Tuner Tool Info / Debug logs...'
 
     def _copy_log(self):
         text = self.session.log.tail()
@@ -170,6 +255,8 @@ class AppMenu(ModalView):
 
     def refresh(self):
         """Show the current connection state on the menu."""
+        if not hasattr(self, 'connection_status'):
+            return
         connected = self.session.elm is not None
         self.connection_status.text = ('Connected to the adapter.' if connected
                                        else 'Not connected to an adapter.')
@@ -199,7 +286,8 @@ class AppMenu(ModalView):
 
         def work():
             try:
-                sent = obd.send_timing(elm, self.saved['adaptive_timing'], self.saved['timeout_ms'])
+                sent = obd.send_timing(elm, self.saved['adaptive_timing'], self.saved['timeout_ms'],
+                                       protocol=self.saved['adapter_protocol'])
                 text, colour = f'Sent: {", ".join(sent) or "nothing (adapter defaults)"}.', STATUS['good']
             except obd.OBDError as exc:
                 text, colour = str(exc), STATUS['bad']
