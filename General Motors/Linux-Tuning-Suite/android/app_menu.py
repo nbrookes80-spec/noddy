@@ -113,7 +113,8 @@ class AppMenu(ModalView):
         card.add_widget(panel_label('Saves a file of each run: screens opened, what the adapter was sent and '
                                     'answered, errors and crashes. Bring it back to find out what went wrong.',
                                     color=MUTED, font_size=dp(12)))
-        card.add_widget(_toggle('Save a debug log', self.saved['debug_log'], self._set_log))
+        self.log_button = make_button('', self._toggle_log, primary=True)
+        card.add_widget(self.log_button)
         self.log_path = panel_label('', color=MUTED, font_size=dp(11))
         card.add_widget(self.log_path)
         self.note_box = TextInput(hint_text='Note for the log, e.g. "engine running, in park"', multiline=False,
@@ -126,15 +127,20 @@ class AppMenu(ModalView):
         card.add_widget(self.log_status)
         return card
 
-    def _set_log(self, on):
-        self._save(debug_log=on)
-        self.session.log.set_enabled(on)
+    def _toggle_log(self):
+        """Stop the log, or start a fresh file for the drive about to be tested."""
+        if self.session.log.enabled:
+            self.session.log.set_enabled(False)
+            self._save(debug_log=False)
+        else:
+            self.session.log.new_file()
+            self._save(debug_log=True)
         self._show_log_path()
 
     def _show_log_path(self):
         log = self.session.log
-        self.log_path.text = (f'File: {log.path}' if log.path else
-                              'The file is made when the first line is written.') if log.enabled else 'Log is off.'
+        self.log_button.text = 'Stop logging' if log.enabled else 'Start logging'
+        self.log_path.text = (f'Logging to: {log.path}' if log.path else 'Logging.') if log.enabled else 'Logging is off.'
 
     def _add_note(self):
         text = self.note_box.text.strip()

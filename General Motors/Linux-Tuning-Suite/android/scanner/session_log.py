@@ -40,6 +40,9 @@ class NullLog:
     def set_enabled(self, on):
         pass
 
+    def new_file(self):
+        pass
+
 
 class SessionLog:
     def __init__(self, folder, enabled=True, clock=time.time):
@@ -79,6 +82,18 @@ class SessionLog:
         self.enabled = bool(on)
         if self._handle is not None:
             self.write('APP', 'debug log on' if self.enabled else 'debug log off')
+
+    def new_file(self):
+        """Close this run's file and start a fresh one, so a drive can be logged on its own."""
+        with self._lock:
+            if self._handle is not None:
+                try:
+                    self._handle.close()
+                except OSError:
+                    pass
+            self._handle, self._written, self._failed, self.path = None, 0, False, ''
+        self.enabled = True
+        self.write('APP', 'new log started')
 
     def tail(self, max_bytes=40000):
         """The end of this run's log as text, for copying out of the app."""

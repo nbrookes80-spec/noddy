@@ -65,6 +65,16 @@ class SessionLogTests(unittest.TestCase):
         self.assertIn('line 99', text)
         self.assertNotIn('line 0\n', text)
 
+    def test_new_file_starts_a_separate_log_and_turns_logging_on(self):
+        ticks = iter(range(1000, 2000, 5))
+        log = SessionLog(self.tmp.name, enabled=False, clock=lambda: next(ticks))
+        log.new_file()
+        first = log.path
+        log.write('TX', '0100')
+        log.new_file()
+        self.assertNotEqual(first, log.path)
+        self.assertEqual(len(os.listdir(self.tmp.name)), 2)
+
     def test_null_log_accepts_everything(self):
         log = NullLog()
         log.write('TX', 'x')
