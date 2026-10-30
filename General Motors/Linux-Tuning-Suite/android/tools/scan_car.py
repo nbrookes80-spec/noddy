@@ -47,13 +47,8 @@ def build_parser():
 
 
 def link_for(args, saved):
-    """(elm, owned) over the link the user asked for. --link auto follows the app: a cable when --serial is
-    given, otherwise the link saved on the Link screen, otherwise Wi-Fi. A live app connection is reused."""
-    if args.link == 'auto':
-        link = car_scan.LINK_CABLE if args.serial else (car_scan.link_from_prefs(saved) if args.prefs
-                                                       else car_scan.LINK_WIFI)
-    else:
-        link = args.link
+    """(elm, owned) over the link the user asked for; see car_scan.pick_link for how 'auto' is chosen."""
+    link = car_scan.pick_link(args.link, args.serial, saved if args.prefs else None)
     if link == car_scan.LINK_CABLE:
         return car_scan.choose_link(None, {}, serial_port=args.serial, baud=args.baud)
     return car_scan.choose_link(None, dict(saved, link_kind='Bluetooth' if link == car_scan.LINK_BLUETOOTH

@@ -126,6 +126,16 @@ def link_from_prefs(prefs):
     return LINK_BLUETOOTH if prefs.get('link_kind') == 'Bluetooth' else LINK_WIFI
 
 
+def pick_link(requested='auto', serial_port='', prefs=None):
+    """The link to use. An explicit choice wins. 'auto' takes the cable when a port is given, else the link
+    saved on the Link screen (prefs, when there is a file), else Wi-Fi."""
+    if requested != 'auto':
+        return requested
+    if serial_port:
+        return LINK_CABLE
+    return link_from_prefs(prefs) if prefs else LINK_WIFI
+
+
 def transport_for(link, bt_address='', wifi='', serial_port='', baud=38400):
     """The transport for one link, built but not opened. Bluetooth works only on the phone; a cable only
     where pyserial is installed (desktop)."""

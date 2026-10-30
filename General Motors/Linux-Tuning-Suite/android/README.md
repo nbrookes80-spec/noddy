@@ -141,6 +141,19 @@ The scan sends only the same read-only requests the app already allows. The phon
 no Scan screen has a save-profile step, so the scan is run from a computer for now.
 
 
+## CAN capture and decode (finding a car's readings)
+
+Two desktop tools, both receive-only (the adapter listens and sends nothing to the car):
+
+    python3 tools/capture_can.py --seconds 60 --out capture.log --prefs ~/.local/share/tunertoolpro/prefs.json
+    python3 tools/decode_can.py capture.log --out report.txt
+
+`capture_can.py` records the bus for the given time, over the same link the app uses (Wi-Fi, Bluetooth or
+cable with `--serial`). Turn the ignition on first. `decode_can.py` writes a plain-text report: module
+readings decoded with the app's catalogue, broadcast traffic with its rate and changing bytes, and the
+dashboard readings the capture did not show. A capture with no scan tool attached shows only what the car
+sends on its own. Mode 22 replies appear only when something asks for them.
+
 ## Bluetooth set-up
 
 1. Plug the ELM327 adapter in. Pair it in Android Settings > Bluetooth (PIN is often 1234 or 0000),
