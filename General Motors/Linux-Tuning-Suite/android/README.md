@@ -78,7 +78,7 @@ The original scanner's Clear codes (Mode 04), PID sweep and enhanced code servic
 | `shift_live.py` | Input rules and the calculation call, with no UI code |
 | `link/obd.py` | Read-only ELM327 protocol, Wi-Fi and Bluetooth transports |
 | `tunertoolpro/` | Copy of the desktop calculation package, made by `sync_core.py` |
-| `sync_core.py` | Refreshes the copy from `app/tunertoolpro`. Run it after a desktop change. |
+| `sync_core.py` | Refreshes the copy from `app/tunertoolpro`, which is pinned to a tunertoolpro-core release (see `tools/update_core.py`). |
 | `buildozer.spec` | Android build settings (Kivy and pyjnius, arm64 and armeabi-v7a) |
 | `tests/` | Unit tests. They run on a desktop without Android. |
 

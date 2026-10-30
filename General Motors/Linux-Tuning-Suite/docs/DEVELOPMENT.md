@@ -54,6 +54,20 @@ recovered/
 
 Recovered sources are kept here for reference and porting. The original binaries are not copied into this folder.
 
+## The shared core
+
+The calculation, file-format, vehicle and CAN code (everything in `app/tunertoolpro` except `gui/`,
+`__main__.py` and `__init__.py`) lives in its own public repo,
+[tunertoolpro-core](https://github.com/nbrookes80-spec/tunertoolpro-core). This repo keeps a copy,
+pinned to a release tag in `core.lock`. The Android copy in `android/tunertoolpro` is made from it by
+`android/sync_core.py`.
+
+- Do not edit core files here. `app/tests/test_core_pinned.py` fails if they differ from `core.lock`.
+- To change the core: edit and test it in tunertoolpro-core, tag a release (`v0.1.1`, never move a tag),
+  then here run `python3 tools/update_core.py v0.1.1`, run both test suites, and commit `core.lock` and
+  the updated copies.
+- The core's own tests (maths, file formats, vehicles, CAN) run in the core repo's CI, not here.
+
 ## Running
 
 ```
