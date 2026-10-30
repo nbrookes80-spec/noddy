@@ -1,6 +1,6 @@
 {
   "repo": "https://github.com/nbrookes80-spec/tunertoolpro-core.git",
-  "tag": "v0.1.0",
-  "commit": "151a9835a10814ead3e53dd0d63dccd1a7d59ce1",
-  "tree_sha256": "178955b05ea27c712cf6639a391e71de7928280e748ca446c919525151c9c95e"
+  "tag": "v0.1.1",
+  "commit": "4e6fb6c219c3fd397c1e7f5d338f6234506cf13f",
+  "tree_sha256": "a0a78e48fd5257a3997f252e13c5d888f5111eb5fbb34fb5954ff2628e68885d"
 }

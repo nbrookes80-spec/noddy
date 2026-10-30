@@ -87,11 +87,8 @@ def value(pid, t):
         '22194F': 82 + 6 * (1 - math.exp(-(t % CYCLE_SECONDS) / 20.0)),
         '22001F': 380 + 6 * s['throttle'] + s['rpm'] / 40,
         '221991': _tcc_slip(s),
-        '223D03': float(s['gear']),
         '221942': s['speed'] * KMH_TO_MPH * FINAL_DRIVE * MPH_K / TIRE_INCHES,
         '221941': max(s['rpm'] - _tcc_slip(s), 0.0),
-        '22199F': 0.30 + 0.005 * s['throttle'] + 0.0002 * s['rpm'],
-        '22199E': (0.30 + 0.005 * s['throttle'] + 0.0002 * s['rpm']) * (1 + 0.02 * math.sin(t * 3)),
     }
     raw = known[pid.pid] if pid.pid in known else _smooth(pid.pid, t, pid.low, pid.high)
     return min(max(raw, pid.low), pid.high)
@@ -106,6 +103,7 @@ class DemoSource:
         self._clock = clock
         self._start = clock()
         self.traffic = []
+        self.on_values = None   # optional callback({pid: (value, unit)}) for the data log
 
     def now(self):
         return self._clock() - self._start
@@ -120,7 +118,10 @@ class DemoSource:
         return reading, pid.unit
 
     def poll(self, pid_ids, headers=None):
-        return {p: self.read(p) for p in pid_ids if pids.get(p) is not None}, {}
+        values = {p: self.read(p) for p in pid_ids if pids.get(p) is not None}
+        if self.on_values is not None and values:
+            self.on_values(values)
+        return values, {}
 
     def read_dtcs(self):
         self.traffic.append(('TX', '03'))

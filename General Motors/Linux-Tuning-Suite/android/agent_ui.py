@@ -18,10 +18,13 @@ NOTE_COLOUR = {'info': 'good', 'warn': 'ok', 'alert': 'bad'}
 
 
 class AgentScreen(BoxLayout):
-    def __init__(self, get_state, bounds, labels, get_value, apply_change, **kwargs):
+    def __init__(self, get_state, bounds, labels, get_value, apply_change, check_pid=None, apply_pid=None,
+                 **kwargs):
         super().__init__(orientation='vertical', **kwargs)
         self.get_state, self.bounds, self.labels = get_state, bounds, labels
         self.get_value, self.apply_change = get_value, apply_change
+        self.check_pid, self.apply_pid = check_pid, apply_pid
+        self.focus_text = ''
         self.bridge = None
         self.url = ''
         self._event = None
@@ -46,6 +49,14 @@ class AgentScreen(BoxLayout):
         for widget in (self.status, self.controls):
             intro.add_widget(widget)
 
+        self.focus_card = Card()
+        self.focus_card.add_widget(section_title('Sensor you asked about'))
+        self.focus_label = panel_label('Triple tap any sensor on Live or Scan to ask your agent about it. It will '
+                                       'show here, and your agent can read it from the bridge.', markup=False,
+                                       color=MUTED, font_size=dp(13))
+        self.focus_card.add_widget(self.focus_label)
+        self.focus_copy = make_button('Copy a question for my agent', self.copy_question, primary=True)
+
         self.proposals_card = Card()
         self.proposals_card.add_widget(section_title('Waiting for your approval'))
         self.proposals_box = BoxLayout(orientation='vertical', size_hint_y=None, spacing=dp(10))
@@ -61,7 +72,7 @@ class AgentScreen(BoxLayout):
                                'token. The data travels unencrypted on that network, so use your own '
                                'network or hotspot, and stop the bridge when you are done.',
                                color=MUTED, font_size=dp(12))
-        self.add_widget(stack(intro, self.proposals_card, self.notes_card, security))
+        self.add_widget(stack(intro, self.focus_card, self.proposals_card, self.notes_card, security))
         self.show_idle()
 
     # --- lifecycle -------------------------------------------------------------------------------
@@ -85,7 +96,7 @@ class AgentScreen(BoxLayout):
         host = '127.0.0.1' if local_only else '0.0.0.0'
         for port in (DEFAULT_PORT, 0):
             try:
-                bridge = AgentBridge(self.get_state, self.bounds, host=host, port=port)
+                bridge = AgentBridge(self.get_state, self.bounds, host=host, port=port, check_pid=self.check_pid)
                 bridge.start()
             except OSError:
                 continue
@@ -123,6 +134,27 @@ class AgentScreen(BoxLayout):
         if self.bridge is not None:
             Clipboard.copy(build_agent_prompt(self.url, self.bridge.token, self.bridge.help()))
 
+    # --- the sensor you asked about --------------------------------------------------------------
+
+    def set_focus(self, info):
+        """Show the sensor that was triple tapped, and remember a question to give the agent about it."""
+        lines = [f'{info["name"]} ({info["pid"]})', f'Mode {info["mode"]}, module {info["module"]}, '
+                 f'unit {info["unit"] or "none"}, range {info["low"]:g} to {info["high"]:g}']
+        lines.append('Latest reading: ' + (f'{info["latest"]:g}' if info.get('latest') is not None else 'none'))
+        lines.append(info['car_answer'])
+        self.focus_label.text = '\n'.join(lines)
+        self.focus_label.color = TEXT
+        self.focus_text = (f'I need help with the sensor {info["name"]} (PID {info["pid"]}) in TunerToolPro. '
+                           'Read GET /v1/focus for its details and raw replies, work out the right module, mode, '
+                           'bytes and equation, explain what is wrong or how to use it, and if it needs '
+                           'changing, propose it with POST /v1/propose_pid.')
+        if self.focus_copy.parent is None:
+            self.focus_card.add_widget(self.focus_copy)
+
+    def copy_question(self):
+        Clipboard.copy(self.focus_text)
+        self.focus_label.text += '\n\nQuestion copied. Paste it to your agent.'
+
     # --- approvals -------------------------------------------------------------------------------
 
     def refresh(self, _dt):
@@ -135,14 +167,18 @@ class AgentScreen(BoxLayout):
 
     def _refresh(self):
         pending = self.bridge.pending() if self.bridge else []
+        pending_pids = self.bridge.pending_pids() if self.bridge else []
         notes = self.bridge.notes() if self.bridge else []
-        signature = (tuple(p['id'] for p in pending), tuple(n['time'] for n in notes))
+        signature = (tuple(p['id'] for p in pending), tuple(p['id'] for p in pending_pids),
+                     tuple(n['time'] for n in notes))
         if signature == self._shown:
             return
         self._shown = signature
         self.proposals_box.clear_widgets()
-        if not pending:
+        if not pending and not pending_pids:
             self.proposals_box.add_widget(panel_label('No proposals.', color=MUTED, font_size=dp(13)))
+        for proposal in pending_pids:
+            self.proposals_box.add_widget(self._pid_row(proposal))
         for proposal in pending:
             self.proposals_box.add_widget(self._proposal_row(proposal))
         lines = [f'[color=#{HEX[NOTE_COLOUR[n["level"]]]}]{n["text"]}[/color]' for n in notes[:6]]
@@ -161,6 +197,30 @@ class AgentScreen(BoxLayout):
             make_button('Approve', lambda p=proposal: self.decide(p, True), primary=True),
             make_button('Reject', lambda p=proposal: self.decide(p, False))))
         return box
+
+    def _pid_row(self, proposal):
+        entry = proposal['entry']
+        box = BoxLayout(orientation='vertical', size_hint_y=None, spacing=dp(6))
+        box.bind(minimum_height=box.setter('height'))
+        box.add_widget(panel_label(f'New sensor {entry["pid"]}: {entry["name"]}', color=TEXT, bold=True))
+        box.add_widget(panel_label(f'Equation {entry["equation"]}, module {entry["header"]}, unit '
+                                   f'{entry["unit"] or "none"}, range {entry["low"]} to {entry["high"]}',
+                                   color=MUTED, font_size=dp(13)))
+        if proposal['reason']:
+            box.add_widget(panel_label(proposal['reason'], color=MUTED, font_size=dp(13)))
+        box.add_widget(button_row(
+            make_button('Approve and save', lambda p=proposal: self.decide_pid(p, True), primary=True),
+            make_button('Reject', lambda p=proposal: self.decide_pid(p, False))))
+        return box
+
+    def decide_pid(self, proposal, approved):
+        resolved = self.bridge.resolve_pid(proposal['id'], approved) if self.bridge else None
+        if resolved and approved and self.apply_pid is not None:
+            message = self.apply_pid(resolved['entry'])
+            if message:
+                self.status.text, self.status.color = message, STATUS['bad']
+        self._shown = None
+        self.refresh(0)
 
     def decide(self, proposal, approved):
         resolved = self.bridge.resolve(proposal['id'], approved) if self.bridge else None

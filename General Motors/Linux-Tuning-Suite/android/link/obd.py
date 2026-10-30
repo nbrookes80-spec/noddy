@@ -14,6 +14,7 @@ on Android, and it has not been tested with a real adapter yet.
 import re
 import socket
 import threading
+import time
 
 from scanner import pids as catalog
 
@@ -39,10 +40,43 @@ HEADER_COMMANDS = {f'ATSH{h}' for h in catalog.KNOWN_HEADERS}
 ALLOWED |= HEADER_COMMANDS
 
 
+# Adapter timing, for speed settings: ATAT0/1/2 is adaptive timing, ATST sets the response timeout in units of
+# 4 ms. Both only change how long the adapter waits for a car, so they are allowed on their own.
+TIMING_COMMAND = re.compile(r'ATAT[012]|ATST[0-9A-F]{2}')
+
+# The protocol the adapter talks to the car in. ATSP picks how the adapter speaks on the bus, so it is allowed on
+# its own: it adds no request. The choices are the CAN protocols a GM car answers on (0 lets the adapter choose).
+PROTOCOLS = {'0': 'Automatic', '6': 'CAN 11-bit, 500 kbaud (Holden VE/VF, most GM since 2008)',
+             '7': 'CAN 29-bit, 500 kbaud', '8': 'CAN 11-bit, 250 kbaud', '9': 'CAN 29-bit, 250 kbaud'}
+
+
+def timing_commands(adaptive, timeout_ms):
+    """The adapter set-up for the speed settings: ATAT1 (adaptive timing) or ATAT0 (off), then ATST when a
+    timeout is chosen. ATST counts 4 ms steps, so 200 ms is 50 steps, sent as ATST32."""
+    commands = [f'ATAT{1 if adaptive else 0}']
+    if timeout_ms:
+        steps = min(255, max(1, round(timeout_ms / 4)))
+        commands.append(f'ATST{steps:02X}')
+    return commands
+
+
+def send_timing(elm, adaptive, timeout_ms, protocol=None):
+    """Send the speed settings to a connected adapter, one command at a time. Returns the commands sent.
+    protocol is a key of PROTOCOLS to select too, or None to leave the adapter's protocol alone."""
+    sent = timing_commands(adaptive, timeout_ms)
+    if protocol in PROTOCOLS:
+        sent.append(f'ATSP{protocol}')
+    for command in sent:
+        with elm._lock:
+            elm.command(command)
+    return sent
+
+
 def is_allowed(command):
-    """True for a read-only command: set-up, a header switch, Mode 03, or a catalogued Mode 01/22 PID."""
+    """True for a read-only command: set-up, a header switch, Mode 03, adapter timing, or a catalogued Mode 01/22 PID."""
     command = command.replace(' ', '').upper()
-    return command in ALLOWED or command in catalog.CATALOG
+    return (command in ALLOWED or command in catalog.CATALOG or bool(TIMING_COMMAND.fullmatch(command))
+            or command in {f'ATSP{code}' for code in PROTOCOLS})
 
 ERROR_WORDS = ('NO DATA', 'ERROR', 'UNABLE', 'STOPPED', 'BUS INIT', '?', 'CAN ERROR')
 MISS_LIMIT = 3     # a reading with this many failures in a row is skipped...
@@ -111,6 +145,55 @@ class WifiTransport:
             self._sock = None
 
 
+class SerialTransport:
+    """A USB or RS-232 cable to the adapter. Desktop only: needs pyserial, which the phone does not have."""
+
+    def __init__(self, port, baud=38400, timeout=5.0):
+        self.port, self.baud, self.timeout = port, baud, timeout
+        self._serial = None
+        self._buffer = b''
+
+    def open(self):
+        try:
+            import serial
+        except ImportError as exc:
+            raise OBDError('A cable needs the pyserial package (pip install pyserial)') from exc
+        try:
+            self._serial = serial.Serial(self.port, self.baud, timeout=0.2, write_timeout=2)
+        except (OSError, serial.SerialException) as exc:
+            raise OBDError(f'Could not open the cable port {self.port} ({exc})') from exc
+
+    def write(self, data):
+        self._serial.write(data)
+        self._serial.flush()
+
+    def read_until(self, prompt=b'>'):
+        """Read until the adapter's prompt character arrives. Returns the text before it."""
+        last = time.monotonic()
+        while prompt not in self._buffer:
+            chunk = self._serial.read(max(1, self._serial.in_waiting))
+            if chunk:
+                self._buffer += chunk
+                last = time.monotonic()
+            elif time.monotonic() - last > self.timeout:
+                raise AdapterLost('The adapter stopped answering')
+        reply, _, self._buffer = self._buffer.partition(prompt)
+        return reply
+
+    def read_chunk(self, timeout=0.2):
+        """Whatever the adapter has sent (b'' if nothing arrived within timeout). Used by the CAN sniffer."""
+        if self._buffer:
+            chunk, self._buffer = self._buffer, b''
+            return chunk
+        self._serial.timeout = timeout
+        return self._serial.read(max(1, self._serial.in_waiting))
+
+    def close(self):
+        if self._serial is not None:
+            self._serial.close()
+            self._serial = None
+
+
 class BluetoothTransport:
     """Bluetooth Classic SPP through Android's API (pyjnius). Android only."""
 
@@ -161,9 +244,18 @@ class BluetoothTransport:
         self._out.write([b - 256 if b > 127 else b for b in data])
         self._out.flush()
 
-    def read_until(self, prompt=b'>'):
+    def read_until(self, prompt=b'>', timeout=5.0):
+        """Bytes up to the prompt. An adapter that goes quiet raises AdapterLost instead of waiting forever,
+        which used to freeze every screen until the app was restarted."""
+        import time
         out = bytearray()
+        deadline = time.monotonic() + timeout
         while True:
+            if self._in.available() == 0:
+                if time.monotonic() >= deadline:
+                    raise AdapterLost('The adapter stopped answering')
+                time.sleep(0.005)
+                continue
             value = self._in.read()
             if value < 0:
                 raise AdapterLost('The adapter closed the connection')
@@ -201,6 +293,8 @@ class Elm327:
     def __init__(self, transport):
         self.transport = transport
         self.traffic = []   # (direction, text) of what this link sent and got back, newest last
+        self.on_traffic = None   # optional callback(kind, text) for a debug log: TX, RX, REFUSED or ERR
+        self.on_values = None    # optional callback({pid: (value, unit)}) for the data log, after each poll
         self._header = catalog.DEFAULT_HEADER
         self._header_memory = {}   # PID -> the module address that answered for it
         self._misses = {}          # PID -> failures in a row
@@ -217,15 +311,36 @@ class Elm327:
 
     def command(self, command):
         if not is_allowed(command):
+            self._tell('REFUSED', command)
             raise UnsafeCommand(f'{command!r} is not a read-only command, so it was not sent')
         command = command.replace(' ', '').upper()
         self.traffic.append(('TX', command))
-        self.transport.write((command + '\r').encode('ascii'))
-        raw = self.transport.read_until(b'>')
+        self._tell('TX', command)
+        try:
+            self.transport.write((command + '\r').encode('ascii'))
+            raw = self.transport.read_until(b'>')
+        except Exception as exc:   # also a closed or broken socket, so the log shows why a reading stopped
+            self._tell('ERR', f'{type(exc).__name__}: {exc}')
+            if isinstance(exc, (OBDError, UnsafeCommand)):
+                raise
+            raise AdapterLost(f'The adapter connection failed: {exc}') from exc
         reply = raw.decode('ascii', 'replace').replace('\r', '\n').strip()
         self.traffic.append(('RX', reply.replace('\n', ' ')))
+        self._tell('RX', reply.replace('\n', ' '))
         del self.traffic[:-200]
         return reply
+
+    def _tell(self, kind, text):
+        """Pass a line to the debug log, if one is listening. A broken log must never stop a reading."""
+        if self.on_traffic is not None:
+            try:
+                self.on_traffic(kind, text)
+            except Exception:
+                pass
+
+    def header_for(self, pid):
+        """The module address that last answered for a catalogue reading, or None if none has yet."""
+        return self._header_memory.get(pid)
 
     def set_header(self, header):
         """Point requests at a module (7E0 engine, 7E2 transmission) or back at the broadcast address."""
@@ -246,8 +361,13 @@ class Elm327:
             raise OBDError(f'Reading codes failed: the adapter replied "{text.splitlines()[-1].strip()}"')
         if 'NO DATA' in text:
             return []
-        hex_text = re.sub(r'[^0-9A-F]', '', text.replace('SEARCHING', ''))
-        return catalog.decode_dtcs(hex_text[2:] if hex_text.startswith('43') else hex_text)
+        # Each module answers on its own line, so decode each line by itself and drop codes seen twice.
+        codes = []
+        for line in text.replace('SEARCHING', '').splitlines():
+            hex_text = re.sub(r'[^0-9A-F]', '', line)
+            data = hex_text[2:] if hex_text.startswith('43') else hex_text
+            codes.extend(code for code in catalog.decode_dtcs(data) if code not in codes)
+        return codes
 
     def read(self, pid, header=None, final=True):
         with self._lock:
@@ -282,7 +402,13 @@ class Elm327:
         adapter does not flip between modules for every miss. A lost adapter raises AdapterLost.
         """
         with self._lock:
-            return self._poll(pids, headers or {})
+            result = self._poll(pids, headers or {})
+        if self.on_values is not None and result[0]:
+            try:
+                self.on_values(result[0])
+            except Exception:   # a broken data log must never stop a reading
+                pass
+        return result
 
     def _poll(self, pids, headers):
         values, errors, retry = {}, {}, []

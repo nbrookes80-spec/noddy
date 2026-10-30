@@ -11,6 +11,7 @@ from kivy.metrics import dp
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
+from kivy.uix.togglebutton import ToggleButton
 
 import prefs
 from link import devices, obd
@@ -57,12 +58,17 @@ class LinkScreen(BoxLayout):
         self.state = panel_label('Not connected.', color=MUTED)
         self.connect_button = style_button(Button(text='Connect'), primary=True)
         self.connect_button.bind(on_release=self.toggle)
+        self.auto_button = ToggleButton(text='Connect automatically when the app opens',
+                                        state='down' if self.saved['auto_connect'] else 'normal')
+        self._style_auto()
+        self.auto_button.bind(state=self._auto_changed)
 
         self.adapter_card = Card()
         self.adapter_card.add_widget(section_title('Scan adapter'))
         self.adapter_card.add_widget(button_row(*kinds))
         self.adapter_card.add_widget(self.panel)
         self.adapter_card.add_widget(self.connect_button)
+        self.adapter_card.add_widget(self.auto_button)
         self.adapter_card.add_widget(self.state)
 
         self.live_button = make_button('Open Live data', lambda: self.on_open_live and self.on_open_live())
@@ -173,6 +179,34 @@ class LinkScreen(BoxLayout):
         devices.bind_to_wifi()
         return obd.WifiTransport(host or obd.DEFAULT_WIFI[0], int(port or obd.DEFAULT_WIFI[1])), ''
 
+    def _style_auto(self):
+        style_button(self.auto_button, primary=self.auto_button.state == 'down')
+
+    def _auto_changed(self, _button, state):
+        self._style_auto()
+        self.saved['auto_connect'] = state == 'down'
+        prefs.save(self.prefs_path, self.saved)
+
+    def auto_connect(self):
+        """Called once when the app opens: connect to the last adapter if the user asked for that."""
+        if self.saved['auto_connect']:
+            self.ensure_connected()
+
+    def ensure_connected(self):
+        """Connect to the saved adapter unless a connection is already open or opening. A screen that needs
+        the adapter calls this when it is opened, so each one uses the single shared connection."""
+        if self.session.elm is not None or self._connecting:
+            return
+        try:
+            transport, address = self.make_transport()
+        except ValueError:
+            return   # no adapter saved yet: the user picks one on this screen
+        self._connecting = True
+        self.session.log.write('LINK', f'connecting (auto) {self.kind} {address}')
+        self.connect_button.disabled = True
+        self.state.text = 'Connecting to your last adapter...'
+        threading.Thread(target=self._connect, args=(transport, address), daemon=True).start()
+
     def toggle(self, *_):
         if self.session.elm is not None:
             self.disconnect()
@@ -185,6 +219,7 @@ class LinkScreen(BoxLayout):
             self.state.text = str(exc) if 'adapter' in str(exc) else 'Enter the adapter as host:port, e.g. 192.168.0.10:35000'
             return
         self._connecting = True
+        self.session.log.write('LINK', f'connecting {self.kind} {address}')
         self.connect_button.disabled = True
         self.state.text = 'Connecting...'
         threading.Thread(target=self._connect, args=(transport, address), daemon=True).start()
@@ -192,8 +227,10 @@ class LinkScreen(BoxLayout):
     def _connect(self, transport, address):
         try:
             elm = obd.Elm327(transport)
+            elm.on_traffic = self.session.log.write   # so the set-up handshake is logged too
             elm.open()
         except obd.OBDError as exc:
+            self.session.log.write('ERR', f'connect failed: {type(exc).__name__}: {exc}')
             Clock.schedule_once(lambda dt, m=str(exc): self._failed(m))
             return
         Clock.schedule_once(lambda dt: self._connected(elm, address))
@@ -203,11 +240,22 @@ class LinkScreen(BoxLayout):
         self.connect_button.disabled = False
         self.connect_button.text = 'Disconnect'
         self.state.text = 'Connected. The Live tab is now streaming the engine and transmission.'
-        prefs.save(self.prefs_path, {'link_kind': self.kind, 'bt_address': address or self.bt_address,
-                                     'wifi': self.wifi_box.text.strip() or self.saved['wifi']})
+        prefs.save(self.prefs_path, dict(self.saved, link_kind=self.kind, bt_address=address or self.bt_address,
+                                         wifi=self.wifi_box.text.strip() or self.saved['wifi']))
         self.session.attach(elm)
+        if self.saved['adaptive_timing'] or self.saved['timeout_ms'] or self.saved['adapter_protocol'] != '0':
+            threading.Thread(target=self._send_speed, args=(elm,), daemon=True).start()
         if self.live_button.parent is None:
             self.adapter_card.add_widget(self.live_button)
+
+    def _send_speed(self, elm):
+        """The saved speed settings, sent once the connection is open. A refusal leaves the adapter's own timing."""
+        try:
+            protocol = self.saved['adapter_protocol']
+            obd.send_timing(elm, self.saved['adaptive_timing'], self.saved['timeout_ms'],
+                            protocol=None if protocol == '0' else protocol)
+        except obd.OBDError:
+            pass
 
     def _failed(self, message):
         self._connecting = False
@@ -223,5 +271,6 @@ class LinkScreen(BoxLayout):
             self.adapter_card.remove_widget(self.live_button)
 
     def connection_lost(self, message):
+        self.session.log.write('LINK', f'connection lost: {message}')
         self.disconnect()
         self.state.text = f'Connection lost: {message}'

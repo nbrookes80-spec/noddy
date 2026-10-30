@@ -8,7 +8,7 @@ sys.path.insert(0, str(ROOT))
 import shift_live  # noqa: E402
 from grading import BAD, GOOD, OK  # noqa: E402
 from link import obd  # noqa: E402
-from live import FAST_PIDS, SLOW_PIDS, STREAM_PIDS, LiveStream  # noqa: E402
+from live import FAST_PIDS, SLOW_PIDS, STREAM_PIDS, TCM_PIDS, LiveStream  # noqa: E402
 
 
 class Clock:
@@ -64,6 +64,15 @@ class PollingTests(unittest.TestCase):
         self.assertEqual(set(source.asked[3]), set(FAST_PIDS))
         self.assertEqual(set(source.asked[4]), set(STREAM_PIDS))      # fifth round: slow ones again
 
+    def test_engine_only_stream_never_asks_the_transmission(self):
+        source, clock = ScriptedSource(), Clock()
+        stream = LiveStream(source, clock=clock, transmission=False)
+        for _ in range(5):
+            stream.step()
+        for asked in source.asked:
+            self.assertFalse(set(asked) & TCM_PIDS)
+        self.assertIn('010C', source.asked[0])
+
     def test_snapshot_gives_names_units_values_and_a_short_history(self):
         source, clock = ScriptedSource(), Clock()
         source.readings = {'010C': 1726.0}
@@ -117,21 +126,30 @@ class HealthTests(unittest.TestCase):
             stream = self.stream_with(**{'010C': float(rpm)})
             self.assertEqual(health(stream, 'engine_rpm')['level'], level, rpm)
 
-    def test_pressure_control_solenoid_following_its_reference(self):
-        for actual, level in ((0.50, GOOD), (0.44, OK), (0.30, BAD)):   # reference 0.50
-            stream = self.stream_with(**{'22199E': actual, '22199F': 0.50})
-            self.assertEqual(health(stream, 'pc_current')['level'], level, actual)
+    def test_line_pressure_is_shown_as_read(self):
+        self.assertEqual(health(self.stream_with(**{'22001F': 612.0}), 'line_pressure')['text'], '612 kPa')
+        self.assertEqual(health(self.stream_with(), 'line_pressure')['level'], 'off')
 
-    def test_a_gear_that_will_not_follow_the_command_turns_yellow_then_red(self):
-        stream = self.stream_with(**{'22199A': 3.0, '223D03': 4.0})
+    def test_the_gear_is_worked_out_from_the_shaft_speeds(self):
+        for turbine, output, gear in ((4027, 1000, 1), (1532, 1000, 3), (1000, 1500, 6)):
+            stream = self.stream_with(**{'221941': float(turbine), '221942': float(output)})
+            self.assertEqual(stream.implied_gear(), gear)
+        self.assertIsNone(self.stream_with(**{'221941': 800.0, '221942': 50.0}).implied_gear())   # crawling
+        self.assertIsNone(self.stream_with(**{'221941': 1900.0, '221942': 1000.0}).implied_gear())  # mid-shift
+
+    def test_a_gear_that_does_not_match_the_shaft_speeds_turns_yellow_then_red(self):
+        shafts = {'221941': 1532.0, '221942': 1000.0}                  # the shafts say third
+        stream = self.stream_with(**{'22199A': 3.0, **shafts})
         self.assertEqual(health(stream, 'gear_follow')['level'], GOOD)
+        stream.source.readings['22199A'] = 4.0
+        stream.step()
         stream.clock.now += 2.0
         stream.step()
         self.assertEqual(health(stream, 'gear_follow')['level'], OK)
         stream.clock.now += 3.0
         stream.step()
         self.assertEqual(health(stream, 'gear_follow')['level'], BAD)
-        stream.source.readings['22199A'] = 4.0
+        stream.source.readings['22199A'] = 3.0
         stream.step()
         self.assertEqual(health(stream, 'gear_follow')['level'], GOOD)
 

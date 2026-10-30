@@ -21,9 +21,8 @@ ECU = {'010C': '410C1AF8',      # (0x1A*256 + 0xF8) / 4 = 1726 rpm
        '0104': '410480', '010B': '410B64', '010E': '410E90'}
 TCM = {'22194F': '62194F78',    # 0x78 - 40 = 80 C
        '22199A': '62199A03',    # third gear
-       '223D03': '623D0303',    # third gear commanded
        '221991': '6219910032', '22001F': '62001F0190', '221941': '6219410BB8',
-       '221942': '62194201F4', '22199E': '62199E19', '22199F': '62199F19'}
+       '221942': '62194201F4'}
 
 
 class FakeAdapter:
@@ -95,7 +94,6 @@ class StreamOverTheWireTests(unittest.TestCase):
         self.assertAlmostEqual(values['0111']['value'], 50.2, places=1)
         self.assertEqual(values['22194F']['value'], 80.0)
         self.assertEqual(values['22199A']['value'], 3.0)
-        self.assertEqual(values['223D03']['value'], 3.0)
 
     def test_the_adapter_switches_to_the_transmission_once_per_round(self):
         adapter = FakeAdapter()

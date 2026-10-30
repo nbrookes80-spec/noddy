@@ -96,12 +96,28 @@ class ElmTests(unittest.TestCase):
 
     def test_write_commands_are_refused_before_sending(self):
         sent_before = len(self.fake.received)
-        for command in ('0902', '0400', '04', 'ATSP6', '14FF00', '1902', '2201FF', 'ATSH7E1',
+        for command in ('0902', '0400', '04', 'ATSPA', '14FF00', '1902', '2201FF', 'ATSH7E1',
                         'ATSH7FF', '2F1234', '3101'):
             with self.subTest(command=command):
                 with self.assertRaises(obd.UnsafeCommand):
                     self.elm.command(command)
         self.assertEqual(len(self.fake.received), sent_before)
+
+    def test_protocol_choices_are_allowed_and_no_other_protocol_is(self):
+        """ATSP only picks how the adapter speaks on the bus. The five listed codes pass, anything else is refused."""
+        for code in obd.PROTOCOLS:
+            with self.subTest(code=code):
+                self.assertTrue(obd.is_allowed(f'ATSP{code}'))
+        for command in ('ATSPA', 'ATSPB', 'ATSPZ', 'ATSP', 'ATSP66', 'ATTP6'):
+            with self.subTest(command=command):
+                self.assertFalse(obd.is_allowed(command))
+
+    def test_sending_a_protocol_follows_the_timing_commands(self):
+        sent = obd.send_timing(self.elm, True, 200, protocol='6')
+        self.assertEqual(sent, ['ATAT1', 'ATST32', 'ATSP6'])
+        self.assertEqual(obd.send_timing(self.elm, False, 0), ['ATAT0'])             # None leaves the protocol alone
+        self.assertEqual(obd.send_timing(self.elm, False, 0, protocol='9'), ['ATAT0', 'ATSP9'])
+        self.assertEqual(obd.send_timing(self.elm, False, 0, protocol='A'), ['ATAT0'])   # an unknown code is not sent
 
     def test_only_listed_pids_can_be_read(self):
         for pid in ('0902', '2201FF', '04'):
@@ -119,10 +135,22 @@ class ElmTests(unittest.TestCase):
     def test_stored_codes_are_decoded(self):
         self.assertEqual(self.elm.read_dtcs(), ['P0301', 'P0420'])
 
+    def test_codes_from_two_modules_are_listed_once_each(self):
+        self.fake.REPLIES = dict(self.fake.REPLIES, **{'03': '43 00 43\r43 00 43'})
+        self.assertEqual(self.elm.read_dtcs(), ['P0043'])
+
     def test_traffic_log_records_what_was_sent_and_received(self):
         self.elm.read('010D')
         self.assertIn(('TX', '010D'), self.elm.traffic)
         self.assertIn(('RX', '410D3C'), self.elm.traffic)
+
+    def test_adapter_timing_commands_are_allowed_and_nothing_else_in_at(self):
+        for command in ('ATAT0', 'ATAT1', 'ATAT2', 'ATST32', 'ATSTFF'):
+            with self.subTest(command=command):
+                self.assertTrue(obd.is_allowed(command))
+        for command in ('ATAT3', 'ATST', 'ATSTZZ', 'ATDP', 'ATPC', 'ATWS', 'ATSPA'):
+            with self.subTest(command=command):
+                self.assertFalse(obd.is_allowed(command))
 
     def test_every_allowed_command_is_a_read(self):
         from scanner import pids
@@ -153,3 +181,33 @@ class BluetoothTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class TimingCommandTests(unittest.TestCase):
+    def test_adaptive_timing_is_switched_on_or_off_explicitly(self):
+        self.assertEqual(obd.timing_commands(True, 0), ['ATAT1'])
+        self.assertEqual(obd.timing_commands(False, 0), ['ATAT0'])
+
+    def test_a_timeout_is_sent_in_four_millisecond_steps(self):
+        self.assertEqual(obd.timing_commands(True, 200), ['ATAT1', 'ATST32'])
+        self.assertEqual(obd.timing_commands(False, 100), ['ATAT0', 'ATST19'])
+
+    def test_every_timing_command_passes_the_guard(self):
+        for command in obd.timing_commands(True, 400):
+            self.assertTrue(obd.is_allowed(command), command)
+
+
+class SendTimingTests(unittest.TestCase):
+    class FakeAdapter:
+        def __init__(self):
+            self._lock = threading.RLock()
+            self.sent = []
+
+        def command(self, command):
+            self.sent.append(command)
+            return 'OK'
+
+    def test_the_speed_settings_are_sent_in_order(self):
+        adapter = self.FakeAdapter()
+        self.assertEqual(obd.send_timing(adapter, True, 200), ['ATAT1', 'ATST32'])
+        self.assertEqual(adapter.sent, ['ATAT1', 'ATST32'])

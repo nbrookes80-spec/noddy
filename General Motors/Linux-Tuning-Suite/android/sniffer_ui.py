@@ -22,12 +22,16 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
 
 import sniffer_view
+from link.obd import OBDError
+from scanner import car_check, profiles
 from tunertoolpro.canbus import MonitorError, PROTOCOLS, SnifferSession, read_log
 from ui_kit import (ACCENT, ALERT, GOOD, MUTED, RAISED, TEXT, Card, WrapOption, button_row, make_button,
                     panel_label, section_title, stack, style_button)
 
 MONO = os.path.join(kivy_data_dir, 'fonts', 'RobotoMono-Regular.ttf')
 POLL_SECONDS = 0.05
+CHECK_SECONDS = 60     # how long 'Check this car' records the bus
+CHECK_LINES = 30       # lines of the result shown on screen; the full report is in the saved files
 REFRESH_SECONDS = 0.2
 SOURCES = ('Simulated', 'Adapter', 'Log file')
 LABELS = {'Simulated': 'Demo'}      # the button text, where it has to be shorter than the source's name
@@ -51,6 +55,13 @@ def _mono_label(chars, **kwargs):
     return label
 
 
+def _restyle_option(toggle, state):
+    """An option button shows amber while it is on, so the user can see it took the tap."""
+    style_button(toggle, primary=(state == 'down'))
+    toggle.height = dp(44)
+    toggle.font_size = dp(12)
+
+
 def _text_box(hint, text=''):
     return TextInput(text=text, hint_text=hint, multiline=False, size_hint_y=None, height=dp(44),
                      background_color=RAISED, foreground_color=TEXT, hint_text_color=MUTED,
@@ -63,6 +74,9 @@ class SnifferScreen(BoxLayout):
         self.app_session = session          # the connected adapter, if any (Link tab)
         self.runner = runner                # the Live reader, which must stand aside while we listen
         self.folder = folder                # where captures are saved
+        self.data_dir = os.path.dirname(folder)   # the app's data folder: cars/ and car_scans/ live here
+        self.car_profiles = {}
+        self._checking = False
         self.on_open_link = on_open_link
         self.sniff = SnifferSession()
         self.kind = 'Simulated'
@@ -91,7 +105,9 @@ class SnifferScreen(BoxLayout):
         self.source_note = panel_label('', color=MUTED, font_size=dp(13))
         source.add_widget(self.source_note)
         self.bus_box = Spinner(text=self._bus_label('6'), values=[self._bus_label(k) for k in PROTOCOLS],
-                               size_hint_y=None, height=dp(48), option_cls=WrapOption)
+                               size_hint_y=None, height=dp(48), option_cls=WrapOption, shorten=True,
+                               shorten_from='right')
+        self.bus_box.bind(width=lambda box, width: setattr(box, 'text_size', (width - dp(32), None)))
         self.filter_box = _text_box('Hear only this ID, hex (optional)')
         self.log_button = make_button('Choose a log file', self.choose_log)
         self.extra = BoxLayout(orientation='vertical', size_hint_y=None, height=0, spacing=dp(8))   # per-source controls
@@ -105,7 +121,7 @@ class SnifferScreen(BoxLayout):
 
         controls = Card()
         controls.add_widget(section_title('Notching'))
-        self.notch_button = make_button('Notch', lambda: self.sniff.sniffer.notch(), primary=True)
+        self.notch_button = make_button('Notch', lambda: self.sniff.sniffer.notch())
         self.unnotch_button = make_button('Unnotch', lambda: self.sniff.sniffer.unnotch())
         self.clear_button = make_button('Clear', self.clear)
         for button in (self.notch_button, self.unnotch_button, self.clear_button):
@@ -115,10 +131,8 @@ class SnifferScreen(BoxLayout):
         for key, text in (('never_expire', 'Keep IDs'), ('mute_notched', 'Mute notched'),
                           ('fade_inactive', 'Fade quiet')):
             toggle = ToggleButton(text=text)
-            style_button(toggle)
-            toggle.height = dp(44)
-            toggle.font_size = dp(12)
-            toggle.bind(state=lambda b, state, k=key: setattr(self.sniff.sniffer, k, state == 'down'))
+            _restyle_option(toggle, 'normal')
+            toggle.bind(state=lambda b, state, k=key: self._set_option(b, k, state))
             self.options[key] = toggle
         controls.add_widget(button_row(*self.options.values(), height=dp(44)))
         self.only_box = _text_box('Only these IDs, hex')
@@ -141,9 +155,80 @@ class SnifferScreen(BoxLayout):
         self.save_note = panel_label('', color=MUTED, font_size=dp(13))
         saving.add_widget(self.save_note)
 
-        self.scroller = stack(source, controls, frames, self.bits_card, saving)
+        self.scroller = stack(self._check_card(), source, controls, frames, self.bits_card, saving)
         self.add_widget(self.scroller)
         self.set_kind('Simulated')
+
+    def _check_card(self):
+        card = Card()
+        card.add_widget(section_title('Check this car'))
+        card.add_widget(panel_label(
+            f'Scans which readings the car answers, then records {CHECK_SECONDS} seconds of the bus and decodes '
+            'it. Saves the raw capture, a readable report and a CSV. Ignition on. Connect the adapter on the '
+            'Link tab first, and stop the sniffer.', color=MUTED, font_size=dp(13)))
+        self.car_profiles = {p.name: p for p in profiles.everything(os.path.join(self.data_dir, 'cars'))}
+        names = list(self.car_profiles)
+        self.car_box = Spinner(text=names[0], values=names, size_hint_y=None, height=dp(48),
+                               option_cls=WrapOption, shorten=True, shorten_from='right')
+        self.car_box.bind(width=lambda box, width: setattr(box, 'text_size', (width - dp(32), None)))
+        card.add_widget(self.car_box)
+        card.add_widget(make_button('Check this car', self.check_car, primary=True))
+        self.check_output = panel_label('Nothing checked yet.', font_size=dp(13))
+        card.add_widget(self.check_output)
+        return card
+
+    def _check_message(self, text, error=False):
+        self.check_output.text = text
+        self.check_output.color = ALERT if error else TEXT
+
+    def check_car(self):
+        if self._checking:
+            return
+        if self.app_session.elm is None:
+            self._check_message('Connect the adapter on the Link tab first.', error=True)
+            return
+        if self.sniff.running:
+            self._check_message('Stop the sniffer first: it is using the adapter.', error=True)
+            return
+        profile = self.car_profiles[self.car_box.text]
+        self._checking = True
+        self.runner.paused = True            # the Live reader must not touch the adapter during the check
+        self._check_message(f'Scanning {profile.name}...')
+        threading.Thread(target=self._check_work, args=(self.app_session.elm, profile), daemon=True).start()
+
+    def _check_work(self, elm, profile):
+        def scan_progress(index, total, pid):
+            Clock.schedule_once(lambda dt: self._check_message(f'Reading {index + 1} of {total}: {pid}'))
+
+        def capture_progress(elapsed, total):
+            Clock.schedule_once(lambda dt: self._check_message(f'Recording the bus: {total - elapsed:.0f} s left'))
+
+        result, error = None, None
+        try:
+            result = car_check.check(elm, profile, self.data_dir, CHECK_SECONDS, scan_progress, capture_progress)
+        except (OBDError, MonitorError, OSError) as exc:
+            error = str(exc)
+        Clock.schedule_once(lambda dt: self._check_done(result, error))
+
+    def _check_done(self, result, error):
+        self._checking = False
+        self.runner.paused = self.holds_adapter()
+        if error:
+            self._check_message(f'The check stopped: {error}', error=True)
+            return
+        note = f' {result["capture_error"]}' if result['capture_error'] else ''
+        body = result['scan_text'].splitlines() + [''] + result['report'].splitlines()
+        shown = body[:CHECK_LINES]
+        if len(body) > CHECK_LINES:
+            shown.append(f'... {len(body) - CHECK_LINES} more lines in the saved report.')
+        lines = [f'Recorded {result["frames"]} frames.{note}', ''] + shown + [
+                 '', 'Saved to:', result['raw'], result['report_path'], result['csv']]
+        self._check_message('\n'.join(lines))
+        self._check_message('\n'.join(lines))
+
+    def _set_option(self, toggle, key, state):
+        setattr(self.sniff.sniffer, key, state == 'down')
+        _restyle_option(toggle, state)
 
     @staticmethod
     def _bus_label(key):

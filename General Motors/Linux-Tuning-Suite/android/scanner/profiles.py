@@ -12,7 +12,7 @@ import re
 from dataclasses import dataclass, replace
 from pathlib import Path
 
-from . import pids, torque_csv
+from . import car_scan, pids, torque_csv
 
 DATA_DIR = Path(__file__).resolve().parent.parent / 'data'
 TORQUE_FILES = ('torque_gm_predefined.csv', 'torque_e38_t43_v5.csv')
@@ -75,14 +75,41 @@ def monitor_for(profile, extras):
     return pids.DEFAULT_MONITOR + [p for p in shown if p not in pids.DEFAULT_MONITOR]
 
 
-def activate(profile):
-    """Make this profile the catalogue and dashboard list. Returns a summary dict for the screen to show."""
+def candidates(profile, manual=()):
+    """Every PID the PID manager lists for a profile, in dashboard order, before the car check or hiding."""
+    extras, _rejected = load_pids(profile)
+    by_hand = {p.pid for p in manual}
+    extras = list(manual) + [p for p in extras if p.pid not in by_hand]
+    return monitor_for(profile, extras)
+
+
+def activate(profile, scan=None, manual=(), user_hidden=()):
+    """Make this profile the catalogue and dashboard list. Returns a summary dict for the screen to show.
+
+    scan is the car's saved scan (car_scan.load_scan). With a complete scan the dashboard only lists the
+    readings the car answered, and the summary gives the module address to ask for each of them.
+    manual is the PIDs the user entered by hand (manual_pids.pids_for); they replace an imported row with
+    the same id. user_hidden is the ids the user turned off in the PID manager: they stay in the catalogue but are
+    left off the dashboard.
+    """
     extras, rejected = load_pids(profile)
+    by_hand = {p.pid for p in manual}
+    extras = list(manual) + [p for p in extras if p.pid not in by_hand]
     skipped = pids.use_extras(extras)
-    pids.MONITOR_PIDS[:] = monitor_for(profile, extras)
+    monitor = monitor_for(profile, extras)
+    shown, hidden = car_scan.enforce(monitor, scan)
+    # A car check only asks for the PIDs that were known when it ran, so a PID typed in afterwards was never
+    # asked for. Keep the user's own PIDs on the dashboard rather than hiding them as "no reply".
+    keep = {p.pid for p in manual}
+    shown = [p for p in monitor if p in shown or p in keep]
+    hidden = {p: reason for p, reason in hidden.items() if p not in keep}
+    turned_off = {p.upper() for p in user_hidden}
+    shown = [p for p in shown if p not in turned_off]
+    pids.MONITOR_PIDS[:] = shown
     added = [p for p in extras if p.pid not in skipped]
     return {'profile': profile.name, 'added': len(added), 'already_known': len(skipped), 'rejected': rejected,
-            'shown': len(pids.MONITOR_PIDS)}
+            'shown': len(pids.MONITOR_PIDS), 'hidden': hidden, 'turned_off': len(turned_off & set(monitor)), 'headers': car_scan.headers(scan),
+            'checked': scan is not None and scan['complete']}
 
 
 # --- the user's own cars -------------------------------------------------------------------------

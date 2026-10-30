@@ -19,6 +19,7 @@ from kivy.uix.filechooser import FileChooserListView  # noqa: E402
 from kivy.uix.gridlayout import GridLayout  # noqa: E402
 from kivy.uix.image import Image  # noqa: E402
 from kivy.uix.label import Label  # noqa: E402
+from kivy.uix.modalview import ModalView  # noqa: E402
 from kivy.uix.popup import Popup  # noqa: E402
 from kivy.uix.screenmanager import Screen, ScreenManager  # noqa: E402
 from kivy.uix.scrollview import ScrollView  # noqa: E402
@@ -30,6 +31,9 @@ from kivy.uix.widget import Widget  # noqa: E402
 import converter_live  # noqa: E402
 import dyno_live  # noqa: E402
 import grading  # noqa: E402
+import prefs  # noqa: E402
+import sys  # noqa: E402
+import traceback  # noqa: E402
 import shift_live  # noqa: E402
 from tunertoolpro import trans_data  # noqa: E402
 from tunertoolpro import vehicles  # noqa: E402
@@ -39,16 +43,24 @@ from splash_ui import SplashOverlay  # noqa: E402
 from live_ui import LiveScreen, StreamRunner  # noqa: E402
 from scan_ui import ScanScreen  # noqa: E402
 from sniffer_ui import SnifferScreen  # noqa: E402
+from app_menu import AppMenu  # noqa: E402
 from settings_ui import SettingsScreen  # noqa: E402
+from scanner import car_scan, manual_pids, pid_view, pids, profiles, storage, themes, torque_csv  # noqa: E402
+import pid_card  # noqa: E402
+from live import STREAM_PIDS  # noqa: E402
+from pid_edit_ui import PidEditPopup  # noqa: E402
+from recorder import Recorder  # noqa: E402
 from scanner.session import Session  # noqa: E402
+from scanner.session_log import SessionLog  # noqa: E402
 from table_view import HEX, table_blocks  # noqa: E402
 from tunertoolpro import core  # noqa: E402
 from ui_kit import (ACCENT, ALERT, BG, BLUE, BORDER, GAP, MUTED, RAISED, TEXT, Card,  # noqa: E402
-                    HeaderBar, WrapOption, button_row, icon, make_button, panel_label, section_title, stack,
+                    HeaderBar, RecButton, hide, WrapOption, button_row, icon, make_button, panel_label, section_title, stack,
                     style_button)
 
 MONO = os.path.join(kivy_data_dir, 'fonts', 'RobotoMono-Regular.ttf')
-APP_VERSION = '0.3.0'
+ADAPTER_SCREENS = ('shift', 'dyno', 'live', 'scan', 'sniff', 'agent')   # opening any of these connects, then they share it
+APP_VERSION = '0.4.0'
 
 # How the 23 shift settings are grouped into cards.
 GROUPS = [
@@ -656,21 +668,36 @@ class TunerToolProApp(App):
         Window.bind(on_keyboard=self.on_back)
         self._refresh_event = None  # must exist before the Shift screen runs its first recalculation
         self.session = Session()
+        self.storage_base = storage.base_folder(self.user_data_dir)   # holds Tuner Tool Info/Data logs and /Debug logs
+        self.focus = None            # the sensor the user triple tapped, shared with the agent
+        self.fullscreen = False
+        self.start_log()
+        self.recorder = Recorder(self.session, self.storage_base, self.record_columns,
+                                 rate=lambda: self.link.saved['log_rate'])
         self.manager = ScreenManager()
-        self.header = HeaderBar(on_settings=lambda: self.show('settings'))
+        self.header = HeaderBar(on_menu=self.open_menu, on_rec=self.toggle_recording)
         self.shift = ShiftScreen(on_change=self.request_dyno_refresh, on_settings=lambda: self.show('settings'))
         self.dyno = DynoScreen(self.shift)
         self.runner = StreamRunner(self.session, self.shift.model)
-        self.live = LiveScreen(self.session, self.runner, on_open_link=lambda: self.show('link'))
-        self.scan = ScanScreen(self.session)
+        self.runner.extras = self.extra_sensors
+        pid_card.hooks.views = pid_view.PidViews(os.path.join(self.user_data_dir, 'pid_view.json'))
+        pid_card.hooks.on_edit, pid_card.hooks.on_help = self.edit_pid, self.ask_agent
+        pid_card.hooks.on_changed = self.views_changed
+        self.live = LiveScreen(self.session, self.runner, on_open_link=lambda: self.show('link'),
+                               on_fullscreen=self.set_fullscreen)
+        self.scan = ScanScreen(self.session, on_fullscreen=self.set_fullscreen)
         self.sniff = SnifferScreen(self.session, self.runner, os.path.join(self.user_data_dir, 'captures'),
                                    on_open_link=lambda: self.show('link'))
         prefs_path = os.path.join(self.user_data_dir, 'prefs.json')
         self.link = LinkScreen(self.session, prefs_path, on_open_live=lambda: self.show('live'))
+        self.runner.set_transmission(self.link.saved['live_transmission'])   # the saved Live choice
+        self.apply_dashboard_choices()
+        self.restore_car()
         fields = {f[0]: f for f in shift_live.FIELDS}
         self.agent = AgentScreen(self.agent_state, {k: (f[2], f[3]) for k, f in fields.items()},
                                  {k: f[1] for k, f in fields.items()},
-                                 lambda key: self.shift.inputs[key].text, self.shift.set_value)
+                                 lambda key: self.shift.inputs[key].text, self.shift.set_value,
+                                 check_pid=self.check_pid, apply_pid=self.apply_agent_pid)
         self.settings = SettingsScreen(self.shift, os.path.join(self.user_data_dir, 'vehicle.json'),
                                        APP_VERSION)
         self.settings.restore()
@@ -694,6 +721,7 @@ class TunerToolProApp(App):
         root.add_widget(self.header)
         root.add_widget(self.manager)
         bar = NavBar()
+        self.root_box, self.nav_bar = root, bar
         for name, title, _subtitle, _content in screens:
             nav = NavButton(name, title, self.show)
             self.navs[name] = nav
@@ -705,23 +733,77 @@ class TunerToolProApp(App):
         self.runner.start()
         Clock.schedule_interval(self.update_cursor, 1.0)
         Clock.schedule_interval(self.check_connection, 2.0)
+        Clock.schedule_interval(self.tick_recording, 1.0)
+        Clock.schedule_interval(lambda dt: self.recorder.publish_debug(), 120.0)
         self.show('shift')
+        Clock.schedule_once(lambda dt: self.link.auto_connect(), 1.0)   # after the first screen is drawn
         self.frame = FloatLayout()
         self.frame.add_widget(root)
+        self.full_controls = self.build_full_controls()   # only on the screen while in full screen mode
         self.frame.add_widget(SplashOverlay())
         return self.frame
 
     def show_car(self):
         self.shift.car_label.text = (f'{self.settings.summary()}\n{self.shift.ratio_box.text}')
 
+    def start_log(self):
+        """The debug log for this run: one file of what the app and the adapter said, to bring back after a drive."""
+        saved = prefs.load(os.path.join(self.user_data_dir, 'prefs.json'))
+        self.session.log = SessionLog(storage.folder(self.storage_base, storage.DEBUG_LOGS), enabled=saved['debug_log'])
+        log = self.session.log
+        log.write('APP', f'TunerToolPro {APP_VERSION} started')
+        shown = {k: v for k, v in saved.items() if k != 'bt_address'}
+        log.write('APP', f'saved settings {shown}; adapter {"set" if saved["bt_address"] else "not chosen"}')
+        previous = sys.excepthook
+
+        def crashed(kind, value, trace):
+            log.write('CRASH', ''.join(traceback.format_exception(kind, value, trace)))
+            previous(kind, value, trace)
+        sys.excepthook = crashed
+
+    def open_menu(self):
+        """The three bars: connection, Live, adapter speed, car and about. Built fresh so it shows the current state."""
+        cars = os.path.join(self.user_data_dir, 'cars')
+        AppMenu(self.link.saved, self.link.prefs_path, self.session, self.runner, self.link,
+                lambda: self.show('settings'), APP_VERSION, profiles.everything(cars), cars,
+                self.pids_saved, recorder=self.recorder, on_fullscreen=self.set_fullscreen).open()
+
+    def pids_saved(self, profile, _pids):
+        """A PID was saved to a profile: make that profile the active one, so Live and Scan show it at once."""
+        self.activate_car(profile)
+        self.scan.render()
+
+    def activate_car(self, profile):
+        """Make this profile the one Live and Scan read, and remember it for the next start."""
+        data = self.user_data_dir
+        extra = manual_pids.pids_for(os.path.join(data, 'cars'), profile.key)
+        profiles.activate(profile, scan=car_scan.load_scan(os.path.join(data, 'car_scans'), profile.key),
+                          manual=extra, user_hidden=self.link.saved['hidden_pids'].get(profile.key, []))
+        self.link.saved['scan_profile'] = profile.key
+        self.session.log.write('CAR', f'profile {profile.key}: {len(pids.MONITOR_PIDS)} PIDs on the dashboard, '
+                                      f'{len(extra)} manual')
+        prefs.save(self.link.prefs_path, self.link.saved)
+
+    def restore_car(self):
+        """At start-up, activate the profile chosen last time, so its dashboard and manual PIDs are there again."""
+        cars = os.path.join(self.user_data_dir, 'cars')
+        key = self.link.saved['scan_profile']
+        profile = next((p for p in profiles.everything(cars) if p.key == key), None)
+        if profile is not None:
+            self.activate_car(profile)
+
     def show(self, name):
+        self.session.log.write('SCREEN', name)
         self.manager.current = name
+        if name in ADAPTER_SCREENS:
+            self.link.ensure_connected()   # these screens need the adapter, so open it when they are opened
         self.header.set_screen(self.titles[name])
         self.header.set_source(self.session.status)
         for key, nav in self.navs.items():
             nav.set_active(key == name)
-        # the Scan tab reads the adapter itself, and the sniffer owns it while it listens
-        self.runner.paused = name == 'scan' or self.sniff.holds_adapter()
+        # the adapter is used only by the screen the user opened: Live polls only on its own screen, and the
+        # sniffer owns the adapter while it listens, so the Live reader stands aside then
+        self.runner.paused = name != 'live' or self.sniff.holds_adapter()
         for key in ('live', 'scan', 'link', 'sniff', 'agent'):
             screen = getattr(self, key)
             (screen.activate if name == key else screen.deactivate)()
@@ -729,7 +811,10 @@ class TunerToolProApp(App):
             self.update_cursor(0)
 
     def on_back(self, _window, key, *_args):
-        """Android Back: return to Shift first, then leave the app."""
+        """Android Back: leave full screen, then return to Shift, then leave the app."""
+        if key == 27 and self.fullscreen:
+            self.set_fullscreen(False)
+            return True
         if key == 27 and self.manager.current != 'shift':
             self.show('shift')
             return True
@@ -754,6 +839,186 @@ class TunerToolProApp(App):
         if self.session.elm is not None and stream is not None and stream.error and not self.session.demo_on:
             self.link.connection_lost(stream.error)
 
+    # --- recording, full screen and the sensor tools -----------------------------------------------
+
+    def apply_dashboard_choices(self):
+        """The saved dashboard layout, gauge colours and default sensor display, applied at start-up."""
+        saved = self.link.saved
+        themes.use(saved['dash_theme'])
+        pid_card.set_columns(saved['dash_columns'])
+        pid_card.hooks.views.set_default(saved['dash_default_mode'])
+
+    def record_columns(self):
+        """Every sensor a recording has a column for: the Live stream and the whole dashboard."""
+        scope = self.link.saved['log_scope']
+        ids = list(dict.fromkeys((STREAM_PIDS if scope in ('all', 'live') else [])
+                                 + (pids.MONITOR_PIDS if scope in ('all', 'dashboard') else [])))
+        columns = []
+        for pid_id in ids:
+            info = pids.get(pid_id)
+            if info is not None:
+                columns.append((pid_id, f'{pid_id} {info.name} ({info.unit})' if info.unit else f'{pid_id} {info.name}'))
+        return columns
+
+    def extra_sensors(self):
+        """While recording, the dashboard sensors the Live stream does not read, so the file has them all."""
+        if not self.recorder.running or self.link.saved['log_scope'] == 'live':
+            return []
+        return [p for p in pids.MONITOR_PIDS if p not in STREAM_PIDS]
+
+    def toggle_recording(self):
+        self.notice(self.recorder.toggle())
+        self.tick_recording(0)
+
+    def tick_recording(self, _dt):
+        self.header.set_recording(self.recorder.elapsed_text() if self.recorder.running else None)
+        self.full_rec.set_recording(self.recorder.elapsed_text() if self.recorder.running else None)
+
+    def notice(self, text):
+        """A short message over the screen that goes away by itself."""
+        popup = ModalView(size_hint=(0.88, None), height=dp(110), background_color=(0, 0, 0, 0.4))
+        card = Card()
+        card.add_widget(panel_label(text, color=TEXT, halign='center'))
+        popup.add_widget(card)
+        popup.open()
+        Clock.schedule_once(lambda dt: popup.dismiss(), 3.5)
+
+    def build_full_controls(self):
+        """Record and exit buttons floating over the screen while it shows only the live data."""
+        row = BoxLayout(size_hint=(None, None), size=(dp(190), dp(40)), spacing=dp(8),
+                        pos_hint={'right': 0.99, 'top': 0.99})
+        self.full_rec = RecButton(self.toggle_recording)
+        exit_button = Button(text='Exit', size_hint=(None, None), size=(dp(70), dp(30)))
+        style_button(exit_button)
+        exit_button.size_hint_y = None
+        exit_button.height = dp(30)
+        exit_button.bind(on_release=lambda *_: self.set_fullscreen(False))
+        row.add_widget(self.full_rec)
+        row.add_widget(exit_button)
+        return row
+
+    def set_fullscreen(self, on):
+        """Show only the live sensors: no title bar, no tabs, no panels. Back or Exit returns."""
+        if on and self.manager.current not in ('live', 'scan'):
+            self.show('live')
+        self.fullscreen = on
+        for widget in (self.header, self.nav_bar):
+            hide(widget, on)
+        self.live.set_full(on)
+        self.scan.set_full(on)
+        # Taken off the screen when not in use: a hidden or disabled widget would still swallow touches over the header.
+        if on and self.full_controls.parent is None:
+            self.frame.add_widget(self.full_controls)   # on top, so the Record and Exit buttons take the touches
+        elif not on and self.full_controls.parent is not None:
+            self.frame.remove_widget(self.full_controls)
+        self.session.log.write('SCREEN', 'full screen on' if on else 'full screen off')
+        self.set_system_bars(on)
+
+    @staticmethod
+    def set_system_bars(hidden):
+        """Hide Android's own status and navigation bars too (swipe in from the edge to bring them back)."""
+        try:
+            from jnius import autoclass
+            from android.runnable import run_on_ui_thread
+
+            @run_on_ui_thread
+            def apply():
+                view = autoclass('org.kivy.android.PythonActivity').mActivity.getWindow().getDecorView()
+                flags = 0x00000100 | 0x00000200 | 0x00000400 | 0x00000002 | 0x00000004 | 0x00001000 if hidden else 0
+                view.setSystemUiVisibility(flags)
+            apply()
+        except Exception:   # not on Android, or the bars cannot be hidden: the app still fills the screen
+            pass
+
+    def views_changed(self):
+        """A display, red line, name or range changed: redraw the cards in place, without losing the scroll position."""
+        for card in (*self.live.cards.values(), *self.scan.cards):
+            card.apply_view()
+
+    def sensors_changed(self):
+        """A sensor was edited or redrawn: show the change on both dashboards."""
+        self.live.render()
+        self.scan.render()
+
+    def active_profile(self):
+        cars = os.path.join(self.user_data_dir, 'cars')
+        key = self.link.saved['scan_profile']
+        return next((p for p in profiles.everything(cars) if p.key == key), None)
+
+    def manual_entry(self, pid_id):
+        profile = self.active_profile()
+        if profile is None:
+            return None
+        rows = manual_pids.load(os.path.join(self.user_data_dir, 'cars')).get(profile.key, [])
+        return next((dict(r) for r in rows if str(r.get('pid', '')).upper() == pid_id), None)
+
+    def edit_pid(self, pid, done):
+        """Long press on a sensor: edit how it is shown, and a PID you entered yourself as well."""
+        PidEditPopup(pid, pid_card.hooks.views, self.manual_entry(pid.pid), self.save_manual_entry, done).open()
+
+    def save_manual_entry(self, entry):
+        """Replace one entered PID in the active profile. Raises torque_csv.Refused if it is not usable."""
+        profile = self.active_profile()
+        if profile is None:
+            raise torque_csv.Refused('choose a car profile first (menu, Car)')
+        cars = os.path.join(self.user_data_dir, 'cars')
+        rows = [r for r in manual_pids.load(cars).get(profile.key, [])
+                if str(r.get('pid', '')).upper() != str(entry['pid']).upper()]
+        manual_pids.save(cars, profile.key, rows + [entry])
+        self.activate_car(profile)
+        self.session.log.write('CAR', f'manual PID {entry["pid"]} saved to {profile.key}')
+
+    def check_pid(self, entry):
+        """Check a sensor an agent proposes. Returns the entry as it would be saved, or raises with the reason."""
+        built = manual_pids.build(entry)
+        header = str(entry.get('header') or 'Auto').strip()
+        header = 'Auto' if header.lower() == 'auto' else header.upper()
+        return {'pid': built.pid, 'name': built.name, 'unit': built.unit, 'equation': str(entry['equation']).strip(),
+                'header': header, 'low': built.low, 'high': built.high}
+
+    def apply_agent_pid(self, entry):
+        """The user approved a sensor the agent proposed: save it to the active car profile."""
+        try:
+            self.save_manual_entry(entry)
+        except torque_csv.Refused as exc:
+            return f'Not saved: {exc}'
+        self.sensors_changed()
+        return ''
+
+    def ask_agent(self, pid):
+        """Triple tap on a sensor: put it in front of the agent and open the Agent screen."""
+        self.focus = self.sensor_context(pid.pid)
+        self.session.log.write('AGENT', f'asked about {pid.pid} {pid.name}')
+        self.agent.set_focus(self.focus)
+        self.show('agent')
+
+    def sensor_context(self, pid_id):
+        """Everything an agent needs to work out a sensor: how it is asked for, what came back, what the car says."""
+        info = pids.get(pid_id)
+        shown = pid_card.hooks.views.apply(info)
+        stream = self.runner.stream
+        latest = stream.latest.get(pid_id) if stream is not None else None
+        traffic = self.session.adapter_info(recent=200)['recent']
+        replies = [traffic[i + 1][1] for i in range(len(traffic) - 1)
+                   if traffic[i] == ['TX', pid_id] and traffic[i + 1][0] == 'RX'][-8:]
+        profile = self.active_profile()
+        scan = car_scan.load_scan(os.path.join(self.user_data_dir, 'car_scans'), profile.key) if profile else None
+        if scan is None:
+            answer = 'The car has not been checked yet (Sniff tab, Check this car).'
+        elif pid_id in scan['answered']:
+            answer = 'The car answered this sensor when it was checked.'
+        else:
+            answer = 'The car did not answer this sensor when it was checked.'
+        manual = self.manual_entry(pid_id)
+        return {'pid': pid_id, 'name': shown['name'], 'unit': shown['unit'], 'low': shown['low'], 'high': shown['high'],
+                'redline': shown['redline'], 'display': shown['mode'], 'mode': info.mode, 'module': info.header,
+                'bytes': info.width, 'verified': info.verified, 'description': info.description,
+                'category': info.category, 'entered_by_user': manual is not None, 'user_definition': manual,
+                'latest': latest[0] if latest else None, 'car_answer': answer, 'recent_raw_replies': replies,
+                'car_profile': profile.key if profile else '',
+                'how_it_is_read': (f'The app sends "{pid_id}" to module {info.header} and decodes {info.width} data '
+                                   f'byte(s) after the reply echo "{info.echo}".')}
+
     def agent_state(self):
         """Everything the agent bridge shares: settings, grades, tables and live data. Read only."""
         cfg, tables = self.shift.model()
@@ -761,6 +1026,7 @@ class TunerToolProApp(App):
         stream = self.runner.stream
         state = {'app': 'TunerToolPro', 'version': APP_VERSION, 'source': self.session.status,
                  'transmission': self.settings.summary(), 'shift_delays': self.shift.delays, 'settings': self.shift.settings(), 'ratios': self.shift.ratio_box.text,
+                 'adapter': self.session.adapter_info(), 'focus': self.focus,
                  'live': stream.snapshot() if stream is not None else {},
                  'grades': None, 'tables': {}}
         if grades is not None:
@@ -772,9 +1038,18 @@ class TunerToolProApp(App):
                                          'reasons': grades.reasons[name]}
         return state
 
+    def on_pause(self):
+        """The app is put away (a call, another app): save a copy of the logs where the Files app can see them."""
+        self.recorder.publish_debug()
+        return True
+
     def on_stop(self):
         self.runner.stop()
         self.agent.shutdown()
+        if self.recorder.running:
+            self.recorder.stop()
+        if self.session.log.path:
+            self.recorder.publish_now(self.session.log.path, storage.DEBUG_LOGS)
         self.session.detach()
 
 

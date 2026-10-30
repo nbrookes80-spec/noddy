@@ -8,119 +8,33 @@ import threading
 from collections import deque
 
 from kivy.clock import Clock
-from kivy.graphics import Color, Line, RoundedRectangle
 from kivy.metrics import dp
-from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
-from kivy.uix.widget import Widget
 
 from link import obd
+from pid_card import HISTORY, PidCard, equalize, fit_columns
 from scanner import pids
-from ui_kit import (ACCENT, ALERT, BLUE, BORDER, GAP, MUTED, TEXT, Card, button_row, make_button,
-                    panel_label, section_title, stack, style_button)
+from ui_kit import GAP, hide, MUTED, Card, button_row, make_button, panel_label, section_title, stack, style_button
 
 VIEWS = ('Live', 'Codes', 'Log')
-HISTORY = 60
-CARD_HEIGHT = dp(132)
-
-
-def format_value(value, unit):
-    """Readable number for a card: whole numbers when large, more digits when small."""
-    shown = f'{value:.0f}' if abs(value) >= 100 else (f'{value:.1f}' if abs(value) >= 10 else f'{value:.2f}')
-    return shown, unit
-
-
-class Gauge(Widget):
-    """A thin bar showing where a value sits between its low and high limits, or a sparkline."""
-
-    def __init__(self, **kwargs):
-        super().__init__(size_hint_y=None, height=dp(34), **kwargs)
-        self.fraction = 0.0
-        self.series = []
-        self.graph = False
-        self.bind(pos=self._draw, size=self._draw)
-
-    def update(self, fraction, series, graph):
-        self.fraction, self.series, self.graph = fraction, series, graph
-        self._draw()
-
-    def _draw(self, *_):
-        self.canvas.clear()
-        with self.canvas:
-            Color(*BORDER)
-            RoundedRectangle(pos=(self.x, self.center_y - dp(4)), size=(self.width, dp(8)), radius=[dp(4)])
-            if self.graph and len(self.series) > 1:
-                low, high = min(self.series), max(self.series)
-                span = max(high - low, 1e-9)
-                step = self.width / (HISTORY - 1)
-                points = []
-                for i, v in enumerate(self.series):
-                    points += [self.x + i * step, self.y + dp(3) + (self.height - dp(6)) * (v - low) / span]
-                Color(*BLUE)
-                Line(points=points, width=dp(1.6))
-            else:
-                Color(*ACCENT)
-                RoundedRectangle(pos=(self.x, self.center_y - dp(4)),
-                                 size=(max(self.width * min(max(self.fraction, 0.0), 1.0), dp(8)), dp(8)),
-                                 radius=[dp(4)])
-
-
-class PidCard(ButtonBehavior, Card):
-    """One reading. Tap to switch between the bar and a short history graph."""
-
-    def __init__(self, pid, **kwargs):
-        super().__init__(size_hint_y=None, height=CARD_HEIGHT, spacing=dp(2), **kwargs)
-        self.pid = pid
-        self.graph = False
-        flag = '' if pid.verified else '  (unconfirmed)'
-        self.name = Label(text=pid.name + flag, color=MUTED if pid.verified else ALERT, font_size=dp(12),
-                          halign='left', valign='middle', size_hint_y=None, height=dp(30), shorten=True,
-                          shorten_from='right')
-        self.name.bind(size=lambda w, _: setattr(w, 'text_size', (w.width, w.height)))
-        self.value = Label(text='--', color=TEXT, bold=True, font_size=dp(24), halign='left',
-                           valign='middle', size_hint_x=None, width=dp(40))
-        self.value.bind(texture_size=lambda w, size: setattr(w, 'width', size[0]))
-        self.unit = Label(text='', color=MUTED, font_size=dp(12), halign='left', valign='middle')
-        self.unit.bind(size=lambda w, _: setattr(w, 'text_size', (w.width, w.height)))
-        reading = BoxLayout(size_hint_y=None, height=dp(44), spacing=dp(6))
-        reading.add_widget(self.value)
-        reading.add_widget(self.unit)
-        self.gauge = Gauge()
-        for widget in (self.name, reading, self.gauge):
-            self.add_widget(widget)
-
-    def _fit_height(self, *_):
-        pass   # the dashboard grid gives every card the same fixed height
-
-    def on_release(self):
-        self.graph = not self.graph
-
-    def show(self, reading, series):
-        if reading is None:
-            self.value.text, self.value.color = 'no reply', ALERT
-            self.unit.text = ''
-            self.gauge.update(0.0, [], self.graph)
-            return
-        number, unit = format_value(*reading)
-        self.value.text, self.value.color = number, TEXT
-        self.unit.text = unit
-        span = max(self.pid.high - self.pid.low, 1e-9)
-        self.gauge.update((reading[0] - self.pid.low) / span, list(series), self.graph)
 
 
 class ScanScreen(BoxLayout):
-    def __init__(self, session, **kwargs):
+    def __init__(self, session, on_fullscreen=None, **kwargs):
         super().__init__(orientation='vertical', **kwargs)
         self.session = session
-        self.pages = pids.monitor_pages()
+        self.on_fullscreen = on_fullscreen
+        self.pages = [[]]
         self.page = 0
         self.view = 'Live'
         self.history = {}
         self.cards = []
         self.busy = False
+        self.full = False
+        self.chrome = []
         self._event = None
         self.codes_text = 'Tap Read codes to ask the engine computer for stored trouble codes.'
         self.tabs = {}
@@ -130,6 +44,7 @@ class ScanScreen(BoxLayout):
             button.bind(on_release=lambda _b, n=name: self.set_view(n))
             self.tabs[name] = button
             bar.add_widget(button)
+        self.bar = bar
         self.body = BoxLayout()
         self.add_widget(bar)
         self.add_widget(self.body)
@@ -138,6 +53,8 @@ class ScanScreen(BoxLayout):
     # --- lifecycle -------------------------------------------------------------------------------
 
     def activate(self):
+        for card in self.cards:
+            card.apply_view()
         if self._event is None:
             self._event = Clock.schedule_interval(self.tick, 1.0)
         self.tick(0)
@@ -150,6 +67,12 @@ class ScanScreen(BoxLayout):
     def source_changed(self, _status=None):
         self.render()
 
+    def set_full(self, on):
+        """Full screen: only the sensors of the current page, with the tabs put away."""
+        self.full = on
+        for widget in (self.bar, *self.chrome):
+            hide(widget, on)
+
     # --- views -----------------------------------------------------------------------------------
 
     def set_view(self, name):
@@ -158,7 +81,13 @@ class ScanScreen(BoxLayout):
             style_button(button, primary=(key == name))
         self.render()
 
+    def _refresh_pages(self):
+        """Rebuild the dashboard pages from the active profile, so a car check or a new profile shows at once."""
+        self.pages = pids.monitor_pages() or [[]]
+        self.page = min(self.page, len(self.pages) - 1)
+
     def render(self):
+        self._refresh_pages()
         self.body.clear_widgets()
         self.cards = []
         if self.session.active() is None and self.view != 'Log':
@@ -183,16 +112,24 @@ class ScanScreen(BoxLayout):
         page = self.pages[self.page]
         title = panel_label(f'Page {self.page + 1} of {len(self.pages)}', color=MUTED, halign='center')
         controls = button_row(make_button('Previous', lambda: self.turn(-1)),
-                              make_button('Next', lambda: self.turn(1)))
-        grid = GridLayout(cols=2, spacing=GAP, size_hint_y=None, height=2 * CARD_HEIGHT + GAP)
+                              make_button('Next', lambda: self.turn(1)),
+                              make_button('Full screen', lambda: self.on_fullscreen and self.on_fullscreen(True)))
+        grid = GridLayout(spacing=GAP, size_hint_y=None)
+        fit_columns(grid)
+        grid.bind(minimum_height=grid.setter('height'))
         for pid in page:
             card = PidCard(pid)
             self.cards.append(card)
             grid.add_widget(card)
-        hint = panel_label('Tap a card to switch between the bar and a graph. Readings marked '
-                           'unconfirmed have not been checked against a real vehicle.', color=MUTED,
-                           font_size=dp(12))
-        return stack(title, controls, grid, hint)
+        Clock.schedule_once(lambda dt: equalize(grid), 0)
+        hint = panel_label('Tap a sensor to choose how it is shown. Long press to edit it or set a red line. '
+                           'Triple tap to ask your AI agent about it. Readings marked unconfirmed have not '
+                           'been checked against a real vehicle.', color=MUTED, font_size=dp(12))
+        self.chrome = [title, hint]
+        scroll = stack(title, controls, grid, hint)
+        for widget in self.chrome:
+            hide(widget, self.full)
+        return scroll
 
     def _codes_view(self):
         self.codes_label = panel_label(self.codes_text)
