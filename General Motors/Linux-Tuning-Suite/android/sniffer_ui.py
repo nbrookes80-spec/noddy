@@ -161,7 +161,8 @@ class SnifferScreen(BoxLayout):
         self.car_profiles = {p.name: p for p in profiles.everything(os.path.join(self.data_dir, 'cars'))}
         names = list(self.car_profiles)
         self.car_box = Spinner(text=names[0], values=names, size_hint_y=None, height=dp(48),
-                               option_cls=WrapOption)
+                               option_cls=WrapOption, shorten=True, shorten_from='right')
+        self.car_box.bind(width=lambda box, width: setattr(box, 'text_size', (width - dp(32), None)))
         card.add_widget(self.car_box)
         card.add_widget(make_button('Check this car', self.check_car, primary=True))
         self.check_output = panel_label('Nothing checked yet.', font_size=dp(13))
