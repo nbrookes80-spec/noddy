@@ -121,7 +121,7 @@ class SnifferScreen(BoxLayout):
             toggle.bind(state=lambda b, state, k=key: setattr(self.sniff.sniffer, k, state == 'down'))
             self.options[key] = toggle
         controls.add_widget(button_row(*self.options.values(), height=dp(44)))
-        self.only_box = _text_box('Only show these IDs, hex (empty = all)')
+        self.only_box = _text_box('Only these IDs, hex')
         self.only_box.bind(on_text_validate=lambda *_: self.apply_filter(), focus=self._leave_filter)
         controls.add_widget(self.only_box)
         self.bits_box = _text_box('Show the bits of one ID, hex')
