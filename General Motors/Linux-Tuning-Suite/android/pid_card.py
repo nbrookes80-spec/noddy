@@ -1,7 +1,7 @@
 """One sensor on the Live and Scan screens, and what you can do to it.
 
   tap          choose how it is drawn: text, digital gauge, graph, histogram or analogue gauge
-  long press   edit it: name, unit, range, red line (and the equation and module of a PID you entered)
+  long press   edit it: name, unit, range, colour bands (and the equation and module of a PID you entered)
   triple tap   ask your AI agent about this sensor
 
 `hooks` is set once by the app. It holds the saved display choices and the two actions that need the rest of
@@ -21,8 +21,8 @@ from kivy.uix.modalview import ModalView
 from kivy.uix.widget import Widget
 
 from gauge_ui import GaugeView, height_for
-from scanner import pid_view
-from ui_kit import ALERT, MUTED, TEXT, Card, make_button, panel_label, section_title
+from scanner import pid_view, themes
+from ui_kit import ALERT, GAP, MUTED, TEXT, Card, make_button, panel_label, section_title
 
 HISTORY = 120
 LONG_PRESS_SECONDS = 0.6
@@ -40,6 +40,10 @@ class Hooks:
 hooks = Hooks()
 
 _grids = weakref.WeakSet()
+_cards = weakref.WeakSet()
+ZONE_TEXT = {'red': ALERT, 'cold': themes.COLD, 'good': themes.GOOD}   # what colour the number turns in each band
+STATS_HEIGHT = 16     # dp: the line of lowest, highest and average under the number
+_stats_on = True
 COLUMN_WIDTH = 170    # dp: a phone turned on its side gets more columns than one held upright
 
 
@@ -57,6 +61,18 @@ def set_columns(count):
     global _forced
     _forced = count if count in (2, 3, 4) else 0
     _refit()
+
+
+def set_stats(on):
+    """Show the lowest, highest and average under every sensor's number (and mark them on the bar and dial)."""
+    global _stats_on
+    _stats_on = bool(on)
+
+
+def reset_stats():
+    """Start the lowest, highest and average of every sensor again."""
+    for card in list(_cards):
+        card.reset_stats()
 
 
 def _refit(*_):
@@ -84,6 +100,11 @@ def fit_columns(grid):
     """Keep a grid of sensor cards at as many columns as fit, now and whenever the screen is turned."""
     _grids.add(grid)
     grid.cols = _columns()
+
+
+def short(value):
+    """A number for the min, max and average line: no more digits than the eye can use."""
+    return '--' if value is None else (f'{value:.0f}' if abs(value) >= 10 else f'{value:.1f}')
 
 
 def format_value(value, unit):
@@ -115,10 +136,15 @@ class PidCard(ButtonBehavior, Card):
         self.reading.add_widget(self.value)
         self.reading.add_widget(self.unit)
         self.reading.add_widget(Widget())   # soaks up spare width so the number and unit stay together
+        self.stats = pid_view.Stats()
+        self.stats_line = Label(color=MUTED, font_size=dp(10.5), halign='left', valign='middle', size_hint_y=None,
+                                height=dp(STATS_HEIGHT), shorten=True, shorten_from='right')
+        self.stats_line.bind(size=lambda w, _: setattr(w, 'text_size', (w.width, w.height)))
         self.gauge = GaugeView()
-        for widget in (self.name, self.reading, self.gauge):
-            self.add_widget(widget)
+        for widget in (self.name, self.reading, self.stats_line, self.gauge, Widget()):   # the Widget soaks up the
+            self.add_widget(widget)                                                       # spare height of a tall row
         self.bind(state=self._state_changed)
+        _cards.add(self)
         self.apply_view()
 
     def _fit_height(self, *_):
@@ -127,37 +153,60 @@ class PidCard(ButtonBehavior, Card):
     # --- how it looks ----------------------------------------------------------------------------
 
     def apply_view(self):
-        """Take the saved choices for this sensor (name, unit, range, red line, display) and redraw."""
+        """Take the saved choices for this sensor (name, unit, range, colour bands, display) and redraw."""
         views = hooks.views
         self.shown = views.apply(self.pid) if views is not None else {
             'name': self.pid.name, 'unit': self.pid.unit, 'low': self.pid.low, 'high': self.pid.high,
-            'redline': None, 'mode': pid_view.DEFAULT_MODE}
+            'redline': None, 'cold': None, 'good': None, 'mode': pid_view.DEFAULT_MODE,
+            'convert': lambda value: value, 'back': lambda value: value}
         mode = self.shown['mode']
         flag = '' if self.pid.verified else '  (unconfirmed)'
         self.name.text = self.shown['name'] + flag
         self.name.color = MUTED if self.pid.verified else ALERT
         self.value.font_size = dp(28 if mode in ('digital', 'text') else 22)
         self.reading.height = dp(52 if mode in ('digital', 'text') else 40)
-        self.gauge.configure(mode, self.shown['low'], self.shown['high'], self.shown['redline'])
-        self.natural = dp(26 + 2 * 12) + self.reading.height + height_for(mode)   # what this display needs
+        self.gauge.configure(mode, self.shown['low'], self.shown['high'], self.shown['redline'], self.shown['cold'],
+                             self.shown['good'])
+        self.stats_line.height = dp(STATS_HEIGHT) if _stats_on else 0
+        self.stats_line.opacity = 1 if _stats_on else 0
+        # what this display needs: name, number, stats line, picture, and the card's padding and gaps between the 5 children
+        self.natural = (2 * GAP + self.name.height + self.reading.height + self.stats_line.height + height_for(mode)
+                        + 4 * self.spacing)
         self.height = self.natural
         if isinstance(self.parent, GridLayout):
             Clock.schedule_once(lambda dt: equalize(self.parent) if self.parent else None, 0)
-        self.show(self._reading, self._series)
+        self._show_reading()
+
+    def reset_stats(self):
+        self.stats.reset()
+        self._show_reading()
 
     def show(self, reading, series):
         self._reading, self._series = reading, list(series)[-HISTORY:]
+        if reading is not None:
+            self.stats.add(reading[0])
+        self._show_reading()
+
+    def _show_reading(self):
+        """Put the latest reading on the card: converted to the user's units, coloured by its band."""
+        reading, convert = self._reading, self.shown['convert']
         if reading is None:
             self.value.text, self.value.color = 'no reply', ALERT
             self.unit.text = ''
+            self.stats_line.text = ''
             self.gauge.update(None, [])
             return
-        number, _unit = format_value(*reading)
-        redline = self.shown.get('redline')
+        value = convert(reading[0])
+        number, _unit = format_value(value, reading[1])
         self.value.text = number
-        self.value.color = ALERT if redline is not None and reading[0] >= redline else TEXT
+        self.value.color = ZONE_TEXT.get(pid_view.zone(value, self.shown), TEXT)
         self.unit.text = self.shown['unit'] or reading[1]
-        self.gauge.update(reading[0], self._series)
+        low, high, average = (None if x is None else convert(x) for x in (self.stats.low, self.stats.high,
+                                                                          self.stats.average))
+        self.stats_line.text = (f'{short(low)}\u2013{short(high)}  avg {short(average)}'
+                                if _stats_on and self.stats.count > 1 else '')
+        marks = (low, high) if _stats_on and self.stats.count > 1 else (None, None)
+        self.gauge.update(value, [convert(v) for v in self._series], marks)
 
     # --- touches ---------------------------------------------------------------------------------
 
@@ -208,14 +257,15 @@ class PidCard(ButtonBehavior, Card):
     def choose_display(self):
         if hooks.views is None:
             return
-        popup = ModalView(size_hint=(0.86, None), height=dp(470), background_color=(0, 0, 0, 0.6))
+        popup = ModalView(size_hint=(0.86, None), height=dp(520), background_color=(0, 0, 0, 0.6))
         box = Card()
         box.add_widget(section_title(self.shown['name']))
         box.add_widget(panel_label('How should this sensor be shown?', color=MUTED, font_size=dp(13)))
         for mode in pid_view.MODES:
             box.add_widget(make_button(pid_view.MODE_NAMES[mode],
                                        lambda m=mode: self._pick(popup, m), primary=mode == self.shown['mode']))
-        box.add_widget(make_button('Red line, name and range...', lambda: self._edit_from(popup)))
+        box.add_widget(make_button('Colour bands, name and range...', lambda: self._edit_from(popup)))
+        box.add_widget(make_button('Reset lowest, highest and average', lambda: self._reset_from(popup)))
         popup.add_widget(box)
         popup.open()
 
@@ -223,6 +273,10 @@ class PidCard(ButtonBehavior, Card):
         hooks.views.update(self.pid.pid, mode=mode)
         popup.dismiss()
         self.apply_view()
+
+    def _reset_from(self, popup):
+        popup.dismiss()
+        self.reset_stats()
 
     def _edit_from(self, popup):
         popup.dismiss()

@@ -5,7 +5,7 @@ from pathlib import Path
 
 from link import obd
 from link.devices import normalise_address
-from scanner import pid_view, pids, themes
+from scanner import pid_view, pids, themes, units
 
 KINDS = ('Bluetooth', 'Wi-Fi')
 DEFAULTS = {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': '192.168.0.10:35000', 'auto_connect': False,
@@ -17,6 +17,11 @@ DEFAULTS = {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': '192.168.0.10:35
             'dash_columns': 0,            # sensor cards across: 0 fits as many as the screen allows
             'dash_theme': 'classic',      # gauge colours (scanner/themes.py)
             'dash_default_mode': 'digital',   # how a sensor is drawn until its own card is changed
+            'dash_stats': True,           # show lowest, highest and average under each sensor's number
+            'hud_mirror': False,          # full screen shows mirrored, to read as a reflection on the windscreen
+            'unit_temperature': units.DEFAULTS['temperature'],   # how readings are shown (scanner/units.py)
+            'unit_pressure': units.DEFAULTS['pressure'],
+            'unit_speed': units.DEFAULTS['speed'],
             'log_scope': 'all',           # what a recording has columns for: all, live (the Live stream) or dashboard
             'log_rate': 0,                # most rows written per second; 0 writes a row for every round of readings
             'adapter_protocol': '0',      # ATSP choice: 0 automatic, or a CAN protocol number (link/obd.PROTOCOLS)
@@ -45,7 +50,7 @@ def load(path):
         result['auto_connect'] = data['auto_connect']
     if isinstance(data.get('wifi'), str) and data['wifi'].strip():
         result['wifi'] = data['wifi'].strip()
-    for key in ('live_transmission', 'adaptive_timing', 'debug_log'):
+    for key in ('live_transmission', 'adaptive_timing', 'debug_log', 'dash_stats', 'hud_mirror'):
         if isinstance(data.get(key), bool):
             result[key] = data[key]
     if data.get('timeout_ms') in TIMEOUT_CHOICES_MS:
@@ -58,6 +63,9 @@ def load(path):
         result['dash_theme'] = data['dash_theme']
     if data.get('dash_default_mode') in pid_view.MODES:
         result['dash_default_mode'] = data['dash_default_mode']
+    chosen = units.clean({group: data.get(f'unit_{group}') for group in units.CHOICES})
+    for group in units.CHOICES:
+        result[f'unit_{group}'] = chosen[group]
     if data.get('log_scope') in LOG_SCOPES:
         result['log_scope'] = data['log_scope']
     if data.get('log_rate') in LOG_RATES and not isinstance(data.get('log_rate'), bool):

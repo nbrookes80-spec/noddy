@@ -44,8 +44,9 @@ from live_ui import LiveScreen, StreamRunner  # noqa: E402
 from scan_ui import ScanScreen  # noqa: E402
 from sniffer_ui import SnifferScreen  # noqa: E402
 from app_menu import AppMenu  # noqa: E402
+from hud import Mirror  # noqa: E402
 from settings_ui import SettingsScreen  # noqa: E402
-from scanner import car_scan, manual_pids, pid_view, pids, profiles, storage, themes, torque_csv  # noqa: E402
+from scanner import car_scan, manual_pids, pid_view, pids, profiles, storage, themes, torque_csv, units  # noqa: E402
 import pid_card  # noqa: E402
 from live import STREAM_PIDS  # noqa: E402
 from pid_edit_ui import PidEditPopup  # noqa: E402
@@ -738,7 +739,9 @@ class TunerToolProApp(App):
         self.show('shift')
         Clock.schedule_once(lambda dt: self.link.auto_connect(), 1.0)   # after the first screen is drawn
         self.frame = FloatLayout()
-        self.frame.add_widget(root)
+        self.mirror = Mirror()     # HUD mode flips everything inside it (see hud.py); the full screen buttons sit outside
+        self.mirror.add_widget(root)
+        self.frame.add_widget(self.mirror)
         self.full_controls = self.build_full_controls()   # only on the screen while in full screen mode
         self.frame.add_widget(SplashOverlay())
         return self.frame
@@ -766,7 +769,8 @@ class TunerToolProApp(App):
         cars = os.path.join(self.user_data_dir, 'cars')
         AppMenu(self.link.saved, self.link.prefs_path, self.session, self.runner, self.link,
                 lambda: self.show('settings'), APP_VERSION, profiles.everything(cars), cars,
-                self.pids_saved, recorder=self.recorder, on_fullscreen=self.set_fullscreen).open()
+                self.pids_saved, recorder=self.recorder, on_fullscreen=self.set_fullscreen,
+                on_hud=self.set_hud).open()
 
     def pids_saved(self, profile, _pids):
         """A PID was saved to a profile: make that profile the active one, so Live and Scan show it at once."""
@@ -846,7 +850,9 @@ class TunerToolProApp(App):
         saved = self.link.saved
         themes.use(saved['dash_theme'])
         pid_card.set_columns(saved['dash_columns'])
+        pid_card.set_stats(saved['dash_stats'])
         pid_card.hooks.views.set_default(saved['dash_default_mode'])
+        pid_card.hooks.views.set_units({group: saved[f'unit_{group}'] for group in units.CHOICES})
 
     def record_columns(self):
         """Every sensor a recording has a column for: the Live stream and the whole dashboard."""
@@ -885,17 +891,34 @@ class TunerToolProApp(App):
 
     def build_full_controls(self):
         """Record and exit buttons floating over the screen while it shows only the live data."""
-        row = BoxLayout(size_hint=(None, None), size=(dp(190), dp(40)), spacing=dp(8),
+        row = BoxLayout(size_hint=(None, None), size=(dp(262), dp(40)), spacing=dp(8),
                         pos_hint={'right': 0.99, 'top': 0.99})
         self.full_rec = RecButton(self.toggle_recording)
+        self.hud_button = Button(text='HUD', size_hint=(None, None), size=(dp(62), dp(30)))
+        self.hud_button.bind(on_release=lambda *_: self.set_hud(not self.link.saved['hud_mirror']))
         exit_button = Button(text='Exit', size_hint=(None, None), size=(dp(70), dp(30)))
         style_button(exit_button)
         exit_button.size_hint_y = None
         exit_button.height = dp(30)
         exit_button.bind(on_release=lambda *_: self.set_fullscreen(False))
-        row.add_widget(self.full_rec)
-        row.add_widget(exit_button)
+        for widget in (self.full_rec, self.hud_button, exit_button):
+            row.add_widget(widget)
+        self.show_hud()
         return row
+
+    def set_hud(self, on):
+        """HUD mode on or off: full screen shows mirrored, to read as a reflection on the windscreen."""
+        saved = self.link.saved
+        saved['hud_mirror'] = bool(on)
+        prefs.save(self.link.prefs_path, saved)
+        self.show_hud()
+        self.session.log.write('SCREEN', 'HUD mirror on' if on else 'HUD mirror off')
+
+    def show_hud(self):
+        """Mirror the picture only while in full screen (the menus stay readable), and light the HUD button."""
+        style_button(self.hud_button, primary=self.link.saved['hud_mirror'])
+        self.hud_button.size_hint_y, self.hud_button.height = None, dp(30)
+        self.mirror.flipped = self.fullscreen and self.link.saved['hud_mirror']
 
     def set_fullscreen(self, on):
         """Show only the live sensors: no title bar, no tabs, no panels. Back or Exit returns."""
@@ -912,6 +935,7 @@ class TunerToolProApp(App):
         elif not on and self.full_controls.parent is not None:
             self.frame.remove_widget(self.full_controls)
         self.session.log.write('SCREEN', 'full screen on' if on else 'full screen off')
+        self.show_hud()
         self.set_system_bars(on)
 
     @staticmethod
