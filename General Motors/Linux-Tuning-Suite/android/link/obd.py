@@ -300,8 +300,13 @@ class Elm327:
             raise OBDError(f'Reading codes failed: the adapter replied "{text.splitlines()[-1].strip()}"')
         if 'NO DATA' in text:
             return []
-        hex_text = re.sub(r'[^0-9A-F]', '', text.replace('SEARCHING', ''))
-        return catalog.decode_dtcs(hex_text[2:] if hex_text.startswith('43') else hex_text)
+        # Each module answers on its own line, so decode each line by itself and drop codes seen twice.
+        codes = []
+        for line in text.replace('SEARCHING', '').splitlines():
+            hex_text = re.sub(r'[^0-9A-F]', '', line)
+            data = hex_text[2:] if hex_text.startswith('43') else hex_text
+            codes.extend(code for code in catalog.decode_dtcs(data) if code not in codes)
+        return codes
 
     def read(self, pid, header=None, final=True):
         with self._lock:

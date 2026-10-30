@@ -119,6 +119,10 @@ class ElmTests(unittest.TestCase):
     def test_stored_codes_are_decoded(self):
         self.assertEqual(self.elm.read_dtcs(), ['P0301', 'P0420'])
 
+    def test_codes_from_two_modules_are_listed_once_each(self):
+        self.fake.REPLIES = dict(self.fake.REPLIES, **{'03': '43 00 43\r43 00 43'})
+        self.assertEqual(self.elm.read_dtcs(), ['P0043'])
+
     def test_traffic_log_records_what_was_sent_and_received(self):
         self.elm.read('010D')
         self.assertIn(('TX', '010D'), self.elm.traffic)
