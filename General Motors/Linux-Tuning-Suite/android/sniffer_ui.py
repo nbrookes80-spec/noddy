@@ -30,6 +30,7 @@ MONO = os.path.join(kivy_data_dir, 'fonts', 'RobotoMono-Regular.ttf')
 POLL_SECONDS = 0.05
 REFRESH_SECONDS = 0.2
 SOURCES = ('Simulated', 'Adapter', 'Log file')
+LABELS = {'Simulated': 'Demo'}      # the button text, where it has to be shorter than the source's name
 
 
 MONO_WIDTH = 0.62      # width of a RobotoMono character as a fraction of its font size
@@ -81,7 +82,8 @@ class SnifferScreen(BoxLayout):
         self.source_buttons = {}
         buttons = []
         for name in SOURCES:
-            button = style_button(Button(text=name, font_size=dp(13)))
+            button = style_button(Button(text=LABELS.get(name, name)))
+            button.font_size = dp(12)
             button.bind(on_release=lambda _b, n=name: self.set_kind(n))
             self.source_buttons[name] = button
             buttons.append(button)
@@ -104,16 +106,18 @@ class SnifferScreen(BoxLayout):
         controls = Card()
         controls.add_widget(section_title('Notching'))
         self.notch_button = make_button('Notch', lambda: self.sniff.sniffer.notch(), primary=True)
-        self.unnotch_button = make_button('Un-notch', lambda: self.sniff.sniffer.unnotch())
+        self.unnotch_button = make_button('Unnotch', lambda: self.sniff.sniffer.unnotch())
         self.clear_button = make_button('Clear', self.clear)
         for button in (self.notch_button, self.unnotch_button, self.clear_button):
-            button.font_size = dp(13)
+            button.font_size = dp(12)
         controls.add_widget(button_row(self.notch_button, self.unnotch_button, self.clear_button))
         self.options = {}
         for key, text in (('never_expire', 'Keep IDs'), ('mute_notched', 'Mute notched'),
                           ('fade_inactive', 'Fade quiet')):
-            toggle = ToggleButton(text=text, size_hint_y=None, height=dp(44), font_size=dp(13))
+            toggle = ToggleButton(text=text)
             style_button(toggle)
+            toggle.height = dp(44)
+            toggle.font_size = dp(12)
             toggle.bind(state=lambda b, state, k=key: setattr(self.sniff.sniffer, k, state == 'down'))
             self.options[key] = toggle
         controls.add_widget(button_row(*self.options.values(), height=dp(44)))
