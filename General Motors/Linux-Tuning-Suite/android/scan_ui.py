@@ -115,7 +115,7 @@ class ScanScreen(BoxLayout):
     def __init__(self, session, **kwargs):
         super().__init__(orientation='vertical', **kwargs)
         self.session = session
-        self.pages = pids.monitor_pages()
+        self.pages = [[]]
         self.page = 0
         self.view = 'Live'
         self.history = {}
@@ -158,7 +158,13 @@ class ScanScreen(BoxLayout):
             style_button(button, primary=(key == name))
         self.render()
 
+    def _refresh_pages(self):
+        """Rebuild the dashboard pages from the active profile, so a car check or a new profile shows at once."""
+        self.pages = pids.monitor_pages() or [[]]
+        self.page = min(self.page, len(self.pages) - 1)
+
     def render(self):
+        self._refresh_pages()
         self.body.clear_widgets()
         self.cards = []
         if self.session.active() is None and self.view != 'Log':
