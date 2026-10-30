@@ -65,6 +65,7 @@ The original scanner's Clear codes (Mode 04), PID sweep and enhanced code servic
 | `live_ui.py`, `live.py` | The Live screen, and the stream logic behind it (polling, health, shift comparison) |
 | `grading.py` | Green, yellow and red rules for the tables and live readings |
 | `table_view.py` | Coloured table text and the live cursor |
+| `sniffer_ui.py`, `sniffer_view.py` | The Sniff screen (CAN bus sniffer) and its row text. The logic is in `tunertoolpro/canbus/` |
 | `agent_ui.py`, `agent_bridge.py` | The Agent screen, and the HTTP service it controls |
 | `prefs.py` | Remembers the last connection choice |
 | `link/devices.py` | Paired Bluetooth devices, permissions, Wi-Fi binding (Android only) |
@@ -107,6 +108,15 @@ buildozer -v android debug
   defaults build Python 3.14 and fail on the bundled pip.
 - Copy the APK from `bin/` to the phone and install it, allowing installs from unknown sources.
   Buildozer is slow the first time (it compiles Python for Android).
+
+## CAN sniffer (Sniff tab)
+
+Shows the CAN IDs that are active and which bytes are changing, like `cansniffer`, based on the Sniffer in
+SavvyCAN (see `docs/THIRD_PARTY.md`). Receive only: it uses the adapter's "monitor all" command and the same
+short allowlist idea as the OBD link, so it cannot send a frame. Sources: a simulated bus (no hardware), the
+adapter connected on the Link tab, or a saved log. Green `+` means a byte went up, red `-` down, a dot means
+notched bits. While it listens through the adapter, Live and Scan wait; on Stop the adapter goes back to the
+OBD link's settings. Saved captures go to the app's `captures` folder. It has not been tried on a real car yet.
 
 ## Bluetooth set-up
 

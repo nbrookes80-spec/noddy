@@ -89,6 +89,22 @@ class WifiTransport:
         reply, _, self._buffer = self._buffer.partition(prompt)
         return reply
 
+    def read_chunk(self, timeout=0.2):
+        """Whatever the adapter has sent (b'' if nothing arrived within timeout). Used by the CAN sniffer."""
+        if self._buffer:
+            chunk, self._buffer = self._buffer, b''
+            return chunk
+        self._sock.settimeout(timeout)
+        try:
+            chunk = self._sock.recv(1024)
+        except socket.timeout:
+            return b''
+        finally:
+            self._sock.settimeout(self.timeout)
+        if not chunk:
+            raise AdapterLost('The adapter closed the connection')
+        return chunk
+
     def close(self):
         if self._sock is not None:
             self._sock.close()
@@ -154,6 +170,22 @@ class BluetoothTransport:
             if value == prompt[0]:
                 return bytes(out)
             out.append(value & 0xFF)
+
+    def read_chunk(self, timeout=0.2):
+        """Whatever bytes are waiting (b'' if none arrive within timeout). Used by the CAN sniffer."""
+        import time
+        deadline = time.monotonic() + timeout
+        while self._in.available() == 0:
+            if time.monotonic() >= deadline:
+                return b''
+            time.sleep(0.01)
+        out = bytearray()
+        while self._in.available() > 0 and len(out) < 1024:
+            value = self._in.read()
+            if value < 0:
+                raise AdapterLost('The adapter closed the connection')
+            out.append(value & 0xFF)
+        return bytes(out)
 
     def close(self):
         if self._socket is not None:

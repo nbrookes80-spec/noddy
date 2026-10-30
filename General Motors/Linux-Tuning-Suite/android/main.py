@@ -38,6 +38,7 @@ from link_ui import LinkScreen  # noqa: E402
 from splash_ui import SplashOverlay  # noqa: E402
 from live_ui import LiveScreen, StreamRunner  # noqa: E402
 from scan_ui import ScanScreen  # noqa: E402
+from sniffer_ui import SnifferScreen  # noqa: E402
 from settings_ui import SettingsScreen  # noqa: E402
 from scanner.session import Session  # noqa: E402
 from table_view import HEX, table_blocks  # noqa: E402
@@ -47,7 +48,7 @@ from ui_kit import (ACCENT, ALERT, BG, BLUE, BORDER, GAP, MUTED, RAISED, TEXT, C
                     style_button)
 
 MONO = os.path.join(kivy_data_dir, 'fonts', 'RobotoMono-Regular.ttf')
-APP_VERSION = '0.2.6'
+APP_VERSION = '0.3.0'
 
 # How the 23 shift settings are grouped into cards.
 GROUPS = [
@@ -662,6 +663,8 @@ class TunerToolProApp(App):
         self.runner = StreamRunner(self.session, self.shift.model)
         self.live = LiveScreen(self.session, self.runner, on_open_link=lambda: self.show('link'))
         self.scan = ScanScreen(self.session)
+        self.sniff = SnifferScreen(self.session, self.runner, os.path.join(self.user_data_dir, 'captures'),
+                                   on_open_link=lambda: self.show('link'))
         prefs_path = os.path.join(self.user_data_dir, 'prefs.json')
         self.link = LinkScreen(self.session, prefs_path, on_open_live=lambda: self.show('live'))
         fields = {f[0]: f for f in shift_live.FIELDS}
@@ -678,6 +681,7 @@ class TunerToolProApp(App):
                    ('live', 'Live', 'Live engine and transmission', self.live),
                    ('scan', 'Scan', 'OBD-II scanner', self.scan),
                    ('link', 'Link', 'Bluetooth, Wi-Fi and demo', self.link),
+                   ('sniff', 'Sniff', 'CAN bus sniffer', self.sniff),
                    ('agent', 'Agent', 'Connect your AI agent', self.agent))
         self.titles = {name: subtitle for name, _t, subtitle, _c in screens}
         self.titles['settings'] = 'Settings'
@@ -697,7 +701,7 @@ class TunerToolProApp(App):
         root.add_widget(bar)
         self.session.listeners += [self.header.set_source, self.runner.source_changed,
                                    self.live.source_changed, self.scan.source_changed,
-                                   self.link.source_changed]
+                                   self.link.source_changed, self.sniff.source_changed]
         self.runner.start()
         Clock.schedule_interval(self.update_cursor, 1.0)
         Clock.schedule_interval(self.check_connection, 2.0)
@@ -716,8 +720,9 @@ class TunerToolProApp(App):
         self.header.set_source(self.session.status)
         for key, nav in self.navs.items():
             nav.set_active(key == name)
-        self.runner.paused = name == 'scan'      # the Scan tab reads the adapter itself
-        for key in ('live', 'scan', 'link', 'agent'):
+        # the Scan tab reads the adapter itself, and the sniffer owns it while it listens
+        self.runner.paused = name == 'scan' or self.sniff.holds_adapter()
+        for key in ('live', 'scan', 'link', 'sniff', 'agent'):
             screen = getattr(self, key)
             (screen.activate if name == key else screen.deactivate)()
         if name == 'shift':

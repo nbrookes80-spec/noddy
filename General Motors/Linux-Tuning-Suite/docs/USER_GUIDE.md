@@ -65,6 +65,7 @@ setup added the command.
 | Datalog | Imports a scan-tool CSV, lists the columns it recognized, and reports stall RPM, WOT slip, shift events and transmission temperature | A datalog CSV |
 | XDF / BIN | Browses an XDF definition and reads values from a calibration BIN | An XDF file and a BIN file that you own |
 | BCT Tunes | Opens and edits Bluecat `.BTC` tune files, applies transmission and slope presets, and shows shift speeds | `.BTC` files and the `Trans_Presets.txt` and `Slope_Presets.txt` files |
+| CAN Sniffer | Lists the CAN IDs that are active and shows which bytes and bits change, to find where a signal lives (steering, pedal, gear, switches) | Nothing to try it (simulated bus); a scan adapter or a saved log to use it on a car |
 
 ## Shift Points
 
@@ -259,6 +260,50 @@ use.
 
 The tune file is written byte-for-byte the way Bluecat wrote it, apart from the keys you
 changed. Keep a copy of the original.
+
+## CAN Sniffer
+
+The CAN Sniffer shows which IDs on the car's CAN bus are active and which bytes inside them are changing.
+It is for working out where a signal lives, such as the pedal, the steering angle or the gear selector. It is a
+port of the Sniffer in SavvyCAN and works like `cansniffer` in can-utils (see `docs/THIRD_PARTY.md`).
+
+**It only listens.** With a scan adapter it uses the ELM327 "monitor all" command, which prints every frame the
+adapter hears and sends nothing. The app has a short list of allowed adapter commands (set-up, the bus speed, an
+optional receive filter and monitor); anything else is refused before it is sent. There is no way to transmit a
+frame from this tab.
+
+### Try it with nothing plugged in
+
+1. Open the **CAN Sniffer** tab, leave the source on **Simulated bus** and press **Start**.
+2. Five made-up messages appear. `0C9` changes constantly (an engine-speed-like signal), `1E5` swings slowly (like
+   a steering angle) and `4C9` never changes.
+3. Press **Notch** three or four times. The bits that were changing are now ignored. Watch
+   that `0C9` goes quiet while `1E5` still lights up when it moves. That is the whole technique.
+
+### On a car
+
+1. Choose the source: **Wi-Fi adapter** (host and port, usually `192.168.0.10:35000`) or **Serial / USB /
+   Bluetooth adapter** (a port such as `/dev/ttyUSB0`, `/dev/rfcomm0` or `COM3`, with its baud rate: 38400 for most clones,
+   115200 for many others; a Bluetooth adapter must be paired and bound to a port by the operating system first).
+2. Pick the **Bus**. Most cars including Holden and Pontiac are `6: CAN 500 kbit/s, 11-bit IDs`.
+3. Optionally type one ID in the receive filter to quieten a busy bus (for example `7E8`).
+4. Press **Start**. Keep the car still and press **Notch** a few times, then move the thing you are hunting for and
+   watch which ID lights up.
+
+A cheap ELM327 adapter copes with a few hundred frames a second. If the status line says it dropped frames,
+use the receive filter. When you press **Stop** the adapter is handed back in the settings the rest of the app
+expects.
+
+### Reading the table
+
+- **Green** byte: went up since the last frame. **Red** byte: went down.
+- An ID that stops arriving turns red, then drops off after five seconds.
+- **Notch / Un-notch** ignore or restore the bits that changed in the last 200 ms. **Mute notched bits** also stops
+  those bits updating the display. **Never expire IDs** keeps quiet IDs on the list. **Fade inactive bytes** greys out
+  bytes that have not changed for a while. **View bits** draws each byte as eight squares (green just set,
+  red just cleared, grey notched).
+- **Show IDs** (left) hides IDs you do not care about. **Save log** writes what was captured as a `candump` log or
+  CSV, and **Log file** as a source plays one back.
 
 ## Vehicle
 
