@@ -6,7 +6,7 @@ from pathlib import Path
 from link.devices import normalise_address
 
 KINDS = ('Bluetooth', 'Wi-Fi')
-DEFAULTS = {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': '192.168.0.10:35000'}
+DEFAULTS = {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': '192.168.0.10:35000', 'auto_connect': False}
 
 
 def load(path):
@@ -23,6 +23,8 @@ def load(path):
     address = normalise_address(data.get('bt_address'))
     if address:
         result['bt_address'] = address
+    if isinstance(data.get('auto_connect'), bool):
+        result['auto_connect'] = data['auto_connect']
     if isinstance(data.get('wifi'), str) and data['wifi'].strip():
         result['wifi'] = data['wifi'].strip()
     return result

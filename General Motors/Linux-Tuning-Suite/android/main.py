@@ -706,6 +706,7 @@ class TunerToolProApp(App):
         Clock.schedule_interval(self.update_cursor, 1.0)
         Clock.schedule_interval(self.check_connection, 2.0)
         self.show('shift')
+        Clock.schedule_once(lambda dt: self.link.auto_connect(), 1.0)   # after the first screen is drawn
         self.frame = FloatLayout()
         self.frame.add_widget(root)
         self.frame.add_widget(SplashOverlay())
