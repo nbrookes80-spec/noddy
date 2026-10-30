@@ -118,6 +118,22 @@ adapter connected on the Link tab, or a saved log. Green `+` means a byte went u
 notched bits. While it listens through the adapter, Live and Scan wait; on Stop the adapter goes back to the
 OBD link's settings. Saved captures go to the app's `captures` folder. It has not been tried on a real car yet.
 
+## Car scan (per-profile PID check)
+
+`tools/scan_car.py` reads every catalogued Mode 01 and Mode 22 reading for a profile once, from a Wi-Fi
+ELM327 adapter, and saves which ones the car answers and on which module address, to
+`<folder>/<profile key>.scan.json`. Turn the ignition on first.
+
+    python3 tools/scan_car.py --list
+    python3 tools/scan_car.py holden-ve --folder car_scans
+
+The app loads that file when the profile is chosen (`profiles.activate(profile, scan=...)`). It then lists
+only the readings the car answered, and asks for the transmission readings on the module that replied.
+With no scan, nothing is hidden. A scan cut short by a lost adapter never replaces a complete one.
+
+The scan sends only the same read-only requests the app already allows. The phone does not run it yet:
+no Scan screen has a save-profile step, so the scan is run from a computer for now.
+
 ## Bluetooth set-up
 
 1. Plug the ELM327 adapter in. Pair it in Android Settings > Bluetooth (PIN is often 1234 or 0000),

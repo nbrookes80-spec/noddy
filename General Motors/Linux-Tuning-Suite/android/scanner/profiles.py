@@ -12,7 +12,7 @@ import re
 from dataclasses import dataclass, replace
 from pathlib import Path
 
-from . import pids, torque_csv
+from . import car_scan, pids, torque_csv
 
 DATA_DIR = Path(__file__).resolve().parent.parent / 'data'
 TORQUE_FILES = ('torque_gm_predefined.csv', 'torque_e38_t43_v5.csv')
@@ -75,14 +75,21 @@ def monitor_for(profile, extras):
     return pids.DEFAULT_MONITOR + [p for p in shown if p not in pids.DEFAULT_MONITOR]
 
 
-def activate(profile):
-    """Make this profile the catalogue and dashboard list. Returns a summary dict for the screen to show."""
+def activate(profile, scan=None):
+    """Make this profile the catalogue and dashboard list. Returns a summary dict for the screen to show.
+
+    scan is the car's saved scan (car_scan.load_scan). With a complete scan the dashboard only lists the
+    readings the car answered, and the summary gives the module address to ask for each of them.
+    """
     extras, rejected = load_pids(profile)
     skipped = pids.use_extras(extras)
-    pids.MONITOR_PIDS[:] = monitor_for(profile, extras)
+    monitor = monitor_for(profile, extras)
+    shown, hidden = car_scan.enforce(monitor, scan)
+    pids.MONITOR_PIDS[:] = shown
     added = [p for p in extras if p.pid not in skipped]
     return {'profile': profile.name, 'added': len(added), 'already_known': len(skipped), 'rejected': rejected,
-            'shown': len(pids.MONITOR_PIDS)}
+            'shown': len(pids.MONITOR_PIDS), 'hidden': hidden, 'headers': car_scan.headers(scan),
+            'checked': scan is not None and scan['complete']}
 
 
 # --- the user's own cars -------------------------------------------------------------------------

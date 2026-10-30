@@ -227,6 +227,10 @@ class Elm327:
         del self.traffic[:-200]
         return reply
 
+    def header_for(self, pid):
+        """The module address that last answered for a catalogue reading, or None if none has yet."""
+        return self._header_memory.get(pid)
+
     def set_header(self, header):
         """Point requests at a module (7E0 engine, 7E2 transmission) or back at the broadcast address."""
         target = catalog.DEFAULT_HEADER if header == 'Auto' else header
