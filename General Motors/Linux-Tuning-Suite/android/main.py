@@ -31,6 +31,8 @@ import converter_live  # noqa: E402
 import dyno_live  # noqa: E402
 import grading  # noqa: E402
 import prefs  # noqa: E402
+import sys  # noqa: E402
+import traceback  # noqa: E402
 import shift_live  # noqa: E402
 from tunertoolpro import trans_data  # noqa: E402
 from tunertoolpro import vehicles  # noqa: E402
@@ -42,8 +44,9 @@ from scan_ui import ScanScreen  # noqa: E402
 from sniffer_ui import SnifferScreen  # noqa: E402
 from app_menu import AppMenu  # noqa: E402
 from settings_ui import SettingsScreen  # noqa: E402
-from scanner import car_scan, manual_pids, profiles  # noqa: E402
+from scanner import car_scan, manual_pids, pids, profiles  # noqa: E402
 from scanner.session import Session  # noqa: E402
+from scanner.session_log import SessionLog  # noqa: E402
 from table_view import HEX, table_blocks  # noqa: E402
 from tunertoolpro import core  # noqa: E402
 from ui_kit import (ACCENT, ALERT, BG, BLUE, BORDER, GAP, MUTED, RAISED, TEXT, Card,  # noqa: E402
@@ -660,6 +663,7 @@ class TunerToolProApp(App):
         Window.bind(on_keyboard=self.on_back)
         self._refresh_event = None  # must exist before the Shift screen runs its first recalculation
         self.session = Session()
+        self.start_log()
         self.manager = ScreenManager()
         self.header = HeaderBar(on_menu=self.open_menu)
         self.shift = ShiftScreen(on_change=self.request_dyno_refresh, on_settings=lambda: self.show('settings'))
@@ -721,6 +725,21 @@ class TunerToolProApp(App):
     def show_car(self):
         self.shift.car_label.text = (f'{self.settings.summary()}\n{self.shift.ratio_box.text}')
 
+    def start_log(self):
+        """The debug log for this run: one file of what the app and the adapter said, to bring back after a drive."""
+        saved = prefs.load(os.path.join(self.user_data_dir, 'prefs.json'))
+        self.session.log = SessionLog(os.path.join(self.user_data_dir, 'logs'), enabled=saved['debug_log'])
+        log = self.session.log
+        log.write('APP', f'TunerToolPro {APP_VERSION} started')
+        shown = {k: v for k, v in saved.items() if k != 'bt_address'}
+        log.write('APP', f'saved settings {shown}; adapter {"set" if saved["bt_address"] else "not chosen"}')
+        previous = sys.excepthook
+
+        def crashed(kind, value, trace):
+            log.write('CRASH', ''.join(traceback.format_exception(kind, value, trace)))
+            previous(kind, value, trace)
+        sys.excepthook = crashed
+
     def open_menu(self):
         """The three bars: connection, Live, adapter speed, car and about. Built fresh so it shows the current state."""
         cars = os.path.join(self.user_data_dir, 'cars')
@@ -740,6 +759,8 @@ class TunerToolProApp(App):
         profiles.activate(profile, scan=car_scan.load_scan(os.path.join(data, 'car_scans'), profile.key),
                           manual=extra)
         self.link.saved['scan_profile'] = profile.key
+        self.session.log.write('CAR', f'profile {profile.key}: {len(pids.MONITOR_PIDS)} PIDs on the dashboard, '
+                                      f'{len(extra)} manual')
         prefs.save(self.link.prefs_path, self.link.saved)
 
     def restore_car(self):
@@ -751,6 +772,7 @@ class TunerToolProApp(App):
             self.activate_car(profile)
 
     def show(self, name):
+        self.session.log.write('SCREEN', name)
         self.manager.current = name
         if name in ADAPTER_SCREENS:
             self.link.ensure_connected()   # these screens need the adapter, so open it when they are opened

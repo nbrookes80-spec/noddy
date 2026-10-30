@@ -1,6 +1,7 @@
 """Which data source the screens read from: the demo drive, a connected adapter, or nothing."""
 
 from .demo import DemoSource
+from .session_log import NullLog
 
 DEMO, LIVE, OFFLINE = 'DEMO', 'LIVE', 'OFFLINE'
 
@@ -13,6 +14,7 @@ class Session:
         self.demo_on = False
         self.elm = None
         self.listeners = []
+        self.log = NullLog()   # replaced by a SessionLog when the app starts
 
     def active(self):
         if self.demo_on:
@@ -39,15 +41,19 @@ class Session:
 
     def set_demo(self, on):
         self.demo_on = bool(on)
+        self.log.write('APP', f'demo {"on" if self.demo_on else "off"}')
         self._notify()
 
     def attach(self, elm):
         self.elm = elm
+        elm.on_traffic = self.log.write
+        self.log.write('LINK', 'adapter attached')
         self._notify()
 
     def detach(self):
         elm, self.elm = self.elm, None
         if elm is not None:
+            self.log.write('LINK', 'adapter detached')
             elm.close()
         self._notify()
 

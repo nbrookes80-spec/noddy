@@ -202,6 +202,7 @@ class LinkScreen(BoxLayout):
         except ValueError:
             return   # no adapter saved yet: the user picks one on this screen
         self._connecting = True
+        self.session.log.write('LINK', f'connecting (auto) {self.kind} {address}')
         self.connect_button.disabled = True
         self.state.text = 'Connecting to your last adapter...'
         threading.Thread(target=self._connect, args=(transport, address), daemon=True).start()
@@ -218,6 +219,7 @@ class LinkScreen(BoxLayout):
             self.state.text = str(exc) if 'adapter' in str(exc) else 'Enter the adapter as host:port, e.g. 192.168.0.10:35000'
             return
         self._connecting = True
+        self.session.log.write('LINK', f'connecting {self.kind} {address}')
         self.connect_button.disabled = True
         self.state.text = 'Connecting...'
         threading.Thread(target=self._connect, args=(transport, address), daemon=True).start()
@@ -227,6 +229,7 @@ class LinkScreen(BoxLayout):
             elm = obd.Elm327(transport)
             elm.open()
         except obd.OBDError as exc:
+            self.session.log.write('ERR', f'connect failed: {type(exc).__name__}: {exc}')
             Clock.schedule_once(lambda dt, m=str(exc): self._failed(m))
             return
         Clock.schedule_once(lambda dt: self._connected(elm, address))
@@ -265,5 +268,6 @@ class LinkScreen(BoxLayout):
             self.adapter_card.remove_widget(self.live_button)
 
     def connection_lost(self, message):
+        self.session.log.write('LINK', f'connection lost: {message}')
         self.disconnect()
         self.state.text = f'Connection lost: {message}'

@@ -10,7 +10,8 @@ DEFAULTS = {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': '192.168.0.10:35
             'live_transmission': False,   # read the transmission (7E2) on the Live screen
             'adaptive_timing': False,     # ATAT1: let the adapter adjust its wait to the car
             'timeout_ms': 0,              # 0 keeps the adapter's own response timeout; else ATST in 4 ms steps
-            'scan_profile': ''}           # the car profile Live and Scan read (its key); '' for the built-in list
+            'scan_profile': '',
+            'debug_log': True}            # write a log file of each run, to bring back when something goes wrong           # the car profile Live and Scan read (its key); '' for the built-in list
 TIMEOUT_CHOICES_MS = (0, 100, 200, 400)
 
 
@@ -32,7 +33,7 @@ def load(path):
         result['auto_connect'] = data['auto_connect']
     if isinstance(data.get('wifi'), str) and data['wifi'].strip():
         result['wifi'] = data['wifi'].strip()
-    for key in ('live_transmission', 'adaptive_timing'):
+    for key in ('live_transmission', 'adaptive_timing', 'debug_log'):
         if isinstance(data.get(key), bool):
             result[key] = data[key]
     if data.get('timeout_ms') in TIMEOUT_CHOICES_MS:

@@ -275,6 +275,7 @@ class Elm327:
     def __init__(self, transport):
         self.transport = transport
         self.traffic = []   # (direction, text) of what this link sent and got back, newest last
+        self.on_traffic = None   # optional callback(kind, text) for a debug log: TX, RX, REFUSED or ERR
         self._header = catalog.DEFAULT_HEADER
         self._header_memory = {}   # PID -> the module address that answered for it
         self._misses = {}          # PID -> failures in a row
@@ -291,15 +292,30 @@ class Elm327:
 
     def command(self, command):
         if not is_allowed(command):
+            self._tell('REFUSED', command)
             raise UnsafeCommand(f'{command!r} is not a read-only command, so it was not sent')
         command = command.replace(' ', '').upper()
         self.traffic.append(('TX', command))
-        self.transport.write((command + '\r').encode('ascii'))
-        raw = self.transport.read_until(b'>')
+        self._tell('TX', command)
+        try:
+            self.transport.write((command + '\r').encode('ascii'))
+            raw = self.transport.read_until(b'>')
+        except OBDError as exc:
+            self._tell('ERR', f'{type(exc).__name__}: {exc}')
+            raise
         reply = raw.decode('ascii', 'replace').replace('\r', '\n').strip()
         self.traffic.append(('RX', reply.replace('\n', ' ')))
+        self._tell('RX', reply.replace('\n', ' '))
         del self.traffic[:-200]
         return reply
+
+    def _tell(self, kind, text):
+        """Pass a line to the debug log, if one is listening. A broken log must never stop a reading."""
+        if self.on_traffic is not None:
+            try:
+                self.on_traffic(kind, text)
+            except Exception:
+                pass
 
     def header_for(self, pid):
         """The module address that last answered for a catalogue reading, or None if none has yet."""

@@ -33,5 +33,41 @@ class AdapterInfoTests(unittest.TestCase):
         self.assertTrue(session.adapter_info()['demo'])
 
 
+class FakeTransport:
+    def __init__(self, reply=b'OK\r\r>', fail=None):
+        self.reply, self.fail = reply, fail
+
+    def write(self, data):
+        pass
+
+    def read_until(self, _end):
+        if self.fail:
+            raise self.fail
+        return self.reply
+
+
+class TrafficLogTests(unittest.TestCase):
+    def test_traffic_refusals_and_errors_reach_the_log(self):
+        from link import obd
+        seen = []
+        elm = obd.Elm327(FakeTransport())
+        elm.on_traffic = lambda kind, text: seen.append((kind, text))
+        elm.command('ATZ')
+        with self.assertRaises(obd.UnsafeCommand):
+            elm.command('2E0101')
+        broken = obd.Elm327(FakeTransport(fail=obd.AdapterLost('gone')))
+        broken.on_traffic = lambda kind, text: seen.append((kind, text))
+        with self.assertRaises(obd.AdapterLost):
+            broken.command('0100')
+        self.assertEqual(seen, [('TX', 'ATZ'), ('RX', 'OK  >'), ('REFUSED', '2E0101'), ('TX', '0100'),
+                                ('ERR', 'AdapterLost: gone')])
+
+    def test_a_broken_log_does_not_stop_a_reading(self):
+        from link import obd
+        elm = obd.Elm327(FakeTransport())
+        elm.on_traffic = lambda kind, text: 1 / 0
+        self.assertEqual(elm.command('ATZ'), 'OK\n\n>')
+
+
 if __name__ == '__main__':
     unittest.main()

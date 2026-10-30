@@ -8,15 +8,17 @@ else.
 import threading
 
 from kivy.clock import Clock
+from kivy.core.clipboard import Clipboard
 from kivy.metrics import dp
 from kivy.uix.modalview import ModalView
+from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
 
 import prefs
 from link import obd
 from pid_editor_ui import PidEditor
 from settings_ui import spinner
-from ui_kit import MUTED, STATUS, Card, make_button, panel_label, section_title, stack, style_button
+from ui_kit import MUTED, RAISED, TEXT, STATUS, Card, make_button, panel_label, section_title, stack, style_button
 
 
 def _toggle(text, state, on_change):
@@ -41,8 +43,9 @@ class AppMenu(ModalView):
 
         # A scrollable column, so every section can be reached on a short screen.
         self.add_widget(stack(section_title('Settings'), self._connection_card(), self._live_card(),
-                              self._speed_card(), self._pids_card(), self._car_card(version)))
+                              self._speed_card(), self._pids_card(), self._log_card(), self._car_card(version)))
         self.refresh()
+        self._show_log_path()
 
     def _save(self, **changes):
         self.saved.update(changes)
@@ -103,6 +106,51 @@ class AppMenu(ModalView):
     def _open_pid_editor(self):
         self.dismiss()
         PidEditor(self.profiles, self.cars_folder, self.on_pids_saved).open()
+
+    def _log_card(self):
+        card = Card()
+        card.add_widget(section_title('Debug log'))
+        card.add_widget(panel_label('Saves a file of each run: screens opened, what the adapter was sent and '
+                                    'answered, errors and crashes. Bring it back to find out what went wrong.',
+                                    color=MUTED, font_size=dp(12)))
+        card.add_widget(_toggle('Save a debug log', self.saved['debug_log'], self._set_log))
+        self.log_path = panel_label('', color=MUTED, font_size=dp(11))
+        card.add_widget(self.log_path)
+        self.note_box = TextInput(hint_text='Note for the log, e.g. "engine running, in park"', multiline=False,
+                                  size_hint_y=None, height=dp(44), background_color=RAISED,
+                                  foreground_color=TEXT, hint_text_color=MUTED)
+        card.add_widget(self.note_box)
+        card.add_widget(make_button('Add note to the log', self._add_note))
+        card.add_widget(make_button('Copy the end of the log', self._copy_log))
+        self.log_status = panel_label('', color=MUTED, font_size=dp(12))
+        card.add_widget(self.log_status)
+        return card
+
+    def _set_log(self, on):
+        self._save(debug_log=on)
+        self.session.log.set_enabled(on)
+        self._show_log_path()
+
+    def _show_log_path(self):
+        log = self.session.log
+        self.log_path.text = (f'File: {log.path}' if log.path else
+                              'The file is made when the first line is written.') if log.enabled else 'Log is off.'
+
+    def _add_note(self):
+        text = self.note_box.text.strip()
+        if text:
+            self.session.log.write('NOTE', text)
+            self.note_box.text = ''
+            self.log_status.text = 'Note added.'
+        self._show_log_path()
+
+    def _copy_log(self):
+        text = self.session.log.tail()
+        if not text:
+            self.log_status.text = 'Nothing logged yet.'
+            return
+        Clipboard.copy(text)
+        self.log_status.text = f'Copied {len(text.splitlines())} lines. Paste them into the chat.'
 
     def _car_card(self, version):
         card = Card()
