@@ -16,7 +16,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.togglebutton import ToggleButton
 
-from live import HEALTH, STREAM_PIDS, LiveStream
+from live import HEALTH, STREAM_PIDS, TCM_PIDS, LiveStream
 from pid_card import PidCard, equalize, fit_columns
 from scanner import pids
 from scanner.bus_listen import bus_reader
@@ -256,6 +256,8 @@ class LiveScreen(BoxLayout):
             self.health_tiles[tile['key']].set(tile['level'], tile['text'])
         for pid_id, card in self.cards.items():
             entry = snap['values'].get(pid_id)
-            card.show((entry['value'], entry['unit']) if entry else None, entry['history'] if entry else [])
+            idle = 'transmission off' if pid_id in TCM_PIDS and not self.runner.transmission else None
+            card.show((entry['value'], entry['unit']) if entry else None, entry['history'] if entry else [],
+                      idle=idle)
         lines = [f'[color=#{HEX[s["level"]]}]{s["text"]}[/color]' for s in snap['shifts'][:6] if s['text']]
         self.shift_log.text = '\n'.join(lines) or 'No shifts yet. Drive, or watch the demo.'

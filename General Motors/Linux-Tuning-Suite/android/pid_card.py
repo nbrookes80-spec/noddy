@@ -119,6 +119,7 @@ class PidCard(ButtonBehavior, Card):
         self.pid = pid
         self.shown = {}
         self._reading = None
+        self._idle = None            # text shown instead of "no reply" when this sensor is not being asked for
         self._series = []
         self._taps = 0
         self._long = self._pending = None
@@ -181,8 +182,8 @@ class PidCard(ButtonBehavior, Card):
         self.stats.reset()
         self._show_reading()
 
-    def show(self, reading, series):
-        self._reading, self._series = reading, list(series)[-HISTORY:]
+    def show(self, reading, series, idle=None):
+        self._reading, self._series, self._idle = reading, list(series)[-HISTORY:], idle
         if reading is not None:
             self.stats.add(reading[0])
         self._show_reading()
@@ -191,7 +192,10 @@ class PidCard(ButtonBehavior, Card):
         """Put the latest reading on the card: converted to the user's units, coloured by its band."""
         reading, convert = self._reading, self.shown['convert']
         if reading is None:
-            self.value.text, self.value.color = 'no reply', ALERT
+            if self._idle:
+                self.value.text, self.value.color = self._idle, MUTED
+            else:
+                self.value.text, self.value.color = 'no reply', ALERT
             self.unit.text = ''
             self.stats_line.text = ''
             self.gauge.update(None, [])
