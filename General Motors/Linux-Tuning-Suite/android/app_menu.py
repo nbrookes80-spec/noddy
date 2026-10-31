@@ -18,11 +18,17 @@ from kivy.uix.modalview import ModalView
 from kivy.uix.textinput import TextInput
 
 import prefs
+import variant
 from link import obd
 from pid_editor_ui import PidEditor
 from settings_ui import spinner
 import menu_pages
 from ui_kit import MUTED, RAISED, TEXT, STATUS, Card, make_button, panel_label, section_title, stack, style_button
+
+_WRITES = {
+    False: 'Read only: the app never writes to the car.',
+    True: 'It writes to the car only to clear stored codes, and only after you confirm.',
+}
 from ui_kit import toggle as _toggle
 
 PAGES = (
@@ -237,7 +243,7 @@ class AppMenu(ModalView):
         card = Card()
         card.add_widget(section_title('Car and about'))
         card.add_widget(make_button('Car and transmission', lambda: self._open_settings()))
-        card.add_widget(panel_label(f'TunerToolPro {version}. Read only: the app never writes to the car.',
+        card.add_widget(panel_label(f'{variant.NAME}. {_WRITES[variant.CLEAR_CODES]}',
                                     color=MUTED, font_size=dp(12)))
         return card
 

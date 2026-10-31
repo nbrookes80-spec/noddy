@@ -20,12 +20,14 @@ from live import HEALTH, STREAM_PIDS, LiveStream
 from pid_card import PidCard, equalize, fit_columns
 from scanner import pids
 from scanner.bus_listen import bus_reader
+from shift_light_ui import ShiftLight
 from table_view import HEX
 from ui_kit import (BG, hide, GAP, MUTED, STATUS, TEXT, Card, make_button, panel_label, section_title,
                     stack, style_button)
 
 ROUND_SECONDS = 0.25     # fastest the background reader goes; a real adapter is slower than this
 EXTRA_CHUNK = 4          # other sensors read per round while recording
+LIGHT_TICK = 0.1         # seconds between shift light frames: fast enough for the 0.10 s flash
 BACKOFF_SECONDS = 1.0    # wait this long after a failed round before trying again
 
 
@@ -134,9 +136,11 @@ class LiveScreen(BoxLayout):
         self.on_open_link = on_open_link
         self.on_fullscreen = on_fullscreen
         self._event = None
+        self._light_event = None
         self.cards = {}
         self.chrome = []
         self.full = False
+        self.light = ShiftLight()   # kept across renders: its switches and LEDs carry on when the layout is rebuilt
         self.render()
 
     # --- lifecycle -------------------------------------------------------------------------------
@@ -146,11 +150,16 @@ class LiveScreen(BoxLayout):
             card.apply_view()       # pick up a display or red line changed on another screen
         if self._event is None:
             self._event = Clock.schedule_interval(self.refresh, 0.5)
+        if self._light_event is None:
+            self._light_event = Clock.schedule_interval(self.tick_light, LIGHT_TICK)
 
     def deactivate(self):
         if self._event is not None:
             self._event.cancel()
             self._event = None
+        if self._light_event is not None:
+            self._light_event.cancel()
+            self._light_event = None
 
     def source_changed(self, _status=None):
         self.render()
@@ -164,6 +173,8 @@ class LiveScreen(BoxLayout):
     # --- layout ----------------------------------------------------------------------------------
 
     def render(self):
+        if self.light.parent is not None:      # the light outlives the layout it sits in, so take it out first
+            self.light.parent.remove_widget(self.light)
         self.clear_widgets()
         self.cards = {}
         if self.session.active() is None:
@@ -204,9 +215,10 @@ class LiveScreen(BoxLayout):
         self.transmission_button.bind(state=self._transmission_changed)
         readings_title = section_title('Readings')
         full_button = make_button('Full screen: live data only', lambda: self.on_fullscreen and self.on_fullscreen(True))
-        self.chrome = [self.status, self.transmission_button, full_button, health, readings_title, shifts, hint]
-        self.add_widget(stack(self.status, self.transmission_button, full_button, health, readings_title, grid,
-                              shifts, hint))
+        self.chrome = [self.light.settings, self.status, self.transmission_button, full_button, health,
+                       readings_title, shifts, hint]
+        self.add_widget(stack(self.light, self.status, self.transmission_button, full_button, health,
+                              readings_title, grid, shifts, hint))
         self.set_full(self.full)
 
     def _style_transmission(self):
@@ -218,6 +230,12 @@ class LiveScreen(BoxLayout):
         self.status.text = ''
 
     # --- updating --------------------------------------------------------------------------------
+
+    def tick_light(self, _dt):
+        """The shift light reads engine speed on its own clock, so its flash and blink are not held up by the readings."""
+        stream = self.runner.stream
+        reading = stream.latest.get('010C') if stream is not None else None
+        self.light.update(None if reading is None else reading[0], time.monotonic())
 
     def refresh(self, _dt):
         stream = self.runner.stream

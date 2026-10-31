@@ -26,8 +26,8 @@ class DecodeReplyTests(unittest.TestCase):
         self.assertEqual(reply[2], 'RPM')
 
     def test_transmission_fluid_temperature_from_the_transmission_module(self):
-        reply = can_discovery.decode_reply(frame(0x7EA, '04 62 19 4F 78 00 00 00'))
-        self.assertEqual(reply[0], '22194F')
+        reply = can_discovery.decode_reply(frame(0x7EA, '04 62 19 40 78 00 00 00'))
+        self.assertEqual(reply[0], '221940')
         self.assertAlmostEqual(reply[1], 80.0)
 
     def test_a_reply_for_a_reading_the_catalogue_lacks_is_still_reported(self):

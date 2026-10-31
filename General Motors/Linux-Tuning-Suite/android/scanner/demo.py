@@ -87,7 +87,7 @@ def value(pid, t):
         '010E': 38 - 0.2 * s['load'] - 4 * (s['rpm'] / 8000), '0152': 85.0,
         '010A': 420 + 0.8 * s['throttle'], '0106': 1.5 * math.sin(t / 3), '0107': -1.0 + 0.3 * math.sin(t / 9),
         '0114': 0.45 + 0.4 * math.sin(t * 2.5), '22199A': float(s['gear']),
-        '22194F': 82 + 6 * (1 - math.exp(-(t % CYCLE_SECONDS) / 20.0)),
+        '221940': 82 + 6 * (1 - math.exp(-(t % CYCLE_SECONDS) / 20.0)),
         '22001F': 380 + 6 * s['throttle'] + s['rpm'] / 40,
         '221991': _tcc_slip(s),
         '221942': s['speed'] * KMH_TO_MPH * FINAL_DRIVE * MPH_K / TIRE_INCHES,
@@ -107,6 +107,7 @@ class DemoSource:
         self._start = clock()
         self.traffic = []
         self.on_values = None   # optional callback({pid: (value, unit)}) for the data log
+        self._codes = list(DEMO_CODES)   # clearing the demo codes empties this, as a real clear empties the car's
 
     def now(self):
         return self._clock() - self._start
@@ -129,7 +130,12 @@ class DemoSource:
     def read_dtcs(self):
         self.traffic.append(('TX', '03'))
         self.traffic.append(('RX', '43 (simulated)'))
-        return list(DEMO_CODES)
+        return list(self._codes)
+
+    def clear_dtcs(self):
+        self.traffic.append(('TX', '04'))
+        self.traffic.append(('RX', '44 (simulated)'))
+        self._codes = []
 
     def listen(self, seconds):
         """The bus frames of a window: the simulated transmission reports Park for the first few seconds, then Drive."""

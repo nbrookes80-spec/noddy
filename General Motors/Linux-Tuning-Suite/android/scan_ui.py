@@ -1,7 +1,7 @@
 """The Scan screen: a live dashboard, stored codes and the traffic log. Ported from the VE CALAIS Scanner.
 
-It reads from the shared Session, which is either the demo drive or a connected adapter. It only
-reads: there is no clear-codes action in this app.
+It reads from the shared Session, which is either the demo drive or a connected adapter. Clearing the
+codes is offered only in builds that allow it (variant.CLEAR_CODES), and always asks first.
 """
 
 import threading
@@ -13,7 +13,9 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
+from kivy.uix.popup import Popup
 
+import variant
 from link import obd
 from pid_card import HISTORY, PidCard, equalize, fit_columns
 from scanner import pids
@@ -136,10 +138,55 @@ class ScanScreen(BoxLayout):
         card = Card()
         card.add_widget(section_title('Stored trouble codes'))
         card.add_widget(self.codes_label)
-        note = panel_label('Read only: this app reads codes but never clears them. Clearing also resets '
-                           "the car's readiness monitors, so do it with a dedicated scan tool.",
-                           color=MUTED, font_size=dp(12))
-        return stack(make_button('Read codes', self.read_codes, primary=True), card, note)
+        if not variant.CLEAR_CODES:
+            note = panel_label('Read only: this app reads codes but never clears them. Clearing also resets '
+                               "the car's readiness monitors, so do it with a dedicated scan tool.",
+                               color=MUTED, font_size=dp(12))
+            return stack(make_button('Read codes', self.read_codes, primary=True), card, note)
+        note = panel_label('Clearing deletes the stored codes and resets the car\'s readiness monitors. Until the '
+                           'car has driven through its checks again, an emissions test can fail. Clear only after '
+                           'the fault is fixed.', color=MUTED, font_size=dp(12))
+        buttons = button_row(make_button('Read codes', self.read_codes, primary=True),
+                             make_button('Clear codes', self.ask_clear))
+        return stack(buttons, card, note)
+
+    def ask_clear(self):
+        """Ask before clearing: a clear is the one thing here that changes the car."""
+        if self.session.active() is None or self.busy:
+            return
+        body = BoxLayout(orientation='vertical', spacing=GAP, padding=GAP)
+        popup = Popup(title='Clear the stored codes?', content=body, size_hint=(0.92, None), height=dp(250))
+        body.add_widget(panel_label('This deletes every stored code and resets the readiness monitors. Clear only '
+                                    'after the fault is fixed.', color=MUTED))
+        row = button_row(make_button('Cancel', popup.dismiss),
+                         make_button('Clear codes', lambda: (popup.dismiss(), self.clear_codes()), primary=True))
+        body.add_widget(row)
+        popup.open()
+
+    def clear_codes(self):
+        source = self.session.active()
+        if source is None or self.busy:
+            return
+        self.busy = True
+        self.codes_label.text = 'Clearing...'
+        threading.Thread(target=self._clear_codes, args=(source,), daemon=True).start()
+
+    def _clear_codes(self, source):
+        try:
+            source.clear_dtcs()
+            text = 'Codes cleared. Read codes again to check that none came back.'
+            if source.label == 'Demo':
+                text += '\n\nDemo data: the sample codes were cleared, not a car.'
+        except obd.OBDError as exc:
+            text = str(exc)
+
+        def done(_dt):
+            self.busy = False
+            self.codes_text = text
+            if self.view == 'Codes':
+                self.codes_label.text = text
+
+        Clock.schedule_once(done)
 
     def _log_view(self):
         source = self.session.active()

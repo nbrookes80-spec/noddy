@@ -22,9 +22,9 @@ from tunertoolpro import core
 # The Holden VE's TCM refuses commanded gear (223D03) and the PC solenoid current pair (22199E/F), so the
 # gear check uses the gear its shaft speeds imply, and the pressure tile shows line pressure (22001F).
 FAST_PIDS = ['010C', '010D', '0111', '22199A', '221991', '221941', '221942']
-SLOW_PIDS = ['0105', '0104', '010B', '010E', '22194F', '22001F']
+SLOW_PIDS = ['0105', '0104', '010B', '010E', '221940', '22001F']
 STREAM_PIDS = FAST_PIDS + SLOW_PIDS
-TCM_PIDS = {'22199A', '22194F', '221991', '22001F', '221941', '221942'}
+TCM_PIDS = {'22199A', '221940', '221991', '22001F', '221941', '221942'}
 GEAR_RATIOS = (4.027, 2.364, 1.532, 1.152, 0.852, 0.667)   # 6L80: input shaft turns per output shaft turn
 RATIO_TOLERANCE = 0.12    # a ratio further than this from every gear is a shift in progress, so no verdict
 MIN_OUTPUT_RPM = 100      # below this the ratio is mostly noise (stopped or crawling)
@@ -179,7 +179,7 @@ class LiveStream:
             'engine_rpm': lambda v: (grading.grade_engine_rpm(v, shift_rpm)
                                      if v is not None and shift_rpm else None),
         }
-        sources = {'trans_temp': '22194F', 'coolant': '0105', 'engine_rpm': '010C'}
+        sources = {'trans_temp': '221940', 'coolant': '0105', 'engine_rpm': '010C'}
         for key, label in HEALTH:
             result = None
             if key in graded:

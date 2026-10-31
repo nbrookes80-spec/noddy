@@ -5,7 +5,7 @@ from pathlib import Path
 
 from link import obd
 from link.devices import normalise_address
-from scanner import pid_view, pids, themes, units
+from scanner import pid_view, pids, shift_light, themes, units
 
 KINDS = ('Bluetooth', 'Wi-Fi')
 DEFAULTS = {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': '192.168.0.10:35000', 'auto_connect': False,
@@ -25,7 +25,9 @@ DEFAULTS = {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': '192.168.0.10:35
             'log_scope': 'all',           # what a recording has columns for: all, live (the Live stream) or dashboard
             'log_rate': 0,                # most rows written per second; 0 writes a row for every round of readings
             'adapter_protocol': '0',      # ATSP choice: 0 automatic, or a CAN protocol number (link/obd.PROTOCOLS)
-            'hidden_pids': {}}            # {car profile key: [PID ids the user hid from the dashboard]}
+            'hidden_pids': {},            # {car profile key: [PID ids the user hid from the dashboard]}
+            'light_on': False,            # the shift light on the Live screen (scanner/shift_light.py)
+            **{f'light_{key}': value for key, value in shift_light.DEFAULTS.items()}}
 TIMEOUT_CHOICES_MS = (0, 100, 200, 400)
 COLUMN_CHOICES = (0, 2, 3, 4)
 LOG_SCOPES = ('all', 'live', 'dashboard')
@@ -73,6 +75,11 @@ def load(path):
     if data.get('adapter_protocol') in obd.PROTOCOLS:
         result['adapter_protocol'] = data['adapter_protocol']
     result['hidden_pids'] = _hidden(data.get('hidden_pids'))
+    if isinstance(data.get('light_on'), bool):
+        result['light_on'] = data['light_on']
+    light = shift_light.clean({key: data.get(f'light_{key}') for key in shift_light.DEFAULTS})
+    for key, value in light.items():
+        result[f'light_{key}'] = value
     return result
 
 

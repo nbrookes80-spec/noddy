@@ -311,7 +311,7 @@ def build_agent_prompt(url, token, help_info):
         '  GET /v1/live       live engine and transmission readings, health tiles, recent shifts vs the table\n'
         'Act:\n'
         '  GET /v1/focus      the sensor I triple tapped to ask about (null if none), with how it is read\n'
-        '  POST /v1/propose_pid  {"pid": "22194F", "name": "...", "unit": "...", "equation": "A-40", '
+        '  POST /v1/propose_pid  {"pid": "221940", "name": "...", "unit": "...", "equation": "A-40", '
         '"header": "7E2", "low": 0, "high": 100, "reason": "..."} suggests a sensor definition (Mode 01 or '
         'Mode 22). Nothing is saved until I approve it in the app.\n'
         '  POST /v1/note      {"text": "...", "level": "info|warn|alert"} shows a note on my screen\n'

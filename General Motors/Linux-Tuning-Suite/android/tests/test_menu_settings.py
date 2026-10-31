@@ -109,8 +109,8 @@ class PrefsTests(unittest.TestCase):
                           bad['log_rate'], bad['adapter_protocol']), (0, 'classic', 'digital', 'all', 0, '0'))
 
     def test_hidden_pids_keep_only_valid_ids(self):
-        got = self.load({'hidden_pids': {'holden-ve': ['22194f', '0105', 'ATZ', 5, '2219'], 'bad': 'x'}})
-        self.assertEqual(got['hidden_pids'], {'holden-ve': ['0105', '22194F']})
+        got = self.load({'hidden_pids': {'holden-ve': ['22199a', '0105', 'ATZ', 5, '2219'], 'bad': 'x'}})
+        self.assertEqual(got['hidden_pids'], {'holden-ve': ['0105', '22199A']})
 
     def test_saving_and_loading_round_trips(self):
         with tempfile.TemporaryDirectory() as folder:

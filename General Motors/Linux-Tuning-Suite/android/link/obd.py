@@ -1,10 +1,10 @@
-"""Read-only OBD-II link to an ELM327-compatible scan adapter, over Wi-Fi (TCP) or Bluetooth (RFCOMM).
+"""OBD-II link to an ELM327-compatible scan adapter, over Wi-Fi (TCP) or Bluetooth (RFCOMM).
 
 Only commands that pass is_allowed() are ever sent: adapter set-up, Mode 01 and Mode 22 reads of PIDs
-in the scanner catalogue, the Mode 03 stored-code read, and a header switch to one of four known
-module addresses. Nothing here writes to the controller: no Mode 04 clears, no Mode 08 tests, no
-Mode 09 writes, no ECU programming, no free-form Mode 22 sweeps. Any other command raises
-UnsafeCommand before anything is sent.
+in the scanner catalogue, the Mode 03 stored-code read, a header switch to one of four known module
+addresses, and the Mode 04 code clear when the build allows it (variant.CLEAR_CODES). Nothing here
+writes anything else to the controller: no Mode 08 tests, no Mode 09 writes, no ECU programming, no
+free-form Mode 22 sweeps. Any other command raises UnsafeCommand before anything is sent.
 
 Wi-Fi is the fallback path: many adapters open a hotspot at 192.168.0.10 port 35000. Bluetooth
 Classic (SPP) needs the adapter paired in Android settings first. The Bluetooth path can only run
@@ -16,6 +16,7 @@ import socket
 import threading
 import time
 
+import variant
 from scanner import pids as catalog
 
 SPP_UUID = '00001101-0000-1000-8000-00805F9B34FB'
@@ -36,6 +37,8 @@ PIDS = {
 ALLOWED |= set(PIDS)
 READ_DTC = '03'
 ALLOWED.add(READ_DTC)
+CLEAR_DTC = '04'          # only sent when variant.CLEAR_CODES is on; is_allowed() checks it at send time
+CLEAR_REPLY = '44'        # the car's answer to a clear: 44 is 40 (a Mode 04 request) plus 04
 HEADER_COMMANDS = {f'ATSH{h}' for h in catalog.KNOWN_HEADERS}
 ALLOWED |= HEADER_COMMANDS
 
@@ -76,7 +79,8 @@ def is_allowed(command):
     """True for a read-only command: set-up, a header switch, Mode 03, adapter timing, or a catalogued Mode 01/22 PID."""
     command = command.replace(' ', '').upper()
     return (command in ALLOWED or command in catalog.CATALOG or bool(TIMING_COMMAND.fullmatch(command))
-            or command in {f'ATSP{code}' for code in PROTOCOLS})
+            or command in {f'ATSP{code}' for code in PROTOCOLS}
+            or (command == CLEAR_DTC and variant.CLEAR_CODES))
 
 ERROR_WORDS = ('NO DATA', 'ERROR', 'UNABLE', 'STOPPED', 'BUS INIT', '?', 'CAN ERROR')
 MISS_LIMIT = 3     # a reading with this many failures in a row is skipped...
@@ -369,6 +373,19 @@ class Elm327:
             codes.extend(code for code in catalog.decode_dtcs(data) if code not in codes)
         return codes
 
+    def clear_dtcs(self):
+        """Clear the stored trouble codes (Mode 04). Also resets the readiness monitors, so the UI asks first."""
+        with self._lock:
+            return self._clear_dtcs()
+
+    def _clear_dtcs(self):
+        """Raise OBDError unless the module answers 44. A reply of NO DATA or an error word is not a clear."""
+        self.set_header('Auto')
+        text = self.command(CLEAR_DTC).upper()
+        lines = [re.sub(r'[^0-9A-F]', '', line) for line in text.splitlines()]
+        if any(word in text for word in ERROR_WORDS) or not any(line.startswith(CLEAR_REPLY) for line in lines):
+            raise OBDError(f'Clearing codes failed: the adapter replied "{text.strip() or "nothing"}"')
+
     def read(self, pid, header=None, final=True):
         with self._lock:
             return self._read(pid, header, final)
@@ -445,6 +462,8 @@ class Elm327:
         candidates = [self._header_memory.get(pid_id), header]
         if final:
             candidates.append(pid.header)
+            if pid.mode == '22':
+                candidates.append(catalog.DEFAULT_HEADER)   # some transmissions only answer the broadcast address
         candidates = [h for h in candidates if h]
         last = None
         for candidate in dict.fromkeys(candidates):

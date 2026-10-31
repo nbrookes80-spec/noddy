@@ -8,7 +8,7 @@ import re
 from dataclasses import dataclass
 from typing import Callable
 
-from . import pid_table
+from . import pid_table, t43_pids
 
 DEFAULT_HEADER = '7DF'   # standard CAN functional request address
 KNOWN_HEADERS = ('7DF', '7E0', '7E2', '7E3')
@@ -18,7 +18,7 @@ MONITOR_PIDS = [
     '010C', '0105', '010B', '0133',
     '010A', '010E', '0143', '010F',
     '0146', '010D', '0114', '0152',
-    '0106', '0107', '22194F', '22001F',
+    '0106', '0107', '221940', '22001F',
     '221991', '22199A', '0101', '0103',
 ]
 DEFAULT_MONITOR = list(MONITOR_PIDS)
@@ -77,7 +77,10 @@ class Pid:
             return None
 
 
-BUILT_IN = {row[0]: Pid(*row) for row in pid_table.ROWS}
+# The generated rows, with the confirmed T43 rows put over the generic ones they replace.
+_REPLACED = {row[0] for row in t43_pids.ROWS} | set(t43_pids.REMOVED)
+_ROWS = [row for row in pid_table.ROWS if row[0] not in _REPLACED] + t43_pids.ROWS
+BUILT_IN = {row[0]: Pid(*row) for row in _ROWS}
 CATALOG = dict(BUILT_IN)     # the built-in set plus whatever the active car profile has added
 
 

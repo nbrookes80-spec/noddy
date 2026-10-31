@@ -19,7 +19,7 @@ ECU = {'010C': '410C1AF8',      # (0x1A*256 + 0xF8) / 4 = 1726 rpm
        '0111': '411180',        # 128 * 100 / 255 = 50.2 percent
        '0105': '410578',        # 0x78 - 40 = 80 C
        '0104': '410480', '010B': '410B64', '010E': '410E90'}
-TCM = {'22194F': '62194F78',    # 0x78 - 40 = 80 C
+TCM = {'221940': '62194078',    # 0x78 - 40 = 80 C
        '22199A': '62199A03',    # third gear
        '221991': '6219910032', '22001F': '62001F0190', '221941': '6219410BB8',
        '221942': '62194201F4'}
@@ -92,7 +92,7 @@ class StreamOverTheWireTests(unittest.TestCase):
         values = stream.snapshot()['values']
         self.assertEqual(values['010C']['value'], 1726.0)
         self.assertAlmostEqual(values['0111']['value'], 50.2, places=1)
-        self.assertEqual(values['22194F']['value'], 80.0)
+        self.assertEqual(values['221940']['value'], 80.0)
         self.assertEqual(values['22199A']['value'], 3.0)
 
     def test_the_adapter_switches_to_the_transmission_once_per_round(self):
@@ -156,7 +156,7 @@ class SharedAdapterTests(unittest.TestCase):
                     failures.append((values, errors))
 
         engine = threading.Thread(target=read_loop, args=(['010C', '0105'], {'010C': 1726.0, '0105': 80.0}))
-        trans = threading.Thread(target=read_loop, args=(['22199A', '22194F'], {'22199A': 3.0, '22194F': 80.0}))
+        trans = threading.Thread(target=read_loop, args=(['22199A', '221940'], {'22199A': 3.0, '221940': 80.0}))
         engine.start(), trans.start()
         engine.join(20), trans.join(20)
         self.assertEqual(failures, [])

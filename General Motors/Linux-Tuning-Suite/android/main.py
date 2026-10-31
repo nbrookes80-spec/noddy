@@ -33,6 +33,7 @@ import dyno_live  # noqa: E402
 import grading  # noqa: E402
 import prefs  # noqa: E402
 import sys  # noqa: E402
+import variant  # noqa: E402
 import traceback  # noqa: E402
 import shift_live  # noqa: E402
 from tunertoolpro import trans_data  # noqa: E402
@@ -61,7 +62,7 @@ from ui_kit import (ACCENT, ALERT, BG, BLUE, BORDER, GAP, MUTED, RAISED, TEXT, C
 
 MONO = os.path.join(kivy_data_dir, 'fonts', 'RobotoMono-Regular.ttf')
 ADAPTER_SCREENS = ('shift', 'dyno', 'live', 'scan', 'sniff', 'agent')   # opening any of these connects, then they share it
-APP_VERSION = '0.4.0'
+APP_VERSION = variant.VERSION
 
 # How the 23 shift settings are grouped into cards.
 GROUPS = [
@@ -692,6 +693,8 @@ class TunerToolProApp(App):
         prefs_path = os.path.join(self.user_data_dir, 'prefs.json')
         self.link = LinkScreen(self.session, prefs_path, on_open_live=lambda: self.show('live'))
         self.runner.set_transmission(self.link.saved['live_transmission'])   # the saved Live choice
+        self.live.light.attach(self.link.saved, lambda: prefs.save(prefs_path, self.link.saved),
+                               os.path.join(self.user_data_dir, 'shift_chime.wav'))   # the shift light's saved choices
         self.apply_dashboard_choices()
         self.restore_car()
         fields = {f[0]: f for f in shift_live.FIELDS}
