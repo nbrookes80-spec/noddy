@@ -14,7 +14,7 @@ from collections import deque
 
 import grading
 from link import obd
-from scanner import pids
+from scanner import gmlan, pids
 from tunertoolpro import core
 
 # Engine (ECU, answers on the broadcast address) first, then the transmission (TCM, 7E2) grouped
@@ -34,10 +34,12 @@ HISTORY = 60
 KMH_TO_MPH = 0.621371
 RATE_WINDOW = 10
 SHIFT_LOG = 12
+BUS_SECONDS = 0.8        # length of one listening window for bus readings; the bus is only heard this long
+BUS_EVERY = 4            # a window every fourth round, so the engine readings keep most of the adapter's time
 
 HEALTH = [('trans_temp', 'Transmission fluid'), ('engine_rpm', 'Engine speed'),
           ('coolant', 'Coolant'), ('line_pressure', 'Line pressure'),
-          ('gear_follow', 'Gear matches shaft speeds')]
+          ('gear_follow', 'Gear matches shaft speeds'), ('shift_lever', 'Shift lever (bus)')]
 
 
 def _ordered(pid_list):
@@ -46,7 +48,7 @@ def _ordered(pid_list):
 
 
 class LiveStream:
-    def __init__(self, source, cfg=None, tables=None, clock=time.monotonic, transmission=True):
+    def __init__(self, source, cfg=None, tables=None, clock=time.monotonic, transmission=True, bus=None):
         self.source = source
         self.cfg = cfg
         self.tables = tables
@@ -62,6 +64,9 @@ class LiveStream:
         self._prev_speed = None
         self._mismatch_now = 0.0
         self._mismatch_since = None
+        self.bus = bus                 # callable(seconds) -> bus frames, or None when the source has no bus
+        self.bus_error = None
+        self._bus_readings = gmlan.Latest()
 
     def set_model(self, cfg, tables):
         """Give the stream the current settings and tables, so live shifts are compared with them."""
@@ -89,6 +94,22 @@ class LiveStream:
             self.history[pid].append(value)
         self._track_gear(now)
         self._prev_speed = self._value('010D')
+        if self.bus is not None and self.rounds % BUS_EVERY == 0:
+            self._read_bus(now)
+
+    def _read_bus(self, now):
+        """Listen to the bus for a short window. A bus that does not answer must not stop the engine readings."""
+        try:
+            frames = self.bus(BUS_SECONDS)
+        except Exception as exc:
+            self.bus_error = f'{type(exc).__name__}: {exc}'
+            return
+        self.bus_error = None
+        self._bus_readings.feed(frames, now)
+
+    def bus_gear(self):
+        """The shift lever position from the bus, named as the car's own display would show it, or None."""
+        return self._bus_readings.readings(self.clock()).get('gear')
 
     def implied_gear(self):
         """The gear the shaft speeds say the box is in (1-6), or None when stopped or between gears."""
@@ -173,6 +194,12 @@ class LiveStream:
                 gear, commanded = self._value('22199A'), self.implied_gear()
                 if gear is not None and commanded is not None:
                     result = grading.grade_gear_follow(gear, commanded, seconds)
+            elif key == 'shift_lever':
+                gear = self.bus_gear()
+                if gear is not None:
+                    result = (grading.OFF, gear)
+                elif self.bus_error:
+                    result = (grading.OFF, 'bus not answering')
             level, text = result if result else (grading.OFF, 'no reading yet')
             tiles.append({'key': key, 'label': label, 'level': level, 'text': text})
         return tiles

@@ -9,9 +9,12 @@ import math
 import time
 import zlib
 
-from . import pids
+from tunertoolpro.canbus.frames import Frame
+
+from . import gmlan, pids
 
 CYCLE_SECONDS = 40.0
+PARK_SECONDS = 5.0       # the simulated bus shows Park this long before the simulated drive starts
 DEMO_CODES = ['P0301', 'P0420']   # sample codes so the Codes screen has something to show
 
 # A six-speed automatic with the stock LS3 6L80 gearing. The car shifts up at the speeds that tune's
@@ -127,6 +130,12 @@ class DemoSource:
         self.traffic.append(('TX', '03'))
         self.traffic.append(('RX', '43 (simulated)'))
         return list(DEMO_CODES)
+
+    def listen(self, seconds):
+        """The bus frames of a window: the simulated transmission reports Park for the first few seconds, then Drive."""
+        now = self.now()
+        gear = 'Park' if now < PARK_SECONDS else 'Drive'
+        return [Frame(gmlan.GEAR_ID, gmlan.gear_frame(gear), False, now)]
 
     def close(self):
         pass

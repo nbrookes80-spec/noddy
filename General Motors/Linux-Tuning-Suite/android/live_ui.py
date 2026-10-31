@@ -16,9 +16,10 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.togglebutton import ToggleButton
 
-from live import STREAM_PIDS, LiveStream
+from live import HEALTH, STREAM_PIDS, LiveStream
 from pid_card import PidCard, equalize, fit_columns
 from scanner import pids
+from scanner.bus_listen import bus_reader
 from table_view import HEX
 from ui_kit import (BG, hide, GAP, MUTED, STATUS, TEXT, Card, make_button, panel_label, section_title,
                     stack, style_button)
@@ -57,7 +58,8 @@ class StreamRunner:
         if source is not self._source:
             self._source = source
             cfg, tables = self.model()
-            self.stream = (LiveStream(source, cfg=cfg, tables=tables, transmission=self.transmission)
+            self.stream = (LiveStream(source, cfg=cfg, tables=tables, transmission=self.transmission,
+                                      bus=bus_reader(source))
                            if source is not None else None)
 
     def set_transmission(self, on):
@@ -177,9 +179,7 @@ class LiveScreen(BoxLayout):
         self.health_tiles = {}
         health = Card()
         health.add_widget(section_title('Health'))
-        for key, label in (('trans_temp', 'Transmission fluid'), ('engine_rpm', 'Engine speed'),
-                           ('coolant', 'Coolant'), ('line_pressure', 'Line pressure'),
-                           ('gear_follow', 'Gear matches shaft speeds')):
+        for key, label in HEALTH:
             tile = HealthTile(label)
             self.health_tiles[key] = tile
             health.add_widget(tile)
