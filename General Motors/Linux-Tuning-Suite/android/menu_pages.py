@@ -15,7 +15,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
 
 import pid_card
-from scanner import car_scan, dashboard_layout, manual_pids, pid_view, pids, predefined, profiles, themes, units
+from scanner import can_import, car_scan, dashboard_layout, manual_pids, pid_view, pids, predefined, profiles, themes, units
 from settings_ui import spinner
 from tunertoolpro import vehicles
 from ui_kit import MUTED, RAISED, STATUS, TEXT, Card, make_button, panel_label, section_title, style_button, toggle
@@ -358,4 +358,56 @@ def lists_cards(menu):
         status.color = STATUS['good']
     save.add_widget(make_button('Save to my profile', save_list, primary=True))
     save.add_widget(status)
-    return [use, save]
+    return [use, save, can_card(menu)]
+
+
+def can_card(menu):
+    """Play a CAN log back on Live and Scan, decoded with its DBC file. Only the imported signals are read."""
+    card = Card()
+    card.add_widget(section_title('Play a CAN log on Live and Scan'))
+    card.add_widget(panel_label('Choose a CAN log and the DBC file that decodes it. Its signals show as an Imported '
+                                'group on Live and Scan, and are logged with the rest. The car is not asked for them.',
+                                color=MUTED, font_size=dp(12)))
+    folders = list(menu.can_folders)
+    if folders:
+        card.add_widget(panel_label('Copy files into: ' + folders[-1], color=MUTED, font_size=dp(12)))
+    logs, dbcs = _can_files(folders)
+    log_choice = spinner(list(logs) or ['No CAN logs yet'], next(iter(logs), 'No CAN logs yet'))
+    dbc_choice = spinner(list(dbcs) or ['No DBC files yet'], next(iter(dbcs), 'No DBC files yet'))
+    status = panel_label('', color=MUTED, font_size=dp(12))
+
+    def run(log_path, dbc_path):
+        if menu.play_can_log is None:
+            status.text, status.color = 'The CAN log is not available here.', STATUS['bad']
+            return
+        ok, text = menu.play_can_log(log_path, dbc_path)
+        status.text, status.color = text, STATUS['good' if ok else 'bad']
+
+    def play():
+        if not logs or not dbcs:   # with nothing to choose, Play must not fall through to Stop (both None)
+            status.text, status.color = 'Copy a CAN log and a DBC file into the folder first.', STATUS['bad']
+            return
+        run(logs.get(log_choice.text), dbcs.get(dbc_choice.text))
+
+    def stop():
+        run(None, None)
+    card.add_widget(panel_label('CAN log', color=MUTED))
+    card.add_widget(log_choice)
+    card.add_widget(panel_label('DBC file', color=MUTED))
+    card.add_widget(dbc_choice)
+    card.add_widget(make_button('Play on Live and Scan', play, primary=True))
+    card.add_widget(make_button('Stop the CAN log', stop))
+    card.add_widget(status)
+    return card
+
+
+def _can_files(folders):
+    """The CAN logs and DBC files in the folders, as {label: path}. The label names the folder it came from."""
+    logs, dbcs = {}, {}
+    for folder in folders:
+        label = os.path.basename(folder.rstrip(os.sep))
+        for name in can_import.files_in(folder, can_import.LOG_SUFFIXES):
+            logs[f'{label}/{name}'] = os.path.join(folder, name)
+        for name in can_import.files_in(folder, [can_import.DBC_SUFFIX]):
+            dbcs[f'{label}/{name}'] = os.path.join(folder, name)
+    return logs, dbcs

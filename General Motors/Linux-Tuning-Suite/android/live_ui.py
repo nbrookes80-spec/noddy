@@ -196,7 +196,7 @@ class LiveScreen(BoxLayout):
             health.add_widget(tile)
         grid = BoxLayout(orientation='vertical', spacing=GAP, size_hint_y=None)
         grid.bind(minimum_height=grid.setter('height'))
-        for group, members in dashboard_layout.runs(dashboard_layout.arrange([pids.get(p) for p in STREAM_PIDS])):
+        for group, members in dashboard_layout.runs(dashboard_layout.arrange([pids.get(p) for p in STREAM_PIDS + list(pids.REPLAY)])):
             grid.add_widget(panel_label(dashboard_layout.TITLES[group], color=MUTED, font_size=dp(12)))
             cards = GridLayout(spacing=GAP, size_hint_y=None)
             fit_columns(cards)
@@ -261,7 +261,11 @@ class LiveScreen(BoxLayout):
             self.health_tiles[tile['key']].set(tile['level'], tile['text'])
         for pid_id, card in self.cards.items():
             entry = snap['values'].get(pid_id)
-            idle = 'transmission off' if pid_id in TCM_PIDS and not self.runner.transmission else None
+            idle = None
+            if pid_id in TCM_PIDS and not self.runner.transmission:
+                idle = 'transmission off'
+            elif self.session.replay is not None and pid_id not in pids.REPLAY:
+                idle = 'not in the CAN log'   # a CAN log is playing and it does not carry this reading
             card.show((entry['value'], entry['unit']) if entry else None, entry['history'] if entry else [],
                       idle=idle)
         lines = [f'[color=#{HEX[s["level"]]}]{s["text"]}[/color]' for s in snap['shifts'][:6] if s['text']]

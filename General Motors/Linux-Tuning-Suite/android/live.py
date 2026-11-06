@@ -43,8 +43,10 @@ HEALTH = [('trans_temp', 'Transmission fluid'), ('engine_rpm', 'Engine speed'),
 
 
 def _ordered(pid_list):
-    """Engine readings first, transmission readings last, so the module address changes once."""
-    return sorted(pid_list, key=lambda p: (p in TCM_PIDS, STREAM_PIDS.index(p)))
+    """Engine readings first, transmission readings last, so the module address changes once. Signals from a
+    CAN log (not in the built-in list) come after them."""
+    rank = {p: i for i, p in enumerate(STREAM_PIDS)}
+    return sorted(pid_list, key=lambda p: (p in TCM_PIDS, rank.get(p, len(rank))))
 
 
 class LiveStream:
@@ -79,6 +81,8 @@ class LiveStream:
         if not self.transmission:
             wanted = [p for p in wanted if p not in TCM_PIDS]
         wanted = _ordered(wanted)
+        if getattr(self.source, 'replay', None) is not None:   # only a CAN log replay reads imported signals; the
+            wanted += list(pids.REPLAY)                          # adapter never gets them (link/obd.py is_allowed)
         headers = {p: TCM_HEADER for p in wanted if p in TCM_PIDS}
         try:
             values, _errors = self.source.poll(wanted, headers=headers)
@@ -91,7 +95,7 @@ class LiveStream:
         self._stamps.append(now)
         for pid, (value, unit) in values.items():
             self.latest[pid] = (value, unit)
-            self.history[pid].append(value)
+            self.history.setdefault(pid, deque(maxlen=HISTORY)).append(value)
         self._track_gear(now)
         self._prev_speed = self._value('010D')
         if self.bus is not None and self.rounds % BUS_EVERY == 0:
@@ -213,13 +217,13 @@ class LiveStream:
 
     def snapshot(self):
         values = {}
-        for pid in STREAM_PIDS:
+        for pid in STREAM_PIDS + [p for p in self.latest if p not in STREAM_PIDS]:
             reading = self.latest.get(pid)
             if reading is None:
                 continue
             info = pids.get(pid)
             values[pid] = {'name': info.name if info else pid, 'value': reading[0], 'unit': reading[1],
-                           'history': list(self.history[pid])}
+                           'history': list(self.history.get(pid, ()))}
         return {'values': values, 'health': self.health(), 'shifts': list(self.shifts),
                 'rate_hz': self.rate_hz(), 'error': self.error, 'rounds': self.rounds}
 

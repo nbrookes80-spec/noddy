@@ -7,8 +7,9 @@ are set once at start-up and whenever the user changes them, the same way the co
 
 from . import pids as _pids
 
-GROUPS = ('TCM', 'ECU', 'Fuel', 'Air', 'Boost')
-TITLES = {'TCM': 'TCM - transmission', 'ECU': 'ECU - engine', 'Fuel': 'Fuel', 'Air': 'Air', 'Boost': 'Boost'}
+GROUPS = ('TCM', 'ECU', 'Fuel', 'Air', 'Boost', 'Imported')   # Imported: signals from a CAN log being played back
+TITLES = {'TCM': 'TCM - transmission', 'ECU': 'ECU - engine', 'Fuel': 'Fuel', 'Air': 'Air', 'Boost': 'Boost',
+          'Imported': 'Imported from a CAN log'}
 PAGE_SIZES = (4, 5, 6)
 DEFAULT_PAGE_SIZE = 4
 BOOST = {'010B', '01BB'}                                              # MAP sensor, relative boost pressure
@@ -27,6 +28,8 @@ def configure(order, size):
 
 def group_of(pid):
     """The group a sensor belongs to. Transmission sensors answer on 7E2; the rest is set by PID or category."""
+    if pid.category == 'Imported':
+        return 'Imported'
     if pid.header == '7E2' or pid.category.startswith('Transmission'):
         return 'TCM'
     if pid.pid in BOOST:
@@ -65,8 +68,10 @@ def pages(pid_list, size=None):
 
 
 def dashboard_pids():
-    """The dashboard's sensors from the catalogue, in the order the profile lists them."""
-    return [_pids.get(p) for p in _pids.MONITOR_PIDS if _pids.get(p) is not None]
+    """The dashboard's sensors from the catalogue, in the order the profile lists them. Signals from a CAN log
+    being played back come last."""
+    listed = [_pids.get(p) for p in _pids.MONITOR_PIDS if _pids.get(p) is not None]
+    return listed + list(_pids.REPLAY.values())
 
 
 def clean_order(raw):

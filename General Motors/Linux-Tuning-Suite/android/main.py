@@ -47,7 +47,7 @@ from sniffer_ui import SnifferScreen  # noqa: E402
 from app_menu import AppMenu  # noqa: E402
 from hud import Mirror  # noqa: E402
 from settings_ui import SettingsScreen  # noqa: E402
-from scanner import car_scan, dashboard_layout, manual_pids, pid_view, pids, profiles, storage, themes, torque_csv, units  # noqa: E402
+from scanner import calais, can_import, car_scan, dashboard_layout, manual_pids, pid_view, pids, profiles, storage, themes, torque_csv, units  # noqa: E402
 import pid_card  # noqa: E402
 from live import STREAM_PIDS  # noqa: E402
 from pid_edit_ui import PidEditPopup  # noqa: E402
@@ -702,7 +702,9 @@ class TunerToolProApp(App):
                                  {k: f[1] for k, f in fields.items()},
                                  lambda key: self.shift.inputs[key].text, self.shift.set_value,
                                  check_pid=self.check_pid, apply_pid=self.apply_agent_pid)
-        self.settings = SettingsScreen(self.shift, os.path.join(self.user_data_dir, 'vehicle.json'),
+        vehicle_choice = os.path.join(self.user_data_dir, 'vehicle.json')   # the Shift tab's saved make, transmission, profile
+        calais.ensure_vehicle(vehicle_choice)     # CALAIS TURBO is the vehicle until the owner picks another
+        self.settings = SettingsScreen(self.shift, vehicle_choice,
                                        APP_VERSION)
         self.settings.restore()
         self.settings.on_changed = self.show_car
@@ -770,15 +772,38 @@ class TunerToolProApp(App):
     def open_menu(self):
         """The three bars: connection, Live, adapter speed, car and about. Built fresh so it shows the current state."""
         cars = os.path.join(self.user_data_dir, 'cars')
-        AppMenu(self.link.saved, self.link.prefs_path, self.session, self.runner, self.link,
-                lambda: self.show('settings'), APP_VERSION, profiles.everything(cars), cars,
-                self.pids_saved, recorder=self.recorder, on_fullscreen=self.set_fullscreen,
-                on_hud=self.set_hud).open()
+        menu = AppMenu(self.link.saved, self.link.prefs_path, self.session, self.runner, self.link,
+                       lambda: self.show('settings'), APP_VERSION, profiles.everything(cars), cars,
+                       self.pids_saved, recorder=self.recorder, on_fullscreen=self.set_fullscreen,
+                       on_hud=self.set_hud)
+        imports = storage.folder(self.storage_base, storage.CAN_IMPORTS)
+        os.makedirs(imports, exist_ok=True)     # so the folder is there to copy files into
+        menu.can_folders = [os.path.join(self.user_data_dir, 'captures'), imports]
+        menu.play_can_log = self.play_can_log
+        menu.open()
 
     def pids_saved(self, profile, _pids):
         """A PID was saved to a profile: make that profile the active one, so Live and Scan show it at once."""
         self.activate_car(profile)
         self.scan.render()
+
+    def play_can_log(self, log_path, dbc_path):
+        """Play a CAN log on Live and Scan, decoded with its DBC, or stop it (both None). Returns (ok, message).
+        Only the imported signals are read while a log plays; the car is not asked anything."""
+        if log_path is None and dbc_path is None:
+            pids.set_replay([])
+            self.session.set_replay(None)
+            return True, 'Stopped the CAN log. Live and Scan read the adapter or the demo again.'
+        if log_path is None or dbc_path is None:
+            return False, 'Choose a CAN log and the DBC file that decodes it.'
+        try:
+            loaded = can_import.load(log_path, dbc_path)
+        except can_import.ImportProblem as exc:
+            return False, str(exc)
+        pids.set_replay(loaded.entries)
+        self.session.set_replay(loaded.source)
+        self.session.log.write('CAN', loaded.describe())
+        return True, loaded.describe()
 
     def activate_car(self, profile):
         """Make this profile the one Live and Scan read, and remember it for the next start."""
@@ -792,12 +817,20 @@ class TunerToolProApp(App):
         prefs.save(self.link.prefs_path, self.link.saved)
 
     def restore_car(self):
-        """At start-up, activate the profile chosen last time, so its dashboard and manual PIDs are there again."""
+        """At start-up, activate the profile chosen last time, so its dashboard and manual PIDs are there again.
+        The CALAIS TURBO car and its vehicle settings are put in place first, if they are not there yet."""
         cars = os.path.join(self.user_data_dir, 'cars')
+        try:
+            if not self.link.saved['calais_saved']:   # once only: a car the owner deleted or renamed stays that way
+                calais.ensure_car(cars)
+                self.link.saved['calais_saved'] = True
+        except OSError as exc:                       # a folder the app cannot write must not stop the app starting
+            self.session.log.write('APP', f'CALAIS TURBO set-up skipped: {exc}')
         key = self.link.saved['scan_profile']
         profile = next((p for p in profiles.everything(cars) if p.key == key), None)
         if profile is not None:
             self.activate_car(profile)
+        prefs.save(self.link.prefs_path, self.link.saved)   # keeps the start-up settings for the next session
 
     def show(self, name):
         self.session.log.write('SCREEN', name)
@@ -862,7 +895,8 @@ class TunerToolProApp(App):
         """Every sensor a recording has a column for: the Live stream and the whole dashboard."""
         scope = self.link.saved['log_scope']
         ids = list(dict.fromkeys((STREAM_PIDS if scope in ('all', 'live') else [])
-                                 + (pids.MONITOR_PIDS if scope in ('all', 'dashboard') else [])))
+                                 + (pids.MONITOR_PIDS if scope in ('all', 'dashboard') else [])
+                                 + list(pids.REPLAY)))   # signals of a CAN log being played back are always logged
         columns = []
         for pid_id in ids:
             info = pids.get(pid_id)

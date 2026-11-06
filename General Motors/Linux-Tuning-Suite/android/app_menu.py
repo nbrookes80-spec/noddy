@@ -52,6 +52,8 @@ class AppMenu(ModalView):
         self.profiles, self.cars_folder, self.on_pids_saved = profiles, cars_folder, on_pids_saved
         self.recorder, self.on_fullscreen, self.version = recorder, on_fullscreen, version
         self.on_hud = on_hud
+        self.can_folders = []         # folders the CAN logs and DBC files are looked for in (set by the app)
+        self.play_can_log = None      # callable(log_path, dbc_path) -> (ok, text); both None stops the log
 
         self.show_hub()
 

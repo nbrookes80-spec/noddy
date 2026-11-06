@@ -5,14 +5,21 @@ from pathlib import Path
 
 from link import obd
 from link.devices import normalise_address
-from scanner import dashboard_layout, pid_view, pids, shift_light, themes, units
+from scanner import calais, dashboard_layout, pid_view, pids, shift_light, themes, units
 
 KINDS = ('Bluetooth', 'Wi-Fi')
+# The start-up set for this version. A saved file from an older version gets it once, on the next start, and the
+# owner's own choices after that are kept. Bump SETTINGS_VERSION to apply a new set again.
+SETTINGS_VERSION = 1
+START_SETTINGS = {'live_transmission': True,       # the TCM readings show on Live from the start
+                  'scan_profile': calais.CAR_KEY,  # the CALAIS TURBO car is the one Live and Scan read
+                  'intro_music': True}
 DEFAULTS = {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': '192.168.0.10:35000', 'auto_connect': False,
-            'live_transmission': False,   # read the transmission (7E2) on the Live screen
+            'live_transmission': START_SETTINGS['live_transmission'],   # read the transmission (7E2) on the Live screen
             'adaptive_timing': False,     # ATAT1: let the adapter adjust its wait to the car
             'timeout_ms': 0,              # 0 keeps the adapter's own response timeout; else ATST in 4 ms steps
-            'scan_profile': '',
+            'scan_profile': START_SETTINGS['scan_profile'],   # the car Live and Scan read
+            'settings_version': SETTINGS_VERSION,
             'debug_log': True,            # write a log file of each run, to bring back when something goes wrong
             'dash_columns': 0,            # sensor cards across: 0 fits as many as the screen allows
             'dash_page_size': dashboard_layout.DEFAULT_PAGE_SIZE,   # sensors per full-screen page: 4, 5 or 6
@@ -29,6 +36,7 @@ DEFAULTS = {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': '192.168.0.10:35
             'adapter_protocol': '0',      # ATSP choice: 0 automatic, or a CAN protocol number (link/obd.PROTOCOLS)
             'hidden_pids': {},            # {car profile key: [PID ids the user hid from the dashboard]}
             'intro_music': True,          # play the intro theme while the start-up pictures show
+            'calais_saved': False,        # the CALAIS TURBO car has been set up once (scanner/calais.py)
             'light_on': False,            # the shift light on the Live screen (scanner/shift_light.py)
             **{f'light_{key}': value for key, value in shift_light.DEFAULTS.items()}}
 TIMEOUT_CHOICES_MS = (0, 100, 200, 400)
@@ -55,7 +63,8 @@ def load(path):
         result['auto_connect'] = data['auto_connect']
     if isinstance(data.get('wifi'), str) and data['wifi'].strip():
         result['wifi'] = data['wifi'].strip()
-    for key in ('live_transmission', 'adaptive_timing', 'debug_log', 'dash_stats', 'hud_mirror', 'intro_music'):
+    for key in ('live_transmission', 'adaptive_timing', 'debug_log', 'dash_stats', 'hud_mirror', 'intro_music',
+                'calais_saved'):
         if isinstance(data.get(key), bool):
             result[key] = data[key]
     if data.get('timeout_ms') in TIMEOUT_CHOICES_MS:
@@ -86,6 +95,9 @@ def load(path):
     light = shift_light.clean({key: data.get(f'light_{key}') for key in shift_light.DEFAULTS})
     for key, value in light.items():
         result[f'light_{key}'] = value
+    if data.get('settings_version') != SETTINGS_VERSION:
+        result.update(START_SETTINGS)
+    result['settings_version'] = SETTINGS_VERSION
     return result
 
 

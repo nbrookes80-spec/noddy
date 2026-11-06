@@ -222,7 +222,7 @@ class HeaderBar(BoxLayout):
             self.rec.set_recording(text)
 
     def set_source(self, status):
-        colour = {'DEMO': ACCENT, 'LIVE': GOOD}.get(status, MUTED)
+        colour = {'DEMO': ACCENT, 'REPLAY': ACCENT, 'LIVE': GOOD}.get(status, MUTED)
         self.chip.set_state(status, colour)
 
 

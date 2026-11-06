@@ -108,8 +108,20 @@ def use_extras(extras):
     return skipped
 
 
+REPLAY = {}   # the signals of a CAN log being played back (scanner/can_replay.py); empty when none is playing
+
+
+def set_replay(entries):
+    """Make these imported signals readable (or, with an empty list, stop them). They are not Mode 01/22 reads,
+    so they are kept apart from the catalogue and never reach the adapter."""
+    REPLAY.clear()
+    for pid in entries:
+        REPLAY[pid.pid] = pid
+
+
 def get(pid):
-    return CATALOG.get(pid)
+    found = CATALOG.get(pid)
+    return found if found is not None else REPLAY.get(pid)
 
 
 def categories():
