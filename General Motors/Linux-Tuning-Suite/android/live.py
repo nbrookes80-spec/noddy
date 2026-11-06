@@ -217,7 +217,7 @@ class LiveStream:
 
     def snapshot(self):
         values = {}
-        for pid in STREAM_PIDS + [p for p in self.latest if p not in STREAM_PIDS]:
+        for pid in STREAM_PIDS + [p for p in list(self.latest) if p not in STREAM_PIDS]:
             reading = self.latest.get(pid)
             if reading is None:
                 continue

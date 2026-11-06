@@ -113,7 +113,7 @@ def pid_for(pid_id, signal, values, source_name=''):
 
 
 def catalogue_entries(replay, source_name=''):
-    """The PIDs for every decoded signal, in the order they appear in the DBC. source_name (the DBC's file name)
+    """The PIDs for every decoded signal, in the order their first reading appears in the log. source_name (the DBC's file name)
     is put in each description, so the owner can see which file decoded the values."""
     return [pid_for(pid_id, signal, values, source_name)
             for pid_id, (signal, _times, values) in replay.series.items()]

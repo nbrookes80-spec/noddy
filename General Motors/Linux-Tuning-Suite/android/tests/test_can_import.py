@@ -308,3 +308,29 @@ class HostileFileTests(unittest.TestCase):
             self.assertEqual(pids.REPLAY, {})
         finally:
             pids.set_replay([])
+
+
+class MalformedLogTests(unittest.TestCase):
+    def test_a_log_with_an_unreadable_timestamp_gives_a_message_not_a_crash(self):
+        folder = tempfile.mkdtemp()
+        log, dbc_path = os.path.join(folder, 'bad.log'), os.path.join(folder, 'a.dbc')
+        with open(log, 'w') as fh:
+            fh.write('(1.2.3) can0 0C9#102728\n(.) can0 0C9#102728\n')
+        with open(dbc_path, 'w') as fh:
+            fh.write(DBC_TEXT)
+        try:
+            can_import.load(log, dbc_path)
+        except can_import.ImportProblem:
+            pass
+
+    def test_the_live_snapshot_survives_new_readings_arriving(self):
+        from live import LiveStream
+
+        class Source:
+            replay = object()
+
+            def poll(self, wanted, headers=None):
+                return {'CAN0C9.0': (1.0, '')}, {}
+        stream = LiveStream(Source())
+        stream.step()
+        self.assertIn('CAN0C9.0', stream.snapshot()['values'])

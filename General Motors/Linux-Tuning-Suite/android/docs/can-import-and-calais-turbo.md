@@ -3,7 +3,7 @@
 Status: implemented on branch `feature/dashboard-bands-units-hud`, not yet tested on a car.
 Owner: Nathan (2011 Holden VE Calais Turbo, 6L80E automatic, 3.9 differential).
 
-Terms: Live and Scan are the app's sensor screens; Shift is the shift-point tab; the sniffer is the Sniff tab's CAN
+Terms: Mode 01 and Mode 22 are the standard and GM-specific read requests an OBD adapter sends; a DID is the 16-bit id in a Mode 22 request; PWM is pulse width; 6L80E is the GM 6-speed automatic; the APK is the Android app file; adb copies files to the phone over USB. Live and Scan are the app's sensor screens; Shift is the shift-point tab; the sniffer is the Sniff tab's CAN
 capture; a PID is one logger reading; the TCM is the transmission controller; a DBC file names the signals inside CAN frames.
 
 ## Problem statement
@@ -19,8 +19,8 @@ capture; a PID is one logger reading; the TCM is the transmission controller; a 
 
 ## Goals
 
-- G1. A saved car, "2011 Holden CALAIS TURBO", that loads the 16 PIDs, is the active car on start, and is
-  created on the first start if it is missing.
+- G1. A saved car, "2011 Holden CALAIS TURBO", that loads the 16 PIDs (they show on Scan and are written to a data log; the Live grid is the fixed engine and transmission stream), is the active car on start, and is
+  created on the first start.
 - G2. The Shift tab's vehicle is a registered 'CALAIS TURBO (6L80E)' starter profile: transmission
   '6L80 (2006-Current)' (the same name as the saved car) and final drive 3.9. It is chosen on first start only if
   the owner has not already picked a vehicle.
@@ -41,7 +41,7 @@ capture; a PID is one logger reading; the TCM is the transmission controller; a 
 - Decoding raw bytes without a DBC.
 - Verifying the decoded values on the Calais. See Open questions.
 
-## Design (proposed architecture)
+## Design
 
 Paths are relative to `android/`. Files at the root are named without a folder.
 
@@ -56,8 +56,7 @@ Paths are relative to `android/`. Files at the root are named without a folder.
 - `ensure_vehicle(choice_path)` registers the profile, then writes the Shift tab's vehicle choice file
   (`vehicle.json` in the app folder) through `tunertoolpro.vehicles` as Holden / '6L80 (2006-Current)' /
   CALAIS TURBO (6L80E). It does this only when the file has no profile and no transmission, so an owner's choice is
-  never replaced. `vehicles.save` ignores a folder it cannot write. The tyre, weight, RPM limits and converter lock in
-  the profile are the base profile's own, not measured on the Calais.
+  never replaced. `vehicles.save` ignores a folder it cannot write. Its other values are the base profile's own (see R12).
 - `main.restore_car()` calls `ensure_car` once, gated by `prefs['calais_saved']`, and logs an `OSError` instead of
   stopping. `main.py` calls `ensure_vehicle` on each start, before `SettingsScreen` is built.
 
@@ -101,26 +100,26 @@ Paths are relative to `android/`. Files at the root are named without a folder.
 - `scanner/dashboard_layout.py`: group `Imported` (last), and `dashboard_pids()` includes the replay PIDs, so
   Scan shows them.
 - `main.py`: `play_can_log(log, dbc)` and `record_columns()` (the replay PIDs are always logged).
-- `menu_pages.can_card()`: on Settings > lists. It lists log files from the sniffer's `captures` folder and
+- `menu_pages.can_card()`: on the menu's "GM and Holden PID lists" page. It lists log files from the sniffer's `captures` folder and
   from `CAN imports` under the app's storage folder, and DBC files from the same two folders. Play and Stop
   call `play_can_log`. The folder is created when the menu opens.
 
-## Risks & mitigations
+## Risks and mitigations
 
-- **R1. The Caprice DBC is not the Calais DBC.** `caprice_ppv.dbc` has messages for 28 or 29 of the 30 message IDs in
-  the owner's captures, but it is a different car's file. Signals can decode to the wrong values, and the decoder
+- **R1. The Caprice DBC is not the Calais DBC.** `caprice_ppv.dbc` (in `T43_6L80E_reference/caprice-ppv-can-database/`) has messages for 28 of the 52 message IDs in
+  one of the owner's captures and 29 of the 54 in the other, and it is a different car's file. Signals can decode to the wrong values, and the decoder
   cannot tell. Mitigation: the owner chooses the DBC on each play. Its file name is shown in the load message and in
   each imported sensor's description. Open question Q1 asks for a DBC that is verified for this car.
 - **R2. Implausible decoded values.** The engine speed decodes to a range of 7.5 to 16,338 rpm on the owner's
   capture, which points to a few frames being read as the wrong signal or to a wrong DBC. Mitigation: the
   DBC range is used for the gauge, values are shown as decoded, and this is listed as Q4 under Open questions.
 - **R3. Held values.** A signal that stops arriving keeps its last value on screen. Accepted risk for v1, owner
-  Nathan. Follow-up F1: after 5 s with no new reading a card shows its age, and the reading turns grey.
+  Nathan. Follow-up (not in v1): after 5 s with no new reading a card shows its age, and the reading turns grey.
 - **R4. Memory on the phone.** Measured on the desktop: a frame costs about 180 bytes of Python objects and a
   reading about 100 bytes. The file limit (2 MB, about 57,000 frames) and the reading cap (200,000, about 20 MB)
   bound the peak to roughly 30 MB. The reading cap is the limit that bites first on a busy bus: with about 6 signals
   per frame, about 33,000 frames already reach it. Frames are kept only for the DBC's messages and the gear message,
-  but all parsed frames and the text exist together until the filter runs, which is the peak.
+  but `load()` holds every parsed frame (and both texts) until it returns, so the peak is all parsed frames plus the readings, which is the roughly 30 MB above.
 - **R5. Columns fixed at the start of a recording.** A log played after a recording starts is not in that
   file. Mitigation: documented in `scanner/data_log.py` (columns are fixed when the recording starts).
 - **R6. A saved car on start for existing installs.** The start-up set changes `scan_profile` once for an
@@ -132,11 +131,11 @@ Paths are relative to `android/`. Files at the root are named without a folder.
   `UnsafeCommand` from `read()` and is reported as an error by `poll()` before any command or header is sent; and
   `is_allowed()` checks the same `CATALOG`. Tests: `test_the_adapter_refuses_an_imported_signal`,
   `test_an_imported_can_signal_is_never_sent_to_the_adapter` (drives `Elm327.read` and `poll` against a fake adapter and
-  asserts nothing is sent) and `test_live_only_asks_for_imported_signals_from_a_replay`. Round 2 found that an
-  earlier version relied on `pids.get()` returning None, which the replay fallback had defeated.
+  asserts nothing is sent) and `test_live_only_asks_for_imported_signals_from_a_replay`. An earlier version relied on
+  `pids.get()` returning None, which the replay fallback defeated; the adapter now looks ids up in `CATALOG` directly.
 - **R8. Unreadable or hostile files.** Both files are read as text with replacement for bad bytes, limited to
   2 MB, and parsed line by line. A signal line whose numbers cannot be read, whose length is over 64 bits, or whose
-  scale or offset is not finite is skipped; any other parse failure becomes an `ImportProblem` message, never a crash.
+  scale or offset is not finite is skipped; any other parse failure in the DBC or the log (for example an unreadable timestamp) becomes an `ImportProblem` message, never a crash.
 - **R9. No engine data while a log plays.** While a replay is set, Live and Scan read only the log, so a recording made
   then has blank columns for the built-in engine and transmission readings. Mitigation: the Live cards say "not in the
   CAN log", and the debug log names the source (`REPLAY`) when a recording starts.
@@ -150,18 +149,18 @@ Paths are relative to `android/`. Files at the root are named without a folder.
 - **R12. Shift profile values are not the Calais's.** The 'CALAIS TURBO (6L80E)' profile copies the LS3 Camaro SS 6L80
   starter profile and changes only the axle to 3.9. Tyre, weight, RPM limits and converter lock are the base
   profile's, and they feed the Live shift grading. Mitigation: they are editable on the Shift tab.
-- **R13. The 16 PIDs are unverified on the Calais.** They are real Mode 22 requests taken from a Torque list;
+- **R13. The 16 PIDs are unverified on the Calais.** They are real Mode 22 requests taken from the Torque Pro list in `data/torque_gm_predefined.csv`;
   `[GM]Oil Pressure <2005` is named for older cars. A wrong DID can return a plausible but wrong number. Verification
   step: compare each reading with a scan tool before trusting it.
 - **R14. Codes while a log plays.** `ReplaySource.read_dtcs()` and `clear_dtcs()` raise an error that says a CAN log is
   playing, so Scan > Codes cannot show "no stored codes" or report a clear that did not happen.
 - **R15. A car that cannot be made at start.** If the CALAIS car cannot be saved, `calais_saved` stays False so it is tried
-  again next start, and `scan_profile` is cleared rather than left pointing at a car that does not exist. The previous
+  again next start (and, because that retry has just made the car, it is then also made the active car), and `scan_profile` is cleared rather than left pointing at a car that does not exist. The previous
   selection is not restored (the start-up set had already replaced it when the file loaded).
 
 ## Test plan
 
-- Unit tests (484 in the whole suite) in `tests/test_calais.py` and `tests/test_can_import.py`. They cover: the 16 PIDs
+- The whole suite has 486 unit tests; those for this feature are in `tests/test_calais.py`, `tests/test_can_import.py` and `tests/test_obd.py`. They cover: the 16 PIDs
   load from the saved car; the car is created once (`ensure_car` returns None when it exists); the
   'CALAIS TURBO (6L80E)' starter profile is the 6L80 base profile with a 3.9 axle, the base is untouched, and
   registering twice leaves one profile; a new install gets the CALAIS TURBO vehicle; a vehicle already chosen is not
@@ -169,15 +168,15 @@ Paths are relative to `android/`. Files at the root are named without a folder.
   once and keeps later choices (`StartSettingsTests`); DBC parsing (Intel, Motorola, signed, offset, multiplexed,
   extended IDs); decoding; replay looping, hold and listen; imported ids fail `valid_id`; load errors give
   readable messages. `tests/test_prefs.py` was adjusted so its existing tests keep their values.
-- The adapter refusal and the Live guard are unit tests (see R7).
+- The adapter refusal tests are in `tests/test_obd.py` and `tests/test_can_import.py` (`ReplayGuardTests`); see R7.
 - Not covered by unit tests: the `calais_saved` gate in `main.restore_car()`, the Imported group and
   `dashboard_pids()`, the header REPLAY colour, the Live "not in the CAN log" text, and the splash music. These are
   checked by hand below.
 - One-off headless Kivy check (not kept in `tests/`): the CAN card and the Live screen build with a replay running.
 - Manual on the phone: install the APK, check the CALAIS car is active, check the TCM cards show on Live,
-  play a capture on Live and Scan, record, and compare the log columns.
+  play a capture on Live and Scan, record, and compare the log columns; hear the intro theme; see REPLAY in the header and "not in the CAN log" on the built-in cards while a log plays.
 
-## Alternatives considered
+## Alternatives
 
 - **Send the 16 PIDs through the adapter only.** Rejected for the replay feature: CAN traffic the car sends
   without a request cannot be read with Mode 01 or 22. Those PIDs are fine as a saved car (G1), which uses
@@ -201,7 +200,7 @@ Paths are relative to `android/`. Files at the root are named without a folder.
 
 ## Open questions
 
-- Q1. Which DBC describes the owner's Calais? Candidate: `caprice_ppv.dbc`, from the owner's research folder.
+- Q1. Which DBC describes the owner's Calais? Candidate: `caprice_ppv.dbc`, from the owner's research folder (`T43_6L80E_reference/caprice-ppv-can-database/`).
   It needs checking against a known reading (for example, the transmission temperature on the scan tool).
 - Q2. Should the last played log and DBC be remembered across starts? Not in v1.
 - Q3. Should imported signals keep their dashboard order and hidden state? Their ids are not `valid_id`, so

@@ -53,7 +53,11 @@ def load(log_path, dbc_path, clock=time.monotonic):
     """Decode a log with its DBC. Raises ImportProblem with a message the user can act on."""
     log_text = _read(log_path)
     dbc_text = _read(dbc_path)
-    frames = read_log(log_text)
+    try:
+        frames = read_log(log_text)
+    except (ValueError, OverflowError, MemoryError):
+        raise ImportProblem(f'{os.path.basename(log_path)} could not be read as a CAN log. Use a candump (.log), '
+                            'CSV or SLCAN file.')
     if not frames:
         raise ImportProblem(f'No CAN frames were found in {os.path.basename(log_path)}. Use a candump (.log), '
                             'CSV or SLCAN file.')

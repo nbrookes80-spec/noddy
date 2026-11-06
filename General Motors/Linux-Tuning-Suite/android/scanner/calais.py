@@ -2,8 +2,9 @@
 
 The 16 PIDs are rows of data/torque_gm_predefined.csv that the logger did not have: the air-conditioning high side
 pressure, EGR duty and voltage, H2O sensor, ignition 1 voltage, injector PWM for both banks, the misfire history
-for all eight cylinders, and oil pressure. They are saved as a user car (scanner/profiles.py), so they load on
-Live and Scan and are written to a data log like any other sensor.
+for all eight cylinders, and oil pressure. They are saved as a user car (scanner/profiles.py), so they show on
+Scan and are written to a data log like any other sensor. (The Live grid is the fixed engine and
+transmission stream; it does not show a saved car's extra sensors.)
 
 The Shift tab's vehicle is a "CALAIS TURBO (6L80E)" starter profile: the app's 6L80 starter profile with the 3.9
 differential ratio the owner gave. The other values in it (tyre, weight, RPM limits, converter lock) are the 6L80

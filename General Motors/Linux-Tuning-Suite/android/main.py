@@ -820,13 +820,16 @@ class TunerToolProApp(App):
         """At start-up, activate the profile chosen last time, so its dashboard and manual PIDs are there again.
         The CALAIS TURBO car and its vehicle settings are put in place first, if they are not there yet."""
         cars = os.path.join(self.user_data_dir, 'cars')
+        made = None
         try:
             if not self.link.saved['calais_saved']:   # once only: a car the owner deleted or renamed stays that way
-                calais.ensure_car(cars)
+                made = calais.ensure_car(cars)
                 self.link.saved['calais_saved'] = any(p.key == calais.CAR_KEY for p in profiles.list_user(cars))
         except OSError as exc:                       # a folder the app cannot write must not stop the app starting
             self.session.log.write('APP', f'CALAIS TURBO set-up skipped: {exc}')
         key = self.link.saved['scan_profile']
+        if made is not None and not key:
+            key = self.link.saved['scan_profile'] = calais.CAR_KEY   # made on a retry: make it the active car as well
         if key == calais.CAR_KEY and not any(p.key == key for p in profiles.everything(cars)):
             key = self.link.saved['scan_profile'] = ''   # the car could not be made: no car chosen, not a missing one
         profile = next((p for p in profiles.everything(cars) if p.key == key), None)
@@ -1077,14 +1080,18 @@ class TunerToolProApp(App):
         else:
             answer = 'The car did not answer this sensor when it was checked.'
         manual = self.manual_entry(pid_id)
+        how = ('Decoded from the imported CAN log (the description names the DBC). Nothing is sent to the car for it.'
+               if imported else
+               f'The app sends "{pid_id}" to module {info.header} and decodes {info.width} data '
+               f'byte(s) after the reply echo "{info.echo}".')
         return {'pid': pid_id, 'name': shown['name'], 'unit': shown['unit'], 'low': shown['low'], 'high': shown['high'],
-                'redline': shown['redline'], 'display': shown['mode'], 'mode': info.mode, 'module': info.header,
-                'bytes': info.width, 'verified': info.verified, 'description': info.description,
+                'redline': shown['redline'], 'display': shown['mode'], 'mode': None if imported else info.mode,
+                'module': '' if imported else info.header,
+                'bytes': None if imported else info.width, 'verified': info.verified, 'description': info.description,
                 'category': info.category, 'entered_by_user': manual is not None, 'user_definition': manual,
                 'latest': latest[0] if latest else None, 'car_answer': answer, 'recent_raw_replies': replies,
                 'car_profile': profile.key if profile else '',
-                'how_it_is_read': (f'The app sends "{pid_id}" to module {info.header} and decodes {info.width} data '
-                                   f'byte(s) after the reply echo "{info.echo}".')}
+                'how_it_is_read': how}
 
     def agent_state(self):
         """Everything the agent bridge shares: settings, grades, tables and live data. Read only."""
