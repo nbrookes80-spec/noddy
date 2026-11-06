@@ -38,6 +38,7 @@ DEFAULTS = {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': '192.168.0.10:35
             'adapter_protocol': '0',      # ATSP choice: 0 automatic, or a CAN protocol number (link/obd.PROTOCOLS)
             'auto_reconnect': False,      # after the adapter drops, retry after 1, 2, 4, 8 and 16 s (link/obd.backoff_schedule)
             'read_rate': obd.DEFAULT_RATE,   # most rounds of readings per second, 1 to 10 (link/obd.round_delay)
+            'extra_modules': False,       # allow reads of other modules (ABS, meter, A/C) for the Toyota-style pack
             'hidden_pids': {},            # {car profile key: [PID ids the user hid from the dashboard]}
             'intro_music': True,          # play the intro theme while the start-up pictures show
             'calais_saved': False,        # the CALAIS TURBO car has been set up once (scanner/calais.py)
@@ -68,7 +69,7 @@ def load(path):
     if isinstance(data.get('wifi'), str) and data['wifi'].strip():
         result['wifi'] = data['wifi'].strip()
     for key in ('live_transmission', 'adaptive_timing', 'debug_log', 'dash_stats', 'hud_mirror', 'intro_music',
-                'calais_saved'):
+                'calais_saved', 'extra_modules'):
         if isinstance(data.get(key), bool):
             result[key] = data[key]
     if data.get('timeout_ms') in TIMEOUT_CHOICES_MS:

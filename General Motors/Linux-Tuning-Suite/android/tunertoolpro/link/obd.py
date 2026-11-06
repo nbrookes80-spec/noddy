@@ -2,7 +2,7 @@
 
 Only commands that pass is_allowed() are ever sent: adapter set-up, Mode 01 and Mode 22 reads of PIDs
 in the scanner catalogue, the Mode 03 stored-code read, a header switch to one of four known module
-addresses, and the Mode 04 code clear only when the app builds the link with allow_clear=True. Nothing here
+addresses (four more, with Mode 21 reads of catalogued ids, only with extra_modules=True), and the Mode 04 code clear only when the app builds the link with allow_clear=True. Nothing here
 writes anything else to the controller: no Mode 08 tests, no Mode 09 writes, no ECU programming, no
 free-form Mode 22 sweeps. Any other command raises UnsafeCommand before anything is sent.
 
@@ -41,6 +41,10 @@ CLEAR_DTC = '04'          # only sent when the link was built with allow_clear=T
 CLEAR_REPLY = '44'        # the car's answer to a clear: 44 is 40 (a Mode 04 request) plus 04
 HEADER_COMMANDS = {f'ATSH{h}' for h in catalog.KNOWN_HEADERS}
 ALLOWED |= HEADER_COMMANDS
+# Four more module addresses (ABS, meter, A/C and one more), only for a link built with extra_modules=True.
+EXTRA_HEADERS = catalog.EXTRA_HEADERS
+EXTRA_HEADER_COMMANDS = {f'ATSH{h}' for h in EXTRA_HEADERS}
+MODULE_OFF = 'module access is off'
 
 # Adapter information: ATI is the adapter's firmware name, ATRV the volts at the adapter's own supply pin, ATDP the
 # protocol it settled on. All three only ask the adapter about itself; no request reaches the car. Exact matches only.
@@ -154,11 +158,25 @@ def round_delay(rate):
     return 1.0 / clean_rate(rate)
 
 
-def is_allowed(command, allow_clear=False):
+def module_note(pid, extra_modules):
+    """"module access is off" for a Mode 21 reading when the link may not read other modules, else None."""
+    return MODULE_OFF if pid.mode == '21' and not extra_modules else None
+
+
+def _module_read(command):
+    """True for a Mode 21 request for a catalogued id on one of the four module addresses."""
+    found = catalog.CATALOG.get(command)
+    return found is not None and found.mode == '21' and found.header in EXTRA_HEADERS
+
+
+def is_allowed(command, allow_clear=False, extra_modules=False):
     """True for a read-only command: set-up, a header switch, Mode 03, adapter timing, or a catalogued Mode 01/22 PID.
 
-    The Mode 04 code clear passes only when allow_clear is True, which an app sets for a build that offers it."""
+    The Mode 04 code clear passes only when allow_clear is True, which an app sets for a build that offers it.
+    The four module addresses (7B0, 7C0, 7C4, 7E1) and catalogued Mode 21 reads pass only when extra_modules is True."""
     command = command.replace(' ', '').upper()
+    if command.startswith('21') or command in EXTRA_HEADER_COMMANDS:
+        return extra_modules and (command in EXTRA_HEADER_COMMANDS or _module_read(command))
     return (command in ALLOWED or command in catalog.CATALOG or bool(TIMING_COMMAND.fullmatch(command))
             or command in {f'ATSP{code}' for code in PROTOCOLS}
             or (command == CLEAR_DTC and allow_clear))
@@ -170,6 +188,10 @@ RETRY_EVERY = 8    # ...and tried again on every eighth later request
 
 class OBDError(Exception):
     """The adapter did not answer, or answered with an error or unexpected text."""
+
+
+class ModuleAccessOff(OBDError):
+    """A Mode 21 module reading was skipped because the link may not read other modules."""
 
 
 class AdapterLost(OBDError):
@@ -375,9 +397,10 @@ class Elm327:
 
     label = 'Live'
 
-    def __init__(self, transport, allow_clear=False):
+    def __init__(self, transport, allow_clear=False, extra_modules=False):
         self.transport = transport
         self.allow_clear = allow_clear   # True lets the Mode 04 code clear through; read-only when False
+        self.extra_modules = extra_modules   # True lets catalogued Mode 21 reads on 7B0/7C0/7C4/7E1 through
         self.traffic = []   # (direction, text) of what this link sent and got back, newest last
         self.on_traffic = None   # optional callback(kind, text) for a debug log: TX, RX, REFUSED or ERR
         self.on_values = None    # optional callback({pid: (value, unit)}) for the data log, after each poll
@@ -396,7 +419,7 @@ class Elm327:
         self.transport.close()
 
     def command(self, command):
-        if not is_allowed(command, self.allow_clear):
+        if not is_allowed(command, self.allow_clear, self.extra_modules):
             self._tell('REFUSED', command)
             raise UnsafeCommand(f'{command!r} is not a read-only command, so it was not sent')
         command = command.replace(' ', '').upper()
@@ -522,6 +545,8 @@ class Elm327:
                 values[pid] = self.read(pid, header=first, final=not fallback)
             except AdapterLost:
                 raise
+            except ModuleAccessOff as exc:
+                errors[pid] = str(exc)
             except UnsafeCommand as exc:     # the list changed under us: report it, never let it stop the poll
                 errors[pid] = str(exc)
             except OBDError as exc:
@@ -542,6 +567,8 @@ class Elm327:
         pid = catalog.CATALOG.get(pid_id)
         if pid is None:
             raise UnsafeCommand(f'{pid_id!r} is not on the read list')
+        if module_note(pid, self.extra_modules):
+            raise ModuleAccessOff(f'{pid.name}: {MODULE_OFF}')
         misses = self._misses.get(pid_id, 0)
         if misses >= MISS_LIMIT and misses % RETRY_EVERY:
             self._misses[pid_id] = misses + 1

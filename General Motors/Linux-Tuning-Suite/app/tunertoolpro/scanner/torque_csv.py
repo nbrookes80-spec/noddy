@@ -6,6 +6,9 @@ A Torque file can say more than this app is willing to do, so the reader only ac
   * the startDiagnostic and stopDiagnostic columns must be empty, because they carry raw commands
   * the equation is checked against a small whitelist and worked out by this module, never by eval()
 
+A pack of module readings (the Toyota-style list in data/) is read with modules=True, which also accepts Mode 21
+reads, but only on a row that names one of the four module addresses in pids.EXTRA_HEADERS. Nothing else changes.
+
 Everything read here is marked as not confirmed on a real car.
 """
 
@@ -16,7 +19,7 @@ import re
 from ast import (Add, BinOp, Call, Constant, Div, Expression, LShift, Mult, Name, RShift, Sub, UAdd, UnaryOp,
                  USub, parse as parse_expression)
 
-from .pids import KIND_WIDTH, Pid
+from .pids import EXTRA_HEADERS, KIND_WIDTH, Pid
 
 MAX_CHARS = 1_000_000
 MAX_ROWS = 2000
@@ -26,6 +29,7 @@ KNOWN_MODULES = ('7E0', '7E2', '7E3')
 KIND_FOR_BYTES = {1: 'byte', 2: 'word', 3: 'bytes3', 4: 'dword'}
 LETTERS = 'ABCD'
 _ID = re.compile(r'(01[0-9A-F]{2}|22[0-9A-F]{4})')
+_MODULE_ID = re.compile(r'21[0-9A-F]{2}([0-9A-F]{2})?')
 _TAG = re.compile(r'^\[([^\]]{1,20})\]\s*(.*)$')
 _ALLOWED_BINARY = {Add: lambda a, b: a + b, Sub: lambda a, b: a - b, Mult: lambda a, b: a * b,
                    Div: lambda a, b: a / b, LShift: lambda a, b: int(a) << int(b),
@@ -114,10 +118,12 @@ def compile_equation(text):
     return decode, count
 
 
-def _pid_id(text):
+def _pid_id(text, modules=False):
     text = (text or '').strip().upper().replace(' ', '')
     text = text[2:] if text.startswith('0X') else text
     if _ID.fullmatch(text):
+        return text
+    if modules and _MODULE_ID.fullmatch(text):
         return text
     if re.fullmatch(r'[0-9A-F]{2}([0-9A-F]{2})*', text) and text[:2] not in ('01', '22'):
         raise Refused(f'Mode {text[:2]} is not a read the app will send (only Mode 01 and Mode 22)')
@@ -134,8 +140,8 @@ def _number(text, label):
     return value
 
 
-def _entry(fields, source):
-    pid = _pid_id(fields.get('modeandpid'))
+def _entry(fields, source, modules=False):
+    pid = _pid_id(fields.get('modeandpid'), modules)
     if (fields.get('startdiagnostic') or '').strip():
         raise Refused('startDiagnostic is not empty; commands in a PID file are never sent')
     if (fields.get('stopdiagnostic') or '').strip():
@@ -151,7 +157,11 @@ def _entry(fields, source):
         high = low + 1.0
     wanted = (fields.get('header') or '').strip().upper()
     note = ''
-    if wanted in ('', 'AUTO', '7DF'):
+    if pid.startswith('21'):
+        if wanted not in EXTRA_HEADERS:
+            raise Refused(f'a Mode 21 read must name one of the modules {", ".join(EXTRA_HEADERS)}')
+        header = wanted
+    elif wanted in ('', 'AUTO', '7DF'):
         header = 'Auto'
     elif wanted in KNOWN_MODULES:
         header = wanted
@@ -163,7 +173,7 @@ def _entry(fields, source):
                header, KIND_FOR_BYTES[count], decode, source, False)
 
 
-def parse(text, source='Torque CSV'):
+def parse(text, source='Torque CSV', modules=False):
     """Returns (pids, rejected). rejected is a list of {'line', 'name', 'reason'}; good rows are kept either way."""
     if not isinstance(text, str) or not text.strip():
         return [], [{'line': 0, 'name': '', 'reason': 'The file is empty.'}]
@@ -187,7 +197,7 @@ def parse(text, source='Torque CSV'):
                 continue
             fields = dict(zip(header, cells))
             try:
-                entry = _entry(fields, source)
+                entry = _entry(fields, source, modules)
                 if entry.pid in seen:
                     raise Refused('this PID is already in the file; the first one is kept')
             except Refused as why:

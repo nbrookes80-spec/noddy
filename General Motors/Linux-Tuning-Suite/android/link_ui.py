@@ -85,6 +85,9 @@ class LinkScreen(BoxLayout):
         reconnect = _toggle('Reconnect automatically if the adapter drops', self.saved['auto_reconnect'],
                             lambda on: self._save(auto_reconnect=on))
         self.adapter_card.add_widget(reconnect)
+        modules = _toggle('Allow reads of other modules (ABS, meter, A/C) for the Toyota-style pack',
+                          self.saved['extra_modules'], self._set_extra_modules)
+        self.adapter_card.add_widget(modules)
         self.adapter_card.add_widget(panel_label('Protocol', color=MUTED))
         self.names = {code: f'{code}: {name}' if code != '0' else name for code, name in obd.PROTOCOLS.items()}
         self.protocol_box = spinner(list(self.names.values()), self.names[self.saved['adapter_protocol']])
@@ -207,6 +210,12 @@ class LinkScreen(BoxLayout):
         devices.bind_to_wifi()
         return obd.WifiTransport(host or obd.DEFAULT_WIFI[0], int(port or obd.DEFAULT_WIFI[1])), ''
 
+    def _set_extra_modules(self, on):
+        """Save the module-access switch, and apply it to a link that is already open (it is read at each send)."""
+        self._save(extra_modules=on)
+        if self.session.elm is not None:
+            self.session.elm.extra_modules = on
+
     def _save(self, **choices):
         self.saved.update(choices)
         prefs.save(self.prefs_path, self.saved)
@@ -262,7 +271,7 @@ class LinkScreen(BoxLayout):
 
     def _connect(self, transport, address, attempt):
         try:
-            elm = obd.Elm327(transport, allow_clear=variant.CLEAR_CODES)
+            elm = obd.Elm327(transport, allow_clear=variant.CLEAR_CODES, extra_modules=self.saved['extra_modules'])
             elm.on_traffic = self.session.log.write   # so the set-up handshake is logged too
             elm.open()
         except obd.OBDError as exc:

@@ -3,7 +3,9 @@
 Each list is a slice of one of the Torque Pro files in data/ (the GM list and the E38 + T43 list for the
 Holden VE/VF and Pontiac G8). A list is saved by writing its rows as a user profile (scanner/profiles.py),
 which is the car's make, model, year and transmission plus the PIDs to load. Rows go through the same Torque
-checks as an imported file, so only Mode 01 and Mode 22 reads can ever be saved.
+checks as an imported file, so only Mode 01 and Mode 22 reads can ever be saved. The one exception is the
+Toyota-style pack, whose Mode 21 reads on four module addresses are kept (item.modules) but are only ever sent
+when the user turns on "Allow reads of other modules" (link/obd.py is_allowed). Every pack row is unconfirmed.
 """
 
 import csv
@@ -33,6 +35,7 @@ class PredefinedList:
     summary: str
     file: str
     keep: Callable[[str], bool]
+    modules: bool = False      # the file has Mode 21 module reads (needs the extra_modules switch to be read)
 
 
 LISTS = (
@@ -53,13 +56,33 @@ LISTS = (
                    'torque_gm_predefined.csv', _has('misfire')),
     PredefinedList('gm-abs', 'GM: ABS wheel speeds', 'The four wheel speeds from the ABS module.',
                    'torque_gm_predefined.csv', _has('abs ')),
+    PredefinedList('generic-obd2', 'Generic OBD-II (any car)',
+                   'Standard SAE J1979 Mode 01 readings the built-in list lacks: more oxygen sensors, wide-range '
+                   'lambda, fuel rail pressure, EGR, catalyst temperature, secondary O2 trims, fuel rate.',
+                   'torque_generic_obd2.csv', lambda name: True),
     PredefinedList('gm-all', 'GM: everything', 'Every GM reading in the Torque Pro list.',
                    'torque_gm_predefined.csv', lambda name: True),
 )
 
+# Copied from the owner's Torque CSV into data/. The pack appears once that file is there; until then it is not offered.
+TOYOTA_FILE = 'torque_toyota_style.csv'
+TOYOTA_LIST = PredefinedList('toyota-style', 'Toyota-style modules (from your Torque CSV)',
+                             'Mode 21 readings from the ABS (7B0), meter (7C0), A/C (7C4) and 7E1 modules, plus '
+                             'the standard readings in that file. Needs "Allow reads of other modules" on the Link '
+                             'screen; unconfirmed on a real car.',
+                             TOYOTA_FILE, lambda name: True, True)
+
+
+def lists():
+    """Every pack that has its data file, so a pack whose file is not in data/ yet is simply not offered."""
+    return LISTS + ((TOYOTA_LIST,) if (profiles.DATA_DIR / TOYOTA_FILE).exists() else ())
+
 
 def by_key(key):
-    return next((item for item in LISTS if item.key == key), None)
+    return next((item for item in lists() if item.key == key), None)
+
+
+pack_list = by_key
 
 
 def _rows(item):
@@ -97,4 +120,4 @@ def save_to_profile(directory, item, name, make, model, year, transmission):
     nothing was usable. The car needs a name, a make or a model so the profile can be told apart later."""
     if not (name or make or model).strip():
         return None, [{'line': 0, 'name': '', 'reason': 'Give the car a name, make or model first.'}]
-    return profiles.save_user(directory, name, make, model, year, transmission, csv_text(item))
+    return profiles.save_user(directory, name, make, model, year, transmission, csv_text(item), item.modules)

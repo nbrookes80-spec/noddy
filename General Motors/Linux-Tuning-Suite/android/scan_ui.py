@@ -279,6 +279,8 @@ class ScanScreen(BoxLayout):
                 series.append(reading[0])
             idle = ('not in log' if reading is None and self.session.replay is not None
                     and card.pid.pid not in pids.REPLAY else None)    # a log is playing and does not carry it
+            if reading is None and idle is None:
+                idle = obd.module_note(card.pid, getattr(self.session.active(), 'extra_modules', False))
             card.show(reading, series, idle=idle)
 
     def read_codes(self):

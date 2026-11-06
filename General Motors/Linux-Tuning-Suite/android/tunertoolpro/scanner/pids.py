@@ -12,6 +12,9 @@ from . import pid_table, t43_pids
 
 DEFAULT_HEADER = '7DF'   # standard CAN functional request address
 KNOWN_HEADERS = ('7DF', '7E0', '7E2', '7E3')
+# Other modules (ABS, meter, A/C and one more) that the Toyota-style pack reads with Mode 21. The adapter only talks
+# to these when the link was built with extra_modules=True (link/obd.py is_allowed); otherwise they stay refused.
+EXTRA_HEADERS = ('7B0', '7C0', '7C4', '7E1')
 
 # Shown on the live dashboard by default, four to a page (same list as the original scanner).
 MONITOR_PIDS = [
@@ -43,17 +46,17 @@ class Pid:
 
     @property
     def mode(self):
-        return '22' if self.pid.startswith('22') else '01'
+        return self.pid[:2] if self.pid[:2] in ('21', '22') else '01'
 
     @property
     def command(self):
-        """The text sent to the adapter: 01XX for Mode 01, 22XXXX for Mode 22."""
+        """The text sent to the adapter: 01XX for Mode 01, 22XXXX for Mode 22, 21XX for a module read."""
         return self.pid
 
     @property
     def echo(self):
-        """What a good reply starts with: 41XX for Mode 01, 62XXXX for Mode 22."""
-        return ('62' if self.mode == '22' else '41') + self.pid[2:]
+        """What a good reply starts with: 41XX for Mode 01, 62XXXX for Mode 22, 61XX for Mode 21."""
+        return {'22': '62', '21': '61'}.get(self.mode, '41') + self.pid[2:]
 
     @property
     def verified(self):
@@ -85,23 +88,26 @@ CATALOG = dict(BUILT_IN)     # the built-in set plus whatever the active car pro
 
 
 def valid_id(pid):
-    """True for a read-only id: Mode 01 with one hex byte, or Mode 22 with two. Nothing else is ever sent."""
+    """True for a read-only id: Mode 01 with one hex byte, Mode 22 with two, or a Mode 21 module read with one or
+    two. Being valid only lets an id be saved and listed; the adapter still refuses Mode 21 unless the link was
+    built with extra_modules=True and the id is in the catalogue (link/obd.py is_allowed)."""
     pid = pid.upper()
-    return bool(re.fullmatch(r'01[0-9A-F]{2}|22[0-9A-F]{4}', pid))
+    return bool(re.fullmatch(r'01[0-9A-F]{2}|22[0-9A-F]{4}|21[0-9A-F]{2}([0-9A-F]{2})?', pid))
 
 
 def use_extras(extras):
     """Make the built-in set plus these PIDs the catalogue. Built-in definitions always win.
 
-    Returns the ids that were skipped because the built-in set already defines them or because they are
-    not a Mode 01/22 read. Because the adapter only sends catalogued ids, this is also what lets an
+    Returns the ids that were skipped because the built-in set already defines them, because they are
+    not a Mode 01/22 read, or because a Mode 21 read is not on one of the four EXTRA_HEADERS. Because the adapter only sends catalogued ids, this is also what lets an
     imported PID be read, and nothing outside Mode 01 and 22 can get in.
     """
     skipped = []
     CATALOG.clear()
     CATALOG.update(BUILT_IN)
     for pid in extras:
-        if pid.pid in BUILT_IN or not valid_id(pid.pid):
+        if (pid.pid in BUILT_IN or not valid_id(pid.pid)
+                or (pid.pid.startswith('21') and pid.header not in EXTRA_HEADERS)):
             skipped.append(pid.pid)
         else:
             CATALOG[pid.pid] = pid

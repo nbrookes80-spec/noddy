@@ -329,6 +329,8 @@ class LiveScreen(BoxLayout):
                 idle = 'transmission off'
             elif self.session.replay is not None and pid_id not in pids.REPLAY:
                 idle = 'not in log'   # a CAN log is playing and it does not carry this reading
+            elif entry is None:
+                idle = obd.module_note(card.pid, getattr(self.session.active(), 'extra_modules', False))
             card.show((entry['value'], entry['unit']) if entry else None, entry['history'] if entry else [],
                       idle=idle)
         lines = [f'[color=#{HEX[s["level"]]}]{s["text"]}[/color]' for s in snap['shifts'][:6] if s['text']]

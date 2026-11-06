@@ -14,8 +14,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from tunertoolpro.link.obd import (AdapterLost, BluetoothTransport, DEFAULT_WIFI, Elm327, OBDError, SerialTransport,
-                      WifiTransport)
+from tunertoolpro.link.obd import (AdapterLost, BluetoothTransport, DEFAULT_WIFI, Elm327, MODULE_OFF, ModuleAccessOff,
+                      OBDError, SerialTransport, WifiTransport)
 from tunertoolpro.scanner import pids
 
 SCAN_SUFFIX = '.scan.json'
@@ -39,7 +39,7 @@ def scan_ids(profile_pids, mode01_only=False):
 
 def scan(elm, ids, progress=None):
     """Try each reading once. Returns the result dict. A lost adapter stops the run and marks it incomplete."""
-    answered, silent = {}, []
+    answered, silent, skipped = {}, [], []
     complete = True
     for index, pid in enumerate(ids):
         if progress:
@@ -49,6 +49,9 @@ def scan(elm, ids, progress=None):
         except AdapterLost:
             complete = False
             break
+        except ModuleAccessOff:
+            skipped.append(pid)       # not asked: module access is off, which is not the car saying no
+            continue
         except OBDError:
             silent.append(pid)
             continue
@@ -65,6 +68,7 @@ def scan(elm, ids, progress=None):
         'tried': list(ids),
         'answered': answered,
         'silent': silent,
+        'skipped': skipped,
     }
 
 
@@ -107,7 +111,8 @@ def enforce(ids, scan_result):
         return list(ids), {}
     answered = scan_result['answered']
     shown = [p for p in ids if p in answered]
-    hidden = {p: 'no reply from this car' for p in ids if p not in answered}
+    skipped = set(scan_result.get('skipped', ()))
+    hidden = {p: (MODULE_OFF if p in skipped else 'no reply from this car') for p in ids if p not in answered}
     return shown, hidden
 
 
@@ -188,6 +193,8 @@ def describe(result):
         lines.append(f'  yes  {pid}  {info["name"]}{module}')
     if silent:
         lines.append(f'No reply to {len(silent)}: ' + ', '.join(silent))
+    if result.get('skipped'):
+        lines.append(f'Not asked, module access is off ({len(result["skipped"])}): ' + ', '.join(result['skipped']))
     if not result['complete']:
         lines.append('The adapter stopped answering part way through, so this scan is incomplete and is not used.')
     return '\n'.join(lines)

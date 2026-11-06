@@ -16,6 +16,8 @@ from . import car_scan, pids, torque_csv
 
 DATA_DIR = Path(__file__).resolve().parent.parent / 'data'
 TORQUE_FILES = ('torque_gm_predefined.csv', 'torque_e38_t43_v5.csv')
+GENERIC_FILE = 'torque_generic_obd2.csv'
+TOYOTA_FILE = 'torque_toyota_style.csv'
 MODULE_NOTE = 'address is unconfirmed'     # in a PID's description when its module could not be mapped
 
 
@@ -31,6 +33,7 @@ class Profile:
     notes: str = ''
     user_csv: str = ''            # the text of a CSV the user imported
     builtin: bool = True
+    modules: bool = False         # also load Mode 21 module reads (Toyota-style pack); sent only with extra_modules
 
 
 def built_in():
@@ -46,9 +49,23 @@ def built_in():
         Profile('gm-generic', 'GM generic (Mode 01 and GM Mode 22)', 'GM', '', '', TORQUE_FILES, notes=gm_note),
         Profile('ford-generic', 'Ford (standard OBD-II only)', 'Ford', '', '', (), True,
                 'Only standard Mode 01 readings until a Ford PID list is added. You can import your own Torque file.'),
+        *toyota_style(),
+        Profile('generic-obd2', 'Generic OBD-II pack (any car)', '', '', '', (GENERIC_FILE,), True,
+                'Standard Mode 01 readings from SAE J1979, including some the built-in list lacks. '
+                'Unconfirmed on a real car until you check them on yours.'),
         Profile('obd2', 'Any car (standard OBD-II only)', '', '', '', (), True,
                 'Standard Mode 01 readings that every OBD-II car answers.'),
     ]
+
+
+def toyota_style():
+    """The Toyota-style profile, once the owner's Torque CSV is in data/ (empty list before that)."""
+    if not (DATA_DIR / TOYOTA_FILE).exists():
+        return []
+    return [Profile('toyota-style', 'Toyota-style modules (from your Torque CSV)', '', '', '', (TOYOTA_FILE,), True,
+                    'Readings from your Torque CSV: standard Mode 01 and Mode 21 on the ABS (7B0), meter (7C0), A/C '
+                    '(7C4) and 7E1 modules. The Mode 21 ones are read only when "Allow reads of other modules" is on '
+                    'the Link screen. Unconfirmed on a real car.', modules=True)]
 
 
 def load_pids(profile):
@@ -58,7 +75,7 @@ def load_pids(profile):
     if profile.user_csv:
         sources.append((f'{profile.name} (imported)', profile.user_csv))
     for source, text in sources:
-        found, problems = torque_csv.parse(text, source=source)
+        found, problems = torque_csv.parse(text, source=source, modules=profile.modules)
         for pid in found:
             if pid.pid not in seen:
                 seen.add(pid.pid)
@@ -70,7 +87,7 @@ def load_pids(profile):
 def monitor_for(profile, extras):
     """The ids shown on the Scan dashboard, in order."""
     if profile.mode01_only:
-        return [p for p in pids.DEFAULT_MONITOR if p.startswith('01')] + [p.pid for p in extras if p.mode == '01']
+        return [p for p in pids.DEFAULT_MONITOR if p.startswith('01')] + [p.pid for p in extras if p.mode == '01' or (profile.modules and p.mode == '21')]
     shown = [p.pid for p in extras if MODULE_NOTE not in p.description]
     return pids.DEFAULT_MONITOR + [p for p in shown if p not in pids.DEFAULT_MONITOR]
 
@@ -118,12 +135,12 @@ def _slug(name):
     return re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')[:40] or 'car'
 
 
-def save_user(directory, name, make, model, year, transmission, csv_text):
+def save_user(directory, name, make, model, year, transmission, csv_text, modules=False):
     """Check a Torque CSV and save it as a profile. Returns (profile, rejected rows). Nothing is saved when
     the file has no usable PID, so a wrong file cannot replace a good profile."""
     label = ' '.join(part for part in (str(year).strip(), make.strip(), model.strip()) if part) or name.strip()
     probe = Profile(f'user-{_slug(label)}', label, make.strip(), str(year).strip(), transmission,
-                    user_csv=csv_text, builtin=False)
+                    user_csv=csv_text, builtin=False, modules=modules)
     found, rejected = load_pids(probe)
     if not found:
         return None, rejected
@@ -131,7 +148,7 @@ def save_user(directory, name, make, model, year, transmission, csv_text):
     folder.mkdir(parents=True, exist_ok=True)
     stem = _slug(label)
     (folder / f'{stem}.csv').write_text(csv_text, encoding='utf-8')
-    meta = {'name': label, 'make': probe.make, 'years': probe.years, 'transmission': transmission}
+    meta = {'name': label, 'make': probe.make, 'years': probe.years, 'transmission': transmission, 'modules': modules}
     (folder / f'{stem}.json').write_text(json.dumps(meta))
     return replace(probe, key=f'user-{stem}'), rejected
 
@@ -145,7 +162,7 @@ def list_user(directory):
             text = meta_path.with_suffix('.csv').read_text(encoding='utf-8', errors='replace')
             out.append(Profile(f'user-{meta_path.stem}', str(meta['name'])[:80], str(meta.get('make', ''))[:30],
                                str(meta.get('years', ''))[:12], str(meta.get('transmission', '')),
-                               user_csv=text, builtin=False))
+                               user_csv=text, builtin=False, modules=meta.get('modules') is True))
         except (OSError, ValueError, KeyError, TypeError):
             continue
     return out

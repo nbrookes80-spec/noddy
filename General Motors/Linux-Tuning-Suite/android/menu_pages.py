@@ -303,8 +303,8 @@ def log_cards(menu):
 def lists_cards(menu):
     use = Card()
     use.add_widget(section_title('Use a car\'s list'))
-    use.add_widget(panel_label('Switch Live and Scan to the PID list of a car: the built-in Holden, Pontiac and GM '
-                               'lists, or one you saved below.', color=MUTED, font_size=dp(12)))
+    use.add_widget(panel_label('Switch Live and Scan to the PID list of a car: the built-in Holden, Pontiac, GM, '
+                               'Generic OBD-II and Toyota-style lists, or one you saved below.', color=MUTED, font_size=dp(12)))
     names = {p.name: p for p in menu.profiles}
     active = menu.active_profile()
     current = active.name if active is not None and active.name in names else next(iter(names), '')
@@ -324,13 +324,15 @@ def lists_cards(menu):
     save.add_widget(panel_label('Pick a Holden or GM list, say which car it is for, and it is saved as your '
                                 'profile for that vehicle. It is made the active car straight away.',
                                 color=MUTED, font_size=dp(12)))
-    titles = {item.title: item for item in predefined.LISTS}
-    picker = spinner(list(titles), predefined.LISTS[0].title)
+    titles = {item.title: item for item in predefined.lists()}
+    picker = spinner(list(titles), predefined.lists()[0].title)
     summary = panel_label('', color=MUTED, font_size=dp(12))
 
     def describe(*_):
         item = titles[picker.text]
         summary.text = f'{item.summary} ({predefined.count(item)} sensors)'
+        if item.modules:
+            summary.text += ' Other-module readings stay off until you allow them on the Link screen.'
     picker.bind(text=describe)
     describe()
     saved_car = active if active is not None and not active.builtin else None

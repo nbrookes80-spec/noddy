@@ -1,0 +1,32 @@
+"Name", "ShortName", "ModeAndPID", "Equation", "Min Value", "Max Value", "Units", "Header", "startDiagnostic", "stopDiagnostic", "scale","minimumRefreshDelayMillis"
+"[OBD2]O2 Sensor B1S3 Voltage","O2B1S3","0x0116","A/200",0,1.275,"V","Auto","","",1,0
+"[OBD2]O2 Sensor B1S4 Voltage","O2B1S4","0x0117","A/200",0,1.275,"V","Auto","","",1,0
+"[OBD2]O2 Sensor B2S3 Voltage","O2B2S3","0x011A","A/200",0,1.275,"V","Auto","","",1,0
+"[OBD2]O2 Sensor B2S4 Voltage","O2B2S4","0x011B","A/200",0,1.275,"V","Auto","","",1,0
+"[OBD2]Fuel Rail Pressure (vs manifold vacuum)","FRPvac","0x0122","((A*256)+B)*0.079",0,5177,"kPa","Auto","","",1,0
+"[OBD2]Fuel Rail Gauge Pressure","FRPgau","0x0123","((A*256)+B)*10",0,655350,"kPa","Auto","","",1,0
+"[OBD2]Lambda B1S1 (wide range)","LamB1S1","0x0124","((A*256)+B)*2/65536",0,2,"ratio","Auto","","",1,0
+"[OBD2]Lambda B1S2 (wide range)","LamB1S2","0x0125","((A*256)+B)*2/65536",0,2,"ratio","Auto","","",1,0
+"[OBD2]Lambda B2S1 (wide range)","LamB2S1","0x0128","((A*256)+B)*2/65536",0,2,"ratio","Auto","","",1,0
+"[OBD2]Lambda B2S2 (wide range)","LamB2S2","0x0129","((A*256)+B)*2/65536",0,2,"ratio","Auto","","",1,0
+"[OBD2]Commanded EGR","EGRcmd","0x012C","A*100/255",0,100,"%","Auto","","",1,0
+"[OBD2]EGR Error","EGRerr","0x012D","A*100/128-100",-100,99.2,"%","Auto","","",1,0
+"[OBD2]O2 Sensor B1S1 Current (wide range)","O2cB1S1","0x0134","((C*256)+D)/256-128",-128,128,"mA","Auto","","",1,0
+"[OBD2]O2 Sensor B1S2 Current (wide range)","O2cB1S2","0x0135","((C*256)+D)/256-128",-128,128,"mA","Auto","","",1,0
+"[OBD2]Catalyst Temperature B1S2","CatB1S2","0x013E","((A*256)+B)/10-40",-40,6513.5,"°C","Auto","","",1,0
+"[OBD2]Catalyst Temperature B2S2","CatB2S2","0x013F","((A*256)+B)/10-40",-40,6513.5,"°C","Auto","","",1,0
+"[OBD2]Absolute Throttle Position C","AbsThrC","0x0148","A*100/255",0,100,"%","Auto","","",1,0
+"[OBD2]Accelerator Pedal Position F","PedalF","0x014B","A*100/255",0,100,"%","Auto","","",1,0
+"[OBD2]Time Run With MIL On","MILtime","0x014D","(A*256)+B",0,65535,"min","Auto","","",1,0
+"[OBD2]Time Since Codes Cleared","DTCtime","0x014E","(A*256)+B",0,65535,"min","Auto","","",1,0
+"[OBD2]Maximum Air Flow Rate","MAFmax","0x0150","A*10",0,2550,"g/s","Auto","","",1,0
+"[OBD2]Absolute Evap Vapor Pressure","EvapAbs","0x0153","((A*256)+B)/200",0,327.675,"kPa","Auto","","",1,0
+"[OBD2]Short Term Secondary O2 Trim B1","STSO2B1","0x0155","A*100/128-100",-100,99.2,"%","Auto","","",1,0
+"[OBD2]Long Term Secondary O2 Trim B1","LTSO2B1","0x0156","A*100/128-100",-100,99.2,"%","Auto","","",1,0
+"[OBD2]Short Term Secondary O2 Trim B2","STSO2B2","0x0157","A*100/128-100",-100,99.2,"%","Auto","","",1,0
+"[OBD2]Long Term Secondary O2 Trim B2","LTSO2B2","0x0158","A*100/128-100",-100,99.2,"%","Auto","","",1,0
+"[OBD2]Fuel Rail Absolute Pressure","FRPabs","0x0159","((A*256)+B)*10",0,655350,"kPa","Auto","","",1,0
+"[OBD2]Relative Accelerator Pedal Position","PedalRel","0x015A","A*100/255",0,100,"%","Auto","","",1,0
+"[OBD2]Hybrid Battery Pack Remaining Life","HybBat","0x015B","A*100/255",0,100,"%","Auto","","",1,0
+"[OBD2]Fuel Injection Timing","InjTim","0x015D","((A*256)+B)/128-210",-210,301.992,"°","Auto","","",1,0
+"[OBD2]Engine Fuel Rate","FuelRate","0x015E","((A*256)+B)*0.05",0,3276.75,"L/h","Auto","","",1,0
