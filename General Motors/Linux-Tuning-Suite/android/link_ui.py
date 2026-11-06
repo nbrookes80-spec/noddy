@@ -258,8 +258,9 @@ class LinkScreen(BoxLayout):
         """The saved speed settings, sent once the connection is open. A refusal leaves the adapter's own timing."""
         try:
             protocol = self.saved['adapter_protocol']
-            obd.send_timing(elm, self.saved['adaptive_timing'], self.saved['timeout_ms'],
-                            protocol=None if protocol == '0' else protocol)
+            with self.session.adapter_job():     # the Live reader stands aside until the settings are sent
+                obd.send_timing(elm, self.saved['adaptive_timing'], self.saved['timeout_ms'],
+                                protocol=None if protocol == '0' else protocol)
         except obd.OBDError:
             pass
 

@@ -54,7 +54,8 @@ SIZE_NAMES = {'small': 'Small', 'medium': 'Medium', 'large': 'Large'}
 BAR_HEIGHTS = {'small': 22, 'medium': 32, 'large': 46}
 MIN_BAR_WIDTH = 160        # dp: narrower than this beside the full-screen buttons, the bar goes under them
 
-# The screens of the Android app. Only Scan polls the adapter itself; every other one leaves it to the Live reader.
+# The screens of the Android app. Only Scan polls the adapter itself; on the others the Live reader polls, and a
+# one-off job there (the speed settings) takes the adapter through Session.adapter_job.
 SCREENS = ('shift', 'dyno', 'live', 'scan', 'link', 'sniff', 'agent', 'settings')
 SELF_POLLING = ('scan',)
 RPM_PID = '010C'
@@ -138,6 +139,8 @@ def rpm_source(screen, holds_adapter, light_on, scan_reads_rpm=False):
     - 'none': no reading for the light. That is the case with the light off, while another part holds the adapter
       (`holds_adapter`: the sniffer listening, starting or running its car check), on Scan when Scan does not read
       RPM, and on any screen not in SCREENS, since a screen this rule does not know may use the adapter itself.
+    A one-off job on any screen (the speed settings sent after a connect or from the menu) holds the adapter through
+    Session.adapter_job: the Live reader checks Session.adapter_busy before every round as well as this rule.
     The Elm327 lock also keeps each command whole; this rule decides who may start talking at all.
     """
     if not light_on or holds_adapter or screen not in SCREENS:

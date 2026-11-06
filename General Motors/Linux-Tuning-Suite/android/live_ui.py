@@ -48,6 +48,7 @@ class StreamRunner:
         self._thread = None
         self._idle = threading.Event()   # set while no round is under way
         self._idle.set()
+        session.wait_reader = self.wait_idle   # a one-off adapter job (Session.adapter_job) waits for our round
 
     def start(self):
         if self._thread is None:
@@ -101,7 +102,7 @@ class StreamRunner:
         while not self._stop.is_set():
             self._idle.clear()             # before `paused` is read, so wait_idle cannot miss a round starting
             stream, began = self.stream, time.monotonic()
-            if stream is None or self.paused:
+            if stream is None or self.paused or self.session.adapter_busy:   # adapter_busy: a one-off job has it
                 self._idle.set()
                 time.sleep(0.2)
                 continue

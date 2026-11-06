@@ -1,5 +1,8 @@
 """Which data source the screens read from: the demo drive, a connected adapter, or nothing."""
 
+import threading
+from contextlib import contextmanager
+
 from .demo import DemoSource
 from .session_log import NullLog
 
@@ -18,6 +21,32 @@ class Session:
         self.log = NullLog()   # replaced by a SessionLog when the app starts
         self.data_log = None   # a DataLogger when the app starts; every reading the screens take goes to it
         self.demo.on_values = self._values
+        self._jobs = 0                 # adapter jobs under way (adapter_job)
+        self._jobs_lock = threading.Lock()
+        self.wait_reader = None        # callable(timeout): waits until the Live reader has no round under way
+
+    @property
+    def adapter_busy(self):
+        """True while a one-off job has the adapter. The Live reader does not start a round then."""
+        return self._jobs > 0
+
+    @contextmanager
+    def adapter_job(self, timeout=10.0):
+        """Hold the adapter for a one-off job, such as the speed settings sent after a connect or from the menu.
+
+        The adapter is marked busy first, so the Live reader starts no new round, then the job waits (up to
+        `timeout` seconds, through `wait_reader`) for a round already under way to finish. The adapter is given
+        back however the job ends, so a failed send cannot leave the reader stopped.
+        """
+        with self._jobs_lock:
+            self._jobs += 1
+        try:
+            if self.wait_reader is not None:
+                self.wait_reader(timeout)
+            yield
+        finally:
+            with self._jobs_lock:
+                self._jobs -= 1
 
     def active(self):
         if self.replay is not None:

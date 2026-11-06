@@ -284,8 +284,9 @@ class AppMenu(ModalView):
 
         def work():
             try:
-                sent = obd.send_timing(elm, self.saved['adaptive_timing'], self.saved['timeout_ms'],
-                                       protocol=self.saved['adapter_protocol'])
+                with self.session.adapter_job():     # the Live reader stands aside until the settings are sent
+                    sent = obd.send_timing(elm, self.saved['adaptive_timing'], self.saved['timeout_ms'],
+                                           protocol=self.saved['adapter_protocol'])
                 text, colour = f'Sent: {", ".join(sent) or "nothing (adapter defaults)"}.', STATUS['good']
             except obd.OBDError as exc:
                 text, colour = str(exc), STATUS['bad']

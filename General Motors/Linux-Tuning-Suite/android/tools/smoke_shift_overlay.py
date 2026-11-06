@@ -32,6 +32,7 @@ from tunertoolpro import prefs  # noqa: E402
 from tunertoolpro.scanner import shift_light  # noqa: E402
 from tunertoolpro.scanner.session import Session  # noqa: E402
 
+REAL_MONOTONIC = time.monotonic   # the chime check below moves a fake clock in; this puts the real one back
 SCREENS = ('shift', 'dyno', 'live', 'scan', 'link', 'sniff', 'agent', 'settings')
 
 
@@ -180,7 +181,7 @@ def main():
     # --- the chime: once per due frame, with Live not in front ---------------------------------------------------
     state['screen'] = 'shift'
     clock = Clock_()
-    shift_overlay.time.monotonic = clock
+    time.monotonic = clock                      # shift_overlay reads time.monotonic; the module is shared
     fake = FakeStream()
     runner.stream = fake
     reference = shift_light.ChimeTimer()
@@ -287,9 +288,108 @@ def main():
     # --- off again ---------------------------------------------------------------------------------------------
     live.light.switch.state = 'normal'
     check(overlay.bar.parent is None, 'switched off on the Live card, the bar leaves the screen at once')
-    shift_overlay.time.monotonic = time.monotonic
+    time.monotonic = REAL_MONOTONIC
+    speed_check()
     app_check()
     print('shift overlay smoke passed')
+
+
+class FakeAdapter:
+    """A connected adapter that answers like the demo drive and notes when each poll and set-up command ran."""
+
+    label = 'Live'
+
+    def __init__(self):
+        import threading
+        from tunertoolpro.scanner.demo import DemoSource
+        self._lock = threading.RLock()
+        self._demo = DemoSource()
+        self.transport = None
+        self.traffic = []
+        self.on_traffic = self.on_values = None
+        self.polls, self.commands = [], []
+
+    def poll(self, pid_ids, headers=None):
+        asked = time.monotonic()             # when the reader asked, before it waits for the adapter's lock
+        with self._lock:
+            result = self._demo.poll(pid_ids, headers)
+            self.polls.append((asked, time.monotonic()))
+            return result
+
+    def command(self, command):
+        started = time.monotonic()
+        time.sleep(0.3)                      # a slow adapter answering a set-up command
+        self.commands.append((started, time.monotonic(), command))
+        return 'OK'
+
+    def close(self):
+        pass
+
+
+def speed_check():
+    """The saved speed settings sent after a connect (Link) are an adapter job: the Live reader, running for the
+    light on another screen, must not poll anywhere between the first and the last set-up command."""
+    from link_ui import LinkScreen
+    folder = tempfile.mkdtemp()
+    session = Session()
+    runner = StreamRunner(session, lambda: (None, None))
+    session.listeners.append(runner.source_changed)
+    adapter = FakeAdapter()
+    session.attach(adapter)
+    runner.paused = not shift_light.runner_runs('shift', False, True)     # Shift in front, the light on
+    runner.start()
+    deadline = time.monotonic() + 5
+    while time.monotonic() < deadline and not adapter.polls:
+        time.sleep(0.05)
+    check(adapter.polls, 'speed: the Live reader polls the adapter on Shift for the light')
+    link = LinkScreen(session, os.path.join(folder, 'prefs.json'))
+    link.saved.update(adaptive_timing=True, timeout_ms=200, adapter_protocol='6')
+    link._send_speed(adapter)                # what _connected starts on its thread
+    time.sleep(0.6)                          # a poll that waited for the lock is noted once it gets it
+    first, last = adapter.commands[0][0], adapter.commands[-1][1]
+    overlapping = [p for p in adapter.polls if p[0] < last and p[1] > first]
+    check(len(adapter.commands) == 3, 'speed: Link sends ATAT, ATST and ATSP')
+    check(not overlapping, f'speed: the Live reader did not ask the adapter during the set-up commands '
+                           f'({len(overlapping)} polls asked)')
+    deadline = time.monotonic() + 5
+    count = len(adapter.polls)
+    while time.monotonic() < deadline and len(adapter.polls) == count:
+        time.sleep(0.05)
+    check(len(adapter.polls) > count, 'speed: after the set-up the Live reader polls again')
+
+    # the menu's Send button runs the same job on its own thread, from any screen
+    import threading
+    from types import SimpleNamespace
+    from app_menu import AppMenu
+    adapter.commands.clear()
+    done = threading.Event()
+    menu = SimpleNamespace(session=session, saved=dict(link.saved), apply_button=SimpleNamespace(disabled=False),
+                           speed_status=SimpleNamespace(text='', color=None),
+                           _speed_done=lambda text, colour: done.set())
+    AppMenu._apply_speed(menu)
+    deadline = time.monotonic() + 5
+    while time.monotonic() < deadline and len(adapter.commands) < 3:
+        time.sleep(0.05)
+    time.sleep(0.6)
+    first, last = adapter.commands[0][0], adapter.commands[-1][1]
+    overlapping = [p for p in adapter.polls if p[0] < last and p[1] > first]
+    check(len(adapter.commands) == 3 and not overlapping,
+          f'speed: the menu\'s send also keeps the Live reader off the adapter ({len(overlapping)} polls asked)')
+
+    # a send that fails part-way gives the adapter back, so the reader is not stopped for good
+    from tunertoolpro.link import obd
+
+    def refuse(command):
+        raise obd.OBDError('the adapter refused')
+    adapter.command = refuse
+    link._send_speed(adapter)
+    check(not session.adapter_busy, 'speed: a failed send leaves the adapter free')
+    count = len(adapter.polls)
+    deadline = time.monotonic() + 5
+    while time.monotonic() < deadline and len(adapter.polls) == count:
+        time.sleep(0.05)
+    check(len(adapter.polls) > count, 'speed: and the Live reader polls again after it')
+    runner.stop()
 
 
 def app_check():
