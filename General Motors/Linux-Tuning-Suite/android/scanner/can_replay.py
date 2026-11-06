@@ -10,6 +10,8 @@ import bisect
 import time
 from dataclasses import dataclass, field
 
+from link import obd
+
 from . import dbc, gmlan, pids
 
 CATEGORY = 'Imported'
@@ -175,10 +177,10 @@ class ReplaySource:
         return self.replay.frames[lo:hi]
 
     def read_dtcs(self):
-        return []
+        raise obd.OBDError('A CAN log is playing, not the car. Stop the log to read codes.')
 
     def clear_dtcs(self):
-        pass
+        raise obd.OBDError('A CAN log is playing, not the car. Stop the log first.')
 
     def close(self):
         pass

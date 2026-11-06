@@ -95,6 +95,23 @@ class ElmTests(unittest.TestCase):
         self.assertEqual(set(values), {'010C', '010D'})
         self.assertEqual(set(errors), {'010F'})
 
+    def test_an_imported_can_signal_is_never_sent_to_the_adapter(self):
+        from scanner import pids
+        entry = pids.Pid(pid='CAN0C9.0', name='Imported', category='Imported', unit='', low=0, high=1,
+                         description='', header='', kind='word', decode=lambda raw: raw, source='CAN import',
+                         trusted=False)
+        pids.set_replay([entry])
+        try:
+            sent_before = len(self.fake.received)
+            with self.assertRaises(obd.UnsafeCommand):
+                self.elm.read('CAN0C9.0')
+            values, errors = self.elm.poll(['CAN0C9.0'], headers={'CAN0C9.0': '7E2'})
+            self.assertEqual(values, {})
+            self.assertIn('CAN0C9.0', errors)
+            self.assertEqual(len(self.fake.received), sent_before)
+        finally:
+            pids.set_replay([])
+
     def test_write_commands_are_refused_before_sending(self):
         sent_before = len(self.fake.received)
         for command in ('0902', '0400', 'ATSPA', '14FF00', '1902', '2201FF', 'ATSH7E1',

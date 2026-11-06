@@ -5,10 +5,12 @@ sign, scale (factor and offset), range, unit and multiplexing. Attribute, commen
 ignored. A signal's value is raw * factor + offset, the same as in every DBC reader.
 """
 
+import math
 import re
 from dataclasses import dataclass
 from functools import lru_cache
 
+MAX_BITS = 64                   # a CAN FD signal can be longer, but nothing in this app reads one
 EXTENDED_FLAG = 0x80000000       # DBC sets this bit on the ID of a 29-bit (extended) message
 
 _MESSAGE = re.compile(r'^\s*BO_\s+(\d+)\s+(\S+?)\s*:\s*(\d+)')
@@ -57,7 +59,14 @@ def parse(text):
         found = _SIGNAL.match(line)
         if not found:
             continue
-        signals.append(_signal(message, found))
+        try:
+            signal = _signal(message, found)
+        except (ValueError, OverflowError):
+            continue                     # a line with a number that cannot be read is skipped
+        if signal.length < 1 or signal.length > MAX_BITS or not (
+                math.isfinite(signal.factor) and math.isfinite(signal.offset)):
+            continue
+        signals.append(signal)
     return signals
 
 
@@ -78,9 +87,10 @@ def _signal(message, found):
 
 def _number(text):
     try:
-        return float(text)
+        value = float(text)
     except ValueError:
         return 0.0
+    return value if math.isfinite(value) else 0.0
 
 
 @lru_cache(maxsize=512)

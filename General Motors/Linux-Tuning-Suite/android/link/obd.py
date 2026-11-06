@@ -430,7 +430,10 @@ class Elm327:
     def _poll(self, pids, headers):
         values, errors, retry = {}, {}, []
         for pid in pids:
-            info = catalog.get(pid)
+            info = catalog.CATALOG.get(pid)   # the built-in list only: an imported CAN signal is never read
+            if info is None:     # not a built-in read (for example an imported CAN signal): nothing is sent
+                errors[pid] = f'{pid!r} is not on the read list'
+                continue
             first = headers.get(pid)
             fallback = bool(first and info and first != info.header and pid not in self._header_memory)
             try:
@@ -442,7 +445,7 @@ class Elm327:
                     retry.append(pid)
                 else:
                     errors[pid] = str(exc)
-        for pid in sorted(retry, key=lambda p: catalog.get(p).header):
+        for pid in sorted(retry, key=lambda p: catalog.CATALOG[p].header):
             try:
                 values[pid] = self.read(pid)
             except AdapterLost:
@@ -452,7 +455,7 @@ class Elm327:
         return values, errors
 
     def _read_catalog(self, pid_id, header=None, final=True):
-        pid = catalog.get(pid_id)
+        pid = catalog.CATALOG.get(pid_id)
         if pid is None:
             raise UnsafeCommand(f'{pid_id!r} is not on the read list')
         misses = self._misses.get(pid_id, 0)

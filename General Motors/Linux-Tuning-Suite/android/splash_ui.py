@@ -53,8 +53,12 @@ class SplashOverlay(FloatLayout):
             sound = SoundLoader.load(os.path.join(ASSETS, THEME))
         except Exception:   # no audio on this device: keep the intro silent rather than stop the app
             return None
-        if sound is not None:
+        if sound is None:
+            return None
+        try:
             sound.play()
+        except Exception:
+            return None
         return sound
 
     def _tick(self, dt):
@@ -79,7 +83,10 @@ class SplashOverlay(FloatLayout):
         self._finished = True
         self._event.cancel()
         if self._theme is not None:
-            self._theme.stop()
+            try:
+                self._theme.stop()
+            except Exception:
+                pass
         if self.parent is not None:
             self.parent.remove_widget(self)
         if self.on_done:

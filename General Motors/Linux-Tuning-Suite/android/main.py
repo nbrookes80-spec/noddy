@@ -823,10 +823,12 @@ class TunerToolProApp(App):
         try:
             if not self.link.saved['calais_saved']:   # once only: a car the owner deleted or renamed stays that way
                 calais.ensure_car(cars)
-                self.link.saved['calais_saved'] = True
+                self.link.saved['calais_saved'] = any(p.key == calais.CAR_KEY for p in profiles.list_user(cars))
         except OSError as exc:                       # a folder the app cannot write must not stop the app starting
             self.session.log.write('APP', f'CALAIS TURBO set-up skipped: {exc}')
         key = self.link.saved['scan_profile']
+        if key == calais.CAR_KEY and not any(p.key == key for p in profiles.everything(cars)):
+            key = self.link.saved['scan_profile'] = ''   # the car could not be made: no car chosen, not a missing one
         profile = next((p for p in profiles.everything(cars) if p.key == key), None)
         if profile is not None:
             self.activate_car(profile)
@@ -1058,6 +1060,7 @@ class TunerToolProApp(App):
         """Everything an agent needs to work out a sensor: how it is asked for, what came back, what the car says."""
         info = pids.get(pid_id)
         shown = pid_card.hooks.views.apply(info)
+        imported = pid_id in pids.REPLAY
         stream = self.runner.stream
         latest = stream.latest.get(pid_id) if stream is not None else None
         traffic = self.session.adapter_info(recent=200)['recent']
@@ -1065,7 +1068,9 @@ class TunerToolProApp(App):
                    if traffic[i] == ['TX', pid_id] and traffic[i + 1][0] == 'RX'][-8:]
         profile = self.active_profile()
         scan = car_scan.load_scan(os.path.join(self.user_data_dir, 'car_scans'), profile.key) if profile else None
-        if scan is None:
+        if imported:
+            answer = 'This is a signal decoded from an imported CAN log. The car is never asked for it.'
+        elif scan is None:
             answer = 'The car has not been checked yet (Sniff tab, Check this car).'
         elif pid_id in scan['answered']:
             answer = 'The car answered this sensor when it was checked.'

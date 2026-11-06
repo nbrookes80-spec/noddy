@@ -114,9 +114,8 @@ REPLAY = {}   # the signals of a CAN log being played back (scanner/can_replay.p
 def set_replay(entries):
     """Make these imported signals readable (or, with an empty list, stop them). They are not Mode 01/22 reads,
     so they are kept apart from the catalogue and never reach the adapter."""
-    REPLAY.clear()
-    for pid in entries:
-        REPLAY[pid.pid] = pid
+    global REPLAY
+    REPLAY = {pid.pid: pid for pid in entries}   # a new table, so a reader on another thread never sees it change
 
 
 def get(pid):

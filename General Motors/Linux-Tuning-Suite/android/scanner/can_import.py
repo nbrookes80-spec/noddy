@@ -15,7 +15,8 @@ from . import can_replay, dbc
 
 LOG_SUFFIXES = ('.log', '.csv', '.txt')
 DBC_SUFFIX = '.dbc'
-MAX_BYTES = 8 * 1024 * 1024       # a bigger file is refused: about 230k frames of Python objects on the phone
+MAX_BYTES = 2 * 1024 * 1024       # a bigger file is refused: at the measured 0.5 s per 323 KB this keeps the load to a few
+                                  # seconds, because it runs on the screen's own thread
 
 
 class ImportProblem(Exception):
@@ -56,7 +57,10 @@ def load(log_path, dbc_path, clock=time.monotonic):
     if not frames:
         raise ImportProblem(f'No CAN frames were found in {os.path.basename(log_path)}. Use a candump (.log), '
                             'CSV or SLCAN file.')
-    signals = dbc.parse(dbc_text)
+    try:
+        signals = dbc.parse(dbc_text)
+    except (ValueError, OverflowError, MemoryError):
+        raise ImportProblem(f'{os.path.basename(dbc_path)} could not be read as a DBC file.')
     if not signals:
         raise ImportProblem(f'No signals were found in {os.path.basename(dbc_path)}. Check that it is a DBC file.')
     try:
@@ -75,7 +79,7 @@ def load(log_path, dbc_path, clock=time.monotonic):
 def _read(path):
     try:
         if os.path.getsize(path) > MAX_BYTES:
-            raise ImportProblem(f'{os.path.basename(path)} is larger than 8 MB. Use a shorter capture.')
+            raise ImportProblem(f'{os.path.basename(path)} is larger than 2 MB. Use a shorter capture.')
         with open(path, encoding='utf-8', errors='replace') as fh:
             return fh.read()
     except OSError as exc:

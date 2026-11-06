@@ -266,3 +266,45 @@ class ReplayGuardTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class HostileFileTests(unittest.TestCase):
+    def test_a_signal_line_with_a_number_that_cannot_be_read_is_skipped(self):
+        text = 'BO_ 201 M: 8 X\n SG_ Bad : 0|8@1+ (1.0e,0) [0|1] ""  X\n SG_ Good : 8|8@1+ (1,0) [0|255] "" X\n'
+        self.assertEqual([s.name for s in dbc.parse(text)], ['Good'])
+
+    def test_a_signal_longer_than_64_bits_or_with_a_non_finite_scale_is_skipped(self):
+        text = ('BO_ 201 M: 8 X\n SG_ Long : 0|99999999@1+ (1,0) [0|1] "" X\n'
+                ' SG_ Nan : 0|8@1+ (nan,0) [0|1] "" X\n SG_ Inf : 0|8@1+ (1,inf) [0|1] "" X\n'
+                ' SG_ Good : 8|8@1+ (1,0) [0|255] "" X\n')
+        self.assertEqual([s.name for s in dbc.parse(text)], ['Good'])
+
+    def test_a_file_over_the_limit_is_refused_with_a_message(self):
+        folder = tempfile.mkdtemp()
+        log, dbc_path = os.path.join(folder, 'big.log'), os.path.join(folder, 'a.dbc')
+        with open(log, 'w') as fh:
+            fh.write('x' * (can_import.MAX_BYTES + 1))
+        with open(dbc_path, 'w') as fh:
+            fh.write(DBC_TEXT)
+        with self.assertRaises(can_import.ImportProblem):
+            can_import.load(log, dbc_path)
+
+    def test_reading_or_clearing_codes_while_a_log_plays_says_so(self):
+        from link import obd
+        replay = can_replay.decode([frame(201, [0x10, 0x27, 0x28], 0.0)], dbc.parse(DBC_TEXT))
+        source = can_replay.ReplaySource(replay)
+        with self.assertRaises(obd.OBDError):
+            source.read_dtcs()
+        with self.assertRaises(obd.OBDError):
+            source.clear_dtcs()
+
+    def test_replacing_the_replay_table_does_not_change_one_a_reader_holds(self):
+        replay = can_replay.decode([frame(201, [0x10, 0x27, 0x28], 0.0)], dbc.parse(DBC_TEXT))
+        pids.set_replay(can_replay.catalogue_entries(replay))
+        try:
+            held = pids.REPLAY
+            pids.set_replay([])
+            self.assertTrue(held)
+            self.assertEqual(pids.REPLAY, {})
+        finally:
+            pids.set_replay([])
