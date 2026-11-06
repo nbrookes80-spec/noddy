@@ -4,7 +4,7 @@ Status: implemented on branch `feature/dashboard-bands-units-hud`, not yet teste
 Owner: Nathan (2011 Holden VE Calais Turbo, 6L80E automatic, 3.9 differential).
 
 Terms: Mode 01 and Mode 22 are the standard and GM-specific read requests an OBD adapter sends; a DID is the 16-bit id in a Mode 22 request; PWM is pulse width; 6L80E is the GM 6-speed automatic; the APK is the Android app file; adb copies files to the phone over USB. Live and Scan are the app's sensor screens; Shift is the shift-point tab; the sniffer is the Sniff tab's CAN
-capture; a PID is one logger reading; the TCM is the transmission controller; a DBC file names the signals inside CAN frames.
+capture; a PID is one logger reading; the TCM is the transmission controller; a DBC file names the signals inside CAN frames; a recording is the data-log CSV the app writes of sensor readings; the debug log is a separate text file of what the app and adapter said; "CAN log" always means the imported capture; `valid_id` (`scanner/pids.py`) accepts only read-only Mode 01 and Mode 22 ids, and `CATALOG` is the built-in PID table.
 
 ## Problem statement
 
@@ -43,7 +43,7 @@ capture; a PID is one logger reading; the TCM is the transmission controller; a 
 
 ## Design
 
-Paths are relative to `android/`. Files at the root are named without a folder.
+Paths are relative to `android/`, except `General Motors/T43_6L80E_reference/...`, which is outside it. Files at the root are named without a folder.
 
 ### Car and vehicle (G1, G2)
 
@@ -57,7 +57,7 @@ Paths are relative to `android/`. Files at the root are named without a folder.
   (`vehicle.json` in the app folder) through `tunertoolpro.vehicles` as Holden / '6L80 (2006-Current)' /
   CALAIS TURBO (6L80E). It does this only when the file has no profile and no transmission, so an owner's choice is
   never replaced. `vehicles.save` ignores a folder it cannot write. Its other values are the base profile's own (see R12).
-- `main.restore_car()` calls `ensure_car` once, gated by `prefs['calais_saved']`, and logs an `OSError` instead of
+- `main.restore_car()` calls `ensure_car` on each start until `prefs['calais_saved']` is True, and logs an `OSError` instead of
   stopping. `main.py` calls `ensure_vehicle` on each start, before `SettingsScreen` is built.
 
 ### Start-up settings (G3)
@@ -100,13 +100,14 @@ Paths are relative to `android/`. Files at the root are named without a folder.
 - `scanner/dashboard_layout.py`: group `Imported` (last), and `dashboard_pids()` includes the replay PIDs, so
   Scan shows them.
 - `main.py`: `play_can_log(log, dbc)` and `record_columns()` (the replay PIDs are always logged).
-- `menu_pages.can_card()`: on the menu's "GM and Holden PID lists" page. It lists log files from the sniffer's `captures` folder and
-  from `CAN imports` under the app's storage folder, and DBC files from the same two folders. Play and Stop
-  call `play_can_log`. The folder is created when the menu opens.
+- `menu_pages.can_card()`: on the menu's "GM and Holden PID lists" page. It lists log files (`.log`, `.csv`, `.txt`) and DBC files (`.dbc`)
+  from two folders: the sniffer's `captures` folder (`<user_data_dir>/captures`) and `CAN imports`
+  (`<storage base>/Tuner Tool Info/CAN imports`, from `storage.CAN_IMPORTS`). Play and Stop call `play_can_log`. The
+  `CAN imports` folder is created when the menu opens (`main.open_menu`).
 
 ## Risks and mitigations
 
-- **R1. The Caprice DBC is not the Calais DBC.** `caprice_ppv.dbc` (in `T43_6L80E_reference/caprice-ppv-can-database/`) has messages for 28 of the 52 message IDs in
+- **R1. The Caprice DBC is not the Calais DBC.** `caprice_ppv.dbc` (`General Motors/T43_6L80E_reference/caprice-ppv-can-database/`, outside `android/`) has messages for 28 of the 52 message IDs in
   one of the owner's captures and 29 of the 54 in the other, and it is a different car's file. Signals can decode to the wrong values, and the decoder
   cannot tell. Mitigation: the owner chooses the DBC on each play. Its file name is shown in the load message and in
   each imported sensor's description. Open question Q1 asks for a DBC that is verified for this car.
@@ -116,14 +117,14 @@ Paths are relative to `android/`. Files at the root are named without a folder.
 - **R3. Held values.** A signal that stops arriving keeps its last value on screen. Accepted risk for v1, owner
   Nathan. Follow-up (not in v1): after 5 s with no new reading a card shows its age, and the reading turns grey.
 - **R4. Memory on the phone.** Measured on the desktop: a frame costs about 180 bytes of Python objects and a
-  reading about 100 bytes. The file limit (2 MB, about 57,000 frames) and the reading cap (200,000, about 20 MB)
+  reading about 100 bytes. The file limit (2 MB, about 60,000 frames) and the reading cap (200,000, about 20 MB)
   bound the peak to roughly 30 MB. The reading cap is the limit that bites first on a busy bus: with about 6 signals
   per frame, about 33,000 frames already reach it. Frames are kept only for the DBC's messages and the gear message,
   but `load()` holds every parsed frame (and both texts) until it returns, so the peak is all parsed frames plus the readings, which is the roughly 30 MB above.
-- **R5. Columns fixed at the start of a recording.** A log played after a recording starts is not in that
+- **R5. Columns fixed at the start of a recording.** A CAN log played after a recording starts is not in that
   file. Mitigation: documented in `scanner/data_log.py` (columns are fixed when the recording starts).
 - **R6. A saved car on start for existing installs.** The start-up set changes `scan_profile` once for an
-  install that had another car selected. Mitigation: the owner can select another car in the same menu, and
+  install that had another car selected. Mitigation: the owner can select another car in the menu's "GM and Holden PID lists" page, and
   the choice is kept.
 - **R7. Accidental send.** An imported signal cannot be sent to the car. Layers: `LiveStream` adds the imported ids only
   when the source is a replay; the adapter's read path (`link/obd.py` `_read_catalog` and `_poll`) looks ids up in
@@ -135,7 +136,7 @@ Paths are relative to `android/`. Files at the root are named without a folder.
   `pids.get()` returning None, which the replay fallback defeated; the adapter now looks ids up in `CATALOG` directly.
 - **R8. Unreadable or hostile files.** Both files are read as text with replacement for bad bytes, limited to
   2 MB, and parsed line by line. A signal line whose numbers cannot be read, whose length is over 64 bits, or whose
-  scale or offset is not finite is skipped; any other parse failure in the DBC or the log (for example an unreadable timestamp) becomes an `ImportProblem` message, never a crash.
+  scale or offset is not finite, or that is over 1,000 characters is skipped; any other parse failure in the DBC or the log (for example an unreadable timestamp) becomes an `ImportProblem` message, never a crash. Not read: float signals (`SIG_VALTYPE_` lines) decode as plain integers, and a signal line with no space between the name and the colon is skipped, with no warning (same theme as R1).
 - **R9. No engine data while a log plays.** While a replay is set, Live and Scan read only the log, so a recording made
   then has blank columns for the built-in engine and transmission readings. Mitigation: the Live cards say "not in the
   CAN log", and the debug log names the source (`REPLAY`) when a recording starts.
@@ -155,7 +156,7 @@ Paths are relative to `android/`. Files at the root are named without a folder.
 - **R14. Codes while a log plays.** `ReplaySource.read_dtcs()` and `clear_dtcs()` raise an error that says a CAN log is
   playing, so Scan > Codes cannot show "no stored codes" or report a clear that did not happen.
 - **R15. A car that cannot be made at start.** If the CALAIS car cannot be saved, `calais_saved` stays False so it is tried
-  again next start (and, because that retry has just made the car, it is then also made the active car), and `scan_profile` is cleared rather than left pointing at a car that does not exist. The previous
+  again next start (and, because that retry has just made the car, it is then also made the active car if no car is selected by then), and `scan_profile` is cleared rather than left pointing at a car that does not exist. The previous
   selection is not restored (the start-up set had already replaced it when the file loaded).
 
 ## Test plan
@@ -170,7 +171,7 @@ Paths are relative to `android/`. Files at the root are named without a folder.
   readable messages. `tests/test_prefs.py` was adjusted so its existing tests keep their values.
 - The adapter refusal tests are in `tests/test_obd.py` and `tests/test_can_import.py` (`ReplayGuardTests`); see R7.
 - Not covered by unit tests: the `calais_saved` gate in `main.restore_car()`, the Imported group and
-  `dashboard_pids()`, the header REPLAY colour, the Live "not in the CAN log" text, and the splash music. These are
+  `dashboard_pids()`, `session.set_replay()` and the `REPLAY` status, `main.play_can_log`, `record_columns()`, `menu_pages.can_card`, the header REPLAY colour, the Live "not in the CAN log" text, and the splash music. These are
   checked by hand below.
 - One-off headless Kivy check (not kept in `tests/`): the CAN card and the Live screen build with a replay running.
 - Manual on the phone: install the APK, check the CALAIS car is active, check the TCM cards show on Live,
@@ -200,7 +201,7 @@ Paths are relative to `android/`. Files at the root are named without a folder.
 
 ## Open questions
 
-- Q1. Which DBC describes the owner's Calais? Candidate: `caprice_ppv.dbc`, from the owner's research folder (`T43_6L80E_reference/caprice-ppv-can-database/`).
+- Q1. Which DBC describes the owner's Calais? Candidate: `caprice_ppv.dbc`, from the owner's research folder (`General Motors/T43_6L80E_reference/caprice-ppv-can-database/`, outside `android/`).
   It needs checking against a known reading (for example, the transmission temperature on the scan tool).
 - Q2. Should the last played log and DBC be remembered across starts? Not in v1.
 - Q3. Should imported signals keep their dashboard order and hidden state? Their ids are not `valid_id`, so

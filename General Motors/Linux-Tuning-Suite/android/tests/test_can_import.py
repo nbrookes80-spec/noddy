@@ -264,9 +264,6 @@ class ReplayGuardTests(unittest.TestCase):
         self.assertEqual(len(replay.stamps), len(replay.frames))
 
 
-if __name__ == '__main__':
-    unittest.main()
-
 
 class HostileFileTests(unittest.TestCase):
     def test_a_signal_line_with_a_number_that_cannot_be_read_is_skipped(self):
@@ -318,10 +315,8 @@ class MalformedLogTests(unittest.TestCase):
             fh.write('(1.2.3) can0 0C9#102728\n(.) can0 0C9#102728\n')
         with open(dbc_path, 'w') as fh:
             fh.write(DBC_TEXT)
-        try:
+        with self.assertRaises(can_import.ImportProblem):
             can_import.load(log, dbc_path)
-        except can_import.ImportProblem:
-            pass
 
     def test_the_live_snapshot_survives_new_readings_arriving(self):
         from live import LiveStream
@@ -334,3 +329,7 @@ class MalformedLogTests(unittest.TestCase):
         stream = LiveStream(Source())
         stream.step()
         self.assertIn('CAN0C9.0', stream.snapshot()['values'])
+
+
+if __name__ == '__main__':
+    unittest.main()

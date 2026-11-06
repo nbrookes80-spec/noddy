@@ -440,6 +440,8 @@ class Elm327:
                 values[pid] = self.read(pid, header=first, final=not fallback)
             except AdapterLost:
                 raise
+            except UnsafeCommand as exc:     # the list changed under us: report it, never let it stop the poll
+                errors[pid] = str(exc)
             except OBDError as exc:
                 if fallback:
                     retry.append(pid)

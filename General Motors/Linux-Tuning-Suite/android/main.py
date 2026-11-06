@@ -777,7 +777,10 @@ class TunerToolProApp(App):
                        self.pids_saved, recorder=self.recorder, on_fullscreen=self.set_fullscreen,
                        on_hud=self.set_hud)
         imports = storage.folder(self.storage_base, storage.CAN_IMPORTS)
-        os.makedirs(imports, exist_ok=True)     # so the folder is there to copy files into
+        try:
+            os.makedirs(imports, exist_ok=True)     # so the folder is there to copy files into
+        except OSError as exc:                      # the optional CAN feature must not stop the menu opening
+            self.session.log.write('APP', f'CAN imports folder not made: {exc}')
         menu.can_folders = [os.path.join(self.user_data_dir, 'captures'), imports]
         menu.play_can_log = self.play_can_log
         menu.open()

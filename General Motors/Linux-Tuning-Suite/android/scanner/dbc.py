@@ -10,6 +10,7 @@ import re
 from dataclasses import dataclass
 from functools import lru_cache
 
+MAX_LINE = 1000
 MAX_BITS = 64                   # a CAN FD signal can be longer, but nothing in this app reads one
 EXTENDED_FLAG = 0x80000000       # DBC sets this bit on the ID of a 29-bit (extended) message
 
@@ -49,6 +50,8 @@ def parse(text):
     """Every signal in a DBC file's text, in file order. Returns [] for text with no messages."""
     signals, message = [], None
     for line in text.splitlines():
+        if len(line) > MAX_LINE:
+            continue                 # no real DBC line is this long; skipping it keeps a hostile one from stalling the regex
         head = _MESSAGE.match(line)
         if head:
             raw_id = int(head.group(1))

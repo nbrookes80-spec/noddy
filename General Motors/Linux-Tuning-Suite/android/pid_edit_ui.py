@@ -55,6 +55,10 @@ class PidEditPopup(ModalView):
             self.module_box = spinner(list(MODULES), str(manual_entry.get('header') or 'Auto'))
             widgets += [panel_label('Equation (uses the reply bytes A, B, C, D)', color=MUTED), self.equation_box,
                         panel_label('Module the request is sent to', color=MUTED), self.module_box]
+        elif pid.source == 'CAN import':
+            widgets.append(panel_label(f'{pid.pid} is imported from a CAN log. Nothing is sent to the car for it; '
+                                       'only its name, range and display can be changed.',
+                                       color=MUTED, font_size=dp(12)))
         else:
             widgets.append(panel_label(f'{pid.pid} is a built-in sensor: its equation and module are fixed. '
                                        'Long press a PID you entered yourself to change those.',
