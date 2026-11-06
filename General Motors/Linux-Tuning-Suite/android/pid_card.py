@@ -164,7 +164,8 @@ class PidCard(ButtonBehavior, Card):
         flag = '' if self.pid.verified else '  (unconfirmed)'
         self.name.text = self.shown['name'] + flag
         self.name.color = MUTED if self.pid.verified else ALERT
-        self.value.font_size = dp(28 if mode in ('digital', 'text') else 22)
+        self._number_size = dp(28 if mode in ('digital', 'text') else 22)
+        self.value.font_size = self._number_size
         self.reading.height = dp(52 if mode in ('digital', 'text') else 40)
         self.gauge.configure(mode, self.shown['low'], self.shown['high'], self.shown['redline'], self.shown['cold'],
                              self.shown['good'])
@@ -196,10 +197,12 @@ class PidCard(ButtonBehavior, Card):
                 self.value.text, self.value.color = self._idle, MUTED
             else:
                 self.value.text, self.value.color = 'no reply', ALERT
+            self.value.font_size = dp(16) if self._idle and len(self._idle) > 8 else self._number_size
             self.unit.text = ''
             self.stats_line.text = ''
             self.gauge.update(None, [])
             return
+        self.value.font_size = self._number_size
         value = convert(reading[0])
         number, _unit = format_value(value, reading[1])
         self.value.text = number

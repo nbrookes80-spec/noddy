@@ -265,7 +265,7 @@ class LiveScreen(BoxLayout):
             if pid_id in TCM_PIDS and not self.runner.transmission:
                 idle = 'transmission off'
             elif self.session.replay is not None and pid_id not in pids.REPLAY:
-                idle = 'not in the CAN log'   # a CAN log is playing and it does not carry this reading
+                idle = 'not in log'   # a CAN log is playing and it does not carry this reading
             card.show((entry['value'], entry['unit']) if entry else None, entry['history'] if entry else [],
                       idle=idle)
         lines = [f'[color=#{HEX[s["level"]]}]{s["text"]}[/color]' for s in snap['shifts'][:6] if s['text']]

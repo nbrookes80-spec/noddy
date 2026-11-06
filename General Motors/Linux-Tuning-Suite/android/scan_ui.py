@@ -18,7 +18,7 @@ from kivy.uix.popup import Popup
 import variant
 from link import obd
 from pid_card import HISTORY, PidCard, equalize, fit_columns
-from scanner import dashboard_layout
+from scanner import dashboard_layout, pids
 from ui_kit import GAP, hide, MUTED, Card, button_row, make_button, panel_label, section_title, stack, style_button
 
 VIEWS = ('Live', 'Codes', 'Log')
@@ -235,7 +235,9 @@ class ScanScreen(BoxLayout):
             series = self.history.setdefault(card.pid.pid, deque(maxlen=HISTORY))
             if reading is not None:
                 series.append(reading[0])
-            card.show(reading, series)
+            idle = ('not in log' if reading is None and self.session.replay is not None
+                    and card.pid.pid not in pids.REPLAY else None)    # a log is playing and does not carry it
+            card.show(reading, series, idle=idle)
 
     def read_codes(self):
         source = self.session.active()

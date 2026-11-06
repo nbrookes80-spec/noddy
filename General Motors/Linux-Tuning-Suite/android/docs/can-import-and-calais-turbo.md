@@ -96,7 +96,7 @@ Paths are relative to `android/`, except `General Motors/T43_6L80E_reference/...
   before the TCM readings.
   `snapshot()` covers them. History is created on first use.
 - `live_ui.py`: a replay adds its signals to the Live grid, under the Imported group. Built-in cards that the
-  log does not carry show "not in the CAN log" rather than "no reply".
+  log does not carry show "not in log" rather than "no reply".
 - `scanner/dashboard_layout.py`: group `Imported` (last), and `dashboard_pids()` includes the replay PIDs, so
   Scan shows them.
 - `main.py`: `play_can_log(log, dbc)` and `record_columns()` (the replay PIDs are always logged).
@@ -171,11 +171,11 @@ Paths are relative to `android/`, except `General Motors/T43_6L80E_reference/...
   readable messages. `tests/test_prefs.py` was adjusted so its existing tests keep their values.
 - The adapter refusal tests are in `tests/test_obd.py` and `tests/test_can_import.py` (`ReplayGuardTests`); see R7.
 - Not covered by unit tests: the `calais_saved` gate in `main.restore_car()`, the Imported group and
-  `dashboard_pids()`, `session.set_replay()` and the `REPLAY` status, `main.play_can_log`, `record_columns()`, `menu_pages.can_card`, the header REPLAY colour, the Live "not in the CAN log" text, and the splash music. These are
+  `dashboard_pids()`, `session.set_replay()` and the `REPLAY` status, `main.play_can_log`, `record_columns()`, `menu_pages.can_card`, the header REPLAY colour, the Live "not in log" text, and the splash music. These are
   checked by hand below.
 - One-off headless Kivy check (not kept in `tests/`): the CAN card and the Live screen build with a replay running.
 - Manual on the phone: install the APK, check the CALAIS car is active, check the TCM cards show on Live,
-  play a capture on Live and Scan, record, and compare the log columns; hear the intro theme; see REPLAY in the header and "not in the CAN log" on the built-in cards while a log plays.
+  play a capture on Live and Scan, record, and compare the log columns; hear the intro theme; see REPLAY in the header and "not in log" on the built-in cards while a log plays.
 
 ## Alternatives
 
