@@ -1,7 +1,7 @@
 """One sensor on the Live and Scan screens, and what you can do to it.
 
   tap          choose how it is drawn: text, digital gauge, graph, histogram or analogue gauge
-  long press   edit it: name, unit, range, colour bands (and the equation and module of a PID you entered)
+  long press   edit it: name, unit, range, zones, colour (and the equation and module of a PID you entered)
   triple tap   ask your AI agent about this sensor
 
 `hooks` is set once by the app. It holds the saved display choices and the two actions that need the rest of
@@ -22,7 +22,7 @@ from kivy.uix.widget import Widget
 
 from gauge_ui import GaugeView, height_for
 from tunertoolpro.scanner import pid_view, themes
-from ui_kit import ALERT, GAP, MUTED, TEXT, Card, make_button, panel_label, section_title
+from ui_kit import ALERT, CAUTION, GAP, MUTED, TEXT, Card, make_button, panel_label, section_title
 
 HISTORY = 120
 LONG_PRESS_SECONDS = 0.6
@@ -41,7 +41,7 @@ hooks = Hooks()
 
 _grids = weakref.WeakSet()
 _cards = weakref.WeakSet()
-ZONE_TEXT = {'red': ALERT, 'cold': themes.COLD, 'good': themes.GOOD}   # what colour the number turns in each band
+ZONE_TEXT = {'red': ALERT, 'yellow': CAUTION, 'cold': themes.COLD, 'good': themes.GOOD}   # the number's colour in each zone
 STATS_HEIGHT = 16     # dp: the line of lowest, highest and average under the number
 _stats_on = True
 COLUMN_WIDTH = 170    # dp: a phone turned on its side gets more columns than one held upright
@@ -154,12 +154,12 @@ class PidCard(ButtonBehavior, Card):
     # --- how it looks ----------------------------------------------------------------------------
 
     def apply_view(self):
-        """Take the saved choices for this sensor (name, unit, range, colour bands, display) and redraw."""
+        """Take the saved choices for this sensor (name, unit, range, zones, colour, display) and redraw."""
         views = hooks.views
-        self.shown = views.apply(self.pid) if views is not None else {
-            'name': self.pid.name, 'unit': self.pid.unit, 'low': self.pid.low, 'high': self.pid.high,
-            'redline': None, 'cold': None, 'good': None, 'mode': pid_view.DEFAULT_MODE,
-            'convert': lambda value: value, 'back': lambda value: value}
+        self.shown = views.apply(self.pid) if views is not None else dict(
+            {key: None for key in pid_view.ZONE_KEYS}, name=self.pid.name, unit=self.pid.unit, low=self.pid.low,
+            high=self.pid.high, mode=pid_view.DEFAULT_MODE, color=None,
+            convert=lambda value: value, back=lambda value: value)
         mode = self.shown['mode']
         flag = '' if self.pid.verified else '  (unconfirmed)'
         self.name.text = self.shown['name'] + flag
@@ -167,8 +167,7 @@ class PidCard(ButtonBehavior, Card):
         self._number_size = dp(28 if mode in ('digital', 'text') else 22)
         self.value.font_size = self._number_size
         self.reading.height = dp(52 if mode in ('digital', 'text') else 40)
-        self.gauge.configure(mode, self.shown['low'], self.shown['high'], self.shown['redline'], self.shown['cold'],
-                             self.shown['good'])
+        self.gauge.configure(mode, self.shown['low'], self.shown['high'], self.shown)
         self.stats_line.height = dp(STATS_HEIGHT) if _stats_on else 0
         self.stats_line.opacity = 1 if _stats_on else 0
         # what this display needs: name, number, stats line, picture, and the card's padding and gaps between the 5 children
@@ -206,7 +205,7 @@ class PidCard(ButtonBehavior, Card):
         value = convert(reading[0])
         number, _unit = format_value(value, reading[1])
         self.value.text = number
-        self.value.color = ZONE_TEXT.get(pid_view.zone(value, self.shown), TEXT)
+        self.value.color = ZONE_TEXT.get(pid_view.zone(value, self.shown), pid_view.rgba(self.shown.get('color')) or TEXT)
         self.unit.text = self.shown['unit'] or reading[1]
         low, high, average = (None if x is None else convert(x) for x in (self.stats.low, self.stats.high,
                                                                           self.stats.average))
@@ -271,7 +270,7 @@ class PidCard(ButtonBehavior, Card):
         for mode in pid_view.MODES:
             box.add_widget(make_button(pid_view.MODE_NAMES[mode],
                                        lambda m=mode: self._pick(popup, m), primary=mode == self.shown['mode']))
-        box.add_widget(make_button('Colour bands, name and range...', lambda: self._edit_from(popup)))
+        box.add_widget(make_button('Zones, colour, name and range...', lambda: self._edit_from(popup)))
         box.add_widget(make_button('Reset lowest, highest and average', lambda: self._reset_from(popup)))
         popup.add_widget(box)
         popup.open()

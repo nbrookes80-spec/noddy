@@ -1,6 +1,7 @@
-"""The editor opened by a long press on a sensor: name, unit, range, colour bands (cold, good, red line), and for
-a PID you entered yourself also its equation and module. Display choices are saved to the PidViews file; a PID you
-entered is saved back to its car profile through `save_manual`, which checks it before anything is written.
+"""The editor opened by a long press on a sensor: name, unit, range, zones (red, yellow, blue, green and where each
+starts or ends), a colour, and for a PID you entered yourself also its equation and module. Display choices are
+saved to the PidViews file; a PID you entered is saved back to its car profile through `save_manual`, which checks
+it before anything is written.
 
 The numbers are shown in the units the dashboard uses (C or F, kPa or psi...) and saved in the sensor's own unit.
 Typing a unit of your own into the Unit box means the numbers are in that unit and nothing is converted."""
@@ -10,11 +11,19 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.modalview import ModalView
 from kivy.uix.textinput import TextInput
 
-from tunertoolpro.scanner import manual_pids, torque_csv
+from tunertoolpro.scanner import manual_pids, pid_view, torque_csv
 from settings_ui import spinner
-from ui_kit import GAP, MUTED, RAISED, STATUS, TEXT, Card, button_row, make_button, panel_label, section_title, stack
+from ui_kit import (GAP, MUTED, RAISED, STATUS, TEXT, Card, button_row, make_button, panel_label,
+                    section_title, stack)
 
 MODULES = ('Auto', '7E0', '7E2', '7E3')
+# The zone boxes, top to bottom: the key saved in PidViews and the hint shown in an empty box.
+ZONE_BOXES = (('red_low', 'Empty for none'), ('warn_low', 'Empty for none'), ('cold', 'Empty for none'),
+              ('good', 'Empty for none'), ('good_to', 'Empty for none'), ('warn', 'Empty for none'),
+              ('redline', 'Empty for none'))
+# The colour buttons: a name, and the colour saved (None keeps the theme's own colour).
+SWATCHES = (('White', '#FFFFFF'), ('Cyan', '#00E5FF'), ('Green', '#66CC8C'), ('Orange', '#FF9800'),
+            ('Magenta', '#FF4DD2'), ('None', None))
 
 
 def _field(hint, text=''):
@@ -35,21 +44,26 @@ class PidEditPopup(ModalView):
 
         form = Card()
         form.add_widget(section_title(f'Edit {pid.pid}'))
-        form.add_widget(panel_label('Changes how this sensor is shown. Leave a colour band empty for none.',
+        form.add_widget(panel_label('Changes how this sensor is shown. Leave a zone empty for none.',
                                     color=MUTED, font_size=dp(12)))
         self.shown_unit, self.back = shown['unit'], shown['back']
         self.name_box, self.unit_box = _field('Name', shown['name']), _field('Unit', shown['unit'])
         self.low_box, self.high_box = _field('Minimum', _show(shown['low'])), _field('Maximum', _show(shown['high']))
-        self.cold_box = _field('Empty for no blue band', _show(shown['cold']))
-        self.good_box = _field('Empty for no green band', _show(shown['good']))
-        self.red_box = _field('Empty for no red line', _show(shown['redline']))
         widgets = []
         for label, box in (('Name', self.name_box), ('Unit', self.unit_box), ('Minimum (gauge starts here)', self.low_box),
-                           ('Maximum (gauge ends here)', self.high_box),
-                           ('Cold limit (blue below this value)', self.cold_box),
-                           ('Good limit (green from this value up to the red line)', self.good_box),
-                           ('Red line (the gauge turns red from this value)', self.red_box)):
+                           ('Maximum (gauge ends here)', self.high_box)):
             widgets += [panel_label(label, color=MUTED, font_size=dp(12)), box]
+        widgets.append(section_title('Zones'))
+        unit_note = f'Numbers are in {shown["unit"]}.' if shown['unit'] else 'Numbers are in the sensor\'s own unit.'
+        widgets.append(panel_label(f'Red is for danger, yellow for take care, green for good, blue for cold. {unit_note}',
+                                   color=MUTED, font_size=dp(12)))
+        self.zone_boxes = {}
+        for key, hint in ZONE_BOXES:
+            self.zone_boxes[key] = _field(hint, _show(shown[key]))
+            widgets += [panel_label(pid_view.ZONE_LABELS[key], color=MUTED, font_size=dp(12)), self.zone_boxes[key]]
+        self.color = shown.get('color')
+        self.swatches = {}
+        widgets += [panel_label('Colour of the number and gauge', color=MUTED, font_size=dp(12)), self._swatch_row()]
         if manual_entry is not None:
             self.equation_box = _field('Equation, e.g. (A*256+B)/4', str(manual_entry.get('equation', '')))
             self.module_box = spinner(list(MODULES), str(manual_entry.get('header') or 'Auto'))
@@ -73,6 +87,27 @@ class PidEditPopup(ModalView):
         body.add_widget(button_row(make_button('Close', self.dismiss), make_button('Save', self.save, primary=True)))
         self.add_widget(body)
 
+    def _swatch_row(self):
+        row = BoxLayout(size_hint_y=None, height=dp(44), spacing=dp(4))
+        for name, colour in SWATCHES:
+            button = make_button(name, lambda c=colour: self.pick_colour(c))
+            button.height, button.font_size = dp(44), dp(11)
+            if colour is not None:
+                button.background_color = pid_view.rgba(colour)
+                button.color = (0, 0, 0, 1)
+            self.swatches[colour] = button
+            row.add_widget(button)
+        self.pick_colour(self.color)
+        return row
+
+    def pick_colour(self, colour):
+        """Choose a colour for the number and gauge (None for the theme's own). The chosen button is bold and bracketed."""
+        self.color = colour
+        for key, button in self.swatches.items():
+            name = next(n for n, c in SWATCHES if c == key)
+            chosen = key == colour
+            button.text, button.bold = (f'[{name}]' if chosen else name), chosen
+
     def _number(self, box, label, allow_empty=False):
         text = box.text.strip()
         if not text and allow_empty:
@@ -88,17 +123,15 @@ class PidEditPopup(ModalView):
             own_unit = bool(unit) and unit != self.shown_unit      # a unit typed in: the numbers are in it, unconverted
             back = (lambda value: value) if own_unit else self.back
             low, high = self._number(self.low_box, 'The minimum'), self._number(self.high_box, 'The maximum')
-            redline = self._number(self.red_box, 'The red line', allow_empty=True)
-            cold = self._number(self.cold_box, 'The cold limit', allow_empty=True)
-            good = self._number(self.good_box, 'The good limit', allow_empty=True)
+            zones = {key: self._number(self.zone_boxes[key], pid_view.ZONE_LABELS[key], allow_empty=True)
+                     for key, _hint in ZONE_BOXES}
             if not low < high:
                 raise ValueError('The minimum must be less than the maximum.')
-            if cold is not None and good is not None and not cold <= good:
-                raise ValueError('The cold limit must not be above the good limit.')
-            if redline is not None and (good is not None and not good < redline):
-                raise ValueError('The good limit must be below the red line.')
-            low, high, redline, cold, good = (None if x is None else round(back(x), 6)
-                                              for x in (low, high, redline, cold, good))
+            problems = pid_view.zone_problems(zones)
+            if problems:
+                raise ValueError(' '.join(problems))
+            low, high = round(back(low), 6), round(back(high), 6)
+            zones = {key: None if x is None else round(back(x), 6) for key, x in zones.items()}
             if self.manual is not None:
                 entry = dict(self.manual, name=self.name_box.text.strip(), unit=unit if own_unit else self.pid.unit,
                              equation=self.equation_box.text.strip(), header=self.module_box.text,
@@ -109,7 +142,7 @@ class PidEditPopup(ModalView):
             return
         self.views.update(self.pid.pid, name=self.name_box.text.strip() or None,
                           unit=unit if own_unit and unit != self.pid.unit else None,
-                          low=low, high=high, redline=redline, cold=cold, good=good)
+                          low=low, high=high, color=self.color, **zones)
         self.dismiss()
         self.done()
 
