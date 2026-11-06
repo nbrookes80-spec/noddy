@@ -5,7 +5,7 @@ from pathlib import Path
 
 from tunertoolpro.link import obd
 from tunertoolpro.link.devices import normalise_address
-from tunertoolpro.scanner import calais, dashboard_layout, pid_view, pids, shift_light, themes, units
+from tunertoolpro.scanner import calais, dashboard_layout, page_layout, pid_view, pids, shift_light, themes, units
 
 KINDS = ('Bluetooth', 'Wi-Fi')
 # The start-up set for this version. A saved file from an older version gets it once, on the next start, and the
@@ -24,6 +24,8 @@ DEFAULTS = {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': '192.168.0.10:35
             'dash_columns': 0,            # sensor cards across: 0 fits as many as the screen allows
             'dash_page_size': dashboard_layout.DEFAULT_PAGE_SIZE,   # sensors per full-screen page: 4, 5 or 6
             'dash_order': [],             # the user's sensor order on the dashboard, by PID id (scanner/dashboard_layout.py)
+            'dash_template': page_layout.DEFAULT,   # full-screen page layout for every page (scanner/page_layout.py)
+            'dash_page_templates': {},    # {page index as a string: template id} for pages with their own layout
             'dash_theme': 'classic',      # gauge colours (scanner/themes.py)
             'dash_default_mode': 'digital',   # how a sensor is drawn until its own card is changed
             'dash_stats': True,           # show lowest, highest and average under each sensor's number
@@ -76,6 +78,8 @@ def load(path):
     if data.get('dash_page_size') in dashboard_layout.PAGE_SIZES and not isinstance(data.get('dash_page_size'), bool):
         result['dash_page_size'] = data['dash_page_size']
     result['dash_order'] = dashboard_layout.clean_order(data.get('dash_order'))
+    result['dash_template'] = page_layout.clean_choice(data.get('dash_template'))
+    result['dash_page_templates'] = page_layout.clean_per_page(data.get('dash_page_templates'))
     if data.get('dash_theme') in themes.THEMES:
         result['dash_theme'] = data['dash_theme']
     if data.get('dash_default_mode') in pid_view.MODES:
@@ -117,6 +121,8 @@ def save(path, choices):
     """Write the choices. A place that cannot be written is ignored: nothing here is essential."""
     clean = {key: choices.get(key, DEFAULTS[key]) for key in DEFAULTS}
     clean['hidden_pids'] = _hidden(clean['hidden_pids'])
+    clean['dash_template'] = page_layout.clean_choice(clean['dash_template'])
+    clean['dash_page_templates'] = page_layout.clean_per_page(clean['dash_page_templates'])
     try:
         Path(path).write_text(json.dumps(clean))
     except OSError:

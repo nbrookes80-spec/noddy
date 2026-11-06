@@ -46,8 +46,9 @@ from scan_ui import ScanScreen  # noqa: E402
 from sniffer_ui import SnifferScreen  # noqa: E402
 from app_menu import AppMenu  # noqa: E402
 from hud import Mirror  # noqa: E402
+from layout_ui import LayoutChooser  # noqa: E402
 from settings_ui import SettingsScreen  # noqa: E402
-from tunertoolpro.scanner import calais, can_import, car_scan, dashboard_layout, manual_pids, pid_view, pids, profiles, storage, themes, torque_csv, units  # noqa: E402
+from tunertoolpro.scanner import calais, can_import, car_scan, dashboard_layout, manual_pids, page_layout, pid_view, pids, profiles, storage, themes, torque_csv, units  # noqa: E402
 import pid_card  # noqa: E402
 from tunertoolpro.live import STREAM_PIDS  # noqa: E402
 from pid_edit_ui import PidEditPopup  # noqa: E402
@@ -687,6 +688,7 @@ class TunerToolProApp(App):
         pid_card.hooks.on_changed = self.views_changed
         pid_card.hooks.arranged = self.arranged_ids
         pid_card.hooks.on_order = self.order_changed
+        pid_card.hooks.on_layout = self.open_layout
         self.live = LiveScreen(self.session, self.runner, on_open_link=lambda: self.show('link'),
                                on_fullscreen=self.set_fullscreen)
         self.scan = ScanScreen(self.session, on_fullscreen=self.set_fullscreen)
@@ -897,6 +899,7 @@ class TunerToolProApp(App):
         themes.use(saved['dash_theme'])
         pid_card.set_columns(saved['dash_columns'])
         dashboard_layout.configure(saved['dash_order'], saved['dash_page_size'])
+        page_layout.configure(saved['dash_template'], saved['dash_page_templates'])
         pid_card.set_stats(saved['dash_stats'])
         pid_card.hooks.views.set_default(saved['dash_default_mode'])
         pid_card.hooks.views.set_units({group: saved[f'unit_{group}'] for group in units.CHOICES})
@@ -1026,6 +1029,26 @@ class TunerToolProApp(App):
         self.sensors_changed()
         for screen in (self.live, self.scan):
             Clock.schedule_once(lambda _dt, s=screen: self._restore_scroll(s, kept[id(s)]), 0.05)
+
+    def open_layout(self, scope):
+        """The page layout chooser for the page the 'live' or 'scan' screen is showing (opened from a sensor's menu
+        or the Page layout button)."""
+        screen = self.live if scope == 'live' else self.scan
+        page, count = screen.layout_target()
+        LayoutChooser(count, page, page_layout.for_page(page), lambda template, every: self.layout_picked(
+            page, template, every), all_pages=not self.fullscreen).open()
+
+    def layout_picked(self, page, template, all_pages):
+        """Keep the chosen layout for one page or for all pages, save it, and redraw Live and Scan."""
+        saved = self.link.saved
+        if all_pages:
+            choice = page_layout.apply_to_all(template)
+        else:
+            choice = page_layout.apply_to_page(saved['dash_template'], saved['dash_page_templates'], page, template)
+        saved['dash_template'], saved['dash_page_templates'] = choice
+        prefs.save(self.link.prefs_path, saved)
+        page_layout.configure(*choice)
+        self.sensors_changed()
 
     @staticmethod
     def _restore_scroll(screen, positions):

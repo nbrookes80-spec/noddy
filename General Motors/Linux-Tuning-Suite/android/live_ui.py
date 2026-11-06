@@ -17,12 +17,13 @@ from kivy.uix.label import Label
 from kivy.uix.togglebutton import ToggleButton
 
 from tunertoolpro.live import HEALTH, STREAM_PIDS, TCM_PIDS, LiveStream
-from pid_card import PidCard, equalize, fit_columns
-from tunertoolpro.scanner import dashboard_layout, pids
+from layout_ui import FullPage
+from pid_card import PidCard, equalize, fit_columns, hooks
+from tunertoolpro.scanner import dashboard_layout, page_layout, pids
 from tunertoolpro.scanner.bus_listen import bus_reader
 from shift_light_ui import ShiftLight
 from table_view import HEX
-from ui_kit import (BG, hide, GAP, MUTED, STATUS, TEXT, Card, make_button, panel_label, section_title,
+from ui_kit import (BG, hide, GAP, MUTED, STATUS, TEXT, Card, button_row, make_button, panel_label, section_title,
                     stack, style_button)
 
 ROUND_SECONDS = 0.25     # fastest the background reader goes; a real adapter is slower than this
@@ -140,6 +141,7 @@ class LiveScreen(BoxLayout):
         self.cards = {}
         self.chrome = []
         self.full = False
+        self.full_page = 0          # the page shown in full screen (the Live list is cut into pages like Scan's)
         self.light = ShiftLight()   # kept across renders: its switches and LEDs carry on when the layout is rebuilt
         self.render()
 
@@ -165,10 +167,14 @@ class LiveScreen(BoxLayout):
         self.render()
 
     def set_full(self, on):
-        """Full screen: show only the sensors, with the status, health and shift panels put away."""
+        """Full screen: show only the sensors, one page at a time, placed by the page's layout, with the status,
+        health and shift panels put away."""
+        changed = on != self.full
         self.full = on
         for widget in self.chrome:
             hide(widget, on)
+        if changed:
+            self.render()           # the sensors are drawn differently in full screen
 
     # --- layout ----------------------------------------------------------------------------------
 
@@ -179,6 +185,38 @@ class LiveScreen(BoxLayout):
     def arranged(self):
         """The sensors shown here, in display order: by group, then the user's order."""
         return dashboard_layout.arrange(self.sources())
+
+    def full_pages(self):
+        """The shown sensors cut into full-screen pages."""
+        return dashboard_layout.pages(self.arranged()) or [[]]
+
+    def layout_target(self):
+        """(page index, sensors on it) of the full-screen page the layout chooser is for."""
+        pages = self.full_pages()
+        self.full_page = min(self.full_page, len(pages) - 1)
+        return self.full_page, len(pages[self.full_page])
+
+    def open_layout(self):
+        if hooks.on_layout is not None:
+            hooks.on_layout('live')
+
+    def turn(self, step):
+        self.full_page = (self.full_page + step) % len(self.full_pages())
+        self.render()
+
+    def _full_view(self):
+        """The shift light over the current page, its cards placed by the page's template (layout_ui.FullPage)."""
+        page, _count = self.layout_target()
+        pages = self.full_pages()
+        cards = []
+        for pid in pages[page]:
+            card = PidCard(pid, scope='live')
+            self.cards[pid.pid] = card
+            cards.append(card)
+        view = BoxLayout(orientation='vertical')
+        view.add_widget(self.light)
+        view.add_widget(FullPage(cards, page, len(pages), page_layout.for_page(page), self.turn, self.open_layout))
+        return view
 
     def render(self):
         if self.light.parent is not None:      # the light outlives the layout it sits in, so take it out first
@@ -202,19 +240,6 @@ class LiveScreen(BoxLayout):
             tile = HealthTile(label)
             self.health_tiles[key] = tile
             health.add_widget(tile)
-        grid = BoxLayout(orientation='vertical', spacing=GAP, size_hint_y=None)
-        grid.bind(minimum_height=grid.setter('height'))
-        for group, members in dashboard_layout.runs(self.arranged()):
-            grid.add_widget(panel_label(dashboard_layout.TITLES[group], color=MUTED, font_size=dp(12)))
-            cards = GridLayout(spacing=GAP, size_hint_y=None)
-            fit_columns(cards)
-            cards.bind(minimum_height=cards.setter('height'))
-            for pid in members:
-                card = PidCard(pid, scope='live')
-                self.cards[pid.pid] = card
-                cards.add_widget(card)
-            Clock.schedule_once(lambda dt, g=cards: equalize(g), 0)
-            grid.add_widget(cards)
         self.shift_log = panel_label('No shifts yet.', markup=True, color=TEXT, font_size=dp(13))
         shifts = Card()
         shifts.add_widget(section_title('Shifts against your table'))
@@ -228,11 +253,33 @@ class LiveScreen(BoxLayout):
         self.transmission_button.bind(state=self._transmission_changed)
         readings_title = section_title('Readings')
         full_button = make_button('Full screen: live data only', lambda: self.on_fullscreen and self.on_fullscreen(True))
-        self.chrome = [self.light.settings, self.status, self.transmission_button, full_button, health,
+        layout_button = make_button('Page layout', self.open_layout)
+        full_row = button_row(full_button, layout_button)
+        self.chrome = [self.light.settings, self.status, self.transmission_button, full_row, health,
                        readings_title, shifts, hint]
-        self.add_widget(stack(self.light, self.status, self.transmission_button, full_button, health,
-                              readings_title, grid, shifts, hint))
+        if self.full:
+            self.add_widget(self._full_view())      # the panels above are kept, unseen, for refresh to write to
+        else:
+            self.add_widget(stack(self.light, self.status, self.transmission_button, full_row, health,
+                                  readings_title, self._grid(), shifts, hint))
         self.set_full(self.full)
+
+    def _grid(self):
+        """The sensors in groups, as a list that scrolls (not full screen)."""
+        grid = BoxLayout(orientation='vertical', spacing=GAP, size_hint_y=None)
+        grid.bind(minimum_height=grid.setter('height'))
+        for group, members in dashboard_layout.runs(self.arranged()):
+            grid.add_widget(panel_label(dashboard_layout.TITLES[group], color=MUTED, font_size=dp(12)))
+            cards = GridLayout(spacing=GAP, size_hint_y=None)
+            fit_columns(cards)
+            cards.bind(minimum_height=cards.setter('height'))
+            for pid in members:
+                card = PidCard(pid, scope='live')
+                self.cards[pid.pid] = card
+                cards.add_widget(card)
+            Clock.schedule_once(lambda dt, g=cards: equalize(g), 0)
+            grid.add_widget(cards)
+        return grid
 
     def _style_transmission(self):
         style_button(self.transmission_button, primary=self.transmission_button.state == 'down')

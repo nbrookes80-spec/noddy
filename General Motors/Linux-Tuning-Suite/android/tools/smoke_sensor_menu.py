@@ -80,10 +80,10 @@ def main():
     labels = buttons(menu)
     for text in ('Settings, zones and colour...', 'Display: text, digital, graph, histogram, analogue...',
                  'Move earlier', 'Move later', 'Move to top', 'Move to end', 'Move to page...',
-                 'Page layout... (coming in the next step)', 'Reset lowest, highest and average',
+                 'Page layout...', 'Reset lowest, highest and average',
                  'Ask my AI agent', 'Close'):
         check(text in labels, f'menu has "{text}"')
-    check(labels['Page layout... (coming in the next step)'].disabled, 'Page layout is disabled for now')
+    check(labels['Page layout...'].disabled, 'Page layout is greyed out while the app has not wired a chooser')
     labels['Settings, zones and colour...'].dispatch('on_release')
     check(log['edit'] == 1, 'Settings opens the editor hook')
     menu = menu_of(card)

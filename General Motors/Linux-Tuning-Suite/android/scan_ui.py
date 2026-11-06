@@ -17,8 +17,9 @@ from kivy.uix.popup import Popup
 
 import variant
 from tunertoolpro.link import obd
-from pid_card import HISTORY, PidCard, equalize, fit_columns
-from tunertoolpro.scanner import dashboard_layout, pids
+from layout_ui import FullPage
+from pid_card import HISTORY, PidCard, equalize, fit_columns, hooks
+from tunertoolpro.scanner import dashboard_layout, page_layout, pids
 from ui_kit import GAP, hide, MUTED, Card, button_row, make_button, panel_label, section_title, stack, style_button
 
 VIEWS = ('Live', 'Codes', 'Log')
@@ -70,10 +71,13 @@ class ScanScreen(BoxLayout):
         self.render()
 
     def set_full(self, on):
-        """Full screen: only the sensors of the current page, with the tabs put away."""
+        """Full screen: only the sensors of the current page, placed by the page's layout, with the tabs put away."""
+        changed = on != self.full
         self.full = on
         for widget in (self.bar, *self.chrome):
             hide(widget, on)
+        if changed and self.view == 'Live':
+            self.render()           # the page is drawn differently in full screen
 
     # --- views -----------------------------------------------------------------------------------
 
@@ -118,12 +122,31 @@ class ScanScreen(BoxLayout):
         card.add_widget(make_button('Start demo', lambda: self.session.set_demo(True), primary=True))
         return stack(card)
 
+    def layout_target(self):
+        """(page index, sensors on it) of the page the layout chooser is for."""
+        return self.page, len(self.pages[self.page])
+
+    def open_layout(self):
+        if hooks.on_layout is not None:
+            hooks.on_layout('scan')
+
+    def _full_view(self):
+        """The current page with its cards placed by the page's template (layout_ui.FullPage)."""
+        cards = [PidCard(pid) for pid in self.pages[self.page]]
+        self.cards.extend(cards)
+        self.chrome = []
+        return FullPage(cards, self.page, len(self.pages), page_layout.for_page(self.page), self.turn,
+                        self.open_layout)
+
     def _live_view(self):
+        if self.full:
+            return self._full_view()
         page = self.pages[self.page]
         title = panel_label(f'Page {self.page + 1} of {len(self.pages)}', color=MUTED, halign='center')
         controls = button_row(make_button('Previous', lambda: self.turn(-1)),
                               make_button('Next', lambda: self.turn(1)),
-                              make_button('Full screen', lambda: self.on_fullscreen and self.on_fullscreen(True)))
+                              make_button('Full screen', lambda: self.on_fullscreen and self.on_fullscreen(True)),
+                              make_button('Page layout', self.open_layout))
         grid = BoxLayout(orientation='vertical', spacing=GAP, size_hint_y=None)
         grid.bind(minimum_height=grid.setter('height'))
         for group, members in dashboard_layout.runs(page):
@@ -137,7 +160,8 @@ class ScanScreen(BoxLayout):
                 cards.add_widget(card)
             Clock.schedule_once(lambda dt, g=cards: equalize(g), 0)
             grid.add_widget(cards)
-        hint = panel_label('Tap a sensor to choose how it is shown. Long press for its menu: edit, move, reorder. '
+        hint = panel_label('Tap a sensor to choose how it is shown. Long press for its menu: edit, move, reorder, '
+                           'page layout (used in full screen). '
                            'Triple tap to ask your AI agent about it. Readings marked unconfirmed have not '
                            'been checked against a real vehicle.', color=MUTED, font_size=dp(12))
         self.chrome = [title, hint]

@@ -23,7 +23,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.widget import Widget
 
 from gauge_ui import GaugeView, height_for
-from tunertoolpro.scanner import dashboard_layout, pid_view, themes
+from tunertoolpro.scanner import dashboard_layout, page_layout, pid_view, themes
 from ui_kit import ALERT, CAUTION, GAP, MUTED, TEXT, Card, button_row, make_button, panel_label, section_title
 
 HISTORY = 120
@@ -38,6 +38,7 @@ class Hooks:
         self.on_help = None          # callable(pid): bring the AI agent in on a sensor
         self.arranged = None         # callable(scope): the arranged PID ids of the 'live' or 'scan' screen
         self.on_order = None         # callable(arranged_ids, scope): keep this new order of the 'live' or 'scan' screen, save it, redraw both
+        self.on_layout = None        # callable(scope): open the page layout chooser for the 'live' or 'scan' screen
         self.on_changed = lambda: None
 
 
@@ -47,6 +48,7 @@ _grids = weakref.WeakSet()
 _cards = weakref.WeakSet()
 ZONE_TEXT = {'red': ALERT, 'yellow': CAUTION, 'cold': themes.COLD, 'good': themes.GOOD}   # the number's colour in each zone
 STATS_HEIGHT = 16     # dp: the line of lowest, highest and average under the number
+NAME_HEIGHT = 26      # dp: the sensor's name above the number
 _stats_on = True
 COLUMN_WIDTH = 170    # dp: a phone turned on its side gets more columns than one held upright
 
@@ -129,8 +131,9 @@ class PidCard(ButtonBehavior, Card):
         self._taps = 0
         self._long = self._pending = None
         self._fired = False
+        self._cell = False           # True once a full-page layout has given this card a cell to fill (fit_cell)
         self.name = Label(color=MUTED, font_size=dp(12), halign='left', valign='middle', size_hint_y=None,
-                          height=dp(26), shorten=True, shorten_from='right')
+                          height=dp(NAME_HEIGHT), shorten=True, shorten_from='right')
         self.name.bind(size=lambda w, _: setattr(w, 'text_size', (w.width, w.height)))
         self.value = Label(text='--', color=TEXT, bold=True, halign='left', valign='middle', size_hint_x=None,
                            width=dp(40))
@@ -147,9 +150,10 @@ class PidCard(ButtonBehavior, Card):
                                 height=dp(STATS_HEIGHT), shorten=True, shorten_from='right')
         self.stats_line.bind(size=lambda w, _: setattr(w, 'text_size', (w.width, w.height)))
         self.gauge = GaugeView()
-        for widget in (self.name, self.reading, self.stats_line, self.gauge, Widget()):   # the Widget soaks up the
-            self.add_widget(widget)                                                       # spare height of a tall row
-        self.bind(state=self._state_changed)
+        self._spacer = Widget()      # soaks up the spare height of a tall row
+        for widget in (self.name, self.reading, self.stats_line, self.gauge, self._spacer):
+            self.add_widget(widget)
+        self.bind(state=self._state_changed, size=self._adapt)
         _cards.add(self)
         self.apply_view()
 
@@ -171,17 +175,59 @@ class PidCard(ButtonBehavior, Card):
         self.name.color = MUTED if self.pid.verified else ALERT
         self._number_size = dp(28 if mode in ('digital', 'text') else 22)
         self.value.font_size = self._number_size
-        self.reading.height = dp(52 if mode in ('digital', 'text') else 40)
+        self._reading_height = dp(52 if mode in ('digital', 'text') else 40)
+        self.reading.height = self._reading_height
         self.gauge.configure(mode, self.shown['low'], self.shown['high'], self.shown)
         self.stats_line.height = dp(STATS_HEIGHT) if _stats_on else 0
         self.stats_line.opacity = 1 if _stats_on else 0
         # what this display needs: name, number, stats line, picture, and the card's padding and gaps between the 5 children
         self.natural = (2 * GAP + self.name.height + self.reading.height + self.stats_line.height + height_for(mode)
                         + 4 * self.spacing)
-        self.height = self.natural
+        if self._cell:
+            self._adapt()
+        else:
+            self.height = self.natural
         if isinstance(self.parent, GridLayout):
             Clock.schedule_once(lambda dt: equalize(self.parent) if self.parent else None, 0)
         self._show_reading()
+
+    def fit_cell(self):
+        """Fill a cell of a full-page layout (layout_ui.PageBoard sets the size) instead of keeping a height of
+        its own. The picture takes the spare room, and a small cell drops the parts that do not fit."""
+        self._cell = True
+        self.size_hint = (None, None)
+        self.padding = dp(8)
+        self._adapt()
+
+    def _adapt(self, *_):
+        """Show as much as the cell allows (page_layout.detail_for decides) and stretch the picture to fill it."""
+        if not self._cell or self.height <= 0:
+            return
+        mode = self.shown['mode']
+        stats = dp(STATS_HEIGHT) if _stats_on else 0
+        detail = page_layout.detail_for(self.height, dp(NAME_HEIGHT), self._reading_height, stats,
+                                        min(height_for(mode), dp(24)), self.padding[1], self.spacing)
+        line = detail == 'line'
+        self.orientation = 'horizontal' if line else 'vertical'
+        self.name.size_hint = (0.5, 1) if line else (1, None)
+        self.reading.size_hint = (0.5, 1) if line else (1, None)
+        if not line:                          # a side by side card lets the layout size them; put the heights back
+            self.name.height, self.reading.height = dp(NAME_HEIGHT), self._reading_height
+        show_picture = detail in ('full', 'no_stats')
+        self._part(self.stats_line, detail == 'full' and _stats_on, stats)
+        self._part(self.gauge, show_picture, None)
+        self._part(self._spacer, not (show_picture or line), None)
+
+    @staticmethod
+    def _part(widget, shown, height):
+        """One part of a card in a cell: a fixed height, or None to take the spare room, or nothing at all."""
+        widget.opacity = 1 if shown else 0
+        if not shown:
+            widget.size_hint, widget.size = (None, None), (0, 0)
+        elif height is None:
+            widget.size_hint = (1, 1)
+        else:
+            widget.size_hint, widget.height = (1, None), height
 
     def reset_stats(self):
         self.stats.reset()
@@ -339,7 +385,8 @@ class SensorMenu(ModalView):
         pages = self.reachable_pages()
         more = make_button('Move to page...', self.choose_page)
         box.add_widget(more if pages else _greyed(more))
-        box.add_widget(_greyed(make_button('Page layout... (coming in the next step)', lambda: None)))
+        layout = make_button('Page layout...', lambda: self._then(lambda: hooks.on_layout(card.scope)))
+        box.add_widget(layout if hooks.on_layout is not None else _greyed(layout))
         box.add_widget(make_button('Reset lowest, highest and average', lambda: self._then(card.reset_stats)))
         box.add_widget(make_button('Ask my AI agent', lambda: self._then(card.ask_agent)))
         box.add_widget(make_button('Close', self.dismiss, primary=True))
