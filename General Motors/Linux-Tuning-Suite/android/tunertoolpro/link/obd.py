@@ -11,6 +11,7 @@ Classic (SPP) needs the adapter paired in Android settings first. The Bluetooth 
 on Android, and it has not been tested with a real adapter yet.
 """
 
+import math
 import re
 import socket
 import threading
@@ -40,6 +41,11 @@ CLEAR_DTC = '04'          # only sent when the link was built with allow_clear=T
 CLEAR_REPLY = '44'        # the car's answer to a clear: 44 is 40 (a Mode 04 request) plus 04
 HEADER_COMMANDS = {f'ATSH{h}' for h in catalog.KNOWN_HEADERS}
 ALLOWED |= HEADER_COMMANDS
+
+# Adapter information: ATI is the adapter's firmware name, ATRV the volts at the adapter's own supply pin, ATDP the
+# protocol it settled on. All three only ask the adapter about itself; no request reaches the car. Exact matches only.
+INFO_COMMANDS = ('ATI', 'ATRV', 'ATDP')
+ALLOWED |= set(INFO_COMMANDS)
 
 
 # Adapter timing, for speed settings: ATAT0/1/2 is adaptive timing, ATST sets the response timeout in units of
@@ -72,6 +78,79 @@ def send_timing(elm, adaptive, timeout_ms, protocol=None):
         with elm._lock:
             elm.command(command)
     return sent
+
+
+PROBE = '0100'    # asks which Mode 01 readings the car supports; a protocol that gets no answer to it is no use
+
+
+def protocol_plan(saved):
+    """The commands for a saved protocol choice: try it, check the car answers, else go back to Automatic.
+
+    Returns ['ATSP<n>', '0100', 'ATSP0'] for a CAN protocol, where the last command is sent only when the car did
+    not answer the probe (use_protocol does that), and ['ATSP0'] for Automatic or anything not in PROTOCOLS."""
+    if saved not in PROTOCOLS or saved == '0':
+        return ['ATSP0']
+    return [f'ATSP{saved}', PROBE, 'ATSP0']
+
+
+def use_protocol(elm, saved):
+    """Send protocol_plan(saved) to a connected adapter. The fallback to Automatic is sent only when the probe gets
+    an error word (or no data) back. Returns the commands actually sent."""
+    plan = protocol_plan(saved)
+    sent = []
+    with elm._lock:
+        reply = ''
+        for command in plan[:2]:
+            reply = elm.command(command)
+            sent.append(command)
+        if len(plan) == 3 and any(word in reply.upper() for word in ERROR_WORDS):
+            elm.command(plan[2])
+            sent.append(plan[2])
+    return sent
+
+
+def read_adapter_info(elm):
+    """What the adapter says about itself: {'firmware', 'adapter_volts', 'protocol', 'car_volts'}, text, '' when a
+    command got no usable answer. car_volts is the car's battery from Mode 01 PID 0142, read only if that PID is on
+    the read list (it is not today, so it stays empty). Sends ATI, ATRV and ATDP only."""
+    info = {'firmware': '', 'adapter_volts': '', 'protocol': '', 'car_volts': ''}
+    with elm._lock:
+        for key, command in (('firmware', 'ATI'), ('adapter_volts', 'ATRV'), ('protocol', 'ATDP')):
+            text = ' '.join(elm.command(command).replace('SEARCHING...', '').split())
+            if text and not any(word in text.upper() for word in ERROR_WORDS):
+                info[key] = text[6:] if key == 'protocol' and text.upper().startswith('AUTO, ') else text
+        if '0142' in catalog.CATALOG:
+            try:
+                value, unit = elm.read('0142')
+                info['car_volts'] = f'{value:.1f} {unit}'
+            except OBDError:
+                pass
+    return info
+
+
+# Reconnecting after the adapter drops: wait this many seconds before each try, then give up.
+BACKOFF_SECONDS = (1, 2, 4, 8, 16)
+
+
+def backoff_schedule():
+    """Seconds to wait before each reconnect try, in order. After the last one the app stops and says so."""
+    return BACKOFF_SECONDS
+
+
+# How often the Live reader may start a round of readings, per second.
+RATE_MIN, RATE_MAX, DEFAULT_RATE = 1, 10, 4
+
+
+def clean_rate(rate):
+    """A whole number from RATE_MIN to RATE_MAX (rounded and clamped), or DEFAULT_RATE if it is not a number."""
+    if isinstance(rate, bool) or not isinstance(rate, (int, float)) or not math.isfinite(rate):
+        return DEFAULT_RATE
+    return min(RATE_MAX, max(RATE_MIN, round(rate)))
+
+
+def round_delay(rate):
+    """The shortest time in seconds between the starts of two rounds for "at most `rate` rounds per second"."""
+    return 1.0 / clean_rate(rate)
 
 
 def is_allowed(command, allow_clear=False):

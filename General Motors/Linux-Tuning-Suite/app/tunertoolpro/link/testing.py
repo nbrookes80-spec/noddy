@@ -10,6 +10,9 @@ class FakeElm327:
 
     REPLIES = {
         'ATZ': 'ELM327 v1.5',
+        'ATI': 'ELM327 v1.5', 'ATRV': '12.6V', 'ATDP': 'AUTO, ISO 15765-4 (CAN 11/500)',
+        'ATSP6': 'OK', 'ATSP7': 'OK', 'ATSP8': 'OK', 'ATSP9': 'OK',
+        'ATAT0': 'OK', 'ATAT1': 'OK', 'ATAT2': 'OK', 'ATST32': 'OK',
         'ATE0': 'OK', 'ATL0': 'OK', 'ATH0': 'OK', 'ATS0': 'OK', 'ATSP0': 'OK',
         '0100': 'SEARCHING...\r4100BE3FA813',
         '010C': 'SEARCHING...\r410C1AF8',   # 0x1AF8 / 4 = 1726 rpm
@@ -17,6 +20,7 @@ class FakeElm327:
         '0105': '410578',                   # 120 - 40 = 80 C
         '0111': '411180',                   # 128 * 100 / 255 = 50.2 %
         '010F': 'NO DATA',
+        '0142': '41423138',                 # control module voltage: 0x3138 / 1000 = 12.6 V
         'ATSH7DF': 'OK', 'ATSH7E0': 'OK', 'ATSH7E2': 'OK',
         '221940': '62194078',               # transmission fluid temperature: 120 - 40 = 80 C
         '03': '4303010420',                 # stored codes P0301 and P0420

@@ -698,6 +698,7 @@ class TunerToolProApp(App):
         prefs_path = os.path.join(self.user_data_dir, 'prefs.json')
         self.link = LinkScreen(self.session, prefs_path, on_open_live=lambda: self.show('live'))
         self.runner.set_transmission(self.link.saved['live_transmission'])   # the saved Live choice
+        self.runner.rate = lambda: self.link.saved['read_rate']              # the saved most-rounds-per-second
         self.live.light.attach(self.link.saved, lambda: prefs.save(prefs_path, self.link.saved),
                                os.path.join(self.user_data_dir, 'shift_chime.wav'))   # the shift light's saved choices
         self.apply_dashboard_choices()

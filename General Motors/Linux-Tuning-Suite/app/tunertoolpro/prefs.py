@@ -36,6 +36,8 @@ DEFAULTS = {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': '192.168.0.10:35
             'log_scope': 'all',           # what a recording has columns for: all, live (the Live stream) or dashboard
             'log_rate': 0,                # most rows written per second; 0 writes a row for every round of readings
             'adapter_protocol': '0',      # ATSP choice: 0 automatic, or a CAN protocol number (link/obd.PROTOCOLS)
+            'auto_reconnect': False,      # after the adapter drops, retry after 1, 2, 4, 8 and 16 s (link/obd.backoff_schedule)
+            'read_rate': obd.DEFAULT_RATE,   # most rounds of readings per second, 1 to 10 (link/obd.round_delay)
             'hidden_pids': {},            # {car profile key: [PID ids the user hid from the dashboard]}
             'intro_music': True,          # play the intro theme while the start-up pictures show
             'calais_saved': False,        # the CALAIS TURBO car has been set up once (scanner/calais.py)
@@ -93,6 +95,11 @@ def load(path):
         result['log_rate'] = data['log_rate']
     if data.get('adapter_protocol') in obd.PROTOCOLS:
         result['adapter_protocol'] = data['adapter_protocol']
+    if isinstance(data.get('auto_reconnect'), bool):
+        result['auto_reconnect'] = data['auto_reconnect']
+    rate = data.get('read_rate')
+    if isinstance(rate, int) and not isinstance(rate, bool) and obd.RATE_MIN <= rate <= obd.RATE_MAX:
+        result['read_rate'] = rate
     result['hidden_pids'] = _hidden(data.get('hidden_pids'))
     if isinstance(data.get('light_on'), bool):
         result['light_on'] = data['light_on']

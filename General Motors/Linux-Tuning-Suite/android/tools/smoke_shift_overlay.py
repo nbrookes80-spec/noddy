@@ -348,7 +348,8 @@ def speed_check():
     time.sleep(0.6)                          # a poll that waited for the lock is noted once it gets it
     first, last = adapter.commands[0][0], adapter.commands[-1][1]
     overlapping = [p for p in adapter.polls if p[0] < last and p[1] > first]
-    check(len(adapter.commands) == 3, 'speed: Link sends ATAT, ATST and ATSP')
+    check([c[2] for c in adapter.commands] == ['ATAT1', 'ATST32', 'ATSP6', '0100'],
+          'speed: Link sends ATAT, ATST, ATSP and the 0100 probe, all inside the job')
     check(not overlapping, f'speed: the Live reader did not ask the adapter during the set-up commands '
                            f'({len(overlapping)} polls asked)')
     deadline = time.monotonic() + 5

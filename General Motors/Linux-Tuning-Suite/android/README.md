@@ -20,7 +20,12 @@ read-only link to a scan adapter. Demo mode runs the whole scanner with no adapt
   settings) or **Wi-Fi** (the adapter's own network, usually 192.168.0.10 port 35000). Bluetooth is
   the first choice: the screen lists paired devices (a star marks likely scan adapters), asks for the
   Nearby devices permission, offers to turn Bluetooth on, opens Android's pairing settings, and
-  remembers the last choice. A typed address works too.
+  remembers the last choice. A typed address works too. The adapter card also has the **protocol** (all
+  of Automatic and the four CAN choices; a chosen one is re-sent on each connect and falls back to Automatic
+  if the car does not answer), **Reconnect automatically** (off by default; retries after 1, 2, 4, 8 and
+  16 seconds, says each step, then stops), **Read at most N rounds per second** (1 to 10, default 4), and,
+  once connected, **Adapter information** (firmware, adapter volts, protocol in use, car battery). These
+  send only ATI, ATRV and ATDP, and the car's 0142 read, all read-only.
 - **Live.** Streams the engine (ECU, 7E0) and the transmission (TCM, 7E2) together: 16 readings, five
   health tiles (transmission fluid, engine speed, coolant, line pressure solenoid, gear follows
   command) in green, yellow or red, and each shift compared with your upshift or downshift table.

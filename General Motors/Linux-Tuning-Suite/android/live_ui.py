@@ -17,6 +17,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.togglebutton import ToggleButton
 
+from tunertoolpro.link import obd
 from tunertoolpro.live import HEALTH, STREAM_PIDS, TCM_PIDS, LiveStream
 from layout_ui import FullPage
 from pid_card import PidCard, equalize, fit_columns, hooks
@@ -27,7 +28,6 @@ from table_view import HEX
 from ui_kit import (BG, hide, GAP, MUTED, STATUS, TEXT, Card, button_row, make_button, panel_label, section_title,
                     stack, style_button)
 
-ROUND_SECONDS = 0.25     # fastest the background reader goes; a real adapter is slower than this
 EXTRA_CHUNK = 4          # other sensors read per round while recording
 BACKOFF_SECONDS = 1.0    # wait this long after a failed round before trying again
 
@@ -42,6 +42,7 @@ class StreamRunner:
         self.paused = False
         self.transmission = False     # reading the TCM too is a second conversation with the car, so it is opt-in
         self._source = None
+        self.rate = None              # callable returning the saved most-rounds-per-second (obd.round_delay clamps it)
         self.extras = None            # callable returning more sensors to read while a data log is recording
         self._cursor = 0
         self._stop = threading.Event()
@@ -114,7 +115,7 @@ class StreamRunner:
             if not stream.error:
                 self._read_extras()
             self._idle.set()
-            time.sleep(BACKOFF_SECONDS if stream.error else max(0.0, ROUND_SECONDS - (time.monotonic() - began)))
+            time.sleep(BACKOFF_SECONDS if stream.error else max(0.0, obd.round_delay(self.rate() if self.rate else None) - (time.monotonic() - began)))
 
 
 class HealthTile(Card):

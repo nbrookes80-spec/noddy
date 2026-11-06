@@ -16,8 +16,10 @@ from kivy.uix.togglebutton import ToggleButton
 from tunertoolpro import prefs
 import variant
 from tunertoolpro.link import devices, obd
+from settings_ui import spinner
 from ui_kit import (ACCENT, ALERT, GOOD, MUTED, RAISED, TEXT, Card, button_row, make_button,
                     panel_label, section_title, stack, style_button)
+from ui_kit import toggle as _toggle
 
 _NOTICE = {
     False: 'Read only: this app never sends a write or clear command to the car. It reads the engine computer '
@@ -43,6 +45,8 @@ class LinkScreen(BoxLayout):
         self.kind = self.saved['link_kind']
         self.bt_address = self.saved['bt_address']
         self._connecting = False
+        self._retry_step = None      # None, or how many reconnect tries have been made since the adapter dropped
+        self._retry_event = None
 
         demo_card = Card()
         demo_card.add_widget(section_title('Demo mode'))
@@ -77,7 +81,23 @@ class LinkScreen(BoxLayout):
         self.adapter_card.add_widget(self.panel)
         self.adapter_card.add_widget(self.connect_button)
         self.adapter_card.add_widget(self.auto_button)
+        self.adapter_card.add_widget(_toggle('Reconnect automatically if the adapter drops', self.saved['auto_reconnect'],
+                                             lambda on: self._save(auto_reconnect=on)))
+        self.adapter_card.add_widget(panel_label('Protocol', color=MUTED))
+        self.names = {code: f'{code}: {name}' if code != '0' else name for code, name in obd.PROTOCOLS.items()}
+        self.protocol_box = spinner(list(self.names.values()), self.names[self.saved['adapter_protocol']])
+        self.protocol_box.bind(text=lambda _box, text: self._save(
+            adapter_protocol=next(code for code, label in self.names.items() if label == text)))
+        self.adapter_card.add_widget(self.protocol_box)
+        self.adapter_card.add_widget(panel_label('Read at most this many rounds of readings per second',
+                                                 color=MUTED))
+        self.rate_box = spinner([str(n) for n in range(obd.RATE_MIN, obd.RATE_MAX + 1)],
+                                str(self.saved['read_rate']))
+        self.rate_box.bind(text=lambda _box, text: self._save(read_rate=int(text)))
+        self.adapter_card.add_widget(self.rate_box)
         self.adapter_card.add_widget(self.state)
+        self.info_button = make_button('Adapter information', self.show_info)
+        self.info_text = panel_label('', font_size=dp(13))
 
         self.live_button = make_button('Open Live data', lambda: self.on_open_live and self.on_open_live())
         notice = panel_label(_NOTICE[variant.CLEAR_CODES], font_size=dp(12), color=MUTED)
@@ -185,6 +205,10 @@ class LinkScreen(BoxLayout):
         devices.bind_to_wifi()
         return obd.WifiTransport(host or obd.DEFAULT_WIFI[0], int(port or obd.DEFAULT_WIFI[1])), ''
 
+    def _save(self, **choices):
+        self.saved.update(choices)
+        prefs.save(self.prefs_path, self.saved)
+
     def _style_auto(self):
         style_button(self.auto_button, primary=self.auto_button.state == 'down')
 
@@ -201,7 +225,7 @@ class LinkScreen(BoxLayout):
     def ensure_connected(self):
         """Connect to the saved adapter unless a connection is already open or opening. A screen that needs
         the adapter calls this when it is opened, so each one uses the single shared connection."""
-        if self.session.elm is not None or self._connecting:
+        if self.session.elm is not None or self._connecting or self._retry_step is not None:
             return
         try:
             transport, address = self.make_transport()
@@ -214,6 +238,9 @@ class LinkScreen(BoxLayout):
         threading.Thread(target=self._connect, args=(transport, address), daemon=True).start()
 
     def toggle(self, *_):
+        if self._retry_step is not None:       # the button reads "Stop reconnecting" while retries are under way
+            self.stop_retrying('Stopped reconnecting.')
+            return
         if self.session.elm is not None:
             self.disconnect()
             return
@@ -243,6 +270,7 @@ class LinkScreen(BoxLayout):
 
     def _connected(self, elm, address):
         self._connecting = False
+        self._retry_step = None
         self.connect_button.disabled = False
         self.connect_button.text = 'Disconnect'
         self.state.text = 'Connected. The Live tab is now streaming the engine and transmission.'
@@ -253,31 +281,114 @@ class LinkScreen(BoxLayout):
             threading.Thread(target=self._send_speed, args=(elm,), daemon=True).start()
         if self.live_button.parent is None:
             self.adapter_card.add_widget(self.live_button)
+        if self.info_button.parent is None:
+            self.adapter_card.add_widget(self.info_button)
+            self.adapter_card.add_widget(self.info_text)
 
     def _send_speed(self, elm):
         """The saved speed settings, sent once the connection is open. A refusal leaves the adapter's own timing."""
         try:
-            protocol = self.saved['adapter_protocol']
             with self.session.adapter_job():     # the Live reader stands aside until the settings are sent
-                obd.send_timing(elm, self.saved['adaptive_timing'], self.saved['timeout_ms'],
-                                protocol=None if protocol == '0' else protocol)
+                obd.send_timing(elm, self.saved['adaptive_timing'], self.saved['timeout_ms'])
+                obd.use_protocol(elm, self.saved['adapter_protocol'])   # the saved protocol, else back to Automatic
         except obd.OBDError:
             pass
+
+    def show_info(self, *_):
+        elm = self.session.elm
+        if elm is None:
+            self.info_text.text = 'Not connected.'
+            return
+        self.info_button.disabled = True
+        self.info_text.text = 'Asking the adapter...'
+
+        def work():
+            try:
+                with self.session.adapter_job():     # the Live reader stands aside while the adapter answers
+                    info = obd.read_adapter_info(elm)
+                text = info_text(info)
+            except obd.OBDError as exc:
+                text = str(exc)
+            Clock.schedule_once(lambda dt: self._info_done(text))
+
+        threading.Thread(target=work, daemon=True).start()
+
+    def _info_done(self, text):
+        self.info_button.disabled = False
+        self.info_text.text = text
 
     def _failed(self, message):
         self._connecting = False
         self.connect_button.disabled = False
         self.state.text = message
+        if self._retry_step is not None:
+            self._schedule_retry(f'Still not connected ({message}).')
 
     def disconnect(self):
+        self._cancel_retry()
         self.session.detach()
         devices.release_wifi()
         self.connect_button.text = 'Connect'
         self.state.text = 'Not connected.'
-        if self.live_button.parent is not None:
-            self.adapter_card.remove_widget(self.live_button)
+        for widget in (self.live_button, self.info_button, self.info_text):
+            if widget.parent is not None:
+                self.adapter_card.remove_widget(widget)
+        self.info_text.text = ''
 
     def connection_lost(self, message):
         self.session.log.write('LINK', f'connection lost: {message}')
         self.disconnect()
         self.state.text = f'Connection lost: {message}'
+        if self.saved['auto_reconnect']:
+            self._retry_step = 0
+            self._schedule_retry(f'Connection lost: {message}.')
+
+    # --- reconnecting ----------------------------------------------------------------------------
+
+    def _schedule_retry(self, lead):
+        """Wait the next backoff step, then try again; after the last step, stop and say so."""
+        schedule = obd.backoff_schedule()
+        if self._retry_step >= len(schedule):
+            self._retry_step = None
+            self.connect_button.text = 'Connect'
+            self.state.text = f'{lead} Gave up after {len(schedule)} tries. Tap Connect to try again.'
+            self.session.log.write('LINK', 'reconnect gave up')
+            return
+        delay = schedule[self._retry_step]
+        self.connect_button.text = 'Stop reconnecting'
+        self.state.text = f'{lead} Trying again in {delay} s (try {self._retry_step + 1} of {len(schedule)}).'
+        self._retry_event = Clock.schedule_once(lambda dt: self._retry_now(), delay)
+
+    def _retry_now(self):
+        self._retry_event = None
+        if self._retry_step is None or self._connecting:
+            return
+        number = self._retry_step + 1
+        self._retry_step += 1       # counts this try; _failed then waits for the next step
+        try:
+            transport, address = self.make_transport()
+        except ValueError as exc:
+            self.stop_retrying(str(exc))
+            return
+        self._connecting = True
+        self.session.log.write('LINK', f'reconnecting (try {number}) {self.kind} {address}')
+        self.state.text = f'Reconnecting (try {number} of {len(obd.backoff_schedule())})...'
+        threading.Thread(target=self._connect, args=(transport, address), daemon=True).start()
+
+    def _cancel_retry(self):
+        self._retry_step = None
+        if self._retry_event is not None:
+            self._retry_event.cancel()
+            self._retry_event = None
+
+    def stop_retrying(self, message):
+        self._cancel_retry()
+        self.connect_button.text = 'Connect'
+        self.state.text = message
+
+
+def info_text(info):
+    """The Adapter information card text from obd.read_adapter_info(), one line per item."""
+    lines = [('Adapter', info['firmware']), ('Adapter volts', info['adapter_volts']),
+             ('Protocol in use', info['protocol']), ('Car battery', info['car_volts'])]
+    return '\n'.join(f'{label}: {value or "no answer"}' for label, value in lines)
