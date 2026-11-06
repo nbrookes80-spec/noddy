@@ -276,6 +276,16 @@ class HostileFileTests(unittest.TestCase):
                 ' SG_ Good : 8|8@1+ (1,0) [0|255] "" X\n')
         self.assertEqual([s.name for s in dbc.parse(text)], ['Good'])
 
+    def test_a_message_line_too_long_to_read_does_not_leave_its_signals_under_the_one_before(self):
+        text = ('BO_ 201 First: 8 X\n SG_ A : 0|8@1+ (1,0) [0|255] "" X\n'
+                'BO_ 202 Second' + ' ' * 2000 + ': 8 X\n SG_ B : 0|8@1+ (1,0) [0|255] "" X\n')
+        self.assertEqual([(s.message, s.name) for s in dbc.parse(text)], [('First', 'A')])
+
+    def test_a_message_line_that_cannot_be_read_does_not_leave_its_signals_under_the_one_before(self):
+        text = ('BO_ 201 First: 8 X\n SG_ A : 0|8@1+ (1,0) [0|255] "" X\n'
+                'BO_ notanumber Second: 8 X\n SG_ B : 0|8@1+ (1,0) [0|255] "" X\n')
+        self.assertEqual([(s.message, s.name) for s in dbc.parse(text)], [('First', 'A')])
+
     def test_a_file_over_the_limit_is_refused_with_a_message(self):
         folder = tempfile.mkdtemp()
         log, dbc_path = os.path.join(folder, 'big.log'), os.path.join(folder, 'a.dbc')

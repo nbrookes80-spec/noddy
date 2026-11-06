@@ -82,7 +82,7 @@ Paths are relative to `android/`, except `General Motors/T43_6L80E_reference/...
 - `scanner/can_replay.py` (pure). `decode()` turns frames and signals into a time series per signal. A
   multiplexed signal reads only when its multiplexer matches. `ReplaySource` plays the series back at real
   speed, loops at the end, and answers `poll()`, `read()`, `listen()` as the adapter and demo do. Each signal
-  becomes a `Pid` whose id is `CAN<message ID hex>[X for a 29-bit ID].<index in DBC>` (for example `CAN0C9.0` or `CAN1F5X.3`), with `trusted=False`.
+  becomes a `Pid` whose id is `CAN<message ID hex>[X for a 29-bit ID].<index in DBC>` (for example `CANC9.0` or `CAN1F5X.3`), with `trusted=False`.
 - `scanner/can_import.py`. `load(log, dbc)` reads the files (2 MB limit per file), runs the frame parser in
   `tunertoolpro/canbus/frames.py`, decodes, and returns a `Loaded` with a message for the user. Problems
   raise `ImportProblem` with a message the user can act on.
@@ -97,6 +97,7 @@ Paths are relative to `android/`, except `General Motors/T43_6L80E_reference/...
   `snapshot()` covers them. History is created on first use.
 - `live_ui.py`: a replay adds its signals to the Live grid, under the Imported group. Built-in cards that the
   log does not carry show "not in log" rather than "no reply".
+- `scan_ui.py`: while a log plays, a built-in card with no reading also shows "not in log" (smaller, grey) instead of "no reply".
 - `scanner/dashboard_layout.py`: group `Imported` (last), and `dashboard_pids()` includes the replay PIDs, so
   Scan shows them.
 - `main.py`: `play_can_log(log, dbc)` and `record_columns()` (the replay PIDs are always logged).
@@ -135,11 +136,11 @@ Paths are relative to `android/`, except `General Motors/T43_6L80E_reference/...
   asserts nothing is sent) and `test_live_only_asks_for_imported_signals_from_a_replay`. An earlier version relied on
   `pids.get()` returning None, which the replay fallback defeated; the adapter now looks ids up in `CATALOG` directly.
 - **R8. Unreadable or hostile files.** Both files are read as text with replacement for bad bytes, limited to
-  2 MB, and parsed line by line. A signal line whose numbers cannot be read, whose length is over 64 bits, or whose
-  scale or offset is not finite, or that is over 1,000 characters is skipped; any other parse failure in the DBC or the log (for example an unreadable timestamp) becomes an `ImportProblem` message, never a crash. Not read: float signals (`SIG_VALTYPE_` lines) decode as plain integers, and a signal line with no space between the name and the colon is skipped, with no warning (same theme as R1).
+  2 MB, and parsed line by line. A signal line whose numbers cannot be read, whose length is under 1 or over 64 bits, or whose
+  scale or offset is not finite is skipped, and any DBC line over 1,000 characters is skipped (a skipped or unreadable `BO_` line stops its signals being filed under the message before it); any other parse failure in the DBC or the log (for example an unreadable timestamp) becomes an `ImportProblem` message, never a crash. Not read: float signals (`SIG_VALTYPE_` lines) decode as plain integers, and a signal line with no space between the name and the colon is skipped, with no warning (same theme as R1).
 - **R9. No engine data while a log plays.** While a replay is set, Live and Scan read only the log, so a recording made
-  then has blank columns for the built-in engine and transmission readings. Mitigation: the Live cards say "not in the
-  CAN log", and the debug log names the source (`REPLAY`) when a recording starts.
+  then has blank columns for the built-in engine and transmission readings. Mitigation: the built-in cards on Live and Scan say
+  "not in log", and the debug log names the source (`REPLAY`) when a recording starts.
 - **R10. Imported ids depend on the DBC.** An id is `CAN<message>.<index in DBC>`, so the same id can mean a different
   signal under another DBC, and per-sensor settings saved by id (red line, display mode) would then apply to the
   wrong signal. Accepted for v1: Live and Scan show the DBC file name in each sensor's description. A change of
@@ -161,7 +162,7 @@ Paths are relative to `android/`, except `General Motors/T43_6L80E_reference/...
 
 ## Test plan
 
-- The whole suite has 486 unit tests; those for this feature are in `tests/test_calais.py`, `tests/test_can_import.py` and `tests/test_obd.py`. They cover: the 16 PIDs
+- The whole suite has 488 unit tests; those for this feature are in `tests/test_calais.py`, `tests/test_can_import.py` and `tests/test_obd.py`. They cover: the 16 PIDs
   load from the saved car; the car is created once (`ensure_car` returns None when it exists); the
   'CALAIS TURBO (6L80E)' starter profile is the 6L80 base profile with a 3.9 axle, the base is untouched, and
   registering twice leaves one profile; a new install gets the CALAIS TURBO vehicle; a vehicle already chosen is not
@@ -171,11 +172,11 @@ Paths are relative to `android/`, except `General Motors/T43_6L80E_reference/...
   readable messages. `tests/test_prefs.py` was adjusted so its existing tests keep their values.
 - The adapter refusal tests are in `tests/test_obd.py` and `tests/test_can_import.py` (`ReplayGuardTests`); see R7.
 - Not covered by unit tests: the `calais_saved` gate in `main.restore_car()`, the Imported group and
-  `dashboard_pids()`, `session.set_replay()` and the `REPLAY` status, `main.play_can_log`, `record_columns()`, `menu_pages.can_card`, the header REPLAY colour, the Live "not in log" text, and the splash music. These are
+  `dashboard_pids()`, `session.set_replay()` and the `REPLAY` status, `main.play_can_log`, `record_columns()`, `menu_pages.can_card`, the header REPLAY colour, the "not in log" text on Live and Scan, and the splash music. These are
   checked by hand below.
 - One-off headless Kivy check (not kept in `tests/`): the CAN card and the Live screen build with a replay running.
 - Manual on the phone: install the APK, check the CALAIS car is active, check the TCM cards show on Live,
-  play a capture on Live and Scan, record, and compare the log columns; hear the intro theme; see REPLAY in the header and "not in log" on the built-in cards while a log plays.
+  play a capture on Live and Scan, record, and compare the log columns; hear the intro theme; see REPLAY in the header and "not in log" on the built-in cards of both Live and Scan while a log plays.
 
 ## Alternatives
 

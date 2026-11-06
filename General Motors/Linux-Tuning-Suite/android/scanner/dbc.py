@@ -51,11 +51,16 @@ def parse(text):
     signals, message = [], None
     for line in text.splitlines():
         if len(line) > MAX_LINE:
+            if line.lstrip().startswith('BO_'):
+                message = None   # its signals must not be filed under the message before it
             continue                 # no real DBC line is this long; skipping it keeps a hostile one from stalling the regex
         head = _MESSAGE.match(line)
         if head:
             raw_id = int(head.group(1))
             message = (raw_id & ~EXTENDED_FLAG, bool(raw_id & EXTENDED_FLAG), head.group(2))
+            continue
+        if line.lstrip().startswith('BO_ '):
+            message = None               # a message line that cannot be read: its signals are not the previous message's
             continue
         if message is None:
             continue
