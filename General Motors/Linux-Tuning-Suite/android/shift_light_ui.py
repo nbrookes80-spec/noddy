@@ -1,14 +1,9 @@
-"""The shift light card on the Live screen: the ten LEDs, and the settings that sit under them.
+"""The shift light card on the Live screen (its settings) and the LED strip the app-wide bar draws.
 
-The rules are in scanner/shift_light.py. This file draws the frame it is given, saves the settings through the
-app's saved choices, and plays the chime from a WAV file written beside the app's data the first time it is needed.
-The LEDs stay on the screen in full screen mode, because that is where a driver looks; the settings do not.
+The rules are in scanner/shift_light.py. The LEDs themselves, and the chime, belong to the bar over every screen
+(shift_overlay.py), which reads the same saved choices this card writes; this card only edits them.
 """
 
-import os
-import wave
-
-from kivy.core.audio import SoundLoader
 from kivy.graphics import Color, Ellipse, Rectangle, RoundedRectangle
 from kivy.metrics import dp
 from kivy.uix.boxlayout import BoxLayout
@@ -16,7 +11,7 @@ from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 
 from tunertoolpro.scanner import shift_light
-from ui_kit import MUTED, PANEL, RADIUS, TEXT, Card, button_row, hide, make_button, panel_label, section_title, toggle
+from ui_kit import MUTED, PANEL, RADIUS, TEXT, Card, button_row, make_button, panel_label, section_title, toggle
 
 ROWS = (('start', 'Start RPM'), ('shift', 'Shift RPM'), ('margin', 'Warning before shift'))
 
@@ -53,31 +48,33 @@ class LedStrip(Widget):
 
 
 class ShiftLight(Card):
-    """The shift light card: the switch, the chime, the LEDs and the settings for them."""
+    """The shift light card: the switch, the chime and the settings. The LEDs are on the bar over every screen."""
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.saved, self.save, self.chime_path = {}, None, None
+        self.on_change = None       # called after any change, so the bar over the screens follows at once
         self._loading = False       # True while the switches are being set from the saved choices
-        self._sound, self._sound_failed = None, False
-        self.timer = shift_light.ChimeTimer()
         self.switch = toggle('Shift light', False, self._switched)
         self.chime_switch = toggle('Chime', True, self._chimed)
-        self.strip = LedStrip()
         self.settings = BoxLayout(orientation='vertical', size_hint_y=None, spacing=dp(8))
         self.settings.bind(minimum_height=self.settings.setter('height'))
         self.style_button = make_button('', self._next_style)
         self.theme_button = make_button('', self._next_theme)
         self.values = {}
+        self.position_button = make_button('', self._next_position)
+        self.size_button = make_button('', self._next_size)
         self.settings.add_widget(button_row(self.style_button, self.theme_button))
+        self.settings.add_widget(button_row(self.position_button, self.size_button))
         for key, label in ROWS:
             self.settings.add_widget(self._stepper(key, label))
         self.settings.add_widget(panel_label('The LEDs fill from the start RPM to the shift RPM. Inside the warning '
                                              'window they blink, and at the shift point they all flash. The chime '
-                                             'sounds through the warning.', font_size=dp(12), color=MUTED))
+                                             'sounds through the warning. The bar shows over every screen: tap '
+                                             'it to come here, hold it to move it to the top or bottom.',
+                                             font_size=dp(12), color=MUTED))
         self.add_widget(section_title('Shift light'))
         self.add_widget(button_row(self.switch, self.chime_switch))
-        self.add_widget(self.strip)
         self.add_widget(self.settings)
 
     # --- settings --------------------------------------------------------------------------------
@@ -107,9 +104,12 @@ class ShiftLight(Card):
         self._loading = False
         self.style_button.text = f'Style: {shift_light.STYLE_NAMES[settings["style"]]}'
         self.theme_button.text = f'Colours: {shift_light.THEMES[settings["theme"]]["name"]}'
+        self.position_button.text = f'Bar: {settings["position"].capitalize()}'
+        self.size_button.text = f'Size: {shift_light.SIZE_NAMES[settings["size"]]}'
         for key, _label in ROWS:
             self.values[key].text = f'{settings[key]} rpm'
-        hide(self.strip, self.saved.get('light_on') is not True)
+        if self.on_change is not None:
+            self.on_change()
 
     def _stepper(self, key, label):
         name = Label(text=label, color=MUTED, font_size=dp(13), halign='left', valign='middle', size_hint_x=0.46)
@@ -147,30 +147,13 @@ class ShiftLight(Card):
         current = self._settings()['theme']
         self._store(theme=themes[(themes.index(current) + 1) % len(themes)])
 
-    # --- running ---------------------------------------------------------------------------------
+    def _next_position(self):
+        self._store(position=shift_light.other_position(self._settings()['position']))
 
-    def update(self, rpm, now):
-        """Draw the LEDs for this RPM and play the chime if one is due. Called about ten times a second."""
-        if self.saved.get('light_on') is not True:
-            return
-        settings = self._settings()
-        zones, _part, phase = shift_light.frame(rpm, settings, now)
-        self.strip.show(zones, settings['style'], settings['theme'])
-        if self.timer.due(phase != 'off' and settings['chime'], now):
-            self._play_chime()
+    def _next_size(self):
+        sizes = list(shift_light.SIZES)
+        self._store(size=sizes[(sizes.index(self._settings()['size']) + 1) % len(sizes)])
 
-    def _play_chime(self):
-        if self._sound is None and not self._sound_failed:
-            self._sound = self._load_sound()
-            self._sound_failed = self._sound is None
-        if self._sound is not None:
-            self._sound.play()
-
-    def _load_sound(self):
-        """The chime as a sound the phone can play, or None when it cannot be made or loaded."""
-        try:
-            if not os.path.exists(self.chime_path):
-                shift_light.write_chime(self.chime_path)
-            return SoundLoader.load(self.chime_path)
-        except (OSError, wave.Error):
-            return None
+    def refresh(self):
+        """Show the saved choices again, after the bar changed one (a long press moves it)."""
+        self._show()

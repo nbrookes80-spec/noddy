@@ -33,6 +33,7 @@ POLL_SECONDS = 0.05
 CHECK_SECONDS = 60     # how long 'Check this car' records the bus
 CHECK_LINES = 30       # lines of the result shown on screen; the full report is in the saved files
 REFRESH_SECONDS = 0.2
+RUNNER_WAIT = 10.0     # seconds to let a Live round under way finish before the sniffer takes the adapter
 SOURCES = ('Simulated', 'Adapter', 'Log file')
 LABELS = {'Simulated': 'Demo'}      # the button text, where it has to be shorter than the source's name
 
@@ -78,6 +79,7 @@ class SnifferScreen(BoxLayout):
         self.car_profiles = {}
         self._checking = False
         self.on_open_link = on_open_link
+        self.on_adapter_changed = None      # the app's hook: the adapter was taken or given back
         self.sniff = SnifferSession()
         self.kind = 'Simulated'
         self.log_frames = None
@@ -192,7 +194,7 @@ class SnifferScreen(BoxLayout):
             return
         profile = self.car_profiles[self.car_box.text]
         self._checking = True
-        self.runner.paused = True            # the Live reader must not touch the adapter during the check
+        self._adapter_changed()              # the Live reader must not touch the adapter during the check
         self._check_message(f'Scanning {profile.name}...')
         threading.Thread(target=self._check_work, args=(self.app_session.elm, profile), daemon=True).start()
 
@@ -204,6 +206,7 @@ class SnifferScreen(BoxLayout):
             Clock.schedule_once(lambda dt: self._check_message(f'Recording the bus: {total - elapsed:.0f} s left'))
 
         result, error = None, None
+        self.runner.wait_idle(RUNNER_WAIT)   # let a Live round already under way finish first
         try:
             result = car_check.check(elm, profile, self.data_dir, CHECK_SECONDS, scan_progress, capture_progress)
         except (OBDError, MonitorError, OSError) as exc:
@@ -212,7 +215,7 @@ class SnifferScreen(BoxLayout):
 
     def _check_done(self, result, error):
         self._checking = False
-        self.runner.paused = self.holds_adapter()
+        self._adapter_changed()
         if error:
             self._check_message(f'The check stopped: {error}', error=True)
             return
@@ -254,7 +257,17 @@ class SnifferScreen(BoxLayout):
         self._explain_source()
 
     def holds_adapter(self):
-        return self.sniff.listening_to_adapter
+        """True while this screen has the adapter: listening, starting to listen, or running the car check.
+        The Live reader and the shift light stand aside for as long as this is True (shift_light.runner_runs)."""
+        return self.sniff.listening_to_adapter or self._starting or self._checking
+
+    def _adapter_changed(self):
+        """Tell the app the adapter was taken or given back, so it can let the Live reader run or not. Without
+        the app (a test), the reader simply stands aside while this screen holds the adapter."""
+        if self.on_adapter_changed is not None:
+            self.on_adapter_changed()
+        else:
+            self.runner.paused = self.holds_adapter()
 
     # --- choosing a source -----------------------------------------------------------------------
     def set_kind(self, name):
@@ -369,10 +382,11 @@ class SnifferScreen(BoxLayout):
         rx_filter = self.filter_box.text.strip() or None
         self._starting = True
         self.start_button.text = 'Starting...'
-        self.runner.paused = True       # the Live reader must not touch the adapter from here on
+        self._adapter_changed()         # the Live reader must not touch the adapter from here on
 
         def work():
             error = None
+            self.runner.wait_idle(RUNNER_WAIT)   # let a Live round already under way finish first
             try:
                 self.sniff.start_adapter(elm.transport, protocol, rx_filter, lock=elm._lock, owns_transport=False,
                                          label='Adapter')
@@ -385,7 +399,7 @@ class SnifferScreen(BoxLayout):
     def _adapter_started(self, error):
         self._starting = False
         if error:
-            self.runner.paused = False
+            self._adapter_changed()
             self.start_button.text = 'Start'
             self.state.text = error
             self.state.color = ALERT
@@ -401,7 +415,7 @@ class SnifferScreen(BoxLayout):
 
     def stop(self):
         self.sniff.stop()
-        self.runner.paused = False
+        self._adapter_changed()
         self.start_button.text = 'Start'
         self.state.text = self.sniff.error or f'Stopped. {self.sniff.sniffer.frames_seen} frames seen.'
         self.state.color = ALERT if self.sniff.error else MUTED

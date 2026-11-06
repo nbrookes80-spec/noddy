@@ -19,7 +19,7 @@ import variant
 from tunertoolpro.link import obd
 from layout_ui import FullPage
 from pid_card import HISTORY, PidCard, equalize, fit_columns, hooks
-from tunertoolpro.scanner import dashboard_layout, page_layout, pids
+from tunertoolpro.scanner import dashboard_layout, page_layout, pids, shift_light
 from ui_kit import GAP, hide, MUTED, Card, button_row, make_button, panel_label, section_title, stack, style_button
 
 VIEWS = ('Live', 'Codes', 'Log')
@@ -34,6 +34,7 @@ class ScanScreen(BoxLayout):
         self.page = 0
         self.view = 'Live'
         self.history = {}
+        self.latest = {}          # the last poll's readings, {pid: (value, unit)}; the shift light takes RPM here
         self.cards = []
         self.busy = False
         self.full = False
@@ -56,6 +57,7 @@ class ScanScreen(BoxLayout):
     # --- lifecycle -------------------------------------------------------------------------------
 
     def activate(self):
+        self.latest = {}          # readings from an earlier visit are too old for the shift light
         for card in self.cards:
             card.apply_view()
         if self._event is None:
@@ -260,8 +262,16 @@ class ScanScreen(BoxLayout):
             values, errors = {}, {i: str(exc) for i in ids}
         Clock.schedule_once(lambda dt: self._show(values, errors))
 
+    def rpm_reading(self):
+        """(whether this screen reads engine speed, the latest RPM or None), for the shift light over the screens.
+        Only the Live view polls, and only the sensors on the page shown."""
+        reads = self.view == 'Live' and any(card.pid.pid == shift_light.RPM_PID for card in self.cards)
+        reading = self.latest.get(shift_light.RPM_PID) if reads else None
+        return reads, None if reading is None else reading[0]
+
     def _show(self, values, _errors):
         self.busy = False
+        self.latest = values
         for card in self.cards:
             reading = values.get(card.pid.pid)
             series = self.history.setdefault(card.pid.pid, deque(maxlen=HISTORY))

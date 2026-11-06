@@ -193,7 +193,7 @@ def main():
     check([c.pid.pid for c in board.cards] == [p.pid for p in live_pages[0]] and set(live.cards) == {c.pid.pid for c in board.cards},
           'Live full screen shows page 1 of the Live sensors')
     check_placed(board, 'rows', 'Live page 1 (the all-pages choice applies here too)')
-    check(live.light.parent is not None, 'the shift light stays on the Live page in full screen')
+    check(live.light.parent is None, 'in full screen the Live page leaves the shift light to the app-wide bar')
     live.turn(1)
     settle()
     check([c.pid.pid for c in board_of(live).cards] == [p.pid for p in live_pages[1]], 'Next turns to Live page 2')

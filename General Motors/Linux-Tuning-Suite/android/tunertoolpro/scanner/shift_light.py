@@ -41,10 +41,25 @@ THEMES = {
 }
 
 # The saved settings. The plugin's ranges: start 1000-6000, shift 3000-7000, warning 100-1000, steps of 100.
-DEFAULTS = {'start': 2000, 'shift': 6500, 'margin': 300, 'style': 'bar', 'theme': 'classic', 'chime': True}
+DEFAULTS = {'start': 2000, 'shift': 6500, 'margin': 300, 'style': 'bar', 'theme': 'classic', 'chime': True,
+            'position': 'top', 'size': 'medium'}
 LIMITS = {'start': (1000, 6000), 'shift': (3000, 7000), 'margin': (100, 1000)}
 STEP = 100
 MIN_GAP = 500              # the shift RPM is at least this far above the start RPM
+
+# The bar the LEDs sit in, over every screen of the app: at the top or the bottom, in one of three heights (dp).
+POSITIONS = ('top', 'bottom')
+SIZES = ('small', 'medium', 'large')
+SIZE_NAMES = {'small': 'Small', 'medium': 'Medium', 'large': 'Large'}
+BAR_HEIGHTS = {'small': 22, 'medium': 32, 'large': 46}
+MIN_BAR_WIDTH = 160        # dp: narrower than this beside the full-screen buttons, the bar goes under them
+
+# The screens of the Android app. Only Scan polls the adapter itself; every other one leaves it to the Live reader.
+SCREENS = ('shift', 'dyno', 'live', 'scan', 'link', 'sniff', 'agent', 'settings')
+SELF_POLLING = ('scan',)
+RPM_PID = '010C'
+NOTE_NOT_READ = 'RPM not read on this screen'
+NOTE_ADAPTER_HELD = 'RPM paused: the sniffer has the adapter'
 
 # The chime: a short 1 kHz sine, like the plugin's built-in beep.
 CHIME_RATE = 22050
@@ -67,9 +82,85 @@ def clean(settings):
             out['theme'] = settings['theme']
         if isinstance(settings.get('chime'), bool):
             out['chime'] = settings['chime']
+        if isinstance(settings.get('position'), str) and settings['position'] in POSITIONS:
+            out['position'] = settings['position']
+        if isinstance(settings.get('size'), str) and settings['size'] in SIZES:
+            out['size'] = settings['size']
     if out['shift'] - out['start'] < MIN_GAP:
         out['start'] = out['shift'] - MIN_GAP   # the start moves down, never the shift point
     return out
+
+
+def bar_height(size):
+    """The bar's height in dp for a size choice. An unknown size gets the medium height."""
+    return BAR_HEIGHTS.get(size if isinstance(size, str) else None, BAR_HEIGHTS['medium'])
+
+
+def other_position(position):
+    """Where a long press on the bar moves it: top to bottom and back. An unknown place reads as the top."""
+    return 'top' if position == 'bottom' else 'bottom'
+
+
+def bar_insets(position, fullscreen, mirrored, reserved):
+    """(left, right) space in dp the bar leaves empty so the full-screen Record, HUD and Exit buttons stay clear.
+
+    Those buttons float over the top right corner, outside the HUD mirror. The bar sits inside the mirror, so while
+    the picture is mirrored its gap goes on the left: flipped, that lands under the buttons. Only a top bar in full
+    screen needs a gap; elsewhere the header or nothing is there.
+    """
+    if position != 'top' or not fullscreen:
+        return 0, 0
+    return (reserved, 0) if mirrored else (0, reserved)
+
+
+def bar_gaps(position, fullscreen, mirrored, width, reserved, below):
+    """(left, right, top) space in dp around the bar, so it never covers the full-screen buttons.
+
+    `width` is the screen width, `reserved` the width the buttons take at the top right and `below` their height.
+    Beside the buttons when that leaves the bar at least MIN_BAR_WIDTH (see bar_insets); on a narrow screen the bar
+    keeps its full width and sits under the buttons instead.
+    """
+    left, right = bar_insets(position, fullscreen, mirrored, reserved)
+    if left == right == 0:
+        return 0, 0, 0
+    if width - reserved >= MIN_BAR_WIDTH:
+        return left, right, 0
+    return 0, 0, below
+
+
+def rpm_source(screen, holds_adapter, light_on, scan_reads_rpm=False):
+    """Where the shift light gets engine speed on this screen: 'live', 'scan' or 'none'.
+
+    The rule keeps one conversation with the adapter at a time:
+    - 'live': the Live StreamRunner keeps reading on this screen, and the light uses its latest '010C'.
+    - 'scan': the Scan screen polls the adapter on its own thread, so the Live reader stands aside; the light uses
+      Scan's own readings, but only if Scan is reading '010C'.
+    - 'none': no reading for the light. That is the case with the light off, while another part holds the adapter
+      (`holds_adapter`: the sniffer listening, starting or running its car check), on Scan when Scan does not read
+      RPM, and on any screen not in SCREENS, since a screen this rule does not know may use the adapter itself.
+    The Elm327 lock also keeps each command whole; this rule decides who may start talking at all.
+    """
+    if not light_on or holds_adapter or screen not in SCREENS:
+        return 'none'
+    if screen in SELF_POLLING:
+        return 'scan' if scan_reads_rpm else 'none'
+    return 'live'
+
+
+def runner_runs(screen, holds_adapter, light_on):
+    """True when the Live StreamRunner may read the adapter: on the Live screen as always, and on the other screens
+    the rule above gives to it while the shift light is on. Never while another part holds the adapter, and never
+    on Scan or an unknown screen, whose own polling would otherwise run beside it."""
+    if holds_adapter or screen not in SCREENS or screen in SELF_POLLING:
+        return False
+    return screen == 'live' or rpm_source(screen, holds_adapter, light_on) == 'live'
+
+
+def rpm_note(screen, holds_adapter, light_on, scan_reads_rpm=False):
+    """The short reason shown on a dimmed bar, or '' when the light has a reading source (or is off)."""
+    if not light_on or rpm_source(screen, holds_adapter, light_on, scan_reads_rpm) != 'none':
+        return ''
+    return NOTE_ADAPTER_HELD if holds_adapter else NOTE_NOT_READ
 
 
 def fraction(rpm, start, shift):

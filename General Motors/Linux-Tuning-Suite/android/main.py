@@ -43,6 +43,7 @@ from link_ui import LinkScreen  # noqa: E402
 from splash_ui import SplashOverlay  # noqa: E402
 from live_ui import LiveScreen, StreamRunner  # noqa: E402
 from scan_ui import ScanScreen  # noqa: E402
+from shift_overlay import ShiftOverlay  # noqa: E402
 from sniffer_ui import SnifferScreen  # noqa: E402
 from app_menu import AppMenu  # noqa: E402
 from hud import Mirror  # noqa: E402
@@ -740,18 +741,30 @@ class TunerToolProApp(App):
         self.session.listeners += [self.header.set_source, self.runner.source_changed,
                                    self.live.source_changed, self.scan.source_changed,
                                    self.link.source_changed, self.sniff.source_changed]
+        self.runner.paused = True     # until the first screen is shown and the rule in show() decides
         self.runner.start()
+        self.frame = FloatLayout()
+        self.mirror = Mirror()     # HUD mode flips everything inside it (see hud.py); the full screen buttons sit outside
+        self.full_controls = self.build_full_controls()   # only on the screen while in full screen mode
+        self.overlay = ShiftOverlay(
+            self.link.saved, lambda: prefs.save(prefs_path, self.link.saved),
+            os.path.join(self.user_data_dir, 'shift_chime.wav'), self.runner, root, self.header, bar,
+            screen=lambda: self.manager.current, holds_adapter=self.sniff.holds_adapter,
+            scan_rpm=self.scan.rpm_reading, fullscreen=lambda: self.fullscreen,
+            mirrored=lambda: self.mirror.flipped, reserved=self.full_controls.width + dp(12),
+            below=self.full_controls.height + dp(4), on_open=self.open_light_settings)
+        self.overlay.bar.on_long = self.move_light_bar
+        self.live.light.on_change = self.overlay.tick      # the bar follows a change on the Live card at once
+        self.sniff.on_adapter_changed = self.overlay.apply_runner
         Clock.schedule_interval(self.update_cursor, 1.0)
         Clock.schedule_interval(self.check_connection, 2.0)
         Clock.schedule_interval(self.tick_recording, 1.0)
         Clock.schedule_interval(lambda dt: self.recorder.publish_debug(), 120.0)
-        self.show('shift')
-        Clock.schedule_once(lambda dt: self.link.auto_connect(), 1.0)   # after the first screen is drawn
-        self.frame = FloatLayout()
-        self.mirror = Mirror()     # HUD mode flips everything inside it (see hud.py); the full screen buttons sit outside
-        self.mirror.add_widget(root)
+        self.mirror.add_widget(root)   # the shift light bar is a row of root, so it is mirrored with the picture
         self.frame.add_widget(self.mirror)
-        self.full_controls = self.build_full_controls()   # only on the screen while in full screen mode
+        self.show('shift')
+        self.overlay.start()       # the shift light over every screen; it decides when the Live reader may run
+        Clock.schedule_once(lambda dt: self.link.auto_connect(), 1.0)   # after the first screen is drawn
         self.frame.add_widget(SplashOverlay(music=self.link.saved['intro_music']))
         return self.frame
 
@@ -853,9 +866,10 @@ class TunerToolProApp(App):
         self.header.set_source(self.session.status)
         for key, nav in self.navs.items():
             nav.set_active(key == name)
-        # the adapter is used only by the screen the user opened: Live polls only on its own screen, and the
-        # sniffer owns the adapter while it listens, so the Live reader stands aside then
-        self.runner.paused = name != 'live' or self.sniff.holds_adapter()
+        # one part talks to the adapter at a time (shift_light.runner_runs): the Live reader reads on Live, and on
+        # the other screens while the shift light is on, but stands aside on Scan, which polls the adapter itself,
+        # and while the sniffer has the adapter
+        self.overlay.apply_runner()
         for key in ('live', 'scan', 'link', 'sniff', 'agent'):
             screen = getattr(self, key)
             (screen.activate if name == key else screen.deactivate)()
@@ -957,6 +971,20 @@ class TunerToolProApp(App):
         self.show_hud()
         return row
 
+    def open_light_settings(self):
+        """A tap on the shift light bar: the Live screen, scrolled to the shift light settings."""
+        if self.fullscreen:
+            self.set_fullscreen(False)
+        if self.manager.current != 'live':
+            self.show('live')
+        self.live.show_light_settings()
+
+    def move_light_bar(self):
+        """A long press on the shift light bar moves it between the top and the bottom, and says so."""
+        self.overlay.move()
+        self.live.light.refresh()
+        self.notice(f'Shift light bar moved to the {self.link.saved["light_position"]}.')
+
     def set_hud(self, on):
         """HUD mode on or off: full screen shows mirrored, to read as a reflection on the windscreen."""
         saved = self.link.saved
@@ -970,6 +998,8 @@ class TunerToolProApp(App):
         style_button(self.hud_button, primary=self.link.saved['hud_mirror'])
         self.hud_button.size_hint_y, self.hud_button.height = None, dp(30)
         self.mirror.flipped = self.fullscreen and self.link.saved['hud_mirror']
+        if hasattr(self, 'overlay'):
+            self.overlay.place()       # in full screen the bar leaves the buttons' corner free, mirrored or not
 
     def set_fullscreen(self, on):
         """Show only the live sensors: no title bar, no tabs, no panels. Back or Exit returns."""

@@ -1,8 +1,9 @@
 """The Live screen: the engine and transmission streaming together, with green, yellow and red health.
 
 A StreamRunner reads in the background whenever there is a data source (the demo drive or a connected
-adapter), so the Shift tables can show where the car is even while another tab is open. It pauses
-while the Scan tab is in front, so the two do not compete for the adapter.
+adapter). Whether it may read is decided in one place, shift_light.runner_runs (applied by shift_overlay.py): on
+the Live screen, and on the other screens while the shift light is on, but never on Scan (which polls the adapter
+itself) or while the sniffer has the adapter, so two parts never talk to the adapter at once.
 """
 
 import threading
@@ -28,7 +29,6 @@ from ui_kit import (BG, hide, GAP, MUTED, STATUS, TEXT, Card, button_row, make_b
 
 ROUND_SECONDS = 0.25     # fastest the background reader goes; a real adapter is slower than this
 EXTRA_CHUNK = 4          # other sensors read per round while recording
-LIGHT_TICK = 0.1         # seconds between shift light frames: fast enough for the 0.10 s flash
 BACKOFF_SECONDS = 1.0    # wait this long after a failed round before trying again
 
 
@@ -46,6 +46,8 @@ class StreamRunner:
         self._cursor = 0
         self._stop = threading.Event()
         self._thread = None
+        self._idle = threading.Event()   # set while no round is under way
+        self._idle.set()
 
     def start(self):
         if self._thread is None:
@@ -90,10 +92,17 @@ class StreamRunner:
         except Exception as exc:   # a lost adapter is caught by the next Live round
             self.session.log.write('ERR', f'data log extras: {type(exc).__name__}: {exc}')
 
+    def wait_idle(self, timeout):
+        """Wait until no round is under way, so a part taking the adapter (the sniffer) starts after the reader's
+        last command, not in the middle of its round. Set `paused` first. True if idle within `timeout` seconds."""
+        return self._idle.wait(timeout)
+
     def _loop(self):
         while not self._stop.is_set():
+            self._idle.clear()             # before `paused` is read, so wait_idle cannot miss a round starting
             stream, began = self.stream, time.monotonic()
             if stream is None or self.paused:
+                self._idle.set()
                 time.sleep(0.2)
                 continue
             try:
@@ -103,6 +112,7 @@ class StreamRunner:
                 self.session.log.write('ERR', f'live reader: {stream.error}')
             if not stream.error:
                 self._read_extras()
+            self._idle.set()
             time.sleep(BACKOFF_SECONDS if stream.error else max(0.0, ROUND_SECONDS - (time.monotonic() - began)))
 
 
@@ -137,12 +147,11 @@ class LiveScreen(BoxLayout):
         self.on_open_link = on_open_link
         self.on_fullscreen = on_fullscreen
         self._event = None
-        self._light_event = None
         self.cards = {}
         self.chrome = []
         self.full = False
         self.full_page = 0          # the page shown in full screen (the Live list is cut into pages like Scan's)
-        self.light = ShiftLight()   # kept across renders: its switches and LEDs carry on when the layout is rebuilt
+        self.light = ShiftLight()   # the shift light settings, kept across renders; the LEDs are on the app-wide bar
         self.render()
 
     # --- lifecycle -------------------------------------------------------------------------------
@@ -152,19 +161,20 @@ class LiveScreen(BoxLayout):
             card.apply_view()       # pick up a display or red line changed on another screen
         if self._event is None:
             self._event = Clock.schedule_interval(self.refresh, 0.5)
-        if self._light_event is None:
-            self._light_event = Clock.schedule_interval(self.tick_light, LIGHT_TICK)
 
     def deactivate(self):
         if self._event is not None:
             self._event.cancel()
             self._event = None
-        if self._light_event is not None:
-            self._light_event.cancel()
-            self._light_event = None
 
     def source_changed(self, _status=None):
         self.render()
+
+    def show_light_settings(self):
+        """Bring the shift light settings into view (a tap on the bar over the screens comes here)."""
+        scroller = getattr(self, 'scroller', None)
+        if scroller is not None and self.light.parent is not None:
+            Clock.schedule_once(lambda dt: scroller.scroll_to(self.light, padding=dp(8)), 0.1)
 
     def set_full(self, on):
         """Full screen: show only the sensors, one page at a time, placed by the page's layout, with the status,
@@ -205,7 +215,8 @@ class LiveScreen(BoxLayout):
         self.render()
 
     def _full_view(self):
-        """The shift light over the current page, its cards placed by the page's template (layout_ui.FullPage)."""
+        """The current page, its cards placed by the page's template (layout_ui.FullPage). The shift light is the
+        app-wide bar over it."""
         page, _count = self.layout_target()
         pages = self.full_pages()
         cards = []
@@ -213,10 +224,7 @@ class LiveScreen(BoxLayout):
             card = PidCard(pid, scope='live')
             self.cards[pid.pid] = card
             cards.append(card)
-        view = BoxLayout(orientation='vertical')
-        view.add_widget(self.light)
-        view.add_widget(FullPage(cards, page, len(pages), page_layout.for_page(page), self.turn, self.open_layout))
-        return view
+        return FullPage(cards, page, len(pages), page_layout.for_page(page), self.turn, self.open_layout)
 
     def render(self):
         if self.light.parent is not None:      # the light outlives the layout it sits in, so take it out first
@@ -230,7 +238,8 @@ class LiveScreen(BoxLayout):
                                         'and transmission computers, or start the demo drive.', color=MUTED))
             card.add_widget(make_button('Start demo', lambda: self.session.set_demo(True), primary=True))
             card.add_widget(make_button('Open Link', lambda: self.on_open_link and self.on_open_link()))
-            self.add_widget(stack(card))
+            self.scroller = stack(card, self.light)    # the light's settings are reachable with no data source too
+            self.add_widget(self.scroller)
             return
         self.status = panel_label('Starting...', color=MUTED, font_size=dp(12))
         self.health_tiles = {}
@@ -258,10 +267,12 @@ class LiveScreen(BoxLayout):
         self.chrome = [self.light.settings, self.status, self.transmission_button, full_row, health,
                        readings_title, shifts, hint]
         if self.full:
+            self.scroller = None
             self.add_widget(self._full_view())      # the panels above are kept, unseen, for refresh to write to
         else:
-            self.add_widget(stack(self.light, self.status, self.transmission_button, full_row, health,
-                                  readings_title, self._grid(), shifts, hint))
+            self.scroller = stack(self.light, self.status, self.transmission_button, full_row, health,
+                                  readings_title, self._grid(), shifts, hint)
+            self.add_widget(self.scroller)
         self.set_full(self.full)
 
     def _grid(self):
@@ -290,12 +301,6 @@ class LiveScreen(BoxLayout):
         self.status.text = ''
 
     # --- updating --------------------------------------------------------------------------------
-
-    def tick_light(self, _dt):
-        """The shift light reads engine speed on its own clock, so its flash and blink are not held up by the readings."""
-        stream = self.runner.stream
-        reading = stream.latest.get('010C') if stream is not None else None
-        self.light.update(None if reading is None else reading[0], time.monotonic())
 
     def refresh(self, _dt):
         stream = self.runner.stream
