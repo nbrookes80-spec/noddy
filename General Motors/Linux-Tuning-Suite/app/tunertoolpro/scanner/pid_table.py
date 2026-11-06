@@ -18,8 +18,10 @@ ROWS = [
      'Engine load calculation (Speed Density custom OS)',
      'Auto', 'word', lambda x: x * 100.0 / 65536.0),
     ('010B', 'MAP Sensor', 'Turbo', 'kPa', 0.0, 300.0,
-     'Manifold Absolute Pressure - scaled for the installed 3 Bar sensor (factory sensor is 1 Bar; do not use factory scaling)',
-     'Auto', 'byte', lambda x: x / 255.0 * 300.0),
+     'Manifold Absolute Pressure - scaled for the Proflow PFEFI-MAP2 2.7 Bar sensor (312.50 linear, -11.25 offset; '
+     'sensor confirmed by the owner, scaling not yet checked against a gauge). Only right on a custom OS that scales '
+     'PID 0B this way; a factory OS reports plain kPa. Read at 0 V (byte 0) gives -11.25, shown as 0.',
+     'Auto', 'byte', lambda x: max(0.0, x / 255.0 * 312.50 - 11.25)),
     ('010E', 'Ignition Timing Advance', 'Engine', '°BTDC', -64.0, 64.0,
      'Current spark timing advance (SAE PID 0x0E)',
      'Auto', 'byte', lambda x: x / 2.0 - 64.0),
