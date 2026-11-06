@@ -3,6 +3,7 @@
 import os
 
 from kivy.clock import Clock
+from kivy.core.audio import SoundLoader
 from kivy.graphics import Color, Rectangle
 from kivy.metrics import dp
 from kivy.uix.floatlayout import FloatLayout
@@ -14,17 +15,19 @@ from ui_kit import ACCENT, BG, MUTED
 
 ASSETS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets')
 INTRO = ['intro_side.png', 'intro_bay.png']
+THEME = 'intro_theme.ogg'    # the intro music, played while the pictures show (prefs: intro_music)
 
 
 class SplashOverlay(FloatLayout):
     """Sits on top of the whole app until the plan finishes or the user taps."""
 
-    def __init__(self, plan=None, on_done=None, **kwargs):
+    def __init__(self, plan=None, on_done=None, music=False, **kwargs):
         super().__init__(**kwargs)
         self.plan = plan or SplashPlan(INTRO)
         self.on_done = on_done
         self._elapsed = 0.0
         self._finished = False
+        self._theme = self._start_theme() if music else None
         with self.canvas.before:
             Color(*BG)
             self._back = Rectangle(pos=self.pos, size=self.size)
@@ -43,6 +46,16 @@ class SplashOverlay(FloatLayout):
 
     def _resize(self, *_):
         self._back.pos, self._back.size = self.pos, self.size
+
+    def _start_theme(self):
+        """Play the intro music. A phone that cannot play it simply shows the pictures without sound."""
+        try:
+            sound = SoundLoader.load(os.path.join(ASSETS, THEME))
+        except Exception:   # no audio on this device: keep the intro silent rather than stop the app
+            return None
+        if sound is not None:
+            sound.play()
+        return sound
 
     def _tick(self, dt):
         self._elapsed += dt
@@ -65,6 +78,8 @@ class SplashOverlay(FloatLayout):
             return
         self._finished = True
         self._event.cancel()
+        if self._theme is not None:
+            self._theme.stop()
         if self.parent is not None:
             self.parent.remove_widget(self)
         if self.on_done:

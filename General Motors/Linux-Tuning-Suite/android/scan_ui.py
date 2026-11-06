@@ -18,7 +18,7 @@ from kivy.uix.popup import Popup
 import variant
 from link import obd
 from pid_card import HISTORY, PidCard, equalize, fit_columns
-from scanner import pids
+from scanner import dashboard_layout
 from ui_kit import GAP, hide, MUTED, Card, button_row, make_button, panel_label, section_title, stack, style_button
 
 VIEWS = ('Live', 'Codes', 'Log')
@@ -85,7 +85,7 @@ class ScanScreen(BoxLayout):
 
     def _refresh_pages(self):
         """Rebuild the dashboard pages from the active profile, so a car check or a new profile shows at once."""
-        self.pages = pids.monitor_pages() or [[]]
+        self.pages = dashboard_layout.pages(dashboard_layout.arrange(dashboard_layout.dashboard_pids())) or [[]]
         self.page = min(self.page, len(self.pages) - 1)
 
     def render(self):
@@ -116,14 +116,19 @@ class ScanScreen(BoxLayout):
         controls = button_row(make_button('Previous', lambda: self.turn(-1)),
                               make_button('Next', lambda: self.turn(1)),
                               make_button('Full screen', lambda: self.on_fullscreen and self.on_fullscreen(True)))
-        grid = GridLayout(spacing=GAP, size_hint_y=None)
-        fit_columns(grid)
+        grid = BoxLayout(orientation='vertical', spacing=GAP, size_hint_y=None)
         grid.bind(minimum_height=grid.setter('height'))
-        for pid in page:
-            card = PidCard(pid)
-            self.cards.append(card)
-            grid.add_widget(card)
-        Clock.schedule_once(lambda dt: equalize(grid), 0)
+        for group, members in dashboard_layout.runs(page):
+            grid.add_widget(panel_label(dashboard_layout.TITLES[group], color=MUTED, font_size=dp(12)))
+            cards = GridLayout(spacing=GAP, size_hint_y=None)
+            fit_columns(cards)
+            cards.bind(minimum_height=cards.setter('height'))
+            for pid in members:
+                card = PidCard(pid)
+                self.cards.append(card)
+                cards.add_widget(card)
+            Clock.schedule_once(lambda dt, g=cards: equalize(g), 0)
+            grid.add_widget(cards)
         hint = panel_label('Tap a sensor to choose how it is shown. Long press to edit it or set a red line. '
                            'Triple tap to ask your AI agent about it. Readings marked unconfirmed have not '
                            'been checked against a real vehicle.', color=MUTED, font_size=dp(12))

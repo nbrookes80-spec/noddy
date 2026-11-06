@@ -47,7 +47,7 @@ from sniffer_ui import SnifferScreen  # noqa: E402
 from app_menu import AppMenu  # noqa: E402
 from hud import Mirror  # noqa: E402
 from settings_ui import SettingsScreen  # noqa: E402
-from scanner import car_scan, manual_pids, pid_view, pids, profiles, storage, themes, torque_csv, units  # noqa: E402
+from scanner import car_scan, dashboard_layout, manual_pids, pid_view, pids, profiles, storage, themes, torque_csv, units  # noqa: E402
 import pid_card  # noqa: E402
 from live import STREAM_PIDS  # noqa: E402
 from pid_edit_ui import PidEditPopup  # noqa: E402
@@ -746,7 +746,7 @@ class TunerToolProApp(App):
         self.mirror.add_widget(root)
         self.frame.add_widget(self.mirror)
         self.full_controls = self.build_full_controls()   # only on the screen while in full screen mode
-        self.frame.add_widget(SplashOverlay())
+        self.frame.add_widget(SplashOverlay(music=self.link.saved['intro_music']))
         return self.frame
 
     def show_car(self):
@@ -853,6 +853,7 @@ class TunerToolProApp(App):
         saved = self.link.saved
         themes.use(saved['dash_theme'])
         pid_card.set_columns(saved['dash_columns'])
+        dashboard_layout.configure(saved['dash_order'], saved['dash_page_size'])
         pid_card.set_stats(saved['dash_stats'])
         pid_card.hooks.views.set_default(saved['dash_default_mode'])
         pid_card.hooks.views.set_units({group: saved[f'unit_{group}'] for group in units.CHOICES})

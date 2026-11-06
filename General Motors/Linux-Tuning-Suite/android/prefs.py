@@ -5,7 +5,7 @@ from pathlib import Path
 
 from link import obd
 from link.devices import normalise_address
-from scanner import pid_view, pids, shift_light, themes, units
+from scanner import dashboard_layout, pid_view, pids, shift_light, themes, units
 
 KINDS = ('Bluetooth', 'Wi-Fi')
 DEFAULTS = {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': '192.168.0.10:35000', 'auto_connect': False,
@@ -15,6 +15,8 @@ DEFAULTS = {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': '192.168.0.10:35
             'scan_profile': '',
             'debug_log': True,            # write a log file of each run, to bring back when something goes wrong
             'dash_columns': 0,            # sensor cards across: 0 fits as many as the screen allows
+            'dash_page_size': dashboard_layout.DEFAULT_PAGE_SIZE,   # sensors per full-screen page: 4, 5 or 6
+            'dash_order': [],             # the user's sensor order on the dashboard, by PID id (scanner/dashboard_layout.py)
             'dash_theme': 'classic',      # gauge colours (scanner/themes.py)
             'dash_default_mode': 'digital',   # how a sensor is drawn until its own card is changed
             'dash_stats': True,           # show lowest, highest and average under each sensor's number
@@ -26,6 +28,7 @@ DEFAULTS = {'link_kind': 'Bluetooth', 'bt_address': '', 'wifi': '192.168.0.10:35
             'log_rate': 0,                # most rows written per second; 0 writes a row for every round of readings
             'adapter_protocol': '0',      # ATSP choice: 0 automatic, or a CAN protocol number (link/obd.PROTOCOLS)
             'hidden_pids': {},            # {car profile key: [PID ids the user hid from the dashboard]}
+            'intro_music': True,          # play the intro theme while the start-up pictures show
             'light_on': False,            # the shift light on the Live screen (scanner/shift_light.py)
             **{f'light_{key}': value for key, value in shift_light.DEFAULTS.items()}}
 TIMEOUT_CHOICES_MS = (0, 100, 200, 400)
@@ -52,7 +55,7 @@ def load(path):
         result['auto_connect'] = data['auto_connect']
     if isinstance(data.get('wifi'), str) and data['wifi'].strip():
         result['wifi'] = data['wifi'].strip()
-    for key in ('live_transmission', 'adaptive_timing', 'debug_log', 'dash_stats', 'hud_mirror'):
+    for key in ('live_transmission', 'adaptive_timing', 'debug_log', 'dash_stats', 'hud_mirror', 'intro_music'):
         if isinstance(data.get(key), bool):
             result[key] = data[key]
     if data.get('timeout_ms') in TIMEOUT_CHOICES_MS:
@@ -61,6 +64,9 @@ def load(path):
         result['scan_profile'] = data['scan_profile'][:80]
     if data.get('dash_columns') in COLUMN_CHOICES and not isinstance(data.get('dash_columns'), bool):
         result['dash_columns'] = data['dash_columns']
+    if data.get('dash_page_size') in dashboard_layout.PAGE_SIZES and not isinstance(data.get('dash_page_size'), bool):
+        result['dash_page_size'] = data['dash_page_size']
+    result['dash_order'] = dashboard_layout.clean_order(data.get('dash_order'))
     if data.get('dash_theme') in themes.THEMES:
         result['dash_theme'] = data['dash_theme']
     if data.get('dash_default_mode') in pid_view.MODES:

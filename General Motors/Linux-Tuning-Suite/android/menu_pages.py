@@ -10,11 +10,12 @@ import os
 
 from kivy.clock import Clock
 from kivy.metrics import dp
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
 
 import pid_card
-from scanner import car_scan, manual_pids, pid_view, pids, predefined, profiles, themes, units
+from scanner import car_scan, dashboard_layout, manual_pids, pid_view, pids, predefined, profiles, themes, units
 from settings_ui import spinner
 from tunertoolpro import vehicles
 from ui_kit import MUTED, RAISED, STATUS, TEXT, Card, make_button, panel_label, section_title, style_button, toggle
@@ -42,6 +43,55 @@ def _redraw():
 
 
 # --- Dashboard layout and themes -------------------------------------------------------------------
+
+def page_layout_cards(menu):
+    """Sensors per full-screen page, and the order the sensors come in within each group."""
+    saved = menu.saved
+    card = Card()
+    card.add_widget(section_title('Full-screen pages'))
+    card.add_widget(panel_label('Sensors per page on the Scan tab. Sensors are grouped TCM, ECU, Fuel, Air and '
+                                'Boost; move a sensor up or down inside its group.', color=MUTED, font_size=dp(12)))
+    sizes = spinner([f'{n} per page' for n in dashboard_layout.PAGE_SIZES], f"{saved['dash_page_size']} per page")
+
+    def set_size(_box, text):
+        size = int(text.split()[0])
+        menu._save(dash_page_size=size)
+        dashboard_layout.configure(menu.saved['dash_order'], size)
+        _redraw()
+    sizes.bind(text=set_size)
+    card.add_widget(sizes)
+
+    rows = BoxLayout(orientation='vertical', spacing=dp(6), size_hint_y=None)
+    rows.bind(minimum_height=rows.setter('height'))
+    card.add_widget(rows)
+
+    def move(ordered, index, step):
+        target = index + step
+        if not 0 <= target < len(ordered):
+            return
+        if dashboard_layout.group_of(ordered[target]) != dashboard_layout.group_of(ordered[index]):
+            return                          # a sensor only moves within its own group
+        ordered[index], ordered[target] = ordered[target], ordered[index]
+        ids = [p.pid for p in ordered]
+        menu._save(dash_order=ids)
+        dashboard_layout.configure(ids, menu.saved['dash_page_size'])
+        _redraw()
+        draw()
+
+    def draw():
+        rows.clear_widgets()
+        ordered = dashboard_layout.arrange(dashboard_layout.dashboard_pids())
+        for index, pid in enumerate(ordered):
+            line = BoxLayout(size_hint_y=None, height=dp(44), spacing=dp(6))
+            name = f'{pid.name} ({dashboard_layout.group_of(pid)})'
+            line.add_widget(panel_label(name, color=TEXT, font_size=dp(13)))
+            line.add_widget(make_button('Up', lambda i=index: move(ordered, i, -1)))
+            line.add_widget(make_button('Down', lambda i=index: move(ordered, i, 1)))
+            rows.add_widget(line)
+
+    draw()
+    return card
+
 
 def dashboard_cards(menu):
     saved = menu.saved
@@ -135,7 +185,7 @@ def dashboard_cards(menu):
     hud.add_widget(toggle('Mirror the full screen (HUD)', saved['hud_mirror'],
                           lambda on: menu.on_hud(on) if menu.on_hud is not None else menu._save(hud_mirror=on)))
     hud.add_widget(make_button('Full screen live data', menu._fullscreen))
-    return [layout, style, colours, readings, extras, hud]
+    return [layout, page_layout_cards(menu), style, colours, readings, extras, hud]
 
 
 # --- PID manager -----------------------------------------------------------------------------------

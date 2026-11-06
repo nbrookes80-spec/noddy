@@ -18,7 +18,7 @@ from kivy.uix.togglebutton import ToggleButton
 
 from live import HEALTH, STREAM_PIDS, TCM_PIDS, LiveStream
 from pid_card import PidCard, equalize, fit_columns
-from scanner import pids
+from scanner import dashboard_layout, pids
 from scanner.bus_listen import bus_reader
 from shift_light_ui import ShiftLight
 from table_view import HEX
@@ -194,14 +194,19 @@ class LiveScreen(BoxLayout):
             tile = HealthTile(label)
             self.health_tiles[key] = tile
             health.add_widget(tile)
-        grid = GridLayout(spacing=GAP, size_hint_y=None)
-        fit_columns(grid)
+        grid = BoxLayout(orientation='vertical', spacing=GAP, size_hint_y=None)
         grid.bind(minimum_height=grid.setter('height'))
-        for pid_id in STREAM_PIDS:
-            card = PidCard(pids.get(pid_id))
-            self.cards[pid_id] = card
-            grid.add_widget(card)
-        Clock.schedule_once(lambda dt: equalize(grid), 0)
+        for group, members in dashboard_layout.runs(dashboard_layout.arrange([pids.get(p) for p in STREAM_PIDS])):
+            grid.add_widget(panel_label(dashboard_layout.TITLES[group], color=MUTED, font_size=dp(12)))
+            cards = GridLayout(spacing=GAP, size_hint_y=None)
+            fit_columns(cards)
+            cards.bind(minimum_height=cards.setter('height'))
+            for pid in members:
+                card = PidCard(pid)
+                self.cards[pid.pid] = card
+                cards.add_widget(card)
+            Clock.schedule_once(lambda dt, g=cards: equalize(g), 0)
+            grid.add_widget(cards)
         self.shift_log = panel_label('No shifts yet.', markup=True, color=TEXT, font_size=dp(13))
         shifts = Card()
         shifts.add_widget(section_title('Shifts against your table'))
