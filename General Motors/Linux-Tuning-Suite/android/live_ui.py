@@ -172,6 +172,10 @@ class LiveScreen(BoxLayout):
 
     # --- layout ----------------------------------------------------------------------------------
 
+    def arranged(self):
+        """The sensors shown here, in display order: by group, then the user's order."""
+        return dashboard_layout.arrange([pids.get(p) for p in STREAM_PIDS + list(pids.REPLAY)])
+
     def render(self):
         if self.light.parent is not None:      # the light outlives the layout it sits in, so take it out first
             self.light.parent.remove_widget(self.light)
@@ -196,13 +200,13 @@ class LiveScreen(BoxLayout):
             health.add_widget(tile)
         grid = BoxLayout(orientation='vertical', spacing=GAP, size_hint_y=None)
         grid.bind(minimum_height=grid.setter('height'))
-        for group, members in dashboard_layout.runs(dashboard_layout.arrange([pids.get(p) for p in STREAM_PIDS + list(pids.REPLAY)])):
+        for group, members in dashboard_layout.runs(self.arranged()):
             grid.add_widget(panel_label(dashboard_layout.TITLES[group], color=MUTED, font_size=dp(12)))
             cards = GridLayout(spacing=GAP, size_hint_y=None)
             fit_columns(cards)
             cards.bind(minimum_height=cards.setter('height'))
             for pid in members:
-                card = PidCard(pid)
+                card = PidCard(pid, scope='live')
                 self.cards[pid.pid] = card
                 cards.add_widget(card)
             Clock.schedule_once(lambda dt, g=cards: equalize(g), 0)

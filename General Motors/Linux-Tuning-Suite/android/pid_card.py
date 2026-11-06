@@ -1,11 +1,12 @@
 """One sensor on the Live and Scan screens, and what you can do to it.
 
   tap          choose how it is drawn: text, digital gauge, graph, histogram or analogue gauge
-  long press   edit it: name, unit, range, zones, colour (and the equation and module of a PID you entered)
+  long press   the sensor menu: edit it (name, unit, range, zones, colour), choose the display, move it earlier,
+               later, to the top or end of its group or onto another page, reset its lowest and highest, ask the agent
   triple tap   ask your AI agent about this sensor
 
-`hooks` is set once by the app. It holds the saved display choices and the two actions that need the rest of
-the app (editing and asking the agent), so a card can be built anywhere without being handed them.
+`hooks` is set once by the app. It holds the saved display choices and the actions that need the rest of
+the app (editing, asking the agent, changing the order), so a card can be built anywhere without being handed them.
 """
 
 import weakref
@@ -18,11 +19,12 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.modalview import ModalView
+from kivy.uix.scrollview import ScrollView
 from kivy.uix.widget import Widget
 
 from gauge_ui import GaugeView, height_for
-from tunertoolpro.scanner import pid_view, themes
-from ui_kit import ALERT, CAUTION, GAP, MUTED, TEXT, Card, make_button, panel_label, section_title
+from tunertoolpro.scanner import dashboard_layout, pid_view, themes
+from ui_kit import ALERT, CAUTION, GAP, MUTED, TEXT, Card, button_row, make_button, panel_label, section_title
 
 HISTORY = 120
 LONG_PRESS_SECONDS = 0.6
@@ -34,6 +36,8 @@ class Hooks:
         self.views = None            # pid_view.PidViews
         self.on_edit = None          # callable(pid, done): open the editor for a sensor
         self.on_help = None          # callable(pid): bring the AI agent in on a sensor
+        self.arranged = None         # callable(scope): the arranged PID ids of the 'live' or 'scan' screen
+        self.on_order = None         # callable(arranged_ids): keep this new order, save it and redraw both screens
         self.on_changed = lambda: None
 
 
@@ -114,9 +118,10 @@ def format_value(value, unit):
 
 
 class PidCard(ButtonBehavior, Card):
-    def __init__(self, pid, **kwargs):
+    def __init__(self, pid, scope='scan', **kwargs):
         super().__init__(size_hint_y=None, spacing=dp(2), **kwargs)
         self.pid = pid
+        self.scope = scope           # which screen the card sits on: 'live' (one long list) or 'scan' (pages)
         self.shown = {}
         self._reading = None
         self._idle = None            # text shown instead of "no reply" when this sensor is not being asked for
@@ -243,8 +248,7 @@ class PidCard(ButtonBehavior, Card):
         self._fired = True
         self._taps = 0
         self._cancel(self._pending)
-        if hooks.on_edit is not None:
-            hooks.on_edit(self.pid, self._edited)
+        self.open_menu()
 
     def _resolve(self, _dt):
         taps, self._taps = self._taps, 0
@@ -257,6 +261,19 @@ class PidCard(ButtonBehavior, Card):
     def _edited(self):
         self.apply_view()
         hooks.on_changed()
+
+    # --- the sensor menu -------------------------------------------------------------------------
+
+    def open_menu(self):
+        SensorMenu(self).open()
+
+    def edit(self):
+        if hooks.on_edit is not None:
+            hooks.on_edit(self.pid, self._edited)
+
+    def ask_agent(self):
+        if hooks.on_help is not None:
+            hooks.on_help(self.pid)
 
     # --- choosing the display --------------------------------------------------------------------
 
@@ -286,5 +303,102 @@ class PidCard(ButtonBehavior, Card):
 
     def _edit_from(self, popup):
         popup.dismiss()
-        if hooks.on_edit is not None:
-            hooks.on_edit(self.pid, self._edited)
+        self.edit()
+
+
+def _greyed(button):
+    """A button that cannot be used right now."""
+    button.disabled = True
+    button.opacity = 0.45
+    return button
+
+
+class SensorMenu(ModalView):
+    """The long-press menu of one sensor. Moves are worked out by dashboard_layout.reorder on the arranged ids
+    of the screen the card is on, and handed to `hooks.on_order`, which saves them and redraws Live and Scan.
+
+    A move stays inside the sensor's group (TCM, ECU...), because the dashboard always sorts by group first. A
+    button that would change nothing is greyed out."""
+
+    def __init__(self, card, **kwargs):
+        super().__init__(size_hint=(0.88, 0.92), background_color=(0, 0, 0, 0.6), **kwargs)
+        self.card = card
+        pid = card.pid
+        self.group = dashboard_layout.group_of(pid)
+        self.arranged = list(hooks.arranged(card.scope)) if hooks.arranged is not None else []
+        self.scan_order = (list(hooks.arranged('scan')) if hooks.arranged is not None else [])
+        box = Card()
+        box.add_widget(section_title(card.shown['name']))
+        box.add_widget(panel_label(self.where(), color=MUTED, font_size=dp(12)))
+        box.add_widget(make_button('Settings, zones and colour...', lambda: self._then(card.edit)))
+        box.add_widget(make_button('Display: text, digital, graph, histogram, analogue...',
+                                   lambda: self._then(card.choose_display)))
+        box.add_widget(panel_label(f'Moves within {self.group}', color=MUTED, font_size=dp(12)))
+        box.add_widget(button_row(self._move_button('Move earlier', 'earlier'), self._move_button('Move later', 'later')))
+        box.add_widget(button_row(self._move_button('Move to top', 'top'), self._move_button('Move to end', 'end')))
+        pages = self.reachable_pages()
+        more = make_button('Move to page...', self.choose_page)
+        box.add_widget(more if pages else _greyed(more))
+        box.add_widget(_greyed(make_button('Page layout... (coming in the next step)', lambda: None)))
+        box.add_widget(make_button('Reset lowest, highest and average', lambda: self._then(card.reset_stats)))
+        box.add_widget(make_button('Ask my AI agent', lambda: self._then(card.ask_agent)))
+        box.add_widget(make_button('Close', self.dismiss, primary=True))
+        scroll = ScrollView(do_scroll_x=False, bar_width=dp(3))
+        scroll.add_widget(box)
+        self.add_widget(scroll)
+
+    def where(self):
+        """Where the sensor sits now, in words."""
+        size = dashboard_layout.PAGE_SIZE
+        pid_id = self.card.pid.pid
+        if self.card.scope == 'scan':
+            spot = dashboard_layout.position(self.arranged, pid_id, size)
+            if spot is not None:
+                return f'Page {spot[0] + 1} of {len(dashboard_layout.pages(self.arranged, size))}, place {spot[1] + 1}.'
+        elif pid_id in self.arranged:
+            return f'Place {self.arranged.index(pid_id) + 1} of {len(self.arranged)} on the Live screen.'
+        return ''
+
+    def reachable_pages(self):
+        """Pages of the Scan screen this sensor can be moved onto (pages are the Scan screen's)."""
+        return dashboard_layout.reachable_pages(self.scan_order, self.card.pid.pid, dashboard_layout.PAGE_SIZE,
+                                                group=dashboard_layout.group_of_id)
+
+    def _move_button(self, text, action):
+        button = make_button(text, lambda: self.move(action))
+        changed = dashboard_layout.reorder(self.arranged, self.card.pid.pid, action) != self.arranged
+        return button if changed else _greyed(button)
+
+    def _then(self, action):
+        self.dismiss()
+        action()
+
+    def move(self, action, value=None, scope=None):
+        """Do one move and close. `scope` 'scan' moves on the Scan screen's order whatever screen this card is on."""
+        self.dismiss()
+        order = self.scan_order if scope == 'scan' else self.arranged
+        moved = dashboard_layout.reorder(order, self.card.pid.pid, action, value, dashboard_layout.PAGE_SIZE)
+        if moved != order and hooks.on_order is not None:
+            hooks.on_order(moved)
+
+    def choose_page(self):
+        """A second popup: one button per page of the Scan screen. Pages with none of this sensor's group are greyed."""
+        self.dismiss()
+        reachable = self.reachable_pages()
+        size = dashboard_layout.PAGE_SIZE
+        popup = ModalView(size_hint=(0.86, 0.8), background_color=(0, 0, 0, 0.6))
+        box = Card()
+        box.add_widget(section_title('Move to page'))
+        box.add_widget(panel_label(f'The sensor goes to the end of the page, among the {self.group} sensors. Pages '
+                                   f'with no {self.group} sensor are greyed out.', color=MUTED, font_size=dp(12)))
+        for page in range(len(dashboard_layout.pages(self.scan_order, size))):
+            def pick(page=page):
+                popup.dismiss()
+                self.move('page', page, scope='scan')
+            button = make_button(f'Page {page + 1}', pick)
+            box.add_widget(button if page in reachable else _greyed(button))
+        box.add_widget(make_button('Close', popup.dismiss, primary=True))
+        scroll = ScrollView(do_scroll_x=False, bar_width=dp(3))
+        scroll.add_widget(box)
+        popup.add_widget(scroll)
+        popup.open()

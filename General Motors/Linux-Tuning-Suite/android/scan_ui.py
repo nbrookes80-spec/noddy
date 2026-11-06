@@ -83,9 +83,13 @@ class ScanScreen(BoxLayout):
             style_button(button, primary=(key == name))
         self.render()
 
+    def arranged(self):
+        """Every dashboard sensor in display order (the pages are cut from this)."""
+        return dashboard_layout.arrange(dashboard_layout.dashboard_pids())
+
     def _refresh_pages(self):
         """Rebuild the dashboard pages from the active profile, so a car check or a new profile shows at once."""
-        self.pages = dashboard_layout.pages(dashboard_layout.arrange(dashboard_layout.dashboard_pids())) or [[]]
+        self.pages = dashboard_layout.pages(self.arranged()) or [[]]
         self.page = min(self.page, len(self.pages) - 1)
 
     def render(self):
@@ -129,7 +133,7 @@ class ScanScreen(BoxLayout):
                 cards.add_widget(card)
             Clock.schedule_once(lambda dt, g=cards: equalize(g), 0)
             grid.add_widget(cards)
-        hint = panel_label('Tap a sensor to choose how it is shown. Long press to edit it or set a red line. '
+        hint = panel_label('Tap a sensor to choose how it is shown. Long press for its menu: edit, move, reorder. '
                            'Triple tap to ask your AI agent about it. Readings marked unconfirmed have not '
                            'been checked against a real vehicle.', color=MUTED, font_size=dp(12))
         self.chrome = [title, hint]

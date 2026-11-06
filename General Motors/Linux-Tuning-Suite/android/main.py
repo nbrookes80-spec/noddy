@@ -685,6 +685,8 @@ class TunerToolProApp(App):
         pid_card.hooks.views = pid_view.PidViews(os.path.join(self.user_data_dir, 'pid_view.json'))
         pid_card.hooks.on_edit, pid_card.hooks.on_help = self.edit_pid, self.ask_agent
         pid_card.hooks.on_changed = self.views_changed
+        pid_card.hooks.arranged = self.arranged_ids
+        pid_card.hooks.on_order = self.order_changed
         self.live = LiveScreen(self.session, self.runner, on_open_link=lambda: self.show('link'),
                                on_fullscreen=self.set_fullscreen)
         self.scan = ScanScreen(self.session, on_fullscreen=self.set_fullscreen)
@@ -1004,6 +1006,31 @@ class TunerToolProApp(App):
         """A display, red line, name or range changed: redraw the cards in place, without losing the scroll position."""
         for card in (*self.live.cards.values(), *self.scan.cards):
             card.apply_view()
+
+    def arranged_ids(self, scope):
+        """The PID ids of the 'live' or 'scan' screen in display order, for the sensor menu."""
+        screen = self.live if scope == 'live' else self.scan
+        return [p.pid for p in screen.arranged()]
+
+    def order_changed(self, arranged):
+        """The sensor menu moved a sensor: `arranged` is the new order of one screen's sensors. Keep it as the user's
+        order (sensors that screen does not show keep their saved place after it), then redraw Live and Scan where
+        they stand. The Live and Scan screens share one saved order."""
+        order = dashboard_layout.merged_order(dashboard_layout.ORDER, arranged)
+        self.link.saved['dash_order'] = dashboard_layout.clean_order(order)
+        prefs.save(self.link.prefs_path, self.link.saved)
+        dashboard_layout.configure(self.link.saved['dash_order'], dashboard_layout.PAGE_SIZE)
+        kept = {id(screen): [scroll.scroll_y for scroll in screen.walk() if isinstance(scroll, ScrollView)]
+                for screen in (self.live, self.scan)}
+        self.sensors_changed()
+        for screen in (self.live, self.scan):
+            Clock.schedule_once(lambda _dt, s=screen: self._restore_scroll(s, kept[id(s)]), 0.05)
+
+    @staticmethod
+    def _restore_scroll(screen, positions):
+        """Put the dashboards back where they were scrolled to, since drawing them again starts at the top."""
+        for scroll, y in zip([w for w in screen.walk() if isinstance(w, ScrollView)], positions):
+            scroll.scroll_y = y
 
     def sensors_changed(self):
         """A sensor was edited or redrawn: show the change on both dashboards."""
