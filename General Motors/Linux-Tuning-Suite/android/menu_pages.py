@@ -1,4 +1,4 @@
-"""The pages behind the Settings menu: dashboard layout and themes, PID manager, log data parameters, and the
+"""The pages behind the Settings menu: dashboard layout, themes, units, HUD, PID manager, log data parameters, and the
 pre-defined GM and Holden PID lists. Each function returns the cards for one page.
 
 `menu` is the AppMenu that shows them. A page reads and saves its choices through menu.saved and menu._save, so
@@ -10,14 +10,15 @@ import os
 
 from kivy.clock import Clock
 from kivy.metrics import dp
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
 
 import pid_card
-from scanner import car_scan, manual_pids, pid_view, pids, predefined, profiles, themes
+from scanner import can_import, car_scan, dashboard_layout, manual_pids, pid_view, pids, predefined, profiles, themes, units
 from settings_ui import spinner
 from tunertoolpro import vehicles
-from ui_kit import MUTED, RAISED, STATUS, TEXT, Card, make_button, panel_label, section_title, style_button
+from ui_kit import MUTED, RAISED, STATUS, TEXT, Card, make_button, panel_label, section_title, style_button, toggle
 
 COLUMN_LABELS = {0: 'Automatic (as many as fit)', 2: '2 across', 3: '3 across', 4: '4 across'}
 SCOPE_LABELS = {'all': 'Everything: Live stream and dashboard', 'live': 'Live stream sensors only',
@@ -43,6 +44,55 @@ def _redraw():
 
 # --- Dashboard layout and themes -------------------------------------------------------------------
 
+def page_layout_cards(menu):
+    """Sensors per full-screen page, and the order the sensors come in within each group."""
+    saved = menu.saved
+    card = Card()
+    card.add_widget(section_title('Full-screen pages'))
+    card.add_widget(panel_label('Sensors per page on the Scan tab. Sensors are grouped TCM, ECU, Fuel, Air and '
+                                'Boost; move a sensor up or down inside its group.', color=MUTED, font_size=dp(12)))
+    sizes = spinner([f'{n} per page' for n in dashboard_layout.PAGE_SIZES], f"{saved['dash_page_size']} per page")
+
+    def set_size(_box, text):
+        size = int(text.split()[0])
+        menu._save(dash_page_size=size)
+        dashboard_layout.configure(menu.saved['dash_order'], size)
+        _redraw()
+    sizes.bind(text=set_size)
+    card.add_widget(sizes)
+
+    rows = BoxLayout(orientation='vertical', spacing=dp(6), size_hint_y=None)
+    rows.bind(minimum_height=rows.setter('height'))
+    card.add_widget(rows)
+
+    def move(ordered, index, step):
+        target = index + step
+        if not 0 <= target < len(ordered):
+            return
+        if dashboard_layout.group_of(ordered[target]) != dashboard_layout.group_of(ordered[index]):
+            return                          # a sensor only moves within its own group
+        ordered[index], ordered[target] = ordered[target], ordered[index]
+        ids = [p.pid for p in ordered]
+        menu._save(dash_order=ids)
+        dashboard_layout.configure(ids, menu.saved['dash_page_size'])
+        _redraw()
+        draw()
+
+    def draw():
+        rows.clear_widgets()
+        ordered = dashboard_layout.arrange(dashboard_layout.dashboard_pids())
+        for index, pid in enumerate(ordered):
+            line = BoxLayout(size_hint_y=None, height=dp(44), spacing=dp(6))
+            name = f'{pid.name} ({dashboard_layout.group_of(pid)})'
+            line.add_widget(panel_label(name, color=TEXT, font_size=dp(13)))
+            line.add_widget(make_button('Up', lambda i=index: move(ordered, i, -1)))
+            line.add_widget(make_button('Down', lambda i=index: move(ordered, i, 1)))
+            rows.add_widget(line)
+
+    draw()
+    return card
+
+
 def dashboard_cards(menu):
     saved = menu.saved
     layout = Card()
@@ -57,7 +107,6 @@ def dashboard_cards(menu):
         pid_card.set_columns(count)
     columns.bind(text=set_columns)
     layout.add_widget(columns)
-    layout.add_widget(make_button('Full screen live data', menu._fullscreen))
 
     style = Card()
     style.add_widget(section_title('Sensor display'))
@@ -86,8 +135,8 @@ def dashboard_cards(menu):
 
     colours = Card()
     colours.add_widget(section_title('Gauge colours'))
-    colours.add_widget(panel_label('The colour of the gauge bars, graph lines and needles. Red lines stay red in '
-                                   'every theme.', color=MUTED, font_size=dp(12)))
+    colours.add_widget(panel_label('The colour of the gauge bars, graph lines and needles. The red, blue and green bands '
+                                   'keep their colours in every theme.', color=MUTED, font_size=dp(12)))
     chosen = spinner([t.label for t in themes.THEMES.values()], themes.THEMES[saved['dash_theme']].label)
 
     def set_theme(_box, text):
@@ -97,7 +146,46 @@ def dashboard_cards(menu):
         _redraw()
     chosen.bind(text=set_theme)
     colours.add_widget(chosen)
-    return [layout, style, colours]
+
+    readings = Card()
+    readings.add_widget(section_title('Units'))
+    readings.add_widget(panel_label('How temperatures, pressures and speeds are shown on the dashboard. A recording '
+                                    'keeps each sensor\'s own unit.', color=MUTED, font_size=dp(12)))
+    for group, label in (('temperature', 'Temperature'), ('pressure', 'Pressure'), ('speed', 'Speed and distance')):
+        readings.add_widget(panel_label(label, color=MUTED))
+        box = spinner(list(units.CHOICES[group]), saved[f'unit_{group}'])
+
+        def set_unit(_box, text, group=group):
+            menu._save(**{f'unit_{group}': text})
+            if pid_card.hooks.views is not None:
+                pid_card.hooks.views.set_units({g: menu.saved[f'unit_{g}'] for g in units.CHOICES})
+            _redraw()
+        box.bind(text=set_unit)
+        readings.add_widget(box)
+
+    extras = Card()
+    extras.add_widget(section_title('Range and average'))
+    extras.add_widget(panel_label('Shows the range (lowest to highest) and the average reading under each '
+                                  'sensor, and marks the lowest and highest on the bar and dial. Tap a sensor '
+                                  'and choose "Reset" to start it again.', color=MUTED, font_size=dp(12)))
+
+    def set_stats(on):
+        menu._save(dash_stats=on)
+        pid_card.set_stats(on)
+        _redraw()
+    extras.add_widget(toggle('Show range and average under each sensor', saved['dash_stats'], set_stats))
+    extras.add_widget(make_button('Reset every sensor now', pid_card.reset_stats))
+
+    hud = Card()
+    hud.add_widget(section_title('HUD mode'))
+    hud.add_widget(panel_label('Draws full screen mirrored, so a phone lying flat on the dashboard reads correctly '
+                               'as a reflection in the windscreen. The HUD button in full screen turns it on and '
+                               'off. A mirrored picture ignores touches: use the Exit button.',
+                               color=MUTED, font_size=dp(12)))
+    hud.add_widget(toggle('Mirror the full screen (HUD)', saved['hud_mirror'],
+                          lambda on: menu.on_hud(on) if menu.on_hud is not None else menu._save(hud_mirror=on)))
+    hud.add_widget(make_button('Full screen live data', menu._fullscreen))
+    return [layout, page_layout_cards(menu), style, colours, readings, extras, hud]
 
 
 # --- PID manager -----------------------------------------------------------------------------------
@@ -270,4 +358,56 @@ def lists_cards(menu):
         status.color = STATUS['good']
     save.add_widget(make_button('Save to my profile', save_list, primary=True))
     save.add_widget(status)
-    return [use, save]
+    return [use, save, can_card(menu)]
+
+
+def can_card(menu):
+    """Play a CAN log back on Live and Scan, decoded with its DBC file. Only the imported signals are read."""
+    card = Card()
+    card.add_widget(section_title('Play a CAN log on Live and Scan'))
+    card.add_widget(panel_label('Choose a CAN log and the DBC file that decodes it. Its signals show as an Imported '
+                                'group on Live and Scan, and are logged with the rest. The car is not asked for them.',
+                                color=MUTED, font_size=dp(12)))
+    folders = list(menu.can_folders)
+    if folders:
+        card.add_widget(panel_label('Copy files into: ' + folders[-1], color=MUTED, font_size=dp(12)))
+    logs, dbcs = _can_files(folders)
+    log_choice = spinner(list(logs) or ['No CAN logs yet'], next(iter(logs), 'No CAN logs yet'))
+    dbc_choice = spinner(list(dbcs) or ['No DBC files yet'], next(iter(dbcs), 'No DBC files yet'))
+    status = panel_label('', color=MUTED, font_size=dp(12))
+
+    def run(log_path, dbc_path):
+        if menu.play_can_log is None:
+            status.text, status.color = 'The CAN log is not available here.', STATUS['bad']
+            return
+        ok, text = menu.play_can_log(log_path, dbc_path)
+        status.text, status.color = text, STATUS['good' if ok else 'bad']
+
+    def play():
+        if not logs or not dbcs:   # with nothing to choose, Play must not fall through to Stop (both None)
+            status.text, status.color = 'Copy a CAN log and a DBC file into the folder first.', STATUS['bad']
+            return
+        run(logs.get(log_choice.text), dbcs.get(dbc_choice.text))
+
+    def stop():
+        run(None, None)
+    card.add_widget(panel_label('CAN log', color=MUTED))
+    card.add_widget(log_choice)
+    card.add_widget(panel_label('DBC file', color=MUTED))
+    card.add_widget(dbc_choice)
+    card.add_widget(make_button('Play on Live and Scan', play, primary=True))
+    card.add_widget(make_button('Stop the CAN log', stop))
+    card.add_widget(status)
+    return card
+
+
+def _can_files(folders):
+    """The CAN logs and DBC files in the folders, as {label: path}. The label names the folder it came from."""
+    logs, dbcs = {}, {}
+    for folder in folders:
+        label = os.path.basename(folder.rstrip(os.sep))
+        for name in can_import.files_in(folder, can_import.LOG_SUFFIXES):
+            logs[f'{label}/{name}'] = os.path.join(folder, name)
+        for name in can_import.files_in(folder, [can_import.DBC_SUFFIX]):
+            dbcs[f'{label}/{name}'] = os.path.join(folder, name)
+    return logs, dbcs

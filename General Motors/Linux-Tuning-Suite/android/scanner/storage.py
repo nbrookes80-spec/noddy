@@ -4,6 +4,7 @@ Everything is kept in one folder called "Tuner Tool Info", with a sub folder for
 
     Tuner Tool Info/Data logs    the sensor recordings (one CSV per recording)
     Tuner Tool Info/Debug logs   what the app and the adapter said (one text file per run)
+    Tuner Tool Info/CAN imports  CAN logs and DBC files to play back on Live and Scan
 
 Every file is named by the date and time it was started, e.g. 2026-10-31_14-05-33.csv.
 
@@ -20,6 +21,7 @@ import time
 ROOT = 'Tuner Tool Info'
 DATA_LOGS = 'Data logs'
 DEBUG_LOGS = 'Debug logs'
+CAN_IMPORTS = 'CAN imports'      # CAN logs and DBC files the user brings in to play on Live and Scan
 STAMP = re.compile(r'^\d{4}-\d\d-\d\d_\d\d-\d\d-\d\d')
 
 

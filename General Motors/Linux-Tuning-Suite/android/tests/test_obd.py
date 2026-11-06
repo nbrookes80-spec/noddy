@@ -3,6 +3,7 @@ import sys
 import threading
 import unittest
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -23,7 +24,7 @@ class FakeElm327:
         '0111': '411180',                   # 128 * 100 / 255 = 50.2 %
         '010F': 'NO DATA',
         'ATSH7DF': 'OK', 'ATSH7E0': 'OK', 'ATSH7E2': 'OK',
-        '22194F': '62194F78',               # transmission fluid temperature: 120 - 40 = 80 C
+        '221940': '62194078',               # transmission fluid temperature: 120 - 40 = 80 C
         '03': '4303010420',                 # stored codes P0301 and P0420
     }
 
@@ -94,14 +95,55 @@ class ElmTests(unittest.TestCase):
         self.assertEqual(set(values), {'010C', '010D'})
         self.assertEqual(set(errors), {'010F'})
 
+    def test_an_imported_can_signal_is_never_sent_to_the_adapter(self):
+        from scanner import pids
+        entry = pids.Pid(pid='CAN0C9.0', name='Imported', category='Imported', unit='', low=0, high=1,
+                         description='', header='', kind='word', decode=lambda raw: raw, source='CAN import',
+                         trusted=False)
+        pids.set_replay([entry])
+        try:
+            sent_before = len(self.fake.received)
+            with self.assertRaises(obd.UnsafeCommand):
+                self.elm.read('CAN0C9.0')
+            values, errors = self.elm.poll(['CAN0C9.0'], headers={'CAN0C9.0': '7E2'})
+            self.assertEqual(values, {})
+            self.assertIn('CAN0C9.0', errors)
+            self.assertEqual(len(self.fake.received), sent_before)
+        finally:
+            pids.set_replay([])
+
     def test_write_commands_are_refused_before_sending(self):
         sent_before = len(self.fake.received)
-        for command in ('0902', '0400', '04', 'ATSPA', '14FF00', '1902', '2201FF', 'ATSH7E1',
+        for command in ('0902', '0400', 'ATSPA', '14FF00', '1902', '2201FF', 'ATSH7E1',
                         'ATSH7FF', '2F1234', '3101'):
             with self.subTest(command=command):
                 with self.assertRaises(obd.UnsafeCommand):
                     self.elm.command(command)
         self.assertEqual(len(self.fake.received), sent_before)
+
+    def test_clearing_codes_is_refused_when_the_build_does_not_allow_it(self):
+        sent_before = len(self.fake.received)
+        with mock.patch.object(obd.variant, 'CLEAR_CODES', False):
+            self.assertFalse(obd.is_allowed('04'))
+            with self.assertRaises(obd.UnsafeCommand):
+                self.elm.command('04')
+        self.assertEqual(len(self.fake.received), sent_before)
+
+    def test_clearing_codes_is_allowed_in_this_build(self):
+        self.assertTrue(obd.variant.CLEAR_CODES)
+        self.assertTrue(obd.is_allowed('04'))
+
+    def test_clear_codes_succeeds_on_a_44_reply(self):
+        self.fake.REPLIES = dict(FakeElm327.REPLIES, **{'04': '44'})
+        self.elm.clear_dtcs()
+        self.assertIn('04', self.fake.received)
+
+    def test_clear_codes_that_the_car_does_not_confirm_raises(self):
+        for reply in ('NO DATA', 'UNABLE TO CONNECT', '?', ''):
+            with self.subTest(reply=reply):
+                self.fake.REPLIES = dict(FakeElm327.REPLIES, **{'04': reply})
+                with self.assertRaises(obd.OBDError):
+                    self.elm.clear_dtcs()
 
     def test_protocol_choices_are_allowed_and_no_other_protocol_is(self):
         """ATSP only picks how the adapter speaks on the bus. The five listed codes pass, anything else is refused."""
@@ -126,11 +168,11 @@ class ElmTests(unittest.TestCase):
                     self.elm.read(pid)
 
     def test_a_transmission_pid_switches_header_then_returns_to_broadcast(self):
-        value, unit = self.elm.read('22194F')
+        value, unit = self.elm.read('221940')
         self.assertAlmostEqual(value, 80)
         self.elm.read('010D')
         sent = self.fake.received[len(obd.SETUP_COMMANDS):]
-        self.assertEqual(sent, ['ATSH7E2', '22194F', 'ATSH7DF', '010D'])
+        self.assertEqual(sent, ['ATSH7E2', '221940', 'ATSH7DF', '010D'])
 
     def test_stored_codes_are_decoded(self):
         self.assertEqual(self.elm.read_dtcs(), ['P0301', 'P0420'])

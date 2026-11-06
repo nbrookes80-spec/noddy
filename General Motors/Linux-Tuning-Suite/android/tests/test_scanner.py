@@ -36,7 +36,7 @@ class CatalogTests(unittest.TestCase):
 
     def test_reply_echo_differs_by_mode(self):
         self.assertEqual(pids.get('010C').echo, '410C')
-        self.assertEqual(pids.get('22194F').echo, '62194F')
+        self.assertEqual(pids.get('221940').echo, '621940')
 
     def test_unconfirmed_pids_are_flagged(self):
         self.assertTrue(pids.get('010C').verified)

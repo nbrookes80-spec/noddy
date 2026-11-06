@@ -93,14 +93,14 @@ class RecordTests(unittest.TestCase):
 class DescribeTests(unittest.TestCase):
     def test_a_scan_reads_as_plain_text_with_modules_and_silent_readings(self):
         result = {
-            'tried': ['010C', '010D', '22194F'], 'complete': True, 'silent': ['010D'],
+            'tried': ['010C', '010D', '221940'], 'complete': True, 'silent': ['010D'],
             'answered': {'010C': {'name': 'Engine RPM', 'header': 'Auto', 'unit': 'RPM', 'sample': 1726},
-                         '22194F': {'name': 'Trans Fluid Temp', 'header': '7E2', 'unit': 'C', 'sample': 80}},
+                         '221940': {'name': 'Trans Fluid Temp', 'header': '7E2', 'unit': 'C', 'sample': 80}},
         }
         text = car_scan.describe(result)
         self.assertIn('2 of 3 readings answered.', text)
         self.assertIn('yes  010C  Engine RPM', text)
-        self.assertIn('22194F  Trans Fluid Temp on module 7E2', text)
+        self.assertIn('221940  Trans Fluid Temp on module 7E2', text)
         self.assertIn('No reply to 1: 010D', text)
 
     def test_an_incomplete_scan_says_it_is_not_used(self):

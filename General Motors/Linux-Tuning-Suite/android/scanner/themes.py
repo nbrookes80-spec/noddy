@@ -1,7 +1,8 @@
 """Gauge colour themes for the dashboard. No Kivy.
 
 A theme picks the colours of the gauge bar, the graph line and the "all good" needle. The red line is always
-red, in every theme, so a limit can never be mistaken for a style choice.
+red, in every theme, so a limit can never be mistaken for a style choice. The blue and green bands (cold and good
+limits) keep their colours in every theme for the same reason.
 """
 
 from collections import namedtuple
@@ -16,6 +17,8 @@ THEMES = {t.key: t for t in (
     Theme('white', 'White', (1.0, 1.0, 1.0, 1), (0.85, 0.88, 0.92, 1), (1.0, 1.0, 1.0, 1)),
 )}
 DEFAULT = 'classic'
+COLD = (0.35, 0.62, 1.0, 1)      # the blue band: a value below the sensor's cold limit
+GOOD = (0.40, 0.80, 0.55, 1)     # the green band: a value from the sensor's good limit up to its red line
 _current = DEFAULT
 
 

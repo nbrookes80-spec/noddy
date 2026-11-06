@@ -3,7 +3,7 @@
 from .demo import DemoSource
 from .session_log import NullLog
 
-DEMO, LIVE, OFFLINE = 'DEMO', 'LIVE', 'OFFLINE'
+DEMO, LIVE, OFFLINE, REPLAY = 'DEMO', 'LIVE', 'OFFLINE', 'REPLAY'
 
 
 class Session:
@@ -12,6 +12,7 @@ class Session:
     def __init__(self):
         self.demo = DemoSource()
         self.demo_on = False
+        self.replay = None     # a can_replay.ReplaySource while a CAN log is playing; it takes the place of the others
         self.elm = None
         self.listeners = []
         self.log = NullLog()   # replaced by a SessionLog when the app starts
@@ -19,12 +20,16 @@ class Session:
         self.demo.on_values = self._values
 
     def active(self):
+        if self.replay is not None:
+            return self.replay
         if self.demo_on:
             return self.demo
         return self.elm
 
     @property
     def status(self):
+        if self.replay is not None:
+            return REPLAY
         if self.demo_on:
             return DEMO
         return LIVE if self.elm is not None else OFFLINE
@@ -44,6 +49,14 @@ class Session:
     def set_demo(self, on):
         self.demo_on = bool(on)
         self.log.write('APP', f'demo {"on" if self.demo_on else "off"}')
+        self._notify()
+
+    def set_replay(self, source):
+        """Play a CAN log back as the data source (a ReplaySource), or stop it with None."""
+        self.replay = source
+        if source is not None:
+            source.on_values = self._values
+        self.log.write('APP', f'CAN log {"playing" if source is not None else "stopped"}')
         self._notify()
 
     def attach(self, elm):

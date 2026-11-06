@@ -1,7 +1,7 @@
 """The Link screen: demo mode, and connecting to a scan adapter over Bluetooth or Wi-Fi.
 
-Bluetooth is first and shows the phone's paired adapters as a list, so nothing has to be typed. Read
-only: see link/obd.py for what is ever sent to the car.
+Bluetooth is first and shows the phone's paired adapters as a list, so nothing has to be typed. See
+link/obd.py for everything that is ever sent to the car.
 """
 
 import threading
@@ -14,9 +14,17 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
 
 import prefs
+import variant
 from link import devices, obd
 from ui_kit import (ACCENT, ALERT, GOOD, MUTED, RAISED, TEXT, Card, button_row, make_button,
                     panel_label, section_title, stack, style_button)
+
+_NOTICE = {
+    False: 'Read only: this app never sends a write or clear command to the car. It reads the engine computer '
+           '(ECU) and the transmission computer (TCM).',
+    True: 'The app reads the engine computer (ECU) and the transmission computer (TCM). The one write it can '
+          'make is clearing stored codes, from the Scan tab, and only after you confirm.',
+}
 
 
 def _text_box(hint, text=''):
@@ -72,9 +80,7 @@ class LinkScreen(BoxLayout):
         self.adapter_card.add_widget(self.state)
 
         self.live_button = make_button('Open Live data', lambda: self.on_open_live and self.on_open_live())
-        notice = panel_label('Read only: this app never sends a write or clear command to the car. It '
-                             'reads the engine computer (ECU) and the transmission computer (TCM).',
-                             font_size=dp(12), color=MUTED)
+        notice = panel_label(_NOTICE[variant.CLEAR_CODES], font_size=dp(12), color=MUTED)
         self.add_widget(stack(demo_card, self.adapter_card, notice))
 
         self.bt_status = panel_label('', font_size=dp(13))

@@ -23,7 +23,7 @@ from kivy.uix.togglebutton import ToggleButton
 
 import sniffer_view
 from link.obd import OBDError
-from scanner import car_check, profiles
+from scanner import car_check, gmlan, profiles
 from tunertoolpro.canbus import MonitorError, PROTOCOLS, SnifferSession, read_log
 from ui_kit import (ACCENT, ALERT, GOOD, MUTED, RAISED, TEXT, Card, WrapOption, button_row, make_button,
                     panel_label, section_title, stack, style_button)
@@ -449,6 +449,9 @@ class SnifferScreen(BoxLayout):
         elif self.sniff.running:
             self.table.text = 'Listening... no frames yet.'
         status = f'Listening: {self.sniff.label}. ' if self.sniff.running else ''
+        gear = gmlan.readings(sniffer.items).get('gear')
+        if gear:
+            status += f'Gear (GMLAN 1F5): {gear}. '
         if self.sniff.overruns:
             status += f'The adapter dropped frames {self.sniff.overruns} times: use the ID filter to quieten it.'
         if status and self.sniff.running:

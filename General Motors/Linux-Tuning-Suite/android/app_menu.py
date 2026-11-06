@@ -16,17 +16,23 @@ from kivy.metrics import dp
 from kivy.uix.button import Button
 from kivy.uix.modalview import ModalView
 from kivy.uix.textinput import TextInput
-from kivy.uix.togglebutton import ToggleButton
 
 import prefs
+import variant
 from link import obd
 from pid_editor_ui import PidEditor
 from settings_ui import spinner
 import menu_pages
 from ui_kit import MUTED, RAISED, TEXT, STATUS, Card, make_button, panel_label, section_title, stack, style_button
 
+_WRITES = {
+    False: 'Read only: the app never writes to the car.',
+    True: 'It writes to the car only to clear stored codes, and only after you confirm.',
+}
+from ui_kit import toggle as _toggle
+
 PAGES = (
-    ('dashboard', 'Dashboard layout and themes', 'Cards across, sensor display, gauge colours, full screen'),
+    ('dashboard', 'Dashboard layout and themes', 'Cards across, sensor display, gauge colours, units, HUD'),
     ('pids', 'PID manager', 'Switch sensors on and off, enter a PID by hand'),
     ('logging', 'Log data parameters', 'Which sensors and how often a data log row is written'),
     ('adapter', 'OBD-II adapter settings and tweaks', 'Connection, timing, timeout, protocol'),
@@ -36,26 +42,18 @@ PAGES = (
 )
 
 
-def _toggle(text, state, on_change):
-    button = ToggleButton(text=text, size_hint_y=None, height=dp(44), state='down' if state else 'normal')
-    style_button(button, primary=state)
-
-    def changed(_button, new_state):
-        style_button(button, primary=new_state == 'down')
-        on_change(new_state == 'down')
-    button.bind(state=changed)
-    return button
-
-
 class AppMenu(ModalView):
     def __init__(self, saved, prefs_path, session, runner, link, open_settings, version, profiles, cars_folder,
-                 on_pids_saved, recorder=None, on_fullscreen=None, **kwargs):
+                 on_pids_saved, recorder=None, on_fullscreen=None, on_hud=None, **kwargs):
         super().__init__(size_hint=(0.92, 0.9), background_color=(0, 0, 0, 0.6), **kwargs)
         self.saved, self.prefs_path = saved, prefs_path   # the same dict the Link screen keeps
         self.session, self.runner, self.link = session, runner, link
         self.open_settings = open_settings
         self.profiles, self.cars_folder, self.on_pids_saved = profiles, cars_folder, on_pids_saved
         self.recorder, self.on_fullscreen, self.version = recorder, on_fullscreen, version
+        self.on_hud = on_hud
+        self.can_folders = []         # folders the CAN logs and DBC files are looked for in (set by the app)
+        self.play_can_log = None      # callable(log_path, dbc_path) -> (ok, text); both None stops the log
 
         self.show_hub()
 
@@ -247,7 +245,7 @@ class AppMenu(ModalView):
         card = Card()
         card.add_widget(section_title('Car and about'))
         card.add_widget(make_button('Car and transmission', lambda: self._open_settings()))
-        card.add_widget(panel_label(f'TunerToolPro {version}. Read only: the app never writes to the car.',
+        card.add_widget(panel_label(f'{variant.NAME}. {_WRITES[variant.CLEAR_CODES]}',
                                     color=MUTED, font_size=dp(12)))
         return card
 

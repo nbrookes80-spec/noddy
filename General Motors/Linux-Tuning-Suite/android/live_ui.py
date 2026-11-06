@@ -16,15 +16,18 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.togglebutton import ToggleButton
 
-from live import STREAM_PIDS, LiveStream
+from live import HEALTH, STREAM_PIDS, TCM_PIDS, LiveStream
 from pid_card import PidCard, equalize, fit_columns
-from scanner import pids
+from scanner import dashboard_layout, pids
+from scanner.bus_listen import bus_reader
+from shift_light_ui import ShiftLight
 from table_view import HEX
 from ui_kit import (BG, hide, GAP, MUTED, STATUS, TEXT, Card, make_button, panel_label, section_title,
                     stack, style_button)
 
 ROUND_SECONDS = 0.25     # fastest the background reader goes; a real adapter is slower than this
 EXTRA_CHUNK = 4          # other sensors read per round while recording
+LIGHT_TICK = 0.1         # seconds between shift light frames: fast enough for the 0.10 s flash
 BACKOFF_SECONDS = 1.0    # wait this long after a failed round before trying again
 
 
@@ -57,7 +60,8 @@ class StreamRunner:
         if source is not self._source:
             self._source = source
             cfg, tables = self.model()
-            self.stream = (LiveStream(source, cfg=cfg, tables=tables, transmission=self.transmission)
+            self.stream = (LiveStream(source, cfg=cfg, tables=tables, transmission=self.transmission,
+                                      bus=bus_reader(source))
                            if source is not None else None)
 
     def set_transmission(self, on):
@@ -132,9 +136,11 @@ class LiveScreen(BoxLayout):
         self.on_open_link = on_open_link
         self.on_fullscreen = on_fullscreen
         self._event = None
+        self._light_event = None
         self.cards = {}
         self.chrome = []
         self.full = False
+        self.light = ShiftLight()   # kept across renders: its switches and LEDs carry on when the layout is rebuilt
         self.render()
 
     # --- lifecycle -------------------------------------------------------------------------------
@@ -144,11 +150,16 @@ class LiveScreen(BoxLayout):
             card.apply_view()       # pick up a display or red line changed on another screen
         if self._event is None:
             self._event = Clock.schedule_interval(self.refresh, 0.5)
+        if self._light_event is None:
+            self._light_event = Clock.schedule_interval(self.tick_light, LIGHT_TICK)
 
     def deactivate(self):
         if self._event is not None:
             self._event.cancel()
             self._event = None
+        if self._light_event is not None:
+            self._light_event.cancel()
+            self._light_event = None
 
     def source_changed(self, _status=None):
         self.render()
@@ -162,6 +173,8 @@ class LiveScreen(BoxLayout):
     # --- layout ----------------------------------------------------------------------------------
 
     def render(self):
+        if self.light.parent is not None:      # the light outlives the layout it sits in, so take it out first
+            self.light.parent.remove_widget(self.light)
         self.clear_widgets()
         self.cards = {}
         if self.session.active() is None:
@@ -177,20 +190,23 @@ class LiveScreen(BoxLayout):
         self.health_tiles = {}
         health = Card()
         health.add_widget(section_title('Health'))
-        for key, label in (('trans_temp', 'Transmission fluid'), ('engine_rpm', 'Engine speed'),
-                           ('coolant', 'Coolant'), ('line_pressure', 'Line pressure'),
-                           ('gear_follow', 'Gear matches shaft speeds')):
+        for key, label in HEALTH:
             tile = HealthTile(label)
             self.health_tiles[key] = tile
             health.add_widget(tile)
-        grid = GridLayout(spacing=GAP, size_hint_y=None)
-        fit_columns(grid)
+        grid = BoxLayout(orientation='vertical', spacing=GAP, size_hint_y=None)
         grid.bind(minimum_height=grid.setter('height'))
-        for pid_id in STREAM_PIDS:
-            card = PidCard(pids.get(pid_id))
-            self.cards[pid_id] = card
-            grid.add_widget(card)
-        Clock.schedule_once(lambda dt: equalize(grid), 0)
+        for group, members in dashboard_layout.runs(dashboard_layout.arrange([pids.get(p) for p in STREAM_PIDS + list(pids.REPLAY)])):
+            grid.add_widget(panel_label(dashboard_layout.TITLES[group], color=MUTED, font_size=dp(12)))
+            cards = GridLayout(spacing=GAP, size_hint_y=None)
+            fit_columns(cards)
+            cards.bind(minimum_height=cards.setter('height'))
+            for pid in members:
+                card = PidCard(pid)
+                self.cards[pid.pid] = card
+                cards.add_widget(card)
+            Clock.schedule_once(lambda dt, g=cards: equalize(g), 0)
+            grid.add_widget(cards)
         self.shift_log = panel_label('No shifts yet.', markup=True, color=TEXT, font_size=dp(13))
         shifts = Card()
         shifts.add_widget(section_title('Shifts against your table'))
@@ -204,9 +220,10 @@ class LiveScreen(BoxLayout):
         self.transmission_button.bind(state=self._transmission_changed)
         readings_title = section_title('Readings')
         full_button = make_button('Full screen: live data only', lambda: self.on_fullscreen and self.on_fullscreen(True))
-        self.chrome = [self.status, self.transmission_button, full_button, health, readings_title, shifts, hint]
-        self.add_widget(stack(self.status, self.transmission_button, full_button, health, readings_title, grid,
-                              shifts, hint))
+        self.chrome = [self.light.settings, self.status, self.transmission_button, full_button, health,
+                       readings_title, shifts, hint]
+        self.add_widget(stack(self.light, self.status, self.transmission_button, full_button, health,
+                              readings_title, grid, shifts, hint))
         self.set_full(self.full)
 
     def _style_transmission(self):
@@ -218,6 +235,12 @@ class LiveScreen(BoxLayout):
         self.status.text = ''
 
     # --- updating --------------------------------------------------------------------------------
+
+    def tick_light(self, _dt):
+        """The shift light reads engine speed on its own clock, so its flash and blink are not held up by the readings."""
+        stream = self.runner.stream
+        reading = stream.latest.get('010C') if stream is not None else None
+        self.light.update(None if reading is None else reading[0], time.monotonic())
 
     def refresh(self, _dt):
         stream = self.runner.stream
@@ -238,6 +261,12 @@ class LiveScreen(BoxLayout):
             self.health_tiles[tile['key']].set(tile['level'], tile['text'])
         for pid_id, card in self.cards.items():
             entry = snap['values'].get(pid_id)
-            card.show((entry['value'], entry['unit']) if entry else None, entry['history'] if entry else [])
+            idle = None
+            if pid_id in TCM_PIDS and not self.runner.transmission:
+                idle = 'transmission off'
+            elif self.session.replay is not None and pid_id not in pids.REPLAY:
+                idle = 'not in log'   # a CAN log is playing and it does not carry this reading
+            card.show((entry['value'], entry['unit']) if entry else None, entry['history'] if entry else [],
+                      idle=idle)
         lines = [f'[color=#{HEX[s["level"]]}]{s["text"]}[/color]' for s in snap['shifts'][:6] if s['text']]
         self.shift_log.text = '\n'.join(lines) or 'No shifts yet. Drive, or watch the demo.'

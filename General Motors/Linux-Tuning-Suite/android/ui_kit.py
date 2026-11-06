@@ -15,6 +15,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.spinner import SpinnerOption
+from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.widget import Widget
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -221,7 +222,7 @@ class HeaderBar(BoxLayout):
             self.rec.set_recording(text)
 
     def set_source(self, status):
-        colour = {'DEMO': ACCENT, 'LIVE': GOOD}.get(status, MUTED)
+        colour = {'DEMO': ACCENT, 'REPLAY': ACCENT, 'LIVE': GOOD}.get(status, MUTED)
         self.chip.set_state(status, colour)
 
 
@@ -272,6 +273,19 @@ def hide(widget, hidden):
     elif not hidden and hasattr(widget, '_shown_as'):
         widget.size_hint_y, widget.height, widget.opacity, widget.disabled = widget._shown_as
         del widget._shown_as
+
+
+def toggle(text, state, on_change):
+    """An on/off button that lights up while on. `on_change` is called with True or False."""
+    button = ToggleButton(text=text, size_hint_y=None, height=dp(44), state='down' if state else 'normal')
+    style_button(button, primary=state)
+
+    def changed(_button, new_state):
+        style_button(button, primary=new_state == 'down')
+        button.height = dp(44)
+        on_change(new_state == 'down')
+    button.bind(state=changed)
+    return button
 
 
 def button_row(*buttons, height=dp(48)):

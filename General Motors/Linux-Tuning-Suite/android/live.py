@@ -14,7 +14,7 @@ from collections import deque
 
 import grading
 from link import obd
-from scanner import pids
+from scanner import gmlan, pids
 from tunertoolpro import core
 
 # Engine (ECU, answers on the broadcast address) first, then the transmission (TCM, 7E2) grouped
@@ -22,9 +22,9 @@ from tunertoolpro import core
 # The Holden VE's TCM refuses commanded gear (223D03) and the PC solenoid current pair (22199E/F), so the
 # gear check uses the gear its shaft speeds imply, and the pressure tile shows line pressure (22001F).
 FAST_PIDS = ['010C', '010D', '0111', '22199A', '221991', '221941', '221942']
-SLOW_PIDS = ['0105', '0104', '010B', '010E', '22194F', '22001F']
+SLOW_PIDS = ['0105', '0104', '010B', '010E', '221940', '22001F']
 STREAM_PIDS = FAST_PIDS + SLOW_PIDS
-TCM_PIDS = {'22199A', '22194F', '221991', '22001F', '221941', '221942'}
+TCM_PIDS = {'22199A', '221940', '221991', '22001F', '221941', '221942'}
 GEAR_RATIOS = (4.027, 2.364, 1.532, 1.152, 0.852, 0.667)   # 6L80: input shaft turns per output shaft turn
 RATIO_TOLERANCE = 0.12    # a ratio further than this from every gear is a shift in progress, so no verdict
 MIN_OUTPUT_RPM = 100      # below this the ratio is mostly noise (stopped or crawling)
@@ -34,19 +34,23 @@ HISTORY = 60
 KMH_TO_MPH = 0.621371
 RATE_WINDOW = 10
 SHIFT_LOG = 12
+BUS_SECONDS = 0.8        # length of one listening window for bus readings; the bus is only heard this long
+BUS_EVERY = 4            # a window every fourth round, so the engine readings keep most of the adapter's time
 
 HEALTH = [('trans_temp', 'Transmission fluid'), ('engine_rpm', 'Engine speed'),
           ('coolant', 'Coolant'), ('line_pressure', 'Line pressure'),
-          ('gear_follow', 'Gear matches shaft speeds')]
+          ('gear_follow', 'Gear matches shaft speeds'), ('shift_lever', 'Shift lever (bus)')]
 
 
 def _ordered(pid_list):
-    """Engine readings first, transmission readings last, so the module address changes once."""
-    return sorted(pid_list, key=lambda p: (p in TCM_PIDS, STREAM_PIDS.index(p)))
+    """Engine readings first, transmission readings last, so the module address changes once. Signals from a
+    CAN log (not in the built-in list) come after them."""
+    rank = {p: i for i, p in enumerate(STREAM_PIDS)}
+    return sorted(pid_list, key=lambda p: (p in TCM_PIDS, rank.get(p, len(rank))))
 
 
 class LiveStream:
-    def __init__(self, source, cfg=None, tables=None, clock=time.monotonic, transmission=True):
+    def __init__(self, source, cfg=None, tables=None, clock=time.monotonic, transmission=True, bus=None):
         self.source = source
         self.cfg = cfg
         self.tables = tables
@@ -62,6 +66,9 @@ class LiveStream:
         self._prev_speed = None
         self._mismatch_now = 0.0
         self._mismatch_since = None
+        self.bus = bus                 # callable(seconds) -> bus frames, or None when the source has no bus
+        self.bus_error = None
+        self._bus_readings = gmlan.Latest()
 
     def set_model(self, cfg, tables):
         """Give the stream the current settings and tables, so live shifts are compared with them."""
@@ -74,6 +81,8 @@ class LiveStream:
         if not self.transmission:
             wanted = [p for p in wanted if p not in TCM_PIDS]
         wanted = _ordered(wanted)
+        if getattr(self.source, 'replay', None) is not None:   # only a CAN log replay reads imported signals; the
+            wanted += list(pids.REPLAY)                          # adapter never gets them (link/obd.py is_allowed)
         headers = {p: TCM_HEADER for p in wanted if p in TCM_PIDS}
         try:
             values, _errors = self.source.poll(wanted, headers=headers)
@@ -86,9 +95,25 @@ class LiveStream:
         self._stamps.append(now)
         for pid, (value, unit) in values.items():
             self.latest[pid] = (value, unit)
-            self.history[pid].append(value)
+            self.history.setdefault(pid, deque(maxlen=HISTORY)).append(value)
         self._track_gear(now)
         self._prev_speed = self._value('010D')
+        if self.bus is not None and self.rounds % BUS_EVERY == 0:
+            self._read_bus(now)
+
+    def _read_bus(self, now):
+        """Listen to the bus for a short window. A bus that does not answer must not stop the engine readings."""
+        try:
+            frames = self.bus(BUS_SECONDS)
+        except Exception as exc:
+            self.bus_error = f'{type(exc).__name__}: {exc}'
+            return
+        self.bus_error = None
+        self._bus_readings.feed(frames, now)
+
+    def bus_gear(self):
+        """The shift lever position from the bus, named as the car's own display would show it, or None."""
+        return self._bus_readings.readings(self.clock()).get('gear')
 
     def implied_gear(self):
         """The gear the shaft speeds say the box is in (1-6), or None when stopped or between gears."""
@@ -158,7 +183,7 @@ class LiveStream:
             'engine_rpm': lambda v: (grading.grade_engine_rpm(v, shift_rpm)
                                      if v is not None and shift_rpm else None),
         }
-        sources = {'trans_temp': '22194F', 'coolant': '0105', 'engine_rpm': '010C'}
+        sources = {'trans_temp': '221940', 'coolant': '0105', 'engine_rpm': '010C'}
         for key, label in HEALTH:
             result = None
             if key in graded:
@@ -173,6 +198,12 @@ class LiveStream:
                 gear, commanded = self._value('22199A'), self.implied_gear()
                 if gear is not None and commanded is not None:
                     result = grading.grade_gear_follow(gear, commanded, seconds)
+            elif key == 'shift_lever':
+                gear = self.bus_gear()
+                if gear is not None:
+                    result = (grading.OFF, gear)
+                elif self.bus_error:
+                    result = (grading.OFF, 'bus not answering')
             level, text = result if result else (grading.OFF, 'no reading yet')
             tiles.append({'key': key, 'label': label, 'level': level, 'text': text})
         return tiles
@@ -186,13 +217,13 @@ class LiveStream:
 
     def snapshot(self):
         values = {}
-        for pid in STREAM_PIDS:
+        for pid in STREAM_PIDS + [p for p in list(self.latest) if p not in STREAM_PIDS]:
             reading = self.latest.get(pid)
             if reading is None:
                 continue
             info = pids.get(pid)
             values[pid] = {'name': info.name if info else pid, 'value': reading[0], 'unit': reading[1],
-                           'history': list(self.history[pid])}
+                           'history': list(self.history.get(pid, ()))}
         return {'values': values, 'health': self.health(), 'shifts': list(self.shifts),
                 'rate_hz': self.rate_hz(), 'error': self.error, 'rounds': self.rounds}
 
