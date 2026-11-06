@@ -172,9 +172,13 @@ class LiveScreen(BoxLayout):
 
     # --- layout ----------------------------------------------------------------------------------
 
+    def sources(self):
+        """The sensors shown here, in the order they are listed before sorting."""
+        return [pids.get(p) for p in STREAM_PIDS + list(pids.REPLAY)]
+
     def arranged(self):
         """The sensors shown here, in display order: by group, then the user's order."""
-        return dashboard_layout.arrange([pids.get(p) for p in STREAM_PIDS + list(pids.REPLAY)])
+        return dashboard_layout.arrange(self.sources())
 
     def render(self):
         if self.light.parent is not None:      # the light outlives the layout it sits in, so take it out first

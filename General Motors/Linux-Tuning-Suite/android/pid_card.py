@@ -37,7 +37,7 @@ class Hooks:
         self.on_edit = None          # callable(pid, done): open the editor for a sensor
         self.on_help = None          # callable(pid): bring the AI agent in on a sensor
         self.arranged = None         # callable(scope): the arranged PID ids of the 'live' or 'scan' screen
-        self.on_order = None         # callable(arranged_ids): keep this new order, save it and redraw both screens
+        self.on_order = None         # callable(arranged_ids, scope): keep this new order of the 'live' or 'scan' screen, save it, redraw both
         self.on_changed = lambda: None
 
 
@@ -376,10 +376,11 @@ class SensorMenu(ModalView):
     def move(self, action, value=None, scope=None):
         """Do one move and close. `scope` 'scan' moves on the Scan screen's order whatever screen this card is on."""
         self.dismiss()
+        scope = scope or self.card.scope
         order = self.scan_order if scope == 'scan' else self.arranged
         moved = dashboard_layout.reorder(order, self.card.pid.pid, action, value, dashboard_layout.PAGE_SIZE)
         if moved != order and hooks.on_order is not None:
-            hooks.on_order(moved)
+            hooks.on_order(moved, scope)
 
     def choose_page(self):
         """A second popup: one button per page of the Scan screen. Pages with none of this sensor's group are greyed."""

@@ -1012,11 +1012,12 @@ class TunerToolProApp(App):
         screen = self.live if scope == 'live' else self.scan
         return [p.pid for p in screen.arranged()]
 
-    def order_changed(self, arranged):
-        """The sensor menu moved a sensor: `arranged` is the new order of one screen's sensors. Keep it as the user's
-        order (sensors that screen does not show keep their saved place after it), then redraw Live and Scan where
-        they stand. The Live and Scan screens share one saved order."""
-        order = dashboard_layout.merged_order(dashboard_layout.ORDER, arranged)
+    def order_changed(self, arranged, scope):
+        """The sensor menu moved a sensor: `arranged` is the new order of the 'live' or 'scan' screen's sensors. Save
+        it as the user's order without reshuffling sensors the other screen shows (the two screens share one saved
+        order, see dashboard_layout.merged_order), then redraw Live and Scan where they stand."""
+        screen = self.live if scope == 'live' else self.scan
+        order = dashboard_layout.merged_order(dashboard_layout.ORDER, arranged, [p.pid for p in screen.sources()])
         self.link.saved['dash_order'] = dashboard_layout.clean_order(order)
         prefs.save(self.link.prefs_path, self.link.saved)
         dashboard_layout.configure(self.link.saved['dash_order'], dashboard_layout.PAGE_SIZE)

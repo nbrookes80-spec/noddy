@@ -83,9 +83,13 @@ class ScanScreen(BoxLayout):
             style_button(button, primary=(key == name))
         self.render()
 
+    def sources(self):
+        """Every dashboard sensor in the order they are listed before sorting."""
+        return dashboard_layout.dashboard_pids()
+
     def arranged(self):
         """Every dashboard sensor in display order (the pages are cut from this)."""
-        return dashboard_layout.arrange(dashboard_layout.dashboard_pids())
+        return dashboard_layout.arrange(self.sources())
 
     def _refresh_pages(self):
         """Rebuild the dashboard pages from the active profile, so a car check or a new profile shows at once."""

@@ -56,8 +56,9 @@ def main():
     saved = {'dash_order': []}
     log = {'edit': 0, 'help': 0, 'orders': []}
 
-    def order_changed(arranged):                          # what main.order_changed does, without the app
-        order = dashboard_layout.merged_order(dashboard_layout.ORDER, arranged)
+    def order_changed(arranged, scope):                   # what main.order_changed does, without the app
+        screen = live if scope == 'live' else scan
+        order = dashboard_layout.merged_order(dashboard_layout.ORDER, arranged, [p.pid for p in screen.sources()])
         saved['dash_order'] = dashboard_layout.clean_order(order)
         dashboard_layout.configure(saved['dash_order'], dashboard_layout.PAGE_SIZE)
         log['orders'].append(arranged)
@@ -97,8 +98,7 @@ def main():
         labels['Move earlier'].dispatch('on_release')
         after = [p.pid for p in scan.arranged()]
         check(after.index(moved_id) == before.index(moved_id) - 1, 'Move earlier moves the sensor one place up')
-        check(dashboard_layout.ORDER[:1] != [] and dashboard_layout.ORDER.index(moved_id) < dashboard_layout.ORDER.index(before[before.index(moved_id) - 1]),
-              'dashboard_layout.ORDER now has it before its old neighbour')
+        check(moved_id in dashboard_layout.ORDER, 'dashboard_layout.ORDER now lists the moved sensor')
         check(sorted(after) == sorted(before), 'no sensor was lost or doubled')
     else:
         print('skip: first card is first in its group')
@@ -169,9 +169,17 @@ def main():
                                      _restore_scroll=app_main.TunerToolProApp._restore_scroll)
     ids = [p.pid for p in scan.arranged()]
     mover = next(i for i in ids if dashboard_layout.reorder(ids, i, 'later') != ids)
-    app_main.TunerToolProApp.order_changed(stand_in, dashboard_layout.reorder(ids, mover, 'later'))
+    app_main.TunerToolProApp.order_changed(stand_in, dashboard_layout.reorder(ids, mover, 'later'), 'scan')
     check([p.pid for p in scan.arranged()].index(mover) == ids.index(mover) + 1, 'main.order_changed applies the move to Scan')
     check(prefs.load(prefs_path)['dash_order'] == dashboard_layout.ORDER, 'main.order_changed saves dash_order to prefs.json')
+
+    # a move on Live must not reshuffle Scan sensors nobody touched (the two screens list some sensors differently)
+    dashboard_layout.configure([], dashboard_layout.PAGE_SIZE)
+    scan_before = [p.pid for p in scan.arranged()]
+    live_ids = [p.pid for p in live.arranged()]
+    app_main.TunerToolProApp.order_changed(stand_in, dashboard_layout.reorder(live_ids, '0105', 'earlier'), 'live')
+    check([p.pid for p in live.arranged()] == dashboard_layout.reorder(live_ids, '0105', 'earlier'), 'Live shows the move')
+    check([p.pid for p in scan.arranged()] == scan_before, 'a one-place move on Live leaves the Scan order exactly as it was')
     print('SMOKE PASSED')
 
 

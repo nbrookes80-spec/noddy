@@ -189,12 +189,43 @@ def reachable_pages(order, pid_id, size=None, group=None):
     return [p for p in range(count) if _page_target(order, pid_id, p, size, group) is not None]
 
 
-def merged_order(saved, arranged):
-    """The order to save after moving sensors on one screen: that screen's arranged ids first, then any saved id
-    the screen does not show (the Live screen and the Scan pages do not show exactly the same sensors), in the
-    order they were already saved."""
-    shown = set(arranged)
-    return list(arranged) + [item for item in saved if item not in shown]
+def _arranged_ids(source, order):
+    """What `arrange` would give for these ids (in the order the screen lists them) and this saved order."""
+    rank = {pid: i for i, pid in enumerate(order)}
+    keyed = [(GROUPS.index(group_of_id(pid)), rank.get(pid, len(rank)), i, pid) for i, pid in enumerate(source)]
+    return [pid for *_, pid in sorted(keyed, key=lambda item: item[:3])]
+
+
+def merged_order(saved, arranged, source=None):
+    """The order to save after a sensor was moved on one screen, changing as little as possible.
+
+    `arranged` is that screen's new arranged ids and `source` the same ids in the order the screen lists them
+    before `arrange` (the catalogue order that breaks ties; default: `arranged`). The Live screen and the Scan
+    pages show different sensors but share one saved order, so listing every sensor of the moved screen would
+    reshuffle sensors the user never touched on the other one. Instead, for each group on its own, this lists only
+    the first k sensors of the group for the smallest k that makes `arrange` give exactly `arranged` (the sensors
+    after them already fall in the right order by themselves). Ids saved before follow, in their saved order. So a
+    group nobody moved in is not listed at all, and sensors left unlisted keep their own order on both screens.
+    Where the two screens disagree on how two shared sensors stand by default, the moved screen's order wins for
+    the ones listed."""
+    arranged = list(arranged)
+    source = arranged if source is None else list(source)
+    heads = []
+    for group in GROUPS:
+        want = [i for i in arranged if group_of_id(i) == group]
+        if not want:
+            continue
+        mine = [i for i in source if group_of_id(i) == group]
+        for k in range(len(want) + 1):
+            taken = set(want[:k])
+            trial = want[:k] + [item for item in saved if item not in taken]
+            if _arranged_ids(mine, trial) == want:
+                heads += want[:k]
+                break
+        else:                       # `arranged` is not a sorting of `source`: list the whole group as given
+            heads += want
+    listed = set(heads)
+    return heads + [item for item in saved if item not in listed]
 
 
 def group_of_id(pid_id):
