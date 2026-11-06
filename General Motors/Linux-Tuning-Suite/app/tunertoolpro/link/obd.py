@@ -111,8 +111,9 @@ def use_protocol(elm, saved):
 
 def read_adapter_info(elm):
     """What the adapter says about itself: {'firmware', 'adapter_volts', 'protocol', 'car_volts'}, text, '' when a
-    command got no usable answer. car_volts is the car's battery from Mode 01 PID 0142, read only if that PID is on
-    the read list (it is not today, so it stays empty). Sends ATI, ATRV and ATDP only."""
+    command got no usable answer. car_volts is the car's battery from Mode 01 PID 0142, read through the
+    scanner catalogue (0142 is catalogued) and left empty if the car does not answer. Besides ATI, ATRV and ATDP it
+    sends only that one catalogued read."""
     info = {'firmware': '', 'adapter_volts': '', 'protocol': '', 'car_volts': ''}
     with elm._lock:
         for key, command in (('firmware', 'ATI'), ('adapter_volts', 'ATRV'), ('protocol', 'ATDP')):

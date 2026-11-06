@@ -15,6 +15,7 @@ adapter comes back. Everything sent is checked against obd.is_allowed. Exits non
 import os
 import sys
 import tempfile
+import threading
 import time
 
 os.environ.setdefault('KIVY_NO_ARGS', '1')
@@ -113,6 +114,35 @@ def main():
     link.toggle()
     check(link._retry_step is None and link._retry_event is None and link.state.text == 'Stopped reconnecting.',
           'Stop reconnecting cancels the retry')
+
+    # Stop pressed while a retry is in flight and then succeeds: the link must stay disconnected
+    fake3 = FakeElm327()
+    link.wifi_box.text = f'127.0.0.1:{fake3.port}'
+    link.connection_lost('fourth drop')
+    link._retry_event.cancel()
+    gate, real_open = threading.Event(), obd.Elm327.open
+
+    def slow_open(self):
+        gate.wait(5)
+        real_open(self)
+
+    obd.Elm327.open = slow_open
+    try:
+        link._retry_now()
+        check(link._connecting, 'a retry is in flight')
+        link.toggle()                              # Stop reconnecting
+        gate.set()                                 # the try now succeeds
+        check(pump(lambda: not link._connecting), 'the in-flight try finished')
+    finally:
+        obd.Elm327.open = real_open
+    check(session.elm is None, 'a stop during an in-flight retry that succeeds leaves the link disconnected')
+    check(link.connect_button.text == 'Connect' and not link.connect_button.disabled, 'button reads Connect')
+    check('stopped' in link.state.text.lower(), 'state says reconnect was stopped: ' + link.state.text)
+    fake4 = FakeElm327()
+    link.wifi_box.text = f'127.0.0.1:{fake4.port}'
+    link.toggle()                                  # a plain Connect is not affected
+    check(pump(lambda: session.elm is not None), 'a plain Connect afterwards still connects')
+    link.disconnect()
 
     # the adapter comes back
     fake2 = FakeElm327()

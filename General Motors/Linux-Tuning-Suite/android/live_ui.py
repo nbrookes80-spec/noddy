@@ -115,7 +115,8 @@ class StreamRunner:
             if not stream.error:
                 self._read_extras()
             self._idle.set()
-            time.sleep(BACKOFF_SECONDS if stream.error else max(0.0, obd.round_delay(self.rate() if self.rate else None) - (time.monotonic() - began)))
+            wait = obd.round_delay(self.rate() if self.rate else None) - (time.monotonic() - began)
+            time.sleep(BACKOFF_SECONDS if stream.error else max(0.0, wait))
 
 
 class HealthTile(Card):

@@ -47,6 +47,7 @@ class LinkScreen(BoxLayout):
         self._connecting = False
         self._retry_step = None      # None, or how many reconnect tries have been made since the adapter dropped
         self._retry_event = None
+        self._attempt = 0            # bumped when a reconnect is stopped; a connect started before that is then dropped
 
         demo_card = Card()
         demo_card.add_widget(section_title('Demo mode'))
@@ -81,8 +82,9 @@ class LinkScreen(BoxLayout):
         self.adapter_card.add_widget(self.panel)
         self.adapter_card.add_widget(self.connect_button)
         self.adapter_card.add_widget(self.auto_button)
-        self.adapter_card.add_widget(_toggle('Reconnect automatically if the adapter drops', self.saved['auto_reconnect'],
-                                             lambda on: self._save(auto_reconnect=on)))
+        reconnect = _toggle('Reconnect automatically if the adapter drops', self.saved['auto_reconnect'],
+                            lambda on: self._save(auto_reconnect=on))
+        self.adapter_card.add_widget(reconnect)
         self.adapter_card.add_widget(panel_label('Protocol', color=MUTED))
         self.names = {code: f'{code}: {name}' if code != '0' else name for code, name in obd.PROTOCOLS.items()}
         self.protocol_box = spinner(list(self.names.values()), self.names[self.saved['adapter_protocol']])
@@ -235,7 +237,7 @@ class LinkScreen(BoxLayout):
         self.session.log.write('LINK', f'connecting (auto) {self.kind} {address}')
         self.connect_button.disabled = True
         self.state.text = 'Connecting to your last adapter...'
-        threading.Thread(target=self._connect, args=(transport, address), daemon=True).start()
+        threading.Thread(target=self._connect, args=(transport, address, self._attempt), daemon=True).start()
 
     def toggle(self, *_):
         if self._retry_step is not None:       # the button reads "Stop reconnecting" while retries are under way
@@ -249,27 +251,34 @@ class LinkScreen(BoxLayout):
         try:
             transport, address = self.make_transport()
         except ValueError as exc:
-            self.state.text = str(exc) if 'adapter' in str(exc) else 'Enter the adapter as host:port, e.g. 192.168.0.10:35000'
+            hint = 'Enter the adapter as host:port, e.g. 192.168.0.10:35000'
+            self.state.text = str(exc) if 'adapter' in str(exc) else hint
             return
         self._connecting = True
         self.session.log.write('LINK', f'connecting {self.kind} {address}')
         self.connect_button.disabled = True
         self.state.text = 'Connecting...'
-        threading.Thread(target=self._connect, args=(transport, address), daemon=True).start()
+        threading.Thread(target=self._connect, args=(transport, address, self._attempt), daemon=True).start()
 
-    def _connect(self, transport, address):
+    def _connect(self, transport, address, attempt):
         try:
             elm = obd.Elm327(transport, allow_clear=variant.CLEAR_CODES)
             elm.on_traffic = self.session.log.write   # so the set-up handshake is logged too
             elm.open()
         except obd.OBDError as exc:
             self.session.log.write('ERR', f'connect failed: {type(exc).__name__}: {exc}')
-            Clock.schedule_once(lambda dt, m=str(exc): self._failed(m))
+            Clock.schedule_once(lambda dt, m=str(exc): self._failed(m, attempt))
             return
-        Clock.schedule_once(lambda dt: self._connected(elm, address))
+        Clock.schedule_once(lambda dt: self._connected(elm, address, attempt))
 
-    def _connected(self, elm, address):
+    def _connected(self, elm, address, attempt):
         self._connecting = False
+        if attempt != self._attempt:          # the user pressed Stop while this try was under way: drop the link
+            elm.close()
+            self.connect_button.disabled = False
+            self.connect_button.text = 'Connect'
+            self.state.text = 'Reconnecting was stopped.'
+            return
         self._retry_step = None
         self.connect_button.disabled = False
         self.connect_button.text = 'Disconnect'
@@ -303,13 +312,15 @@ class LinkScreen(BoxLayout):
         self.info_text.text = 'Asking the adapter...'
 
         def work():
+            text = 'Could not read the adapter.'
             try:
                 with self.session.adapter_job():     # the Live reader stands aside while the adapter answers
                     info = obd.read_adapter_info(elm)
                 text = info_text(info)
             except obd.OBDError as exc:
                 text = str(exc)
-            Clock.schedule_once(lambda dt: self._info_done(text))
+            finally:
+                Clock.schedule_once(lambda dt, t=text: self._info_done(t))   # always, so the button comes back
 
         threading.Thread(target=work, daemon=True).start()
 
@@ -317,9 +328,11 @@ class LinkScreen(BoxLayout):
         self.info_button.disabled = False
         self.info_text.text = text
 
-    def _failed(self, message):
+    def _failed(self, message, attempt):
         self._connecting = False
         self.connect_button.disabled = False
+        if attempt != self._attempt:
+            return                            # stopped meanwhile: the Stopped text stays
         self.state.text = message
         if self._retry_step is not None:
             self._schedule_retry(f'Still not connected ({message}).')
@@ -373,9 +386,10 @@ class LinkScreen(BoxLayout):
         self._connecting = True
         self.session.log.write('LINK', f'reconnecting (try {number}) {self.kind} {address}')
         self.state.text = f'Reconnecting (try {number} of {len(obd.backoff_schedule())})...'
-        threading.Thread(target=self._connect, args=(transport, address), daemon=True).start()
+        threading.Thread(target=self._connect, args=(transport, address, self._attempt), daemon=True).start()
 
     def _cancel_retry(self):
+        self._attempt += 1
         self._retry_step = None
         if self._retry_event is not None:
             self._retry_event.cancel()
