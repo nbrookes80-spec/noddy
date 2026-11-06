@@ -21,7 +21,7 @@ from kivy.uix.modalview import ModalView
 from kivy.uix.widget import Widget
 
 from gauge_ui import GaugeView, height_for
-from scanner import pid_view, themes
+from tunertoolpro.scanner import pid_view, themes
 from ui_kit import ALERT, GAP, MUTED, TEXT, Card, make_button, panel_label, section_title
 
 HISTORY = 120

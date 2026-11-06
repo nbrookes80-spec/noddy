@@ -22,8 +22,8 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
 
 import sniffer_view
-from link.obd import OBDError
-from scanner import car_check, gmlan, profiles
+from tunertoolpro.link.obd import OBDError
+from tunertoolpro.scanner import car_check, gmlan, profiles
 from tunertoolpro.canbus import MonitorError, PROTOCOLS, SnifferSession, read_log
 from ui_kit import (ACCENT, ALERT, GOOD, MUTED, RAISED, TEXT, Card, WrapOption, button_row, make_button,
                     panel_label, section_title, stack, style_button)

@@ -13,7 +13,7 @@ from kivy.graphics import Color, Ellipse, Line, Rectangle, RoundedRectangle
 from kivy.metrics import dp
 from kivy.uix.widget import Widget
 
-from scanner import pid_view, themes
+from tunertoolpro.scanner import pid_view, themes
 from ui_kit import ALERT, BORDER, MUTED, TEXT
 
 HEIGHTS = {'text': 0, 'digital': 34, 'graph': 96, 'histogram': 96, 'analogue': 150}

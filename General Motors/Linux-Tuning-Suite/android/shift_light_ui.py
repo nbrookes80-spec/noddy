@@ -15,7 +15,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 
-from scanner import shift_light
+from tunertoolpro.scanner import shift_light
 from ui_kit import MUTED, PANEL, RADIUS, TEXT, Card, button_row, hide, make_button, panel_label, section_title, toggle
 
 ROWS = (('start', 'Start RPM'), ('shift', 'Shift RPM'), ('margin', 'Warning before shift'))

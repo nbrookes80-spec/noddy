@@ -9,7 +9,7 @@ from unittest import mock
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scanner import can_discovery, pids  # noqa: E402
+from tunertoolpro.scanner import can_discovery, pids  # noqa: E402
 from tools import capture_can, decode_can  # noqa: E402
 from tunertoolpro.canbus.frames import Frame, format_candump, read_log  # noqa: E402
 
@@ -114,7 +114,7 @@ class CaptureTests(unittest.TestCase):
         self.assertIn('ATMA', [s.decode().strip() for s in adapter.sent])   # listening, not requesting
 
     def test_no_adapter_is_reported_and_nothing_is_written(self):
-        from link.obd import OBDError
+        from tunertoolpro.link.obd import OBDError
         args = capture_can.build_parser().parse_args(['--seconds', '0.05', '--out', '/nonexistent/x.log'])
         with mock.patch.object(capture_can, 'open_transport', side_effect=OBDError('no adapter')):
             lines = []
@@ -153,7 +153,7 @@ class CsvRowsTests(unittest.TestCase):
 
     def test_the_csv_text_parses_back_to_the_same_rows(self):
         import csv, io
-        from scanner.can_discovery import csv_rows as rows_of
+        from tunertoolpro.scanner.can_discovery import csv_rows as rows_of
         frames = [frame(0x7E8, '04 41 0C 1A F8 00 00 00', 0.0)]
         buffer = io.StringIO()
         csv.writer(buffer).writerows(rows_of(frames))

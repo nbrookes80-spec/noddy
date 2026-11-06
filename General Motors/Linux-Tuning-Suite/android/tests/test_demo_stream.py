@@ -8,9 +8,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import shift_live  # noqa: E402
-from grading import BAD, GOOD, OK  # noqa: E402
-from live import LiveStream  # noqa: E402
-from scanner import demo  # noqa: E402
+from tunertoolpro.grading import BAD, GOOD, OK  # noqa: E402
+from tunertoolpro.live import LiveStream  # noqa: E402
+from tunertoolpro.scanner import demo  # noqa: E402
 
 
 class Clock:

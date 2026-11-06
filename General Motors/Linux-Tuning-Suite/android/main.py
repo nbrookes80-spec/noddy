@@ -30,8 +30,8 @@ from kivy.uix.widget import Widget  # noqa: E402
 
 import converter_live  # noqa: E402
 import dyno_live  # noqa: E402
-import grading  # noqa: E402
-import prefs  # noqa: E402
+from tunertoolpro import grading  # noqa: E402
+from tunertoolpro import prefs  # noqa: E402
 import sys  # noqa: E402
 import variant  # noqa: E402
 import traceback  # noqa: E402
@@ -47,13 +47,13 @@ from sniffer_ui import SnifferScreen  # noqa: E402
 from app_menu import AppMenu  # noqa: E402
 from hud import Mirror  # noqa: E402
 from settings_ui import SettingsScreen  # noqa: E402
-from scanner import calais, can_import, car_scan, dashboard_layout, manual_pids, pid_view, pids, profiles, storage, themes, torque_csv, units  # noqa: E402
+from tunertoolpro.scanner import calais, can_import, car_scan, dashboard_layout, manual_pids, pid_view, pids, profiles, storage, themes, torque_csv, units  # noqa: E402
 import pid_card  # noqa: E402
-from live import STREAM_PIDS  # noqa: E402
+from tunertoolpro.live import STREAM_PIDS  # noqa: E402
 from pid_edit_ui import PidEditPopup  # noqa: E402
-from recorder import Recorder  # noqa: E402
-from scanner.session import Session  # noqa: E402
-from scanner.session_log import SessionLog  # noqa: E402
+from tunertoolpro.recorder import Recorder  # noqa: E402
+from tunertoolpro.scanner.session import Session  # noqa: E402
+from tunertoolpro.scanner.session_log import SessionLog  # noqa: E402
 from table_view import HEX, table_blocks  # noqa: E402
 from tunertoolpro import core  # noqa: E402
 from ui_kit import (ACCENT, ALERT, BG, BLUE, BORDER, GAP, MUTED, RAISED, TEXT, Card,  # noqa: E402

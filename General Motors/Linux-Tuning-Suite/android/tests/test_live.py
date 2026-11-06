@@ -6,9 +6,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import shift_live  # noqa: E402
-from grading import BAD, GOOD, OK  # noqa: E402
-from link import obd  # noqa: E402
-from live import FAST_PIDS, SLOW_PIDS, STREAM_PIDS, TCM_PIDS, LiveStream  # noqa: E402
+from tunertoolpro.grading import BAD, GOOD, OK  # noqa: E402
+from tunertoolpro.link import obd  # noqa: E402
+from tunertoolpro.live import FAST_PIDS, SLOW_PIDS, STREAM_PIDS, TCM_PIDS, LiveStream  # noqa: E402
 
 
 class Clock:

@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import shift_live  # noqa: E402
-from grading import GOOD, OFF, OK, BAD, grade_tables  # noqa: E402
+from tunertoolpro.grading import GOOD, OFF, OK, BAD, grade_tables  # noqa: E402
 
 SIX_SPEED = 'LS3 Camaro SS (6L80)'
 COLS = 17

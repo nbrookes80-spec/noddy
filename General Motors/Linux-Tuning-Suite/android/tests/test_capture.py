@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scanner import capture, car_scan, profiles  # noqa: E402
+from tunertoolpro.scanner import capture, car_scan, profiles  # noqa: E402
 from tunertoolpro.canbus.frames import read_log  # noqa: E402
 
 
@@ -114,7 +114,7 @@ class CarCheckTests(unittest.TestCase):
 
     def test_a_check_scans_records_and_saves_all_four_files(self):
         import tempfile
-        from scanner import car_check
+        from tunertoolpro.scanner import car_check
         from tests.test_car_scan import StubElm
 
         class CheckElm(StubElm):

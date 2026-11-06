@@ -13,9 +13,9 @@ from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
 
-import prefs
+from tunertoolpro import prefs
 import variant
-from link import devices, obd
+from tunertoolpro.link import devices, obd
 from ui_kit import (ACCENT, ALERT, GOOD, MUTED, RAISED, TEXT, Card, button_row, make_button,
                     panel_label, section_title, stack, style_button)
 
@@ -232,7 +232,7 @@ class LinkScreen(BoxLayout):
 
     def _connect(self, transport, address):
         try:
-            elm = obd.Elm327(transport)
+            elm = obd.Elm327(transport, allow_clear=variant.CLEAR_CODES)
             elm.on_traffic = self.session.log.write   # so the set-up handshake is logged too
             elm.open()
         except obd.OBDError as exc:

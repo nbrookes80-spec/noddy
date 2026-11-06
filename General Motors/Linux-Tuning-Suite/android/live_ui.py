@@ -16,10 +16,10 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.togglebutton import ToggleButton
 
-from live import HEALTH, STREAM_PIDS, TCM_PIDS, LiveStream
+from tunertoolpro.live import HEALTH, STREAM_PIDS, TCM_PIDS, LiveStream
 from pid_card import PidCard, equalize, fit_columns
-from scanner import dashboard_layout, pids
-from scanner.bus_listen import bus_reader
+from tunertoolpro.scanner import dashboard_layout, pids
+from tunertoolpro.scanner.bus_listen import bus_reader
 from shift_light_ui import ShiftLight
 from table_view import HEX
 from ui_kit import (BG, hide, GAP, MUTED, STATUS, TEXT, Card, make_button, panel_label, section_title,

@@ -17,9 +17,9 @@ from kivy.uix.button import Button
 from kivy.uix.modalview import ModalView
 from kivy.uix.textinput import TextInput
 
-import prefs
+from tunertoolpro import prefs
 import variant
-from link import obd
+from tunertoolpro.link import obd
 from pid_editor_ui import PidEditor
 from settings_ui import spinner
 import menu_pages

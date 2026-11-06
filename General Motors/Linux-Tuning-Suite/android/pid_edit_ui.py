@@ -10,7 +10,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.modalview import ModalView
 from kivy.uix.textinput import TextInput
 
-from scanner import manual_pids, torque_csv
+from tunertoolpro.scanner import manual_pids, torque_csv
 from settings_ui import spinner
 from ui_kit import GAP, MUTED, RAISED, STATUS, TEXT, Card, button_row, make_button, panel_label, section_title, stack
 

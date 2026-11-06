@@ -9,9 +9,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from link import obd  # noqa: E402
-from scanner import car_scan, pids, profiles  # noqa: E402
-from tests.test_obd import FakeElm327  # noqa: E402
+from tunertoolpro.link import obd  # noqa: E402
+from tunertoolpro.scanner import car_scan, pids, profiles  # noqa: E402
+from tunertoolpro.link.testing import FakeElm327  # noqa: E402
 from tools import scan_car  # noqa: E402
 
 

@@ -15,7 +15,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
 
 import pid_card
-from scanner import can_import, car_scan, dashboard_layout, manual_pids, pid_view, pids, predefined, profiles, themes, units
+from tunertoolpro.scanner import can_import, car_scan, dashboard_layout, manual_pids, pid_view, pids, predefined, profiles, themes, units
 from settings_ui import spinner
 from tunertoolpro import vehicles
 from ui_kit import MUTED, RAISED, STATUS, TEXT, Card, make_button, panel_label, section_title, style_button, toggle

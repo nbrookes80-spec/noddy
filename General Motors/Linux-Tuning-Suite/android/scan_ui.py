@@ -16,9 +16,9 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 
 import variant
-from link import obd
+from tunertoolpro.link import obd
 from pid_card import HISTORY, PidCard, equalize, fit_columns
-from scanner import dashboard_layout, pids
+from tunertoolpro.scanner import dashboard_layout, pids
 from ui_kit import GAP, hide, MUTED, Card, button_row, make_button, panel_label, section_title, stack, style_button
 
 VIEWS = ('Live', 'Codes', 'Log')
