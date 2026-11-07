@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=TunerToolPro
+GenericName=Transmission calibration tool
+Comment=Shift point, pressure, timing and drag maths for GM 4L60E and 6L80E transmissions
+Exec=TunerToolPro
+Icon=tunertoolpro
+Categories=Science;Engineering;Utility;
+Keywords=GM;transmission;calibration;tuning;CAN;OBD;4L60E;6L80E;
+Terminal=false
+StartupNotify=true
+StartupWMClass=TunerToolPro

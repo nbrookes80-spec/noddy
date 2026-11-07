@@ -104,7 +104,20 @@ TunerToolPro opens with seven tabs. Each tab is one job.
 ## Install
 
 The full steps, with troubleshooting, are in **[docs/INSTALL.md](docs/INSTALL.md)**.
-The short version:
+There are two ways.
+
+**The AppImage.** One file. No Python, no `pip`, no clone, no root:
+
+```bash
+chmod +x TunerToolPro-0.1.1-x86_64.AppImage
+./TunerToolPro-0.1.1-x86_64.AppImage
+```
+
+It runs on any x86-64 Linux **desktop** with glibc 2.35 or newer (Ubuntu 22.04+, Zorin 17/18,
+Mint 21+, Debian 12+, Fedora 36+). It needs only the graphics libraries every Linux desktop already has (`libgl1`, `libegl1`); everything else — Python, PyQt6, pandas, pyserial, Qt and `libxcb-cursor0` — is inside the file. Build one with `./packaging/linux/build_appimage.sh`; Docker is the
+only requirement. See [packaging/linux/README.md](packaging/linux/README.md).
+
+**From source, with the Setup wizard:**
 
 ```bash
 git clone -b claude/keen-hawking-ite6nw https://github.com/nbrookes80-spec/noddy.git

@@ -13,6 +13,7 @@ from . import theme
 from .ai_tab import AiTab, SettingsBridge, tables_context
 from .bct_tab import BctTab
 from .dyno_tab import DynoDragTab
+from .link_tab import LinkTab
 from .log_tab import LogTab
 from .pressure_tab import PressureTab
 from .shift_tab import ShiftTab
@@ -79,11 +80,13 @@ class MainWindow(QMainWindow):
         tabs = QTabWidget()
         shift = ShiftTab()
         vehicle_tab = VehicleTab(shift_inputs=shift.inputs_or_none, on_saved=shift.take_vehicle)
+        self.link_tab = LinkTab()
         self.sniffer_tab = SnifferTab()
         self.ai_tab = AiTab(SettingsBridge(shift, vehicle_tab), context_provider=lambda: tables_context(shift))
         pages = [('Shift Points', shift), ('Vehicle', vehicle_tab), ('Pressure & Timing', PressureTab()),
                  ('Dyno & Drag', DynoDragTab()), ('Datalog', LogTab()), ('XDF / BIN', XdfTab()),
-                 ('BCT Tunes', BctTab()), ('CAN Sniffer', self.sniffer_tab), ('AI Assistant', self.ai_tab)]
+                 ('BCT Tunes', BctTab()), ('Link', self.link_tab),
+                 ('CAN Sniffer', self.sniffer_tab), ('AI Assistant', self.ai_tab)]
         for title, page in pages:
             tabs.addTab(scrollable(page), title)
         tabs.setCornerWidget(brand_badge(), Qt.Corner.TopRightCorner)
@@ -94,6 +97,7 @@ class MainWindow(QMainWindow):
         about.triggered.connect(self.show_about)
 
     def closeEvent(self, event):
+        self.link_tab.shutdown()
         self.sniffer_tab.shutdown()
         self.ai_tab.shutdown()
         super().closeEvent(event)

@@ -6,7 +6,56 @@ For what the tool does, see the [README](../README.md). For how to use it, see t
 
 Tested on **Zorin OS 18.1** (Ubuntu 24.04 base) with Python 3.12.
 
+There are two ways to install. Pick one:
+
+| Way | Best for | What the user needs |
+|---|---|---|
+| **[The AppImage](#the-appimage-one-file-nothing-to-install)** | Running it, and sharing it with someone else | Any Linux desktop |
+| **[The Setup wizard](#install-from-source-with-the-setup-wizard)** | Working on the code, or installing from a clone | Python 3.10+, Tkinter, venv, internet |
+
 ---
+
+## The AppImage: one file, nothing to install
+
+Download `TunerToolPro-0.1.1-x86_64.AppImage`, then:
+
+```bash
+chmod +x TunerToolPro-0.1.1-x86_64.AppImage
+./TunerToolPro-0.1.1-x86_64.AppImage
+```
+
+That is the whole install. No Python, no `pip`, no root, no clone of this repository. Python,
+PyQt6, pandas, pyserial and the Qt libraries are all inside the file, including
+`libxcb-cursor0` — the one that otherwise lets the app install but not open.
+
+**It runs on** any x86-64 Linux **desktop** with glibc 2.35 or newer: Ubuntu 22.04+, Zorin 17
+and 18, Mint 21+, Debian 12+, Fedora 36+.
+
+**The one thing it does not carry** is the host's graphics stack: `libgl1` and `libegl1`. Every
+desktop Linux install already has them, because the desktop itself needs them, so in practice
+there is nothing to install. They are deliberately left out rather than forgotten: the host's
+`libGL` has to match the host's GPU driver, so a bundled copy would break hardware acceleration
+on a machine with, for example, an NVIDIA driver. A bare server image without a desktop does
+need `sudo apt install libgl1 libegl1` first.
+
+**Settings** go to `~/.config/TunerToolPro`, the same folder a wizard-installed copy uses, so
+you can move between the two without losing your vehicle profile or your AI key.
+
+**It does not add itself to the applications menu.** Today it is a file you run from wherever
+you saved it. Your desktop may offer to integrate it, or you can use AppImageLauncher.
+
+**To build one** (Docker is the only requirement):
+
+```bash
+./packaging/linux/build_appimage.sh
+# -> dist/TunerToolPro-0.1.1-x86_64.AppImage
+```
+
+See [packaging/linux/README.md](../packaging/linux/README.md) for how the build works and why.
+
+---
+
+## Install from source with the Setup wizard
 
 ## 1. Check what you need
 
@@ -154,6 +203,10 @@ key**.
 | The window does not open from the terminal | Run `~/.local/share/TunerToolPro/run-tunertoolpro.sh` and copy the error text into a GitHub issue |
 | The AI Assistant says no key is set | Enter the key in the AI Assistant tab, or in the installer's options page |
 | You want to run without installing | See [COMMANDS.md](COMMANDS.md#run-from-the-source-folder-no-install) |
+| The AppImage does nothing when double-clicked | Mark it executable: `chmod +x TunerToolPro-*.AppImage`, or run it from a terminal to see the error |
+| The AppImage says something about FUSE | Run it as `./TunerToolPro-*.AppImage --appimage-extract-and-run` |
+| The AppImage reports a GLIBC version error | The machine is older than Ubuntu 22.04. Use the Setup wizard instead |
+| The AppImage says `libGL.so.1` or `libEGL.so.1` is missing | A system with no desktop installed: `sudo apt install libgl1 libegl1` |
 
 If none of these fix it, open an issue on GitHub and include the output of
 `python3 --version` and the exact error text. Do not post your API key or your VIN.

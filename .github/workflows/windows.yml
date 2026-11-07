@@ -39,7 +39,18 @@ jobs:
           pyinstaller --noconfirm --windowed --name TunerToolPro
           --icon packaging/windows/TunerToolPro.ico
           --paths app --collect-submodules tunertoolpro
+          --add-data "app/tunertoolpro/data;tunertoolpro/data"
           --add-data "app/tunertoolpro/gui/assets;tunertoolpro/gui/assets" app/run_tunertoolpro.py
+      - name: Check the bundle carries its data files
+        run: |
+          for f in app/tunertoolpro/data/*.csv; do
+            name=$(basename "$f")
+            test -f "dist/TunerToolPro/_internal/tunertoolpro/data/$name" \
+              || { echo "missing from the bundle: $name"; exit 1; }
+          done
+          test -f dist/TunerToolPro/_internal/tunertoolpro/gui/assets/logo_car.png \
+            || { echo "missing from the bundle: logo_car.png"; exit 1; }
+          echo "every data file and the splash artwork are in the bundle"
       - name: Smoke test (starts, then is stopped after 8 seconds)
         env:
           QT_QPA_PLATFORM: offscreen
