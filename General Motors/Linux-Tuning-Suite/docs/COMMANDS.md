@@ -8,6 +8,8 @@ vehicle. Nothing here writes to a controller.
 
 | Task | Command | Run from |
 |---|---|---|
+| Run the AppImage (no install) | `chmod +x TunerToolPro-*.AppImage && ./TunerToolPro-*.AppImage` | wherever it was saved |
+| Build the AppImage | `./packaging/linux/build_appimage.sh` | the project folder (needs Docker) |
 | Install with the Setup wizard | `python3 installer/install_tunertoolpro.py` | the project folder |
 | Start the app (after install) | `tunertoolpro` | any folder |
 | Start the app (menu entry) | open **TunerToolPro** in the applications menu | - |
