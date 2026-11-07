@@ -1,0 +1,88 @@
+"Name", "ShortName", "ModeAndPID", "Equation", "Min Value", "Max Value", "Units", "Header", "startDiagnostic", "stopDiagnostic", "scale","minimumRefreshDelayMillis"
+"[GM]1-2 Shift Error","1-2Shift","0x221997","A/40",0,70,"Seconds","Auto","","",1,0
+"[GM]1-2 Shift Time","1-2Shift","0x221993","A/40",0,70,"Seconds","Auto","","",1,0
+"[GM]2-3 Shift Error","2-3Shift","0x221998","A/40",0,70,"Seconds","Auto","","",1,0
+"[GM]2-3 Shift Time","2-3Shift","0x221994","A/40",0,70,"Seconds","Auto","","",1,0
+"[GM]3-4 Shift Error","3-4Shift","0x221999","A/40",0,70,"Seconds","Auto","","",1,0
+"[GM]3-4 Shift Time","3-4Shift","0x221995","A/40",0,70,"Seconds","Auto","","",1,0
+"[GM]ABS Front Left Wheel Speed","ABS FLW","0x224051","A",0,100,"km/h","ABS","","",1,0
+"[GM]ABS Front Right Wheel Speed","ABS FRW","0x224052","A",0,100,"km/h","ABS","","",1,0
+"[GM]ABS Rear Left Wheel Speed","ABS RLW","0x224054","A",0,100,"km/h","ABS","","",1,0
+"[GM]ABS Rear Right Wheel Speed","ABS RRW","0x224053","A",0,100,"km/h","ABS","","",1,0
+"[GM]AFR (Commanded)","AFR (Com)","0x22119e","A/10",0,255,":1","Auto","","",1,0
+"[GM]AirCon High Side Pressure","ACHSPres","0x221564","A*2.02",0,100,"psi","Auto","","",1,0
+"[GM]Balance Rate (Cyl 1)","BAL C1","0x22162f","((((A<8)+B)-32768)*0.15625)/10",0,100,"-","Auto","","",1,0
+"[GM]Balance Rate (Cyl 2)","BAL C2","0x221630","((((A<8)+B)-32768)*0.15625)/10",0,100,"-","Auto","","",1,0
+"[GM]Balance Rate (Cyl 3)","BAL C3","0x221631","((((A<8)+B)-32768)*0.15625)/10",0,100,"-","Auto","","",1,0
+"[GM]Balance Rate (Cyl 4)","BAL C4","0x221632","((((A<8)+B)-32768)*0.15625)/10",0,100,"-","Auto","","",1,0
+"[GM]Balance Rate (Cyl 5)","BAL C5","0x221633","((((A<8)+B)-32768)*0.15625)/10",0,100,"-","Auto","","",1,0
+"[GM]Balance Rate (Cyl 6)","BAL C6","0x221634","((((A<8)+B)-32768)*0.15625)/10",0,100,"-","Auto","","",1,0
+"[GM]Balance Rate (Cyl 7)","BAL C7","0x221635","((((A<8)+B)-32768)*0.15625)/10",0,100,"-","Auto","","",1,0
+"[GM]Balance Rate (Cyl 8)","BAL C8","0x221636","((((A<8)+B)-32768)*0.15625)/10",0,100,"-","Auto","","",1,0
+"[GM]Current Gear","Gear","0x22199a","A",0,6,"","Auto","","",1,0
+"[GM]Desired Idle Speed","Idle Spd","0x221192","A*12.5",0,2000,"RPM","Auto","","",10,0
+"[GM]EGR Duty Cycle","EGR Duty","0x221171","A / 2.55",0,100,"%","Auto","","",1,0
+"[GM]EGR V","EGR V","0x22114b","A / 51",0,70,"V","Auto","","",1,0
+"[GM]Evap","Evap","0x221170","A / 2.55",0,100,"%","Auto","","",1,0
+"[GM]Fuel tank pressure","FTPres","0x22f432","((A*256)+B)*0.00003",0,100,"psi","","","",1,0
+"[GM]H2OS Sensor","H2OS","0x221145","(0.434*A)*10",0,1000,"mV","Auto","","",10,0
+"[GM]IAC Position","IAC Pos","0x221172","A",0,255,"","Auto","","",1,0
+"[GM]Ignition 1 Voltage","Ign V","0x221141","A/10",0,20,"V","Auto","","",1,0
+"[GM]Injector Pulse Width (Cyl 1)","IPW C1","0x221193","(((A<8)+B)/65.535)",0,100,"ms","Auto","","",1,0
+"[GM]Injector Pulse Width (Cyl 2)","IPW C2","0x221194","(((A<8)+B)/65.535)",0,100,"ms","Auto","","",1,0
+"[GM]Injector Pulse Width (Cyl 3)","IPW C3","0x221195","(((A<8)+B)/65.535)",0,100,"ms","Auto","","",1,0
+"[GM]Injector Pulse Width (Cyl 4)","IPW C4","0x221196","(((A<8)+B)/65.535)",0,100,"ms","Auto","","",1,0
+"[GM]Injector Pulse Width (Cyl 5)","IPW C5","0x221197","(((A<8)+B)/65.535)",0,100,"ms","Auto","","",1,0
+"[GM]Injector Pulse Width (Cyl 6)","IPW C6","0x221198","(((A<8)+B)/65.535)",0,100,"ms","Auto","","",1,0
+"[GM]Injector Pulse Width (Cyl 7)","IPW C7","0x221199","(((A<8)+B)/65.535)",0,100,"ms","Auto","","",1,0
+"[GM]Injector Pulse Width (Cyl 8)","IPW C8","0x22119a","(((A<8)+B)/65.535)",0,100,"ms","Auto","","",1,0
+"[GM]Injector PWM Bank 1","InjPWM1","0x2212c3","((A*256)+B)/66.56",0,100,"ms","","","",1,0
+"[GM]Injector PWM Bank 2","InjPWM2","0x2212c4","((A*256)+B)/66.56",0,100,"ms","","","",1,0
+"[GM]Inlet air temp2  (IAT2)","IAT2","0x221538","A-40",0,100,"°C","","","",1,0
+"[GM]Knock Retard","KR","0x2211a6","(22.5*A)/256",0,50,"Deg.","Auto","","",1,0
+"[GM]Knock Retard(Alternative)","KR","0x22125d","A/16",0,50,"Deg.","Auto","","",1,0
+"[GM]Knock sensor active counter","Knock","0x22125e","A",0,1000,"Count","Auto","","",1,0
+"[GM]Last Shift Time","Last Shift","0x221992","A/40",0,70,"Seconds","Auto","","",1,0
+"[GM]Misfire Cyl.1 Current","MF C1 Cur","0x221205","A",0,1000,"Count","Auto","","",1,0
+"[GM]Misfire Cyl.1 History","MF C1 Hst","0x221201","(A<8)+B",0,1000,"Count","Auto","","",10,0
+"[GM]Misfire Cyl.10 Current","MF C10 Cur","0x2211ef","A",0,1000,"Count","Auto","","",1,0
+"[GM]Misfire Cyl.10 History","MF C10 Hst","0x2211fd","(A<8)+B",0,1000,"Count","Auto","","",10,0
+"[GM]Misfire Cyl.11 Current","MF C11 Cur","0x2211f0","A",0,1000,"Count","Auto","","",1,0
+"[GM]Misfire Cyl.11 History","MF C11 Hst","0x2211fe","(A<8)+B",0,1000,"Count","Auto","","",10,0
+"[GM]Misfire Cyl.12 Current","MF C12 Cur","0x2211f1","A",0,1000,"Count","Auto","","",1,0
+"[GM]Misfire Cyl.12 History","MF C12 Hst","0x2211ff","(A<8)+B",0,1000,"Count","Auto","","",10,0
+"[GM]Misfire Cyl.2 Current","MF C2 Cur","0x221206","A",0,1000,"Count","Auto","","",1,0
+"[GM]Misfire Cyl.2 History","MF C2 Hst","0x221202","(A<8)+B",0,1000,"Count","Auto","","",10,0
+"[GM]Misfire Cyl.3 Current","MF C3 Cur","0x221207","A",0,1000,"Count","Auto","","",1,0
+"[GM]Misfire Cyl.3 History","MF C3 Hst","0x221203","(A<8)+B",0,1000,"Count","Auto","","",10,0
+"[GM]Misfire Cyl.4 Current","MF C4 Cur","0x221208","A",0,1000,"Count","Auto","","",1,0
+"[GM]Misfire Cyl.4 History","MF C4 Hst","0x221204","(A<8)+B",0,1000,"Count","Auto","","",10,0
+"[GM]Misfire Cyl.5 Current","MF C5 Cur","0x2211ea","A",0,1000,"Count","Auto","","",1,0
+"[GM]Misfire Cyl.5 History","MF C5 Hst","0x2211f8","(A<8)+B",0,1000,"Count","Auto","","",10,0
+"[GM]Misfire Cyl.6 Current","MF C6 Cur","0x2211eb","A",0,1000,"Count","Auto","","",1,0
+"[GM]Misfire Cyl.6 History","MF C6 Hst","0x2211f9","(A<8)+B",0,1000,"Count","Auto","","",10,0
+"[GM]Misfire Cyl.7 Current","MF C7 Cur","0x2211ec","A",0,1000,"Count","Auto","","",1,0
+"[GM]Misfire Cyl.7 History","MF C7 Hst","0x2211fa","(A<8)+B",0,1000,"Count","Auto","","",10,0
+"[GM]Misfire Cyl.8 Current","MF C8 Cur","0x2211ed","A",0,1000,"Count","Auto","","",1,0
+"[GM]Misfire Cyl.8 History","MF C8 Hst","0x2211fb","(A<8)+B",0,1000,"Count","Auto","","",10,0
+"[GM]Misfire Cyl.9 Current","MF C9 Cur","0x2211ee","A",0,1000,"Count","Auto","","",1,0
+"[GM]Misfire Cyl.9 History","MF C9 Hst","0x2211fc","(A<8)+B",0,1000,"Count","Auto","","",10,0
+"[GM]Odometer (GM Specific)","GM.ODO","0x22121e","((A<8)+B) * 16",0,200,"Miles","INS","","",1,0
+"[GM]Oil Life (Engine)","Oil.Life","0x22119f","(A/255)*100",0,200,"%","Auto","","",1,0
+"[GM]Oil Pressure (Engine)","OilPres","0x221470","A*0.578",0,100,"psi","","","",1,0
+"[GM]Oil Pressure <2005","OilPres","0x22115c","(A*0.65)-17.5",0,100,"psi","","","",1,0
+"[GM]Oil Temperature (Engine)","OilTemp","0x221154","A-40",0,100,"°C","","","",1,0
+"[GM]Outside air temperature","OutTemp","0x221161","A-40",0,100,"°F","","","",1,0
+"[GM]PC Solenoid Actual Current","PC.Sol.Act","0x22199e","A * 0.0195",0,40,"Amps","Auto","","",1,0
+"[GM]PC Solenoid Reference Current","PC.Sol.Ref","0x22199f","A * 0.0195",0,40,"Amps","Auto","","",1,0
+"[GM]Spark Advance","SparkAdv","0x2211ae","(A+20)/0.35",0,200,"Deg.","Auto","","",1,0
+"[GM]TCC Slip Speed","TCC Slip","0x221991","((signed(A)*256)+B)/8",0,10000,"RPM","Auto","","",1,0
+"[GM]Torque Converter Efficiency","Trq.Eff","0x221ae9","A/2.55",0,8000,"%","Auto","","",1,0
+"[GM]Transmission Fluid Temp (GM Method 1)","Trans.Fl.Tmp","0x221940","A-40",0,200,"°C","Auto","","",1,0
+"[GM]Transmission Fluid Temp (GM Method 2)","Trans.Fl.Tmp","0x221940","A-40",0,200,"°C","7E2","","",1,0
+"[GM]Transmission Fluid Temp (GM Method 3)","Trans.Fl.Tmp","0x221949","(A-40)/0.75",0,200,"°C","Auto","","",1,0
+"[GM]Transmission Input Speed","Trns.Inp","0x221941","((A<8)+B)*.125",0,8000,"RPM","Auto","","",1,0
+"[GM]Transmission Oil Life","Trns.Life","0x221990","(A/255)*100",0,200,"%","Auto","","",1,0
+"[GM]Transmission Output Speed","Trns.Out","0x221942","((A<8)+B)*.125",0,8000,"RPM","Auto","","",1,0
+"[GM]Transmission Overall Efficiency","Trns.Eff","0x221ad0","A/2.55",0,8000,"%","Auto","","",1,0
+"[GM]Transmission Temp (Not Fluid)","Trns.Tmp","0x221603","(A-40)*1.333333",0,200,"°C","Auto","","",1,0

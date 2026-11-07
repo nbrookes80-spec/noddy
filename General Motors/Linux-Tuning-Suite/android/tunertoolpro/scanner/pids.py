@@ -1,0 +1,159 @@
+"""PID catalogue and response decoding, ported from the VE CALAIS Scanner. No Kivy, no I/O.
+
+The catalogue (pid_table.py) is generated from that app's Kotlin source. Rows marked "probable" or
+"unverified" in their description have not been confirmed against a real vehicle.
+"""
+
+import re
+from dataclasses import dataclass
+from typing import Callable
+
+from . import pid_table, t43_pids
+
+DEFAULT_HEADER = '7DF'   # standard CAN functional request address
+KNOWN_HEADERS = ('7DF', '7E0', '7E2', '7E3')
+# Other modules (ABS, meter, A/C and one more) that the Toyota-style pack reads with Mode 21. The adapter only talks
+# to these when the link was built with extra_modules=True (link/obd.py is_allowed); otherwise they stay refused.
+EXTRA_HEADERS = ('7B0', '7C0', '7C4', '7E1')
+
+# Shown on the live dashboard by default, four to a page (same list as the original scanner).
+MONITOR_PIDS = [
+    '010C', '0105', '010B', '0133',
+    '010A', '010E', '0143', '010F',
+    '0146', '010D', '0114', '0152',
+    '0106', '0107', '221940', '22001F',
+    '221991', '22199A', '0101', '0103',
+]
+DEFAULT_MONITOR = list(MONITOR_PIDS)
+PAGE_SIZE = 4
+KIND_WIDTH = {'byte': 1, 'word': 2, 'bytes3': 3, 'dword': 4}   # data bytes per reading
+
+
+@dataclass(frozen=True)
+class Pid:
+    pid: str
+    name: str
+    category: str
+    unit: str
+    low: float
+    high: float
+    description: str
+    header: str
+    kind: str
+    decode: Callable[[int], float]
+    source: str = ''         # where an added PID came from (a Torque CSV, a profile); empty for the built-in set
+    trusted: bool = True     # False for anything that has not been checked against a real car
+
+    @property
+    def mode(self):
+        return self.pid[:2] if self.pid[:2] in ('21', '22') else '01'
+
+    @property
+    def command(self):
+        """The text sent to the adapter: 01XX for Mode 01, 22XXXX for Mode 22, 21XX for a module read."""
+        return self.pid
+
+    @property
+    def echo(self):
+        """What a good reply starts with: 41XX for Mode 01, 62XXXX for Mode 22, 61XX for Mode 21."""
+        return {'22': '62', '21': '61'}.get(self.mode, '41') + self.pid[2:]
+
+    @property
+    def verified(self):
+        text = self.description.lower()
+        return self.trusted and 'probable' not in text and 'unverified' not in text
+
+    @property
+    def width(self):
+        """How many data bytes the reply carries for this reading."""
+        return KIND_WIDTH[self.kind]
+
+    def parse(self, data):
+        """Decode the data bytes (hex text, after the reply echo). None when too short or invalid."""
+        width = self.width * 2
+        if len(data) < width:
+            return None
+        try:
+            raw = int(data[:width], 16)
+            return float(self.decode(raw))
+        except (ValueError, ZeroDivisionError, OverflowError):
+            return None
+
+
+# The generated rows, with the confirmed T43 rows put over the generic ones they replace.
+_REPLACED = {row[0] for row in t43_pids.ROWS} | set(t43_pids.REMOVED)
+_ROWS = [row for row in pid_table.ROWS if row[0] not in _REPLACED] + t43_pids.ROWS
+BUILT_IN = {row[0]: Pid(*row) for row in _ROWS}
+CATALOG = dict(BUILT_IN)     # the built-in set plus whatever the active car profile has added
+
+
+def valid_id(pid):
+    """True for a read-only id: Mode 01 with one hex byte, Mode 22 with two, or a Mode 21 module read with one or
+    two. Being valid only lets an id be saved and listed; the adapter still refuses Mode 21 unless the link was
+    built with extra_modules=True and the id is in the catalogue (link/obd.py is_allowed)."""
+    pid = pid.upper()
+    return bool(re.fullmatch(r'01[0-9A-F]{2}|22[0-9A-F]{4}|21[0-9A-F]{2}([0-9A-F]{2})?', pid))
+
+
+def use_extras(extras):
+    """Make the built-in set plus these PIDs the catalogue. Built-in definitions always win.
+
+    Returns the ids that were skipped because the built-in set already defines them, because they are
+    not a Mode 01/22 read, or because a Mode 21 read is not on one of the four EXTRA_HEADERS. Because the adapter only sends catalogued ids, this is also what lets an
+    imported PID be read, and nothing outside Mode 01 and 22 can get in.
+    """
+    skipped = []
+    CATALOG.clear()
+    CATALOG.update(BUILT_IN)
+    for pid in extras:
+        if (pid.pid in BUILT_IN or not valid_id(pid.pid)
+                or (pid.pid.startswith('21') and pid.header not in EXTRA_HEADERS)):
+            skipped.append(pid.pid)
+        else:
+            CATALOG[pid.pid] = pid
+    return skipped
+
+
+REPLAY = {}   # the signals of a CAN log being played back (scanner/can_replay.py); empty when none is playing
+
+
+def set_replay(entries):
+    """Make these imported signals readable (or, with an empty list, stop them). They are not Mode 01/22 reads,
+    so they are kept apart from the catalogue and never reach the adapter."""
+    global REPLAY
+    REPLAY = {pid.pid: pid for pid in entries}   # a new table, so a reader on another thread never sees it change
+
+
+def get(pid):
+    found = CATALOG.get(pid)
+    return found if found is not None else REPLAY.get(pid)
+
+
+def categories():
+    return sorted({p.category for p in CATALOG.values()})
+
+
+def in_category(category):
+    return [p for p in CATALOG.values() if p.category == category]
+
+
+def monitor_pages(pids=None, size=PAGE_SIZE):
+    """The dashboard pages: lists of Pid, `size` to a page, skipping ids that are not in the catalogue."""
+    chosen = [CATALOG[p] for p in (pids or MONITOR_PIDS) if p in CATALOG]
+    return [chosen[i:i + size] for i in range(0, len(chosen), size)]
+
+
+def decode_dtcs(data):
+    """Mode 03 data bytes (hex text, after the 43 echo) -> codes like P0301. 0000 pairs are padding."""
+    codes = []
+    for i in range(0, len(data) - 3, 4):
+        pair = data[i:i + 4]
+        if pair == '0000':
+            continue
+        try:
+            first = int(pair[:2], 16)
+        except ValueError:
+            continue
+        prefix = 'PCBU'[(first >> 6) & 3]
+        codes.append(f'{prefix}{(first >> 4) & 3}{first & 0xF:X}{pair[2:]}')
+    return codes

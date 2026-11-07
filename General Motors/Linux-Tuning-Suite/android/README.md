@@ -20,7 +20,12 @@ read-only link to a scan adapter. Demo mode runs the whole scanner with no adapt
   settings) or **Wi-Fi** (the adapter's own network, usually 192.168.0.10 port 35000). Bluetooth is
   the first choice: the screen lists paired devices (a star marks likely scan adapters), asks for the
   Nearby devices permission, offers to turn Bluetooth on, opens Android's pairing settings, and
-  remembers the last choice. A typed address works too.
+  remembers the last choice. A typed address works too. The adapter card also has the **protocol** (all
+  of Automatic and the four CAN choices; a chosen one is re-sent on each connect and falls back to Automatic
+  if the car does not answer), **Reconnect automatically** (off by default; retries after 1, 2, 4, 8 and
+  16 seconds, says each step, then stops), **Read at most N rounds per second** (1 to 10, default 4), and,
+  once connected, **Adapter information** (firmware, adapter volts, protocol in use, car battery). These
+  send only ATI, ATRV and ATDP, and the car's 0142 read, all read-only.
 - **Live.** Streams the engine (ECU, 7E0) and the transmission (TCM, 7E2) together: 16 readings, five
   health tiles (transmission fluid, engine speed, coolant, line pressure solenoid, gear follows
   command) in green, yellow or red, and each shift compared with your upshift or downshift table.
@@ -30,14 +35,19 @@ read-only link to a scan adapter. Demo mode runs the whole scanner with no adapt
   engine speed before and after a shift, shift speeds that fall as the throttle opens, downshifts
   too close to upshifts, converter lock or unlock speeds out of order. A `*` marks where the car is
   while live data streams. The thresholds are rules of thumb in `grading.py`, not a standard.
+- **Shift light.** A 10-LED strip on the Live screen, driven by engine speed. It fills from the start
+  RPM to the shift RPM, blinks inside the warning window, and flashes at the shift point. An optional
+  chime sounds during the warning. Style, colours and RPM points are set on the same card.
 - **Agent.** Switch on a small web service so your own AI agent can read the tune, the graded tables
   and the live stream, leave notes, and propose changes. See *Connect your own AI agent* below.
 
 The link only sends adapter set-up commands, reads of PIDs in the scanner catalogue (Mode 01, and GM
 Mode 22 through the engine 7E0 or transmission 7E2 address), a Mode 03 stored-code read, and a header
-switch to one of four known addresses. It never clears codes, runs tests, sweeps unlisted Mode 22
-addresses, or writes to the controller. `link/obd.py` refuses any other command before it is sent.
-The original scanner's Clear codes (Mode 04), PID sweep and enhanced code services are not included.
+switch to one of four known addresses. It runs no tests, sweeps no unlisted Mode 22 addresses and
+writes nothing to the controller. Clear codes (Mode 04) is sent only in the V2.10 build
+(`variant.CLEAR_CODES`), and only after a confirm popup on the Codes page; the 0.4.0 build keeps it off.
+`link/obd.py` refuses any other command before it is sent. The original scanner's PID sweep and
+enhanced code services are not included.
 
 ## Status
 

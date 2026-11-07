@@ -1,11 +1,11 @@
 [app]
-title = TunerToolPro
-package.name = tunertoolpro
+title = TunerToolPro V2.10
+package.name = tunertoolpro_v210
 package.domain = org.tunertoolpro
 source.dir = .
-source.include_exts = py,png,csv
+source.include_exts = py,png,csv,ogg
 source.exclude_dirs = tests, tools, __pycache__
-version = 0.4.0
+version = 2.10
 requirements = python3,kivy,pyjnius,plyer
 p4a.branch = v2024.01.21
 orientation = all

@@ -26,8 +26,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from link.obd import OBDError  # noqa: E402
-from scanner import car_scan, profiles  # noqa: E402
+from tunertoolpro.link.obd import OBDError  # noqa: E402
+from tunertoolpro.scanner import car_scan, profiles  # noqa: E402
 
 
 def build_parser():

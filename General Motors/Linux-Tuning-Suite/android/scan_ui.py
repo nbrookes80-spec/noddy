@@ -1,7 +1,7 @@
 """The Scan screen: a live dashboard, stored codes and the traffic log. Ported from the VE CALAIS Scanner.
 
-It reads from the shared Session, which is either the demo drive or a connected adapter. It only
-reads: there is no clear-codes action in this app.
+It reads from the shared Session, which is either the demo drive or a connected adapter. Clearing the
+codes is offered only in builds that allow it (variant.CLEAR_CODES), and always asks first.
 """
 
 import threading
@@ -13,10 +13,13 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
+from kivy.uix.popup import Popup
 
-from link import obd
-from pid_card import HISTORY, PidCard, equalize, fit_columns
-from scanner import pids
+import variant
+from tunertoolpro.link import obd
+from layout_ui import FullPage
+from pid_card import HISTORY, PidCard, equalize, fit_columns, hooks
+from tunertoolpro.scanner import dashboard_layout, page_layout, pids, shift_light
 from ui_kit import GAP, hide, MUTED, Card, button_row, make_button, panel_label, section_title, stack, style_button
 
 VIEWS = ('Live', 'Codes', 'Log')
@@ -31,6 +34,7 @@ class ScanScreen(BoxLayout):
         self.page = 0
         self.view = 'Live'
         self.history = {}
+        self.latest = {}          # the last poll's readings, {pid: (value, unit)}; the shift light takes RPM here
         self.cards = []
         self.busy = False
         self.full = False
@@ -53,6 +57,7 @@ class ScanScreen(BoxLayout):
     # --- lifecycle -------------------------------------------------------------------------------
 
     def activate(self):
+        self.latest = {}          # readings from an earlier visit are too old for the shift light
         for card in self.cards:
             card.apply_view()
         if self._event is None:
@@ -68,10 +73,13 @@ class ScanScreen(BoxLayout):
         self.render()
 
     def set_full(self, on):
-        """Full screen: only the sensors of the current page, with the tabs put away."""
+        """Full screen: only the sensors of the current page, placed by the page's layout, with the tabs put away."""
+        changed = on != self.full
         self.full = on
         for widget in (self.bar, *self.chrome):
             hide(widget, on)
+        if changed and self.view == 'Live':
+            self.render()           # the page is drawn differently in full screen
 
     # --- views -----------------------------------------------------------------------------------
 
@@ -81,9 +89,17 @@ class ScanScreen(BoxLayout):
             style_button(button, primary=(key == name))
         self.render()
 
+    def sources(self):
+        """Every dashboard sensor in the order they are listed before sorting."""
+        return dashboard_layout.dashboard_pids()
+
+    def arranged(self):
+        """Every dashboard sensor in display order (the pages are cut from this)."""
+        return dashboard_layout.arrange(self.sources())
+
     def _refresh_pages(self):
         """Rebuild the dashboard pages from the active profile, so a car check or a new profile shows at once."""
-        self.pages = pids.monitor_pages() or [[]]
+        self.pages = dashboard_layout.pages(self.arranged()) or [[]]
         self.page = min(self.page, len(self.pages) - 1)
 
     def render(self):
@@ -108,21 +124,46 @@ class ScanScreen(BoxLayout):
         card.add_widget(make_button('Start demo', lambda: self.session.set_demo(True), primary=True))
         return stack(card)
 
+    def layout_target(self):
+        """(page index, sensors on it) of the page the layout chooser is for."""
+        return self.page, len(self.pages[self.page])
+
+    def open_layout(self):
+        if hooks.on_layout is not None:
+            hooks.on_layout('scan')
+
+    def _full_view(self):
+        """The current page with its cards placed by the page's template (layout_ui.FullPage)."""
+        cards = [PidCard(pid) for pid in self.pages[self.page]]
+        self.cards.extend(cards)
+        self.chrome = []
+        return FullPage(cards, self.page, len(self.pages), page_layout.for_page(self.page), self.turn,
+                        self.open_layout)
+
     def _live_view(self):
+        if self.full:
+            return self._full_view()
         page = self.pages[self.page]
         title = panel_label(f'Page {self.page + 1} of {len(self.pages)}', color=MUTED, halign='center')
         controls = button_row(make_button('Previous', lambda: self.turn(-1)),
                               make_button('Next', lambda: self.turn(1)),
-                              make_button('Full screen', lambda: self.on_fullscreen and self.on_fullscreen(True)))
-        grid = GridLayout(spacing=GAP, size_hint_y=None)
-        fit_columns(grid)
+                              make_button('Full screen', lambda: self.on_fullscreen and self.on_fullscreen(True)),
+                              make_button('Page layout', self.open_layout))
+        grid = BoxLayout(orientation='vertical', spacing=GAP, size_hint_y=None)
         grid.bind(minimum_height=grid.setter('height'))
-        for pid in page:
-            card = PidCard(pid)
-            self.cards.append(card)
-            grid.add_widget(card)
-        Clock.schedule_once(lambda dt: equalize(grid), 0)
-        hint = panel_label('Tap a sensor to choose how it is shown. Long press to edit it or set a red line. '
+        for group, members in dashboard_layout.runs(page):
+            grid.add_widget(panel_label(dashboard_layout.TITLES[group], color=MUTED, font_size=dp(12)))
+            cards = GridLayout(spacing=GAP, size_hint_y=None)
+            fit_columns(cards)
+            cards.bind(minimum_height=cards.setter('height'))
+            for pid in members:
+                card = PidCard(pid)
+                self.cards.append(card)
+                cards.add_widget(card)
+            Clock.schedule_once(lambda dt, g=cards: equalize(g), 0)
+            grid.add_widget(cards)
+        hint = panel_label('Tap a sensor to choose how it is shown. Long press for its menu: edit, move, reorder, '
+                           'page layout (used in full screen). '
                            'Triple tap to ask your AI agent about it. Readings marked unconfirmed have not '
                            'been checked against a real vehicle.', color=MUTED, font_size=dp(12))
         self.chrome = [title, hint]
@@ -136,10 +177,55 @@ class ScanScreen(BoxLayout):
         card = Card()
         card.add_widget(section_title('Stored trouble codes'))
         card.add_widget(self.codes_label)
-        note = panel_label('Read only: this app reads codes but never clears them. Clearing also resets '
-                           "the car's readiness monitors, so do it with a dedicated scan tool.",
-                           color=MUTED, font_size=dp(12))
-        return stack(make_button('Read codes', self.read_codes, primary=True), card, note)
+        if not variant.CLEAR_CODES:
+            note = panel_label('Read only: this app reads codes but never clears them. Clearing also resets '
+                               "the car's readiness monitors, so do it with a dedicated scan tool.",
+                               color=MUTED, font_size=dp(12))
+            return stack(make_button('Read codes', self.read_codes, primary=True), card, note)
+        note = panel_label('Clearing deletes the stored codes and resets the car\'s readiness monitors. Until the '
+                           'car has driven through its checks again, an emissions test can fail. Clear only after '
+                           'the fault is fixed.', color=MUTED, font_size=dp(12))
+        buttons = button_row(make_button('Read codes', self.read_codes, primary=True),
+                             make_button('Clear codes', self.ask_clear))
+        return stack(buttons, card, note)
+
+    def ask_clear(self):
+        """Ask before clearing: a clear is the one thing here that changes the car."""
+        if self.session.active() is None or self.busy:
+            return
+        body = BoxLayout(orientation='vertical', spacing=GAP, padding=GAP)
+        popup = Popup(title='Clear the stored codes?', content=body, size_hint=(0.92, None), height=dp(250))
+        body.add_widget(panel_label('This deletes every stored code and resets the readiness monitors. Clear only '
+                                    'after the fault is fixed.', color=MUTED))
+        row = button_row(make_button('Cancel', popup.dismiss),
+                         make_button('Clear codes', lambda: (popup.dismiss(), self.clear_codes()), primary=True))
+        body.add_widget(row)
+        popup.open()
+
+    def clear_codes(self):
+        source = self.session.active()
+        if source is None or self.busy:
+            return
+        self.busy = True
+        self.codes_label.text = 'Clearing...'
+        threading.Thread(target=self._clear_codes, args=(source,), daemon=True).start()
+
+    def _clear_codes(self, source):
+        try:
+            source.clear_dtcs()
+            text = 'Codes cleared. Read codes again to check that none came back.'
+            if source.label == 'Demo':
+                text += '\n\nDemo data: the sample codes were cleared, not a car.'
+        except obd.OBDError as exc:
+            text = str(exc)
+
+        def done(_dt):
+            self.busy = False
+            self.codes_text = text
+            if self.view == 'Codes':
+                self.codes_label.text = text
+
+        Clock.schedule_once(done)
 
     def _log_view(self):
         source = self.session.active()
@@ -176,14 +262,26 @@ class ScanScreen(BoxLayout):
             values, errors = {}, {i: str(exc) for i in ids}
         Clock.schedule_once(lambda dt: self._show(values, errors))
 
+    def rpm_reading(self):
+        """(whether this screen reads engine speed, the latest RPM or None), for the shift light over the screens.
+        Only the Live view polls, and only the sensors on the page shown."""
+        reads = self.view == 'Live' and any(card.pid.pid == shift_light.RPM_PID for card in self.cards)
+        reading = self.latest.get(shift_light.RPM_PID) if reads else None
+        return reads, None if reading is None else reading[0]
+
     def _show(self, values, _errors):
         self.busy = False
+        self.latest = values
         for card in self.cards:
             reading = values.get(card.pid.pid)
             series = self.history.setdefault(card.pid.pid, deque(maxlen=HISTORY))
             if reading is not None:
                 series.append(reading[0])
-            card.show(reading, series)
+            idle = ('not in log' if reading is None and self.session.replay is not None
+                    and card.pid.pid not in pids.REPLAY else None)    # a log is playing and does not carry it
+            if reading is None and idle is None:
+                idle = obd.module_note(card.pid, getattr(self.session.active(), 'extra_modules', False))
+            card.show(reading, series, idle=idle)
 
     def read_codes(self):
         source = self.session.active()

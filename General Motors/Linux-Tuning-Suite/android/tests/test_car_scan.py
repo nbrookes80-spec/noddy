@@ -9,9 +9,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from link import obd  # noqa: E402
-from scanner import car_scan, pids, profiles  # noqa: E402
-from tests.test_obd import FakeElm327  # noqa: E402
+from tunertoolpro.link import obd  # noqa: E402
+from tunertoolpro.scanner import car_scan, pids, profiles  # noqa: E402
+from tunertoolpro.link.testing import FakeElm327  # noqa: E402
 from tools import scan_car  # noqa: E402
 
 
@@ -101,12 +101,12 @@ class ScanTests(unittest.TestCase):
         self.assertEqual(seen, [(0, 2, '010C'), (1, 2, '010D')])
 
     def test_a_reading_on_the_transmission_module_is_found_and_its_header_kept(self):
-        transport = FakeTransport({'7E2': {'22194F': '62194F78'}})
+        transport = FakeTransport({'7E2': {'221940': '62194078'}})
         elm = obd.Elm327(transport)
         elm.open()
-        result = car_scan.scan(elm, ['22194F'])
-        self.assertEqual(result['answered']['22194F']['header'], '7E2')
-        self.assertEqual(car_scan.headers(result), {'22194F': '7E2'})
+        result = car_scan.scan(elm, ['221940'])
+        self.assertEqual(result['answered']['221940']['header'], '7E2')
+        self.assertEqual(car_scan.headers(result), {'221940': '7E2'})
 
 
 class SavedScanTests(unittest.TestCase):
@@ -168,13 +168,13 @@ class ActivateWithScanTests(unittest.TestCase):
 
     def test_the_dashboard_lists_only_what_the_car_answered(self):
         profile = profiles.built_in()[0]
-        result = car_scan.scan(StubElm({'010C': (1, 'Auto'), '22194F': (80, '7E2')}),
-                               ['010C', '010D', '22194F'])
+        result = car_scan.scan(StubElm({'010C': (1, 'Auto'), '221940': (80, '7E2')}),
+                               ['010C', '010D', '221940'])
         summary = profiles.activate(profile, scan=result)
         self.assertTrue(summary['checked'])
         self.assertIn('010C', pids.MONITOR_PIDS)
         self.assertNotIn('010D', pids.MONITOR_PIDS)
-        self.assertEqual(summary['headers'], {'22194F': '7E2'})
+        self.assertEqual(summary['headers'], {'221940': '7E2'})
         self.assertIn('010D', summary['hidden'])
 
     def test_without_a_scan_the_dashboard_is_unchanged(self):

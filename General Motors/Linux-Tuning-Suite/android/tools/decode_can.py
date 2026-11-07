@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scanner import can_discovery  # noqa: E402
+from tunertoolpro.scanner import can_discovery  # noqa: E402
 from tunertoolpro.canbus.frames import read_log  # noqa: E402
 
 

@@ -16,8 +16,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from link.obd import OBDError  # noqa: E402
-from scanner import capture, car_scan  # noqa: E402
+from tunertoolpro.link.obd import OBDError  # noqa: E402
+from tunertoolpro.scanner import capture, car_scan  # noqa: E402
 from tunertoolpro.canbus.frames import format_candump  # noqa: E402
 from tunertoolpro.canbus.monitor import PROTOCOLS  # noqa: E402
 

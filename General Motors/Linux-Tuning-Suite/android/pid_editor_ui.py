@@ -10,7 +10,7 @@ from kivy.uix.label import Label
 from kivy.uix.modalview import ModalView
 from kivy.uix.textinput import TextInput
 
-from scanner import manual_pids, torque_csv
+from tunertoolpro.scanner import manual_pids, torque_csv
 from settings_ui import spinner
 from ui_kit import (GAP, MUTED, RAISED, STATUS, TEXT, Card, make_button, panel_label, section_title, stack)
 
@@ -31,7 +31,7 @@ class PidEditor(ModalView):
 
         form = Card()
         form.add_widget(section_title('Manual PID'))
-        form.add_widget(panel_label('Mode 01 (4 digits, e.g. 010C) or Mode 22 (6 digits, e.g. 22194F). The formula '
+        form.add_widget(panel_label('Mode 01 (4 digits, e.g. 010C) or Mode 22 (6 digits, e.g. 221940). The formula '
                                     'uses A, B, C or D for the reply bytes, e.g. (A*256+B)/4.', color=MUTED,
                                     font_size=dp(12)))
         self.profile_box = spinner(list(self.profiles), next(iter(self.profiles), ''))

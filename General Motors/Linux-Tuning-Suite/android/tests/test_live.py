@@ -6,9 +6,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import shift_live  # noqa: E402
-from grading import BAD, GOOD, OK  # noqa: E402
-from link import obd  # noqa: E402
-from live import FAST_PIDS, SLOW_PIDS, STREAM_PIDS, TCM_PIDS, LiveStream  # noqa: E402
+from tunertoolpro.grading import BAD, GOOD, OK  # noqa: E402
+from tunertoolpro.link import obd  # noqa: E402
+from tunertoolpro.live import FAST_PIDS, SLOW_PIDS, STREAM_PIDS, TCM_PIDS, LiveStream  # noqa: E402
 
 
 class Clock:
@@ -50,7 +50,7 @@ def health(stream, key):
 class PollingTests(unittest.TestCase):
     def test_the_stream_covers_the_engine_and_the_transmission(self):
         self.assertIn('010C', STREAM_PIDS)        # engine speed, from the ECU
-        self.assertIn('22194F', STREAM_PIDS)      # transmission fluid temperature, from the TCM
+        self.assertIn('221940', STREAM_PIDS)      # transmission fluid temperature, from the TCM
         self.assertIn('22199A', STREAM_PIDS)      # current gear
         self.assertEqual(set(FAST_PIDS) | set(SLOW_PIDS), set(STREAM_PIDS))
 
@@ -118,7 +118,7 @@ class HealthTests(unittest.TestCase):
 
     def test_transmission_fluid_temperature(self):
         for celsius, level in ((95, GOOD), (110, OK), (125, BAD), (20, OK)):
-            stream = self.stream_with(**{'22194F': float(celsius)})
+            stream = self.stream_with(**{'221940': float(celsius)})
             self.assertEqual(health(stream, 'trans_temp')['level'], level, celsius)
 
     def test_engine_speed_against_the_shift_rpm_setting(self):

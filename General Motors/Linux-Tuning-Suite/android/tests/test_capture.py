@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scanner import capture, car_scan, profiles  # noqa: E402
+from tunertoolpro.scanner import capture, car_scan, profiles  # noqa: E402
 from tunertoolpro.canbus.frames import read_log  # noqa: E402
 
 
@@ -93,14 +93,14 @@ class RecordTests(unittest.TestCase):
 class DescribeTests(unittest.TestCase):
     def test_a_scan_reads_as_plain_text_with_modules_and_silent_readings(self):
         result = {
-            'tried': ['010C', '010D', '22194F'], 'complete': True, 'silent': ['010D'],
+            'tried': ['010C', '010D', '221940'], 'complete': True, 'silent': ['010D'],
             'answered': {'010C': {'name': 'Engine RPM', 'header': 'Auto', 'unit': 'RPM', 'sample': 1726},
-                         '22194F': {'name': 'Trans Fluid Temp', 'header': '7E2', 'unit': 'C', 'sample': 80}},
+                         '221940': {'name': 'Trans Fluid Temp', 'header': '7E2', 'unit': 'C', 'sample': 80}},
         }
         text = car_scan.describe(result)
         self.assertIn('2 of 3 readings answered.', text)
         self.assertIn('yes  010C  Engine RPM', text)
-        self.assertIn('22194F  Trans Fluid Temp on module 7E2', text)
+        self.assertIn('221940  Trans Fluid Temp on module 7E2', text)
         self.assertIn('No reply to 1: 010D', text)
 
     def test_an_incomplete_scan_says_it_is_not_used(self):
@@ -114,7 +114,7 @@ class CarCheckTests(unittest.TestCase):
 
     def test_a_check_scans_records_and_saves_all_four_files(self):
         import tempfile
-        from scanner import car_check
+        from tunertoolpro.scanner import car_check
         from tests.test_car_scan import StubElm
 
         class CheckElm(StubElm):

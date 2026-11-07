@@ -3,6 +3,9 @@
     python3 tools/update_core.py v0.1.0     fetch that tag, replace the core files, rewrite core.lock
     python3 tools/update_core.py --check    verify the core files match core.lock (the test suite does this)
 
+To try a release before it is pushed, point TTP_CORE_REPO at a local clone that has the tag; core.lock still
+records the GitHub URL, so push the same tag (same commit) before committing the lock.
+
 The core files live in app/tunertoolpro (everything except gui/, __main__.py and __init__.py) and are
 copied to android/tunertoolpro by android/sync_core.py. Never edit them here: change the core repo,
 tag a release, then run this.
@@ -10,6 +13,7 @@ tag a release, then run this.
 
 import hashlib
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -62,8 +66,11 @@ def check():
 def update(tag):
     with tempfile.TemporaryDirectory() as tmp:
         clone = Path(tmp) / 'core'
-        subprocess.run(['git', '-c', 'advice.detachedHead=false', 'clone', '--quiet', '--branch', tag, '--depth', '1', REPO, str(clone)],
-                       check=True)
+        source_repo = os.environ.get('TTP_CORE_REPO') or REPO
+        if os.path.isdir(source_repo):
+            source_repo = Path(source_repo).resolve().as_uri()    # file:// so --depth works on a local clone
+        subprocess.run(['git', '-c', 'advice.detachedHead=false', 'clone', '--quiet', '--branch', tag, '--depth', '1',
+                        source_repo, str(clone)], check=True)
         commit = subprocess.run(['git', '-C', str(clone), 'rev-parse', 'HEAD'], check=True,
                                 capture_output=True, text=True).stdout.strip()
         source = clone / 'tunertoolpro'

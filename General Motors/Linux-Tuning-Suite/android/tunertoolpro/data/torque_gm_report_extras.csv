@@ -1,0 +1,7 @@
+"Name","ShortName","ModeAndPID","Equation","Min Value","Max Value","Units","Header","startDiagnostic","stopDiagnostic","scale","minimumRefreshDelayMillis"
+"[GM]Charge Air Temp (IAT2, post-intercooler)","IAT2","0x222006","A-40","-40","150","C","7E0","","",1,0
+"[GM]Engine Oil Temp (report PID)","OilT 2","0x22153E","A-40","-40","180","C","7E0","","",1,0
+"[GM]T43 Desired Line Pressure","LinePs D","0x221938","((A*256)+B)/100","0","300","psi","7E2","","",1,0
+"[GM]T43 TCC Duty Cycle","TCC duty","0x221939","A*0.392157","0","100","%","7E2","","",1,0
+"[GM]T43 TCC Lockup State","TCC lock","0x22193E","A","0","1","","7E2","","",1,0
+"[GM]FPCM Fuel Pump Duty Cycle","FPCM duty","0x221471","A*0.392157","0","100","%","7E3","","",1,0
