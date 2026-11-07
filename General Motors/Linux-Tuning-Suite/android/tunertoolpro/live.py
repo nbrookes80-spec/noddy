@@ -59,6 +59,7 @@ class LiveStream:
         self.rounds = 0
         self.error = None
         self.latest = {}
+        self.notes = {}              # PID -> note while its reading is outside the sensor window
         self.history = {p: deque(maxlen=HISTORY) for p in STREAM_PIDS}
         self.shifts = deque(maxlen=SHIFT_LOG)
         self._stamps = deque(maxlen=RATE_WINDOW)
@@ -85,11 +86,12 @@ class LiveStream:
             wanted += list(pids.REPLAY)                          # adapter never gets them (link/obd.py is_allowed)
         headers = {p: TCM_HEADER for p in wanted if p in TCM_PIDS}
         try:
-            values, _errors = self.source.poll(wanted, headers=headers)
+            values, errors = self.source.poll(wanted, headers=headers)
         except obd.OBDError as exc:
             self.error = str(exc)
             return
         self.error = None
+        self.notes = {p: text for p, text in errors.items() if p in values}
         now = self.clock()
         self.rounds += 1
         self._stamps.append(now)
@@ -223,7 +225,7 @@ class LiveStream:
                 continue
             info = pids.get(pid)
             values[pid] = {'name': info.name if info else pid, 'value': reading[0], 'unit': reading[1],
-                           'history': list(self.history.get(pid, ()))}
+                           'history': list(self.history.get(pid, ())), 'note': self.notes.get(pid)}
         return {'values': values, 'health': self.health(), 'shifts': list(self.shifts),
                 'rate_hz': self.rate_hz(), 'error': self.error, 'rounds': self.rounds}
 

@@ -18,6 +18,7 @@ import threading
 import time
 
 from tunertoolpro.scanner import pids as catalog
+from tunertoolpro.scanner import sensor_window
 
 SPP_UUID = '00001101-0000-1000-8000-00805F9B34FB'
 DEFAULT_WIFI = ('192.168.0.10', 35000)
@@ -407,6 +408,7 @@ class Elm327:
         self._header = catalog.DEFAULT_HEADER
         self._header_memory = {}   # PID -> the module address that answered for it
         self._misses = {}          # PID -> failures in a row
+        self.notes = {}            # PID -> note for a reading that arrived but is outside its sensor's window
         self._lock = threading.RLock()   # one conversation with the adapter at a time
 
     def open(self):
@@ -543,6 +545,7 @@ class Elm327:
             fallback = bool(first and info and first != info.header and pid not in self._header_memory)
             try:
                 values[pid] = self.read(pid, header=first, final=not fallback)
+                self._take_note(pid, errors)
             except AdapterLost:
                 raise
             except ModuleAccessOff as exc:
@@ -557,6 +560,7 @@ class Elm327:
         for pid in sorted(retry, key=lambda p: catalog.CATALOG[p].header):
             try:
                 values[pid] = self.read(pid)
+                self._take_note(pid, errors)
             except AdapterLost:
                 raise
             except OBDError as exc:
@@ -595,8 +599,15 @@ class Elm327:
             self._misses[pid_id] = misses + 1
         raise last
 
+    def _take_note(self, pid, errors):
+        """A reading that arrived with a note keeps its value; the note is passed on beside it, in the errors."""
+        note = self.notes.pop(pid, None)
+        if note:
+            errors[pid] = note
+
     def _read_from(self, pid, header):
         self.set_header(header)
+        self.notes.pop(pid.pid, None)
         text = self.command(pid.command).upper()
         if any(word in text for word in ERROR_WORDS):
             raise OBDError(f'{pid.name}: the adapter replied "{text.splitlines()[-1].strip()}"')
@@ -604,7 +615,11 @@ class Elm327:
         at = hex_text.find(pid.echo)
         if at < 0:
             raise OBDError(f'{pid.name}: unexpected reply "{text}"')
-        value = pid.parse(hex_text[at + len(pid.echo):])
+        data = hex_text[at + len(pid.echo):]
+        value = pid.parse(data)
         if value is None:
             raise OBDError(f'{pid.name}: reply too short "{text}"')
+        note = sensor_window.fault(pid.pid, data)
+        if note:
+            self.notes[pid.pid] = note
         return value, pid.unit

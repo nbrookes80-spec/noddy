@@ -127,6 +127,7 @@ class PidCard(ButtonBehavior, Card):
         self.shown = {}
         self._reading = None
         self._idle = None            # text shown instead of "no reply" when this sensor is not being asked for
+        self._note = None            # a sensor fault for this reading (replaces the number), or None
         self._series = []
         self._taps = 0
         self._long = self._pending = None
@@ -233,8 +234,13 @@ class PidCard(ButtonBehavior, Card):
         self.stats.reset()
         self._show_reading()
 
-    def show(self, reading, series, idle=None):
-        self._reading, self._series, self._idle = reading, list(series)[-HISTORY:], idle
+    def show(self, reading, series, idle=None, note=None):
+        """`note` is a sensor fault (the reading is outside its sensor's window). It replaces the number, because
+        the number is not valid, and is shown in the alert colour."""
+        self._note = note
+        if note:
+            reading = None
+        self._reading, self._series, self._idle = reading, list(series)[-HISTORY:], note or idle
         if reading is not None:
             self.stats.add(reading[0])
         self._show_reading()
@@ -244,7 +250,8 @@ class PidCard(ButtonBehavior, Card):
         reading, convert = self._reading, self.shown['convert']
         if reading is None:
             if self._idle:
-                self.value.text, self.value.color = self._idle, MUTED
+                self.value.text = self._idle
+                self.value.color = ALERT if self._note else MUTED
             else:
                 self.value.text, self.value.color = 'no reply', ALERT
             self.value.font_size = dp(16) if self._idle and len(self._idle) > 8 else self._number_size

@@ -332,6 +332,6 @@ class LiveScreen(BoxLayout):
             elif entry is None:
                 idle = obd.module_note(card.pid, getattr(self.session.active(), 'extra_modules', False))
             card.show((entry['value'], entry['unit']) if entry else None, entry['history'] if entry else [],
-                      idle=idle)
+                      idle=idle, note=entry.get('note') if entry else None)
         lines = [f'[color=#{HEX[s["level"]]}]{s["text"]}[/color]' for s in snap['shifts'][:6] if s['text']]
         self.shift_log.text = '\n'.join(lines) or 'No shifts yet. Drive, or watch the demo.'
