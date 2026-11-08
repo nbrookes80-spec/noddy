@@ -178,6 +178,28 @@ class BluetoothTests(unittest.TestCase):
             transport.open()
         self.assertIn('needs the Android app', str(ctx.exception))
 
+    def test_reading_after_a_detach_is_adapter_lost_not_an_attribute_error(self):
+        # Regression: after close() the streams are None, and a reader still running used to raise
+        # AttributeError: 'NoneType' object has no attribute 'available' (seen in the debug log, 18:25:32).
+        transport = obd.BluetoothTransport('00:11:22:33:44:55')
+        transport.close()
+        with self.assertRaises(obd.AdapterLost):
+            transport.read_until(b'>', timeout=0.05)
+        with self.assertRaises(obd.AdapterLost):
+            transport.read_chunk(timeout=0.05)
+        with self.assertRaises(obd.AdapterLost):
+            transport.write(b'010C\r')
+
+    def test_a_stream_closed_mid_read_is_adapter_lost(self):
+        class ClosedStream:
+            def available(self):
+                raise IOError('socket closed')
+
+        transport = obd.BluetoothTransport('00:11:22:33:44:55')
+        transport._in = ClosedStream()
+        with self.assertRaises(obd.AdapterLost):
+            transport.read_until(b'>', timeout=0.05)
+
 
 if __name__ == '__main__':
     unittest.main()
