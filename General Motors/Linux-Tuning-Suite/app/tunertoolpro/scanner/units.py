@@ -28,6 +28,19 @@ DEFAULTS = {'temperature': '°C', 'pressure': 'kPa', 'speed': 'km/h'}
 
 Conversion = namedtuple('Conversion', 'unit forward back')   # forward: sensor's unit -> shown unit; back: the reverse
 
+ATMOSPHERE_PSI = 14.7   # the zero of a boost gauge: absolute pressure at sea level
+BOOST_PIDS = frozenset({'010B'})   # MAP sensor: shown as gauge pressure (boost), never below zero
+
+
+def boost_conversion(unit, choices):
+    """Gauge pressure for an absolute pressure sensor: the reading minus atmosphere, floored at zero so vacuum
+    reads zero the way a boost gauge does. The unit label and the scale follow the user's pressure choice."""
+    conv = conversion(unit, choices)
+    atmosphere = conv.forward(ATMOSPHERE_PSI * _GROUPS['pressure']['psi'][0](1.0))
+    return Conversion(conv.unit,
+                      lambda v: max(0.0, conv.forward(v) - atmosphere),
+                      lambda v: conv.back(v + atmosphere))
+
 
 def identity(value):
     return value
