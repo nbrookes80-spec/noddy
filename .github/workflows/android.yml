@@ -38,7 +38,10 @@ jobs:
 
       - name: Unit tests (Android side)
         working-directory: General Motors/Linux-Tuning-Suite/android
-        run: python -m unittest discover -s tests -p "test_*.py"
+        # pillow is needed by tests/test_brand_assets.py; it is not part of the APK.
+        run: |
+          python -m pip install pillow
+          python -m unittest discover -s tests -p "test_*.py"
 
       # buildozer refuses a path with spaces, and this project sits under "General Motors/".
       # Build from a copy at a path without spaces, as the README describes.
