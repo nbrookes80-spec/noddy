@@ -1,0 +1,75 @@
+name: Android APK
+
+on:
+  pull_request:
+    paths: ['General Motors/Linux-Tuning-Suite/android/**', '.github/workflows/android.yml']
+  push:
+    branches: [main]
+    paths: ['General Motors/Linux-Tuning-Suite/android/**', '.github/workflows/android.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: System packages for buildozer
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential git zip unzip autoconf automake libtool \
+            pkg-config zlib1g-dev libncurses-dev libffi-dev libssl-dev libltdl-dev cmake
+
+      - name: Unit tests (Android side)
+        working-directory: General Motors/Linux-Tuning-Suite/android
+        # pillow is needed by tests/test_brand_assets.py; it is not part of the APK.
+        run: |
+          python -m pip install pillow
+          python -m unittest discover -s tests -p "test_*.py"
+
+      # buildozer refuses a path with spaces, and this project sits under "General Motors/".
+      # Build from a copy at a path without spaces, as the README describes.
+      - name: Copy the app to a path without spaces
+        run: |
+          rm -rf "$RUNNER_TEMP/tunertoolpro-build"
+          cp -r "General Motors/Linux-Tuning-Suite/android" "$RUNNER_TEMP/tunertoolpro-build"
+
+      - name: Cache buildozer and the Android SDK/NDK
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.buildozer
+            ~/.android
+          key: buildozer-${{ runner.os }}-${{ hashFiles('General Motors/Linux-Tuning-Suite/android/buildozer.spec') }}
+
+      - name: Install buildozer
+        run: pip install buildozer cython "sh<2"
+
+      - name: Build the debug APK
+        working-directory: ${{ runner.temp }}/tunertoolpro-build
+        # Answers buildozer's SDK licence prompts. Process substitution keeps yes's SIGPIPE out of
+        # the step's exit status, which bash -o pipefail would otherwise report as a failure.
+        run: buildozer -v android debug < <(yes)
+
+      - name: Upload the APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: TunerToolPro-android-debug
+          path: ${{ runner.temp }}/tunertoolpro-build/bin/*.apk
+          if-no-files-found: error
