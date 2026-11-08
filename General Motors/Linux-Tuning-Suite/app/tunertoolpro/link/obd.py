@@ -352,40 +352,60 @@ class BluetoothTransport:
         self._out.write([b - 256 if b > 127 else b for b in data])
         self._out.flush()
 
+    def _stream(self):
+        """The input stream, taken once per read. close() can run on another thread and set self._in to None;
+        a read that finds it gone is an adapter that has been lost, not a bug."""
+        stream = self._in
+        if stream is None:
+            raise AdapterLost('The adapter connection is closed')
+        return stream
+
     def read_until(self, prompt=b'>', timeout=5.0):
         """Bytes up to the prompt. An adapter that goes quiet raises AdapterLost instead of waiting forever,
         which used to freeze every screen until the app was restarted."""
         import time
+        stream = self._stream()
         out = bytearray()
         deadline = time.monotonic() + timeout
-        while True:
-            if self._in.available() == 0:
-                if time.monotonic() >= deadline:
-                    raise AdapterLost('The adapter stopped answering')
-                time.sleep(0.005)
-                continue
-            value = self._in.read()
-            if value < 0:
-                raise AdapterLost('The adapter closed the connection')
-            if value == prompt[0]:
-                return bytes(out)
-            out.append(value & 0xFF)
+        try:
+            while True:
+                if stream.available() == 0:
+                    if time.monotonic() >= deadline:
+                        raise AdapterLost('The adapter stopped answering')
+                    time.sleep(0.005)
+                    continue
+                value = stream.read()
+                if value < 0:
+                    raise AdapterLost('The adapter closed the connection')
+                if value == prompt[0]:
+                    return bytes(out)
+                out.append(value & 0xFF)
+        except AdapterLost:
+            raise
+        except Exception as exc:   # a closed Java socket surfaces through pyjnius as a generic exception
+            raise AdapterLost(f'The adapter connection failed: {exc}') from exc
 
     def read_chunk(self, timeout=0.2):
         """Whatever bytes are waiting (b'' if none arrive within timeout). Used by the CAN sniffer."""
         import time
+        stream = self._stream()
         deadline = time.monotonic() + timeout
-        while self._in.available() == 0:
-            if time.monotonic() >= deadline:
-                return b''
-            time.sleep(0.01)
-        out = bytearray()
-        while self._in.available() > 0 and len(out) < 1024:
-            value = self._in.read()
-            if value < 0:
-                raise AdapterLost('The adapter closed the connection')
-            out.append(value & 0xFF)
-        return bytes(out)
+        try:
+            while stream.available() == 0:
+                if time.monotonic() >= deadline:
+                    return b''
+                time.sleep(0.01)
+            out = bytearray()
+            while stream.available() > 0 and len(out) < 1024:
+                value = stream.read()
+                if value < 0:
+                    raise AdapterLost('The adapter closed the connection')
+                out.append(value & 0xFF)
+            return bytes(out)
+        except AdapterLost:
+            raise
+        except Exception as exc:
+            raise AdapterLost(f'The adapter connection failed: {exc}') from exc
 
     def close(self):
         if self._socket is not None:

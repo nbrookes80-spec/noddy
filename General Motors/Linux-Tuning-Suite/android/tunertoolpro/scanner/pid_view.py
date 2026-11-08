@@ -213,6 +213,8 @@ class PidViews:
         """How a reading of this sensor is converted for the screen. A unit the user typed in is shown as it is."""
         if self.data.get(pid.pid, {}).get('unit', pid.unit) != pid.unit:
             return units.Conversion(self.data[pid.pid]['unit'], units.identity, units.identity)
+        if pid.pid in units.BOOST_PIDS and pid.unit == 'kPa':
+            return units.boost_conversion(pid.unit, self.units)
         return units.conversion(pid.unit, self.units)
 
     def set_default(self, mode):
